@@ -4,12 +4,21 @@ import type { PartInfo } from '../../data/types';
 import { tr } from '../../i18n';
 import { t, type UiKey } from '../../i18n/ui';
 import { inVersion } from '../../three/turbine';
+import type { SceneId } from '../../three/types';
 import { partInfo, videoUrl, type AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
 // Explore mode: part sheet (Learn-Arduino-like tabs) or scene overview when nothing is selected.
 
 type Tab = 'overview' | 'specs' | 'maintenance' | 'upgrade';
+
+/** Site parts that have their own detailed 3D view. */
+const DETAIL_VIEW: Record<string, { scene: SceneId; label: UiKey }> = {
+  coanda: { scene: 'intake', label: 'goIntake' },
+  weir: { scene: 'intake', label: 'goIntake' },
+  turbine: { scene: 'turbine', label: 'goTurbine' },
+  techroom: { scene: 'techroom', label: 'goTech' },
+};
 let tab: Tab = 'overview';
 
 const CAT_KEY: Record<PartInfo['category'], UiKey> = {
@@ -26,6 +35,13 @@ const SCENE_TEXT = {
     text: {
       fr: 'Un petit ruisseau de montagne, une **prise d’eau Coanda** qui filtre à 1 mm, une **conduite forcée** qui transforme le dénivelé en pression, la **turbine** au bord de l’eau et le **local technique** où l’énergie est stockée. La hauteur de chute du préréglage déplace la prise d’eau le long du ruisseau.',
       en: 'A small mountain stream, a **Coanda intake** filtering at 1 mm, a **penstock** turning the drop into pressure, the **turbine** by the water and the **power room** where energy is stored. The head of the selected preset moves the intake along the stream.',
+    },
+  },
+  intake: {
+    title: { fr: 'La prise d’eau Coanda', en: 'The Coanda intake' },
+    text: {
+      fr: 'Le seuil crée une petite **retenue** ; l’eau dévale la **plaque d’accélération** puis la **grille en fil profilé** : chaque fil découpe une fine lame qui tombe dans le **bac de collecte**, pendant que feuilles et surplus glissent vers le **trop-plein**. Le bac alimente la **conduite forcée** par une crépine immergée. Activez **Flux** pour suivre l’eau et **Coupe** pour voir l’intérieur du bac.',
+      en: 'The weir holds a small **pond**; water runs down the **acceleration plate** then over the **wedge-wire screen**: each wire slices off a thin sheet that drops into the **collection trough**, while leaves and surplus slide to the **overflow**. The trough feeds the **penstock** through a submerged strainer. Turn on **Flows** to follow the water and **Section** to see inside the trough.',
     },
   },
   turbine: {
@@ -166,6 +182,13 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
         ctx.ui.isolate ? t('showAll') : t('isolate'),
       ),
       h('button', { class: 'btn', onclick: () => ctx.stage.frameParts([id], 1.5) }, icon(ICONS.focus, 16), t('focus')),
+      DETAIL_VIEW[id] && ctx.ui.scene === 'site'
+        ? h(
+            'button',
+            { class: 'btn btn--primary', onclick: () => ctx.gotoScene(DETAIL_VIEW[id].scene) },
+            t(DETAIL_VIEW[id].label),
+          )
+        : null,
       ...(info.video ?? [])
         .slice(0, 2)
         .map((ts) =>
@@ -194,6 +217,7 @@ function renderOverview(ctx: AppContext, root: HTMLElement): void {
           'div',
           { class: 'actions' },
           h('button', { class: 'btn btn--primary', onclick: () => ctx.gotoScene('turbine') }, t('goTurbine')),
+          h('button', { class: 'btn', onclick: () => ctx.gotoScene('intake') }, t('goIntake')),
           h('button', { class: 'btn', onclick: () => ctx.gotoScene('techroom') }, t('goTech')),
         )
       : null,

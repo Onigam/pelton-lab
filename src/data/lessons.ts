@@ -239,7 +239,7 @@ const LESSONS_1: Lesson[] = [
       fig('Débordement', 'Overflow', l('toujours', 'always')),
       fig('Prise → turbine (site B)', 'Intake → turbine (site B)', '55 m'),
     ],
-    focus: { scene: 'site', part: 'coanda', scenario: 'dryIntake' },
+    focus: { scene: 'intake', part: 'in-screen', scenario: 'dryIntake' },
     video: '13:24',
     quiz: [
       {

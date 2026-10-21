@@ -224,8 +224,8 @@ export class Stage {
   /** Overview: frame every visible part of the active world from its home direction. */
   frameAll(duration = 0.9): void {
     const mod = this.active;
-    if (mod.id === 'site') {
-      // the site is framed by its authored home pose; back off on narrow viewports
+    if (mod.id === 'site' || mod.id === 'intake') {
+      // landscapes/dioramas are framed by their authored home pose; back off on narrow viewports
       const dir = mod.home.position.clone().sub(mod.home.target);
       const k = Math.max(1, 1.5 / this.camera.aspect);
       // backing off along the home direction would end up among the trees: climb as well

@@ -36,6 +36,7 @@ const MODES: [Mode, UiKey, keyof typeof ICONS][] = [
 
 const SCENES: [SceneId, UiKey][] = [
   ['site', 'sceneSite'],
+  ['intake', 'sceneIntake'],
   ['turbine', 'sceneTurbine'],
   ['techroom', 'sceneTech'],
 ];

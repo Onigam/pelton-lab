@@ -3,7 +3,7 @@ import type { L } from '../i18n';
 import type { SimState } from '../sim/types';
 import type { PartRegistry } from './registry';
 
-export type SceneId = 'site' | 'turbine' | 'techroom';
+export type SceneId = 'site' | 'intake' | 'turbine' | 'techroom';
 
 /** A clickable label anchored in 3D (Learn-Arduino style dot + caption). */
 export interface Hotspot {

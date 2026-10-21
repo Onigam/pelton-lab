@@ -1913,6 +1913,271 @@ const TECHROOM_PARTS: PartInfo[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// Detailed Coanda intake (dedicated 3D view)
+
+const INTAKE_PARTS: PartInfo[] = [
+  {
+    id: 'in-weir',
+    scene: 'intake',
+    category: 'site',
+    name: l('Seuil en pierres sèches', 'Dry-stone weir'),
+    short: l(
+      'Petit barrage qui crée une retenue au niveau constant en amont de la grille.',
+      'Small dam that holds a constant-level pond upstream of the screen.',
+    ),
+    description: l(
+      'Le seuil relève légèrement le niveau du ruisseau pour former une petite retenue : l’eau arrive ainsi calme et régulière sur la prise d’eau, quel que soit le débit. Il est monté en pierres plates locales, sans béton, ce qui le rend facile à réparer après une crue. Sa crête est calée juste sous le bord de la plaque d’accélération : tout le débit du ruisseau passe d’abord sur la grille, le surplus repart vers l’aval.',
+      'The weir raises the stream a little to form a small pond, so the water reaches the intake calm and steady whatever the flow. It is built from local flat stones without concrete, which makes it easy to repair after a flood. Its crest sits just below the lip of the acceleration plate: the whole stream flows over the screen first and the surplus carries on downstream.',
+    ),
+    material: l('Pierres plates (ardoise, schiste) posées à sec', 'Flat stones (slate, schist) laid dry'),
+    specs: [
+      sp('Hauteur', 'Height', l('≈ 30 à 50 cm', '≈ 30 to 50 cm')),
+      sp('Rôle', 'Role', l('Niveau constant, alimentation de la grille', 'Constant level, feeds the screen')),
+      sp(
+        'Débit réservé',
+        'Residual flow',
+        l('Laisser passer le débit minimum biologique', 'Let the minimum ecological flow through'),
+      ),
+    ],
+    maintenance: l(
+      'Après chaque crue, remettez en place les pierres déplacées et retirez les branches coincées.',
+      'After each flood, put displaced stones back and remove jammed branches.',
+    ),
+    tip: l(
+      'En France, un seuil dans un cours d’eau relève de la police de l’eau : déclarez-le à la DDT avant de le construire.',
+      'In France a weir in a stream falls under water regulations: declare it to the DDT before building it.',
+    ),
+    video: ['13:25'],
+  },
+  {
+    id: 'in-frame',
+    scene: 'intake',
+    category: 'structure',
+    name: l('Caisson et cadre bois', 'Wooden box frame'),
+    short: l(
+      'Porte la grille et le bac, ancré dans le seuil.',
+      'Carries the screen and the trough, anchored in the weir.',
+    ),
+    description: l(
+      'Un cadre en planches épaisses et poteaux d’angle tient la grille à la bonne inclinaison et protège le bac de collecte des chocs. Dans la vidéo, il est en bois, assemblé avec des équerres galvanisées : facile à fabriquer sur place et à remplacer. Il doit être bien calé et étanche au contact du seuil pour que l’eau ne contourne pas la grille.',
+      'A frame of thick planks and corner posts holds the screen at the right angle and shields the collection trough from knocks. In the video it is wooden, assembled with galvanised brackets: easy to make on site and to replace. It must be firmly bedded and sealed against the weir so water cannot bypass the screen.',
+    ),
+    material: l(
+      'Mélèze ou douglas, équerres et boulons galvanisés',
+      'Larch or Douglas fir, galvanised brackets and bolts',
+    ),
+    specs: [
+      sp('Largeur', 'Width', l('≈ 0,7 m', '≈ 0.7 m')),
+      sp('Fixation', 'Fixing', l('Boulons M10 galvanisés', 'Galvanised M10 bolts')),
+      sp('Durée de vie', 'Service life', l('10 à 15 ans en bois de classe 3–4', '10 to 15 years in class 3–4 timber')),
+    ],
+    tip: l(
+      'Évitez le bois traité au cuivre en contact direct avec l’eau de boisson ou une zone sensible : le mélèze brut tient très bien.',
+      'Avoid copper-treated timber in direct contact with drinking water or a sensitive area: untreated larch lasts very well.',
+    ),
+    video: ['13:25'],
+  },
+  {
+    id: 'in-ramp',
+    scene: 'intake',
+    category: 'hydraulic',
+    name: l('Plaque d’accélération', 'Acceleration plate'),
+    short: l(
+      'Lèvre inox pleine qui transforme l’eau calme en une lame mince et rapide.',
+      'Solid stainless lip that turns calm water into a thin, fast sheet.',
+    ),
+    description: l(
+      'Avant d’atteindre la grille, l’eau dévale une courte plaque pleine et courbe. Elle s’y accélère et s’amincit en une lame régulière, collée à la surface par l’effet Coanda. C’est cette vitesse qui rend la grille efficace : chaque fil profilé « tranche » la couche inférieure de la lame, tandis que le reste continue sa course en emportant les débris.',
+      'Before reaching the screen, the water runs down a short, solid, curved plate. It speeds up and thins into an even sheet that clings to the surface through the Coanda effect. That speed is what makes the screen work: each wedge wire "slices" the bottom layer of the sheet while the rest carries on, taking the debris with it.',
+    ),
+    material: l('Inox 304, 2 mm, cintré', 'Bent 2 mm 304 stainless'),
+    specs: [
+      sp('Longueur', 'Length', l('≈ 15 cm', '≈ 15 cm')),
+      sp('Vitesse en bas de plaque', 'Speed at the bottom', l('≈ 1,5 à 2,5 m/s', '≈ 1.5 to 2.5 m/s')),
+    ],
+    video: ['13:25'],
+  },
+  {
+    id: 'in-screen',
+    scene: 'intake',
+    category: 'hydraulic',
+    name: l('Grille Coanda en fil profilé', 'Wedge-wire Coanda screen'),
+    short: l(
+      'Fils inox triangulaires espacés de 1 mm, légèrement inclinés : l’eau passe, les feuilles glissent.',
+      'Triangular stainless wires 1 mm apart, slightly tilted: water goes through, leaves slide off.',
+    ),
+    description: l(
+      'La grille est faite de fils de section triangulaire posés en travers du courant, pointe vers le bas, avec une fente de 1 mm. Chaque fil est incliné de quelques degrés : son arête amont dépasse légèrement et découpe une fine couche d’eau qui plonge dans la fente, puis s’élargit vers le bas (pas de bouchage). Les particules plus grosses que la fente, feuilles et graviers, restent dans la lame rapide et sont évacuées au bout : la grille est autonettoyante. Selon Sylvain, même couverte de débris, elle laisse passer l’eau sans problème.',
+      'The screen is made of triangular-section wires laid across the flow, point down, with a 1 mm slot. Each wire is tilted a few degrees: its upstream edge sticks up slightly and slices off a thin layer of water that dives into the slot, which then widens downwards (no clogging). Particles bigger than the slot, leaves and grit, stay in the fast sheet and are carried off at the end: the screen cleans itself. According to Sylvain, even covered in debris it still lets water through.',
+    ),
+    material: l(
+      'Fil profilé inox 304/316 soudé sur barres support',
+      '304/316 stainless wedge wire welded on support rods',
+    ),
+    specs: [
+      sp('Fente', 'Slot', '1 mm'),
+      sp('Profil', 'Profile', l('Fil triangulaire ≈ 2 mm, pointe en bas', 'Triangular wire ≈ 2 mm, point down')),
+      sp('Inclinaison des fils', 'Wire tilt', l('3 à 5°', '3 to 5°')),
+      sp('Rayon de courbure', 'Curvature radius', l('≈ 1 m', '≈ 1 m')),
+      sp(
+        'Capacité indicative',
+        'Typical capacity',
+        l('50 à 140 L/s par mètre de largeur', '50 to 140 L/s per metre of width'),
+      ),
+    ],
+    maintenance: l(
+      'Un coup de brosse par trimestre suffit d’après la vidéo ; plus souvent à l’automne, quand les feuilles tombent.',
+      'A brush stroke once a quarter is enough according to the video; more often in autumn when leaves fall.',
+    ),
+    tip: l(
+      'Ne retournez jamais la grille : les fils doivent présenter leur face plate vers le haut et leur arête amont en saillie.',
+      'Never fit the screen upside down: the wires must show their flat face up with the upstream edge proud.',
+    ),
+    video: ['13:25', '13:52'],
+  },
+  {
+    id: 'in-box',
+    scene: 'intake',
+    category: 'hydraulic',
+    name: l('Bac de collecte', 'Collection trough'),
+    short: l(
+      'Reçoit l’eau filtrée sous la grille et sert de petit réservoir tampon.',
+      'Catches the filtered water under the screen and acts as a small buffer tank.',
+    ),
+    description: l(
+      'Sous la grille, un bac étanche récupère l’eau filtrée. Son volume amortit les variations de débit pendant quelques dizaines de secondes. Tant que le ruisseau apporte plus que ce que la turbine consomme, le bac reste plein et la grille déborde au bout. Si la turbine demande plus que le ruisseau, le niveau baisse jusqu’à découvrir la sortie : l’air entre dans la conduite et la production s’effondre.',
+      'Under the screen, a watertight trough collects the filtered water. Its volume smooths flow changes over a few tens of seconds. As long as the stream brings more than the turbine uses, the trough stays full and the screen overflows at its end. If the turbine asks for more than the stream gives, the level drops until the outlet is uncovered: air enters the penstock and output collapses.',
+    ),
+    material: l('Inox 304 ou PEHD soudé', '304 stainless or welded HDPE'),
+    specs: [
+      sp('Volume', 'Volume', l('≈ 40 à 60 L', '≈ 40 to 60 L')),
+      sp('Rôle', 'Role', l('Tampon, mise en charge de la conduite', 'Buffer, keeps the penstock primed')),
+    ],
+    video: ['13:52', '14:10'],
+  },
+  {
+    id: 'in-overflow',
+    scene: 'intake',
+    category: 'hydraulic',
+    name: l('Trop-plein et glissière à débris', 'Overflow and debris chute'),
+    short: l(
+      'Le bout de la grille, par où repartent le surplus d’eau et les feuilles.',
+      'The end of the screen, where surplus water and leaves leave.',
+    ),
+    description: l(
+      'Tout ce que la grille ne capte pas, eau en excès, feuilles et graviers, glisse jusqu’au bout et retombe dans le lit du ruisseau. Sylvain insiste : il faut toujours voir un léger débordement. Un bout de grille sec signifie que la turbine prélève tout le débit, que le bac va se vider et que de l’air finira dans la conduite. Ce débordement permanent laisse aussi de l’eau au ruisseau en aval.',
+      'Whatever the screen does not catch, surplus water, leaves and grit, slides to the end and drops back into the stream bed. Sylvain insists: you must always see a slight overflow. A dry screen end means the turbine is taking the whole flow, the trough will empty and air will end up in the pipe. This permanent overflow also leaves water in the stream downstream.',
+    ),
+    material: l('Inox, lèvre pliée', 'Stainless, folded lip'),
+    specs: [
+      sp('Règle d’exploitation', 'Operating rule', l('Toujours un léger débordement', 'Always a slight overflow')),
+      sp('Évacue', 'Carries off', l('Feuilles, brindilles, graviers > 1 mm', 'Leaves, twigs, grit > 1 mm')),
+    ],
+    tip: l(
+      'Si le débordement disparaît en été, réduisez la buse ou fermez l’injecteur variable plutôt que de laisser l’air entrer.',
+      'If the overflow disappears in summer, use a smaller nozzle or close the variable injector rather than letting air in.',
+    ),
+    video: ['14:04', '14:16'],
+  },
+  {
+    id: 'in-sandtrap',
+    scene: 'intake',
+    category: 'hydraulic',
+    name: l('Dessableur et vanne de purge', 'Sand trap and flush valve'),
+    short: l(
+      'Fosse au point bas du bac où se dépose le sable fin, vidée par une vanne.',
+      'Pit at the low point of the trough where fine sand settles, emptied through a valve.',
+    ),
+    description: l(
+      'Le sable plus fin que 1 mm traverse la grille. Dans le bac, l’eau ralentit et ce sable se dépose dans une petite fosse au point bas. Une vanne de purge permet de la vider en quelques secondes. C’est important : un jet à 37 m/s chargé de sable use très vite la pointe de l’injecteur et l’arête des augets.',
+      'Sand finer than 1 mm goes through the screen. In the trough the water slows down and this sand settles in a small pit at the low point. A flush valve empties it in a few seconds. This matters: a 37 m/s jet loaded with sand wears the injector tip and the bucket splitters very quickly.',
+    ),
+    material: l('Inox, vanne quart de tour PVC DN32', 'Stainless, DN32 PVC quarter-turn valve'),
+    specs: [
+      sp('Vanne', 'Valve', 'DN32'),
+      sp(
+        'Fréquence de purge',
+        'Flush interval',
+        l('À chaque visite, et après les crues', 'At every visit and after floods'),
+      ),
+    ],
+    maintenance: l(
+      'Ouvrez la purge quelques secondes à chaque nettoyage de grille, et toujours après une crue.',
+      'Open the flush for a few seconds at every screen cleaning, and always after a flood.',
+    ),
+  },
+  {
+    id: 'in-outlet',
+    scene: 'intake',
+    category: 'hydraulic',
+    name: l('Crépine et départ de conduite', 'Strainer and penstock start'),
+    short: l(
+      'Sortie immergée du bac, crépine perforée, traversée de paroi et réduction vers le PEHD Ø63.',
+      'Submerged trough outlet, perforated strainer, bulkhead fitting and reducer to the Ø63 HDPE.',
+    ),
+    description: l(
+      'L’eau quitte le bac par une crépine perforée, dernier filet de sécurité contre une feuille passée par-dessus le cadre. La sortie doit rester bien immergée : trop près de la surface, un vortex aspire de l’air dans la conduite. Une traversée de paroi étanche puis une réduction raccordent ensuite le PEHD Ø63 PN10 de la conduite forcée, qui part avec une pente continue, sans point haut.',
+      'Water leaves the trough through a perforated strainer, a last safety net against a leaf that got over the frame. The outlet must stay well submerged: too close to the surface, a vortex draws air into the pipe. A watertight bulkhead fitting and a reducer then connect the Ø63 PN10 HDPE penstock, which leaves with a continuous slope and no high point.',
+    ),
+    material: l('Crépine inox, traversée PVC, PEHD PE100', 'Stainless strainer, PVC bulkhead, PE100 HDPE'),
+    specs: [
+      sp('Conduite', 'Pipe', l('PEHD Ø63 PN10, 55 mm intérieur', 'HDPE Ø63 PN10, 55 mm bore')),
+      sp('Immersion de la sortie', 'Outlet submergence', l('≥ 2 × le diamètre', '≥ 2 × the diameter')),
+      sp('Perforations', 'Perforations', l('≈ 3 mm', '≈ 3 mm')),
+    ],
+    tip: l(
+      'Faites partir la conduite en descente dès la sortie du bac : un point haut près de la prise est un piège à air.',
+      'Make the pipe go downhill straight out of the trough: a high point near the intake is an air trap.',
+    ),
+    video: ['01:18', '14:16'],
+  },
+  {
+    id: 'in-vent',
+    scene: 'intake',
+    category: 'hydraulic',
+    name: l('Évent (reniflard)', 'Air vent (breather)'),
+    short: l(
+      'Tube vertical qui laisse s’échapper l’air au départ de la conduite.',
+      'Vertical pipe that lets air escape at the start of the penstock.',
+    ),
+    description: l(
+      'Juste après le bac, un tube vertical monte au-dessus du niveau d’eau. Au remplissage, il évacue l’air chassé par l’eau. En marche, il laisse sortir les bulles entraînées. Il casse aussi le vide si la conduite se vide brutalement, par exemple si la turbine demande trop : la conduite ne s’écrase pas et se réamorce plus facilement.',
+      'Just after the trough, a vertical pipe rises above the water level. During filling it lets out the air pushed by the water. In operation it releases entrained bubbles. It also breaks the vacuum if the pipe drains suddenly, for example when the turbine asks too much: the pipe does not collapse and primes again more easily.',
+    ),
+    material: l('Tube PVC Ø32 + chapeau anti-feuilles', 'Ø32 PVC pipe + leaf cap'),
+    specs: [
+      sp('Hauteur', 'Height', l('Au-dessus du niveau maxi du bac', 'Above the trough’s top level')),
+      sp('Diamètre', 'Diameter', 'Ø32'),
+    ],
+    upgrade: l(
+      'En V2, une ventouse automatique sur le col de cygne de la turbine complète l’évent de la prise d’eau.',
+      'In V2 an automatic air valve on the turbine gooseneck complements the intake vent.',
+    ),
+  },
+  {
+    id: 'in-brush',
+    scene: 'intake',
+    category: 'structure',
+    name: l('Brosse de nettoyage', 'Cleaning brush'),
+    short: l(
+      'Laissée sur place : un coup de brosse par trimestre suffit.',
+      'Left on site: a brush stroke once a quarter is enough.',
+    ),
+    description: l(
+      'Dans la vidéo, le propriétaire a laissé une brosse à côté de la grille. Grâce à l’autonettoyage, l’entretien se résume à passer la brosse de temps en temps pour décoller les feuilles plaquées et le biofilm, environ une fois par trimestre, et à ouvrir la purge du dessableur.',
+      'In the video the owner left a brush next to the screen. Thanks to self-cleaning, maintenance comes down to brushing now and then to lift stuck leaves and biofilm, about once a quarter, and opening the sand-trap flush.',
+    ),
+    material: l('Manche bois, poils nylon raides', 'Wooden handle, stiff nylon bristles'),
+    specs: [sp('Fréquence', 'Interval', l('≈ 1 fois par trimestre', '≈ once a quarter'))],
+    tip: l(
+      'Brossez dans le sens du courant, jamais en travers des fils : on garde les arêtes vives.',
+      'Brush along the flow, never across the wires: it keeps the edges sharp.',
+    ),
+    video: ['13:52'],
+  },
+];
+
+// ---------------------------------------------------------------------------
 
 export const PARTS: PartInfo[] = [
   ...TURBINE_STRUCTURE,
@@ -1922,5 +2187,6 @@ export const PARTS: PartInfo[] = [
   ...TURBINE_V1,
   ...TURBINE_V2,
   ...SITE_PARTS,
+  ...INTAKE_PARTS,
   ...TECHROOM_PARTS,
 ];

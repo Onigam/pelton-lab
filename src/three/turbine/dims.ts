@@ -14,7 +14,7 @@ export const D = {
   zBack: -0.18, // outer face of the rear panel
   baseT: 0.02, // base plate thickness
   sideTop: 0.3, // height where vertical sides end and slopes start
-  roofHalf: 0.15, // half-width of the flat roof
+  roofHalf: 0.18, // half-width of the flat roof (wide enough for the injector base and its 4 bolts)
   roof: 0.46, // overall height above the base underside
   sheet: 0.002, // aluminium sheet thickness
   lip: 0.014, // width of the folded return lips framing window/rear panel

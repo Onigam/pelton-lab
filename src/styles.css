@@ -1832,3 +1832,13 @@ body.panel-closed .panel {
     background: var(--paper);
   }
 }
+
+@media (max-width: 900px) {
+  /* four scene buttons + version + language must fit: the lesson progress stays in the rail */
+  .progress {
+    display: none;
+  }
+  .scene-switch button {
+    padding: 6px 10px;
+  }
+}

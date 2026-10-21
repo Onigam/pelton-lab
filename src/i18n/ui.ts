@@ -9,6 +9,7 @@ const S = {
 
   // scenes
   sceneSite: ['Site', 'Site'],
+  sceneIntake: ['Prise d’eau', 'Intake'],
   sceneTurbine: ['Turbine', 'Turbine'],
   sceneTech: ['Local technique', 'Power room'],
 
@@ -281,6 +282,7 @@ const S = {
   ],
   goTurbine: ['Entrer dans la turbine', 'Open the turbine'],
   goTech: ['Entrer dans le local', 'Open the power room'],
+  goIntake: ['Voir la prise d’eau', 'Open the intake'],
   menu: ['Menu', 'Menu'],
 } as const satisfies Record<string, readonly [string, string]>;
 

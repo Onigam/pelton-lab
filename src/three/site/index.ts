@@ -92,7 +92,7 @@ export function createSiteScene(): SiteScene {
   const hotspots: Hotspot[] = [
     { partId: 'stream', anchor: stream.hotspot, label: l('Ruisseau', 'Stream') },
     { partId: 'weir', anchor: intake.weirHotspot, label: l('Seuil et bassin', 'Weir and pond') },
-    { partId: 'coanda', anchor: intake.coandaHotspot, label: l("Prise d'eau Coanda", 'Coanda intake') },
+    { partId: 'coanda', anchor: intake.coandaHotspot, label: l("Prise d'eau Coanda", 'Coanda intake'), goto: 'intake' },
     { partId: 'penstock', anchor: penstock.hotspot, label: l('Conduite forcée PEHD Ø63', 'HDPE penstock Ø63') },
     { partId: 'turbine', anchor: turbineHotspot, label: l('Turbine Pelton', 'Pelton turbine'), goto: 'turbine' },
     { partId: 'tailrace', anchor: tailrace.hotspot, label: l('Canal de fuite', 'Tailrace') },

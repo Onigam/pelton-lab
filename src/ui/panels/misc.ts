@@ -258,6 +258,7 @@ export function renderPartsPanel(ctx: AppContext, root: HTMLElement): void {
       { class: 'filters' },
       filterChip(t('all'), sceneFilter === 'all', () => (sceneFilter = 'all')),
       filterChip(t('sceneSite'), sceneFilter === 'site', () => (sceneFilter = 'site')),
+      filterChip(t('sceneIntake'), sceneFilter === 'intake', () => (sceneFilter = 'intake')),
       filterChip(t('sceneTurbine'), sceneFilter === 'turbine', () => (sceneFilter = 'turbine')),
       filterChip(t('sceneTech'), sceneFilter === 'techroom', () => (sceneFilter = 'techroom')),
     ),

@@ -1,6 +1,7 @@
 import './styles.css';
 import { SimEngine } from './sim/engine';
 import { Stage } from './three/core';
+import { createIntakeScene } from './three/intake';
 import { createSiteScene } from './three/site';
 import { createTechRoomScene } from './three/techroom';
 import { createTurbineModel, createTurbineScene, inVersion } from './three/turbine';
@@ -55,8 +56,10 @@ function syncSiteTurbine(): void {
   }
 }
 const tech = createTechRoomScene();
+const intake = createIntakeScene();
 
 stage.register(site);
+stage.register(intake);
 stage.register(turbine);
 stage.register(tech);
 stage.setActive(store.state.scene);
@@ -64,12 +67,14 @@ stage.setActive(store.state.scene);
 requestAnimationFrame(() => stage.frameAll(0.01));
 
 const display = new DisplayController(stage, engine, store);
+// dev-only handle for debugging in the console (stripped from production builds)
+if (import.meta.env.DEV) Object.assign(window, { __lab: { stage, engine, store } });
 app = new App(appEl, viewport, stage, engine, store, display);
 
 // deep links: #site, #turbine, #techroom, optionally /part-id
 function applyHash(): void {
   const [scene, part] = location.hash.replace('#', '').split('/');
-  if (scene === 'site' || scene === 'turbine' || scene === 'techroom') {
+  if (scene === 'site' || scene === 'intake' || scene === 'turbine' || scene === 'techroom') {
     store.set({ scene });
     if (part) app!.ctx.selectPart(part);
   }
