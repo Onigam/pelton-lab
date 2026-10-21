@@ -47,7 +47,7 @@ export class Store {
 }
 
 export const store = new Store({
-  scene: 'turbine',
+  scene: 'site',
   mode: 'explore',
   selected: null,
   isolate: false,

@@ -64,7 +64,8 @@ export class App {
   private simPanel: SimPanel;
   private lastStrip = 0;
   private lastAlarmKey = '';
-  private visited = new Set<string>(['turbine']);
+  /** Worlds already framed once (the first visit starts on an overview). */
+  private visited = new Set<string>();
 
   constructor(
     host: HTMLElement,
@@ -75,6 +76,7 @@ export class App {
     private display: DisplayController,
   ) {
     this.ctx = new AppContext(stage, engine, store);
+    this.visited.add(store.state.scene);
     this.simPanel = new SimPanel(this.ctx);
     this.panel.append(
       h('button', {

@@ -106,7 +106,7 @@ function emptyState(): SimState {
     etaTurbine: 0,
     overspeed: false,
     bucketSet: 'S',
-    version: 'v1',
+    version: 'v2',
     deflector: 0,
     emf: 0,
     vTurbine: 0,

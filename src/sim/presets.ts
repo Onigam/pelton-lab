@@ -62,7 +62,7 @@ export interface SimParams {
 const base: SimParams = {
   preset: 'siteA',
   siteProfile: 'A',
-  version: 'v1',
+  version: 'v2',
   headGross: 76,
   pipeLength: 350,
   pipeDiam: 55,
@@ -71,7 +71,7 @@ const base: SimParams = {
   weatherOverride: null,
   screenClog: 0,
   mainOpen: true,
-  valveCloseTime: 1,
+  valveCloseTime: 20, // V2 gear-operated valve (V1 quarter-turn: 1 s)
   top: { enabled: false, d: 12, opening: 0.6, open: false },
   side: { enabled: true, d: 6, opening: 1, open: true },
   bucketSet: 'S',
