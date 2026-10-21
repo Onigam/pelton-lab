@@ -339,7 +339,8 @@ export class App {
             if (!s.isolate) requestAnimationFrame(() => this.ctx.stage.frameParts([sel], 1.5));
             else this.ctx.stage.frameAll();
           }),
-      guide ? null : btn(t('xray'), s.xray, () => this.store.set({ xray: !s.xray })),
+      // in the landscape, X-ray only makes sense around a selected part
+      guide || (s.scene === 'site' && !sel) ? null : btn(t('xray'), s.xray, () => this.store.set({ xray: !s.xray })),
       s.scene !== 'site' ? btn(t('cutaway'), s.cutaway, () => this.store.set({ cutaway: !s.cutaway })) : null,
       btn(t('flows'), s.schematic, () => this.store.set({ schematic: !s.schematic })),
       btn(`${t('labels')}${colon()}${t(labelKey[s.labels])}`, s.labels !== 'none', () =>

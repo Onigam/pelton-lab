@@ -8,12 +8,21 @@ import type { Stage } from '../three/core';
 import type { PartDisplay } from '../three/registry';
 import { inVersion } from '../three/turbine';
 import { damp, ease } from '../three/util';
+import type { SceneId } from '../three/types';
 import type { Store } from './state';
 
 // Decides, every frame, how each part of the active scene is shown: solid, ghost,
 // wire or hidden, and how far it is exploded. Handles the animated guide steps.
 
-const HOUSING = new Set(['cover', 'rear-panel', 'window', 'partition', 'gasket', 'latches']);
+/** Parts made transparent by X-ray when nothing is selected, per world. */
+const XRAY_SHELL: Partial<Record<SceneId, (id: string) => boolean>> = {
+  // turbine: the housing, to see the runner, shaft line and generator
+  turbine: (id) => ['cover', 'rear-panel', 'window', 'partition', 'gasket', 'latches'].includes(id),
+  // intake: frame, trough, weir and sand trap walls, to see the water going through the screen
+  intake: (id) => ['in-frame', 'in-box', 'in-weir', 'in-sandtrap'].includes(id),
+  // power room: every device except the cabling, to read the wiring
+  techroom: (id) => id !== 'wiring' && id !== 'busbar',
+};
 const STEP_ANIM = 1.4;
 const AUTOPLAY = 6;
 
@@ -115,7 +124,7 @@ export class DisplayController {
         if (focus.size && isTurbine) d = focus.has(id) ? 'solid' : 'ghost';
         else if (ui.isolate && ui.selected) d = id === ui.selected ? 'solid' : 'hidden';
         else if (ui.xray && ui.selected) d = id === ui.selected ? 'solid' : 'ghost';
-        else if (ui.xray && isTurbine) d = HOUSING.has(id) ? 'ghost' : 'solid';
+        else if (ui.xray && XRAY_SHELL[mod.id]?.(id)) d = 'ghost';
         show(id, d);
       }
       if (focus.size && isTurbine) this.stage.highlight([...focus].filter((id) => reg.get(id)));

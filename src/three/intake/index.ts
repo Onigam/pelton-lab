@@ -196,7 +196,8 @@ export function createIntakeScene(): SceneModule {
     }
   };
 
-  const solid = (id: string) => registry.get(id)?.display === 'solid';
+  // ghosted (x-ray) still counts as present: the water stays visible through the walls
+  const present = (id: string) => ['solid', 'ghost'].includes(registry.get(id)?.display ?? 'hidden');
   /** View options for the overlays (hidden while anything is exploded). */
   const overlay: ViewOpts = { slowMo: 1, cutaway: false, schematic: false, time: 0 };
 
@@ -204,10 +205,10 @@ export function createIntakeScene(): SceneModule {
     if (view.cutaway !== cutOn) setCutaway(view.cutaway);
     for (const c of cuts) c.plane.constant = c.base + c.object.position[c.axis];
 
-    // water only on the assembled, solid intake
+    // water only on the assembled intake (screen and trough present)
     let exploded = false;
     for (const p of registry.parts.values()) if (p.factor > 0.01) exploded = true;
-    const wet = !exploded && solid('in-screen') && solid('in-box');
+    const wet = !exploded && present('in-screen') && present('in-box');
     water.group.visible = wet;
     flows.group.visible = wet;
     debris.moving.visible = wet;
