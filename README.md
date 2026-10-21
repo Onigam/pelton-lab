@@ -1,5 +1,7 @@
 # Pelton Lab
 
+**▶ https://pelton-lab.vercel.app** · miroir / mirror : https://onigam.github.io/pelton-lab/
+
 **FR** · Laboratoire 3D interactif d'une **micro-turbine hydroélectrique Pelton** et de son installation autonome : du ruisseau à la batterie.
 **EN** · Interactive 3D lab of a **Pelton micro-hydro turbine** and its off-grid installation: from the stream to the battery.
 
