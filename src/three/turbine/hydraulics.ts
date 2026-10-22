@@ -3,6 +3,7 @@ import { emissive, glass, MAT } from '../materials';
 import type { PartRegistry } from '../registry';
 import { canvasTexture, group, mesh, pipeAlong } from '../util';
 import { D } from './dims';
+import { DEFLECTOR } from './housing';
 
 // Water side of the machine: HDPE inlet + compression fitting, main ball valve, gauge tee,
 // manifold (gooseneck to the top spear injector, lower branch to the side nozzle),
@@ -12,16 +13,20 @@ const R63 = 0.0315;
 const R50 = 0.025;
 const Y = D.inletY;
 const Z = D.pipeZ;
+/** Gooseneck crest and the height of the top injector's side inlet. */
+export const RISER_TOP = 0.6;
+export const TOP_INLET_Y = D.roof + 0.1;
 
 export interface Hydraulics {
   mainLever: THREE.Object3D;
+  bypassLever: THREE.Object3D;
   topLever: THREE.Object3D;
   sideLever: THREE.Object3D;
   needle: THREE.Object3D;
   handwheel: THREE.Object3D;
   gaugeNeedle: THREE.Object3D;
-  deflectorTop: THREE.Object3D;
-  deflectorSide: THREE.Object3D;
+  /** Put the deflector linkage at e (0 latched .. 1 tripped). */
+  setDeflector: (e: number) => void;
   insertRing: THREE.MeshStandardMaterial;
   sideInsertRing: THREE.MeshStandardMaterial;
   transducerLed: THREE.MeshStandardMaterial;
@@ -106,6 +111,161 @@ function gaugeDial(): THREE.CanvasTexture {
   }).texture;
 }
 
+/**
+ * Extension spring between two pins, along +X from the origin: straight leads leaving the hook
+ * loops and a coiled body. Rebuilt when its length changes (no scaling, so the wire stays round).
+ */
+function springGeometry(len: number): THREE.BufferGeometry {
+  const lead = 0.006;
+  const coils = 8;
+  const r = 0.005;
+  const body = Math.max(0.005, len - 2 * lead);
+  const pts: THREE.Vector3[] = [new THREE.Vector3(0, 0, 0)];
+  for (let i = 0; i <= 220; i++) {
+    const t = i / 220;
+    const a = t * coils * Math.PI * 2;
+    // the first and last half turn blend from the axis to the coil radius
+    const k = Math.min(1, t * 2 * coils, (1 - t) * 2 * coils);
+    pts.push(new THREE.Vector3(lead + t * body, Math.sin(a) * r * k, (1 - Math.cos(a)) * r * 0.5 * k));
+  }
+  pts.push(new THREE.Vector3(len, 0, 0));
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 260, 0.0011, 6, false);
+}
+
+/**
+ * Deflector blades + the linkage outside the rear panel. Returns the kinematic update. Everything
+ * lives in the `deflector` part group (machine coordinates).
+ */
+function buildDeflector(defl: THREE.Group): (e: number) => void {
+  const inox = MAT.inox();
+  const steel = MAT.steel();
+  // layers behind the rear panel, from the panel outwards
+  const zLever = D.zBack - 0.012;
+  const zRod = D.zBack - 0.0175;
+  const zSpring = D.zBack - 0.024;
+  const zClip = D.zBack - 0.0275;
+  const pinR = 0.0028;
+  const loopR = 0.0045;
+  const zAxis = (geo: THREE.BufferGeometry) => geo.rotateX(Math.PI / 2);
+
+  const blades = DEFLECTOR.pivots.map(([x, y], i) => {
+    const b = group(i ? 'deflector-side' : 'deflector-top', [x, y, Z]);
+    const len = DEFLECTOR.blade[i];
+    const plate = new THREE.BoxGeometry(len, 0.004, 0.05);
+    plate.translate(len / 2, 0, 0);
+    b.add(mesh(plate, inox));
+    // hub clamped on the shaft
+    b.add(mesh(zAxis(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 16)), inox));
+    defl.add(b);
+    return b;
+  });
+  // shafts through the partition and the rear panel, with a bushing in the panel
+  for (const [x, y] of DEFLECTOR.pivots) {
+    const len = Z - zLever + 0.006;
+    defl.add(mesh(zAxis(new THREE.CylinderGeometry(0.005, 0.005, len, 12)), inox, [x, y, Z - len / 2]));
+    defl.add(
+      mesh(zAxis(new THREE.CylinderGeometry(0.009, 0.009, 0.008, 16)), MAT.printBlack(), [x, y, D.zBack - 0.003]),
+    );
+  }
+  // levers keyed on the shafts (they turn with the blades)
+  const levers = DEFLECTOR.pivots.map(([x, y], i) => {
+    const g = group('deflector-lever', [x, y, zLever]);
+    const L = DEFLECTOR.lever[i];
+    const arm = new THREE.BoxGeometry(L, 0.01, 0.005);
+    arm.translate(L / 2, 0, 0);
+    g.add(mesh(arm, steel));
+    g.add(mesh(zAxis(new THREE.CylinderGeometry(0.009, 0.009, 0.008, 16)), steel));
+    g.add(mesh(zAxis(new THREE.CylinderGeometry(0.005, 0.005, 0.005, 12)), steel, [L, 0, 0]));
+    defl.add(g);
+    return g;
+  });
+  // catch tooth under the end of the side lever: it rests on the solenoid plunger while latched
+  levers[1].add(mesh(new THREE.BoxGeometry(0.006, 0.006, 0.005), steel, [DEFLECTOR.lever[1] - 0.003, -0.0075, 0]));
+
+  // link rod (unit length, stretched between the lever pins) and the pins with their circlips
+  const rod = mesh(new THREE.BoxGeometry(1, 0.007, 0.004), MAT.zinc());
+  rod.position.z = zRod;
+  defl.add(rod);
+  const pinLen = zLever + 0.003 - zClip;
+  const pinGeo = zAxis(new THREE.CylinderGeometry(pinR, pinR, pinLen, 10));
+  const clipGeo = zAxis(new THREE.CylinderGeometry(0.0045, 0.0045, 0.0012, 12));
+  const pins = [0, 1].map(() => {
+    const p = group('deflector-pin');
+    p.add(mesh(pinGeo, inox, [0, 0, zClip + pinLen / 2]), mesh(clipGeo, MAT.steelBlack(), [0, 0, zClip + 0.0006]));
+    defl.add(p);
+    return p;
+  });
+
+  // tension spring: one hook on a post bolted to the rear panel, the other on the side lever pin
+  const [ax, ay] = DEFLECTOR.springAnchor;
+  const post = group('spring-post', [ax, ay, D.zBack]);
+  post.add(mesh(new THREE.BoxGeometry(0.016, 0.034, 0.003), MAT.alu(), [0, 0, -0.0015]));
+  const bolt = zAxis(new THREE.CylinderGeometry(0.0035, 0.0035, 0.003, 6));
+  post.add(mesh(bolt, inox, [0, 0.011, -0.0045]), mesh(bolt, inox, [0, -0.011, -0.0045]));
+  const studLen = -(zClip - D.zBack);
+  post.add(mesh(zAxis(new THREE.CylinderGeometry(pinR, pinR, studLen, 10)), inox, [0, 0, -studLen / 2]));
+  post.add(mesh(clipGeo, MAT.steelBlack(), [0, 0, zClip - D.zBack + 0.0006]));
+  defl.add(post);
+  const loopGeo = new THREE.TorusGeometry(loopR, 0.0011, 6, 20);
+  const loops = [0, 1].map(() => {
+    const m = mesh(loopGeo, MAT.zinc());
+    m.position.z = zSpring;
+    defl.add(m);
+    return m;
+  });
+  loops[0].position.x = ax;
+  loops[0].position.y = ay;
+  const spring = mesh(springGeometry(0.1), MAT.zinc());
+  spring.position.z = zSpring;
+  defl.add(spring);
+  let springLen = 0;
+
+  // 12 V solenoid latch on its bracket; the plunger slides out under the catch tooth
+  const sol = group('solenoid', [-0.08, 0.1005, D.zBack]);
+  sol.add(mesh(new THREE.BoxGeometry(0.034, 0.042, 0.003), MAT.alu(), [0.002, 0, -0.0015]));
+  sol.add(mesh(new THREE.BoxGeometry(0.024, 0.03, 0.024), MAT.steelBlack(), [0, 0, -0.015]));
+  sol.add(mesh(new THREE.BoxGeometry(0.016, 0.004, 0.02), MAT.copper(), [0, 0.017, -0.015]));
+  for (const dy of [-0.016, 0.016]) sol.add(mesh(bolt, inox, [0.014, dy, -0.0045]));
+  const plungerGeo = new THREE.CylinderGeometry(0.0025, 0.0025, 1, 10);
+  plungerGeo.rotateZ(Math.PI / 2);
+  plungerGeo.translate(-0.5, 0, 0);
+  const plunger = mesh(plungerGeo, inox, [-0.012, 0, zLever - D.zBack]);
+  sol.add(plunger);
+  defl.add(sol);
+
+  const deg = Math.PI / 180;
+  const ends = [new THREE.Vector2(), new THREE.Vector2()];
+  const u = new THREE.Vector2();
+  return (e: number) => {
+    DEFLECTOR.pivots.forEach(([x, y], i) => {
+      const a = THREE.MathUtils.lerp(DEFLECTOR.latched[i], DEFLECTOR.tripped[i], e) * deg;
+      blades[i].rotation.z = a;
+      const la = a + DEFLECTOR.leverOffset[i] * deg;
+      levers[i].rotation.z = la;
+      ends[i].set(x + DEFLECTOR.lever[i] * Math.cos(la), y + DEFLECTOR.lever[i] * Math.sin(la));
+      pins[i].position.set(ends[i].x, ends[i].y, 0);
+    });
+    u.subVectors(ends[1], ends[0]);
+    rod.position.set((ends[0].x + ends[1].x) / 2, (ends[0].y + ends[1].y) / 2, zRod);
+    rod.rotation.z = Math.atan2(u.y, u.x);
+    rod.scale.x = u.length() + 0.01;
+    // spring from the anchor loop to the loop on the side pin
+    loops[1].position.set(ends[1].x, ends[1].y, zSpring);
+    u.set(ends[1].x - ax, ends[1].y - ay);
+    const len = u.length() - 2 * loopR;
+    spring.rotation.z = Math.atan2(u.y, u.x);
+    u.normalize();
+    spring.position.set(ax + u.x * loopR, ay + u.y * loopR, zSpring);
+    if (Math.abs(len - springLen) > 0.0005) {
+      spring.geometry.dispose();
+      spring.geometry = springGeometry(len);
+      springLen = len;
+    }
+    // the plunger pulls back first, then the spring trips the linkage
+    plunger.scale.x = THREE.MathUtils.lerp(0.0205, 0.006, Math.min(1, e * 4));
+  };
+}
+
 export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, reg: PartRegistry): Hydraulics {
   const pipeCut: THREE.Object3D[] = [];
 
@@ -151,10 +311,10 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   const riser = pipeAlong(
     [
       new THREE.Vector3(-0.62, Y, Z),
-      new THREE.Vector3(-0.62, 0.7, Z),
-      new THREE.Vector3(-0.34, 0.7, Z),
-      new THREE.Vector3(-0.34, 0.55, Z),
-      new THREE.Vector3(-0.15, 0.55, Z),
+      new THREE.Vector3(-0.62, RISER_TOP, Z),
+      new THREE.Vector3(-0.3, RISER_TOP, Z),
+      new THREE.Vector3(-0.3, TOP_INLET_Y, Z),
+      new THREE.Vector3(D.topJetX - 0.045, TOP_INLET_Y, Z),
     ],
     R50,
     grey,
@@ -170,9 +330,9 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   manifold.add(lower);
   // socket collars at the joints (solvent-welded PVC)
   for (const [x, y, ax] of [
-    [-0.62, 0.42, 'y'],
-    [-0.47, 0.7, 'x'],
-    [-0.25, 0.55, 'x'],
+    [-0.62, 0.37, 'y'],
+    [-0.45, RISER_TOP, 'x'],
+    [-0.22, TOP_INLET_Y, 'x'],
     [-0.5, D.sideJetY, 'x'],
   ] as [number, number, 'x' | 'y'][]) {
     manifold.add(ax === 'x' ? cylX(R50 * 1.15, 0.03, grey, x, y) : cylY(R50 * 1.15, 0.03, grey, x, y));
@@ -180,11 +340,31 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   machine.add(manifold);
   pipeCut.push(manifold);
 
+  // --- bypass / drain branch (maker's layout): between the gauge and the injector valves, it
+  // flushes the penstock and purges air without sending water through the runner
+  const bypass = group('valve-bypass');
+  const BX = -0.745;
+  bypass.add(cylX(R63 * 1.12, 0.06, grey, BX, Y));
+  bypass.add(
+    pipeAlong(
+      [new THREE.Vector3(BX, Y, Z), new THREE.Vector3(BX, -0.42, Z), new THREE.Vector3(BX + 0.12, -0.48, Z)],
+      0.02,
+      grey,
+      { bend: 0.05, radialSegments: 20 },
+    ),
+  );
+  const bp = ballValve(MAT.pvcDark(), 'y');
+  bp.g.scale.setScalar(0.7);
+  bp.g.position.set(BX, 0.08, Z);
+  bypass.add(bp.g);
+  machine.add(bypass);
+  pipeCut.push(bypass);
+
   // --- branch valves: red on the riser (top injector), blue on the lower branch (side injector)
   const valves = group('valve-branch');
   const top = ballValve(MAT.pvcRed(), 'y');
   top.g.scale.setScalar(0.82);
-  top.g.position.set(-0.62, 0.5, Z);
+  top.g.position.set(-0.62, 0.47, Z);
   const side = ballValve(MAT.pvcBlue(), 'x');
   side.g.scale.setScalar(0.82);
   side.g.position.set(-0.53, D.sideJetY, Z);
@@ -221,13 +401,13 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   // --- top injector: Italian spear valve (white body), handwheel on top, needle inside
   const injTop = group('injector-top');
   const white = MAT.printWhite();
-  const bodyTop = 0.64;
-  const bodyBot = 0.47;
+  const bodyBot = D.roof + 0.01;
+  const bodyTop = bodyBot + 0.17;
   injTop.add(cylY(0.032, bodyTop - bodyBot, white, D.topJetX, (bodyTop + bodyBot) / 2, Z, 40));
   const cone = new THREE.CylinderGeometry(0.032, 0.011, bodyBot - D.topNozzleY - 0.006, 40);
   injTop.add(mesh(cone, white, [D.topJetX, (bodyBot + D.topNozzleY + 0.006) / 2, Z]));
   injTop.add(cylY(0.012, 0.008, MAT.inox(), D.topJetX, D.topNozzleY + 0.004, Z, 24)); // stainless nozzle tip
-  injTop.add(cylX(0.026, 0.035, white, D.topJetX - 0.045, 0.55, Z)); // side inlet
+  injTop.add(cylX(0.026, 0.035, white, D.topJetX - 0.045, TOP_INLET_Y, Z)); // side inlet
   // roof flange
   injTop.add(mesh(new THREE.BoxGeometry(0.1, 0.008, 0.1), MAT.printBlack(), [D.topJetX, D.roof + 0.004, Z]));
   for (const [dx, dz] of [
@@ -255,7 +435,7 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   injTop.add(handwheel);
   // needle ("olive") moving inside the body: visible in cutaway
   const needle = group('needle', [D.topJetX, 0, Z]);
-  needle.add(cylY(0.0045, 0.24, MAT.inox(), 0, 0.53, 0, 12));
+  needle.add(cylY(0.0045, 0.24, MAT.inox(), 0, D.topNozzleY + 0.135, 0, 12));
   const olive = new THREE.SphereGeometry(0.0115, 24, 16);
   olive.scale(1, 2.2, 1);
   needle.add(mesh(olive, MAT.inox(), [0, D.topNozzleY + 0.03, 0]));
@@ -275,7 +455,7 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   const sideCone = new THREE.CylinderGeometry(0.011, 0.026, bodyLen, 40);
   sideCone.rotateZ(-Math.PI / 2);
   injSide.add(mesh(sideCone, grey3d, [(-0.41 + D.sideNozzleX) / 2, D.sideJetY, Z]));
-  injSide.add(mesh(new THREE.BoxGeometry(0.008, 0.09, 0.09), grey3d, [-0.294, D.sideJetY, Z]));
+  injSide.add(mesh(new THREE.BoxGeometry(0.008, 0.09, 0.09), grey3d, [D.x0 - 0.004, D.sideJetY, Z]));
   const sideInsertRing = new THREE.MeshStandardMaterial({ color: 0x6b7178, roughness: 0.5 });
   injSide.add(cylX(0.012, 0.006, sideInsertRing, D.sideNozzleX - 0.003, D.sideJetY, Z, 24));
   for (let i = 0; i < 4; i++) {
@@ -298,54 +478,18 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   for (const s of [-1, 1]) {
     injQuick.add(mesh(new THREE.BoxGeometry(0.02, 0.012, 0.03), MAT.inox(), [-0.455, D.sideJetY + s * 0.05, Z]));
   }
-  injQuick.add(mesh(new THREE.BoxGeometry(0.008, 0.1, 0.1), alu, [-0.294, D.sideJetY, Z]));
+  injQuick.add(mesh(new THREE.BoxGeometry(0.008, 0.1, 0.1), alu, [D.x0 - 0.004, D.sideJetY, Z]));
   machine.add(injQuick);
 
-  // --- V2 jet deflectors (fail-safe): two blades on shafts, linked to a spring + solenoid on the rear
+  // --- V2 jet deflectors (fail-safe): two blades on shafts; outside the rear panel, a lever
+  // on each shaft, a link rod, a tension spring pulling towards "tripped" and a solenoid
+  // latch holding the linkage while it is powered
   const defl = group('deflector');
-  const blade = (len: number) => {
-    const g = new THREE.BoxGeometry(len, 0.004, 0.05);
-    g.translate(len / 2, 0, 0);
-    return g;
-  };
-  const deflectorTop = group('deflector-top', [-0.17, 0.4, Z]);
-  deflectorTop.add(mesh(blade(0.088), MAT.inox()));
-  deflectorTop.add(cylX(0.004, 0.088, MAT.inox(), 0.044, -0.004, 0.025, 8)); // curled lip
-  const deflectorSide = group('deflector-side', [-0.17, 0.05, Z]);
-  deflectorSide.add(mesh(blade(0.093), MAT.inox()));
-  defl.add(deflectorTop, deflectorSide);
-  for (const y of [0.4, 0.05]) {
-    const shaft = new THREE.CylinderGeometry(0.005, 0.005, Z - D.zBack + 0.04, 12);
-    shaft.rotateX(Math.PI / 2);
-    defl.add(mesh(shaft, MAT.inox(), [-0.17, y, (Z + D.zBack - 0.04) / 2]));
-    // lever outside the rear panel
-    defl.add(mesh(new THREE.BoxGeometry(0.05, 0.012, 0.006), MAT.steel(), [-0.15, y, D.zBack - 0.03]));
-  }
-  // link rod, spring and solenoid
-  defl.add(mesh(new THREE.BoxGeometry(0.006, 0.35, 0.004), MAT.steel(), [-0.125, 0.225, D.zBack - 0.035]));
-  const spring = new THREE.TubeGeometry(
-    new THREE.CatmullRomCurve3(
-      Array.from(
-        { length: 60 },
-        (_, i) =>
-          new THREE.Vector3(
-            -0.09 + Math.cos(i * 0.9) * 0.008,
-            0.28 + i * 0.0015,
-            D.zBack - 0.035 + Math.sin(i * 0.9) * 0.008,
-          ),
-      ),
-    ),
-    120,
-    0.0012,
-    5,
-  );
-  defl.add(mesh(spring, MAT.steel()));
-  defl.add(mesh(new THREE.BoxGeometry(0.03, 0.045, 0.03), MAT.steelBlack(), [-0.09, 0.2, D.zBack - 0.04]));
-  defl.add(mesh(new THREE.BoxGeometry(0.02, 0.006, 0.02), MAT.copper(), [-0.09, 0.226, D.zBack - 0.04]));
+  const setDeflector = buildDeflector(defl);
   machine.add(defl);
 
   // --- V2 automatic air-release valve on the high point of the gooseneck
-  const air = group('air-valve', [-0.48, 0.7 + R50, Z]);
+  const air = group('air-valve', [-0.46, RISER_TOP + R50, Z]);
   air.add(cylY(0.012, 0.02, MAT.brass(), 0, 0.01, 0, 6));
   air.add(cylY(0.022, 0.05, MAT.brass(), 0, 0.045, 0, 32));
   air.add(cylY(0.024, 0.012, MAT.printBlack(), 0, 0.075, 0, 32));
@@ -366,6 +510,7 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
 
   reg.add('penstock-end', pen, new THREE.Vector3(-0.65, 0, 0));
   reg.add('valve-main', main.g, new THREE.Vector3(-0.45, 0.22, 0));
+  reg.add('valve-bypass', bypass, new THREE.Vector3(-0.25, -0.15, 0.2));
   reg.add('manifold', manifold, new THREE.Vector3(-0.3, 0.32, 0));
   reg.add('valve-branch', valves, new THREE.Vector3(-0.32, 0.36, 0.16));
   reg.add('gauge', gauge, new THREE.Vector3(-0.3, 0.62, 0));
@@ -377,13 +522,13 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
 
   return {
     mainLever: main.pivot,
+    bypassLever: bp.pivot,
     topLever: top.pivot,
     sideLever: side.pivot,
     needle,
     handwheel,
     gaugeNeedle,
-    deflectorTop,
-    deflectorSide,
+    setDeflector,
     insertRing,
     sideInsertRing,
     transducerLed,

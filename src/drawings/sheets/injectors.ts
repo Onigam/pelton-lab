@@ -1,15 +1,36 @@
 import { l, tr, type L } from '../../i18n';
+import { bucketEfficiency } from '../../sim/physics';
+import { presetParams } from '../../sim/presets';
 import { COLORS, Drawing, W, type Pt, type Stroke, type Text, type View } from '../svg';
 import type { DrawingSheet } from '../types';
+import {
+  clipPoly,
+  DEFLECTORS,
+  M,
+  note,
+  R_TIP_MM,
+  rot,
+  RUNNER,
+  SIDE,
+  silhouette,
+  spec,
+  SPEAR,
+  tipR,
+  type Box,
+} from './turbine-geom';
 
-// PL-T04 — injectors. Geometry from src/three/turbine/hydraulics.ts and dims.ts (m → mm):
-// spear injector on the roof (axis x = −115, nozzle exit y = 380, needle stroke 24 mm),
-// side nozzle on the left wall (axis y = 115, exit x = −150), V2 deflector pivots and angles
-// from turbine/index.ts. Inner bores are not modelled in 3D: they are drawn with a 4–6 mm wall.
+// PL-T04 — injectors. Geometry from the 3D model (hydraulics.ts, dims.ts, index.ts through
+// turbine-geom.ts), mm: spear injector on the roof, side nozzle through the tall wall, V2
+// deflector pivots, blades and angles. Inner bores are not modelled in 3D: they are drawn
+// with a 4–10 mm wall.
 
 const PAPER = COLORS.paper;
 const deg = Math.PI / 180;
 const G = 9.81;
+const AX = M.axisY;
+const N = SPEAR.tip;
+const R = M.roof;
+/** Quick-change inserts modelled in 3D (turbine/index.ts colours) + optional sizes (*). */
 const INSERTS: [number, string, L][] = [
   [4, '#8a9099', l('gris', 'grey')],
   [5, '#2b6cd1', l('bleu', 'blue')],
@@ -18,386 +39,284 @@ const INSERTS: [number, string, L][] = [
   [8, '#f08c00', l('orange', 'orange')],
   [10, '#d6336c', l('magenta', 'magenta')],
   [12, '#7048e8', l('violet *', 'violet *')],
+  [M.maxNozzle, 'none', l('maxi roue *', 'runner max *')],
 ];
 /** Q = Cd·π·d²/4·√(2gH), Cd = 0.96, in L/s. */
 const flow = (dMm: number, h: number) => 0.96 * ((Math.PI * (dMm / 1000) ** 2) / 4) * Math.sqrt(2 * G * h) * 1000;
 const dec = (v: number, n: number): L => l(v.toFixed(n).replace('.', ','), v.toFixed(n));
 const mirror = (pts: Pt[]): Pt[] => pts.map(([x, y]) => [-x, y]);
-const flipY = (pts: Pt[], c: number): Pt[] => pts.map(([x, y]) => [x, 2 * c - y]);
+const mirrorIf = (pts: Pt[], sg: number): Pt[] => (sg > 0 ? pts : mirror(pts));
+const flipY = (pts: Pt[]): Pt[] => pts.map(([x, y]) => [x, -y]);
+const st = (h: Stroke['hatch'], w = W.medium): Stroke => ({ w, hatch: h, fill: PAPER });
+const box = (x0: number, y0: number, x1: number, y1: number): Pt[] => [
+  [x0, y0],
+  [x1, y0],
+  [x1, y1],
+  [x0, y1],
+];
+/** Bucket set suited to a jet diameter (simulator bucket efficiency). */
+const setFor = (d: number): string => {
+  const s = bucketEfficiency(d, 'S');
+  const lg = bucketEfficiency(d, 'L');
+  return Math.abs(s - lg) < 0.03 ? 'S / L' : s > lg ? 'S' : 'L';
+};
 
-function note(
-  d: Drawing,
-  x: number,
-  y: number,
-  w: number,
-  text: Text,
-  o: { size?: number; bullet?: string; color?: string } = {},
-): number {
-  const size = o.size ?? 1.9;
-  const indent = o.bullet ? 3.5 : 0;
-  const max = Math.floor((w - indent) / (size * 0.64));
-  const rows: string[] = [];
-  let cur = '';
-  for (const word of tr(text).split(' ')) {
-    if (cur && (cur + ' ' + word).length > max) {
-      rows.push(cur);
-      cur = word;
-    } else cur = cur ? cur + ' ' + word : word;
-  }
-  if (cur) rows.push(cur);
-  const p = d.paper();
-  if (o.bullet) p.text([x, y], o.bullet, { size, baseline: 'top', weight: 'bold', color: o.color });
-  rows.forEach((r, i) => p.text([x + indent, y + i * size * 1.7], r, { size, baseline: 'top', color: o.color }));
-  return y + rows.length * size * 1.7 + size * 0.5;
-}
-
-/** Spear (needle) outline, right half, for a lift s: olive ellipsoid 23 × 50.6 + tip cone, rod Ø9. */
-function needleHalf(s: number): Pt[] {
+/** Spear (needle) outline, right half, for a lift s: olive Ø23 × 50.6 + tip cone, rod Ø9. */
+function needleHalf(s: number, rodTop: number): Pt[] {
   const pts: Pt[] = [];
-  for (let y = 379; y <= 433.3; y += 0.6) {
-    const cone = y <= 401 ? (8.5 * (y - 379)) / 22 : 0;
-    const e = (y - 410) / 25.3;
+  for (let y = N - 1; y <= N + 53.3; y += 0.6) {
+    const cone = y <= N + 21 ? (8.5 * (y - N + 1)) / 22 : 0;
+    const e = (y - N - 30) / 25.3;
     const ell = Math.abs(e) < 1 ? 11.5 * Math.sqrt(1 - e * e) : 0;
-    pts.push([Math.max(cone, ell, y > 420 ? 4.5 : 0), y + s]);
+    pts.push([Math.max(cone, ell, y > N + 40 ? 4.5 : 0), y + s]);
   }
-  pts.push([4.5, 650 + s]);
+  pts.push([4.5, rodTop + s]);
   return pts;
 }
 
-/** Section of the spear injector in the plane z = 110 (x' = x + 115, y = machine height). */
+/** Section of the spear injector in the plane z = pipeZ (x' = x − topJetX, y = machine height). */
 function spearSection(v: View): void {
-  const st = (h: Stroke['hatch'], w = W.medium): Stroke => ({ w, hatch: h, fill: PAPER });
+  const T = SPEAR.bodyTop;
+  const B = SPEAR.bodyBot;
+  const iy = SPEAR.inlet.y;
+  const ix = -SPEAR.inlet.len / 2 - (SPEAR.x - SPEAR.inlet.x); // left end of the inlet stub
+  const c = N + 32; // top of the inner cone
   // water in the bore and the jet (drawn first, under the parts)
   v.polyline(
     [
-      [-22, 630],
-      [22, 630],
-      [22, 446],
-      [7.5, 388],
-      [6, 380],
-      [-6, 380],
-      [-7.5, 388],
-      [-22, 446],
-      [-22, 530],
-      [-62.5, 530],
-      [-62.5, 570],
-      [-22, 570],
+      [-22, T - 10],
+      [22, T - 10],
+      [22, c],
+      [7.5, N + 8],
+      [6, N],
+      [-6, N],
+      [-7.5, N + 8],
+      [-22, c],
+      [-22, iy - 20],
+      [ix, iy - 20],
+      [ix, iy + 20],
+      [-22, iy + 20],
     ],
     { closed: true, w: 0, fill: COLORS.waterFill },
   );
-  v.rect([-6, 336], [6, 380], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
-  v.line([0, 372], [0, 340], { w: W.medium, color: COLORS.water }).setAttribute('marker-end', 'url(#arrow)');
+  v.rect([-6, N - 44], [6, N], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
+  v.line([0, N - 8], [0, N - 40], { w: W.medium, color: COLORS.water }).setAttribute('marker-end', 'url(#arrow)');
   // body (right half closed, left half split by the side inlet)
   v.polyline(
     [
-      [32, 640],
-      [32, 470],
-      [11.5, 388],
-      [7.5, 388],
-      [22, 446],
-      [22, 630],
-      [9, 630],
-      [9, 640],
+      [32, T],
+      [32, B],
+      [11.5, N + 8],
+      [7.5, N + 8],
+      [22, c],
+      [22, T - 10],
+      [9, T - 10],
+      [9, T],
     ],
     { closed: true, ...st('steel') },
   );
   v.polyline(
     [
-      [-9, 640],
-      [-9, 630],
-      [-22, 630],
-      [-22, 570],
-      [-62.5, 570],
-      [-62.5, 576],
-      [-32, 576],
-      [-32, 640],
+      [-9, T],
+      [-9, T - 10],
+      [-22, T - 10],
+      [-22, iy + 20],
+      [ix, iy + 20],
+      [ix, iy + 26],
+      [-32, iy + 26],
+      [-32, T],
     ],
     { closed: true, ...st('steel') },
   );
   v.polyline(
     [
-      [-62.5, 530],
-      [-22, 530],
-      [-22, 446],
-      [-7.5, 388],
-      [-11.5, 388],
-      [-32, 470],
-      [-32, 524],
-      [-62.5, 524],
+      [ix, iy - 20],
+      [-22, iy - 20],
+      [-22, c],
+      [-7.5, N + 8],
+      [-11.5, N + 8],
+      [-32, B],
+      [-32, iy - 26],
+      [ix, iy - 26],
     ],
     { closed: true, ...st('steel') },
   );
-  // stainless nozzle tip (orifice Ø12)
-  v.polyline(
-    [
-      [6, 380],
-      [12, 380],
-      [12, 388],
-      [7.5, 388],
-    ],
-    { closed: true, ...st('alu', W.thin) },
-  );
-  v.polyline(
-    [
-      [-6, 380],
-      [-12, 380],
-      [-12, 388],
-      [-7.5, 388],
-    ],
-    { closed: true, ...st('alu', W.thin) },
-  );
-  // gland nut + packing
+  // stainless nozzle tip (orifice = spear maximum)
   for (const sg of [1, -1]) {
     v.polyline(
       mirrorIf(
         [
-          [9, 640],
-          [20, 640],
-          [20, 662],
-          [5, 662],
-          [5, 658],
-          [9, 658],
+          [6, N],
+          [SPEAR.tipR, N],
+          [SPEAR.tipR, N + 8],
+          [7.5, N + 8],
+        ],
+        sg,
+      ),
+      { closed: true, ...st('alu', W.thin) },
+    );
+    // gland nut + packing
+    v.polyline(
+      mirrorIf(
+        [
+          [9, T],
+          [20, T],
+          [20, T + SPEAR.glandH],
+          [5, T + SPEAR.glandH],
+          [5, T + 18],
+          [9, T + 18],
         ],
         sg,
       ),
       { closed: true, ...st('steel', W.thin) },
     );
-    v.polyline(
-      mirrorIf(
-        [
-          [5, 640],
-          [9, 640],
-          [9, 658],
-          [5, 658],
-        ],
-        sg,
-      ),
-      { closed: true, ...st('rubber', W.thin) },
-    );
+    v.polyline(mirrorIf(box(5, T, 9, T + 18), sg), { closed: true, ...st('rubber', W.thin) });
+    // roof flange (printed), gasket, roof sheet, 4 × M5
+    const f = SPEAR.flange;
+    v.polyline(mirrorIf(box(30.5, f.y0, f.half, f.y1), sg), { closed: true, ...st('plastic', W.thin) });
+    v.polyline(mirrorIf(box(30.5, f.y1, 40, B), sg), { closed: true, ...st('rubber', W.thin) });
+    v.polyline(mirrorIf(box(25.4, R - M.sheet, sg > 0 ? 66 : 80, R), sg), {
+      closed: true,
+      w: W.thin,
+      fill: COLORS.ink,
+    });
+    v.rect([sg * (f.bolt - 2.5), R - 6], [sg * (f.bolt + 2.5), f.y1], { w: W.thin, fill: PAPER });
+    v.rect([sg * (f.bolt - 4), f.y1], [sg * (f.bolt + 4), f.y1 + 6], { w: W.thin, fill: PAPER });
   }
-  // roof flange (printed), gasket, roof sheet, 4 × M5
-  for (const sg of [1, -1]) {
-    v.polyline(
-      mirrorIf(
-        [
-          [30.5, 460],
-          [50, 460],
-          [50, 468],
-          [30.5, 468],
-        ],
-        sg,
-      ),
-      { closed: true, ...st('plastic', W.thin) },
-    );
-    v.polyline(
-      mirrorIf(
-        [
-          [30.5, 468],
-          [40, 468],
-          [40, 470],
-          [30.5, 470],
-        ],
-        sg,
-      ),
-      { closed: true, ...st('rubber', W.thin) },
-    );
-    v.polyline(
-      mirrorIf(
-        [
-          [30.5, 458],
-          [sg > 0 ? 66 : 80, 458],
-          [sg > 0 ? 66 : 80, 460],
-          [30.5, 460],
-        ],
-        sg,
-      ),
-      { closed: true, w: W.thin, fill: COLORS.ink },
-    );
-    v.rect([sg * 37.5, 452], [sg * 42.5, 468], { w: W.thin, fill: PAPER });
-    v.rect([sg * 36, 468], [sg * 44, 472], { w: W.thin, fill: PAPER });
-  }
-  // spear: closed (solid) and fully open (phantom, +24 mm)
-  const half = needleHalf(0);
+  // spear: closed (solid) and fully open (phantom)
+  const rodTop = T + 10;
+  const half = needleHalf(0, rodTop);
   v.polyline([...half, ...mirror(half).reverse()], { closed: true, w: W.medium, fill: PAPER });
-  const open = needleHalf(24);
+  const open = needleHalf(SPEAR.stroke, rodTop);
   v.polyline([...open, ...mirror(open).reverse()], { closed: true, w: W.thin, dash: 'phantom', color: COLORS.muted });
   // operating spindle + handwheel (not sectioned)
-  v.rect([-5, 650], [5, 712], { w: W.medium, fill: PAPER });
-  v.line([-4.5, 650], [4.5, 650], { w: W.thin });
+  const wy = SPEAR.wheel.y;
+  const wr = SPEAR.wheel.r;
+  v.rect([-5, rodTop], [5, wy + 10], { w: W.medium, fill: PAPER });
+  v.line([-4.5, rodTop], [4.5, rodTop], { w: W.thin });
   for (const sg of [1, -1]) {
-    v.rect([sg * 8, 700], [sg * 33, 704], { w: W.thin, fill: PAPER });
-    v.circle([sg * 38, 702], 5, { w: W.medium, fill: '#f3d5d2' });
+    v.rect([sg * 8, wy - 2], [sg * (wr - 5), wy + 2], { w: W.thin, fill: PAPER });
+    v.circle([sg * wr, wy], SPEAR.wheel.tube, { w: W.medium, fill: '#f3d5d2' });
   }
-  v.rect([-8, 696], [8, 708], { w: W.medium, fill: PAPER });
+  v.rect([-8, wy - 6], [8, wy + 6], { w: W.medium, fill: PAPER });
   // PVC Ø50 riser end into the side inlet
-  v.rect([-100, 525], [-62.5, 575], { w: W.medium, fill: PAPER });
+  v.rect([ix - 37.5, iy - 25], [ix, iy + 25], { w: W.medium, fill: PAPER });
   v.polyline(
     [
-      [-100, 577],
-      [-103, 560],
-      [-97, 540],
-      [-100, 523],
+      [ix - 37.5, iy + 27],
+      [ix - 40.5, iy + 10],
+      [ix - 34.5, iy - 10],
+      [ix - 37.5, iy - 27],
     ],
     { w: W.thin },
   );
-  v.center([0, 330], [0, 716]);
-  v.center([-104, 550], [-20, 550]);
+  v.center([0, N - 50], [0, wy + 14]);
+  v.center([ix - 41, iy], [-20, iy]);
 }
 
-const mirrorIf = (pts: Pt[], sg: number): Pt[] => (sg > 0 ? pts : mirror(pts));
-
-/** Side injector section in the plane z = 110 (x machine, y' = y − 115). */
+/** Side injector section in the plane z = pipeZ (x machine, y' = y − sideJetY). */
 function sideSection(v: View, v2: boolean, d: number): void {
-  const st = (h: Stroke['hatch'], w = W.medium): Stroke => ({ w, hatch: h, fill: PAPER });
   const both = (pts: Pt[], s: Stroke) => {
     v.polyline(pts, { closed: true, ...s });
-    v.polyline(flipY(pts, 0), { closed: true, ...s });
+    v.polyline(flipY(pts), { closed: true, ...s });
   };
-  const ro = (x: number, r0: number, r1: number, x0: number, x1: number) => r0 + ((r1 - r0) * (x - x0)) / (x1 - x0);
+  const tip = SIDE.tip;
+  const s = v2 ? SIDE.v2 : SIDE.v1;
+  const fx0 = SIDE.flangeX - s.flangeL / 2;
+  const fx1 = SIDE.flangeX + s.flangeL / 2;
+  /** Outer radius of the nozzle body / lance at x (linear taper in hydraulics.ts). */
+  const ro = (x: number) => s.r0 + ((s.r1 - s.r0) * (x - fx1)) / (tip - fx1);
+  const exit = v2 ? tip + 1 : tip;
   // water + jet
   const bore: Pt[] = v2
     ? [
         [-450, 20],
-        [-409, 19],
-        [-161, 7],
-        [-152, 7],
-        [-150.5, d / 2],
-        [-149, d / 2],
+        [fx1, 19],
+        [tip - 11, 7],
+        [tip - 2, 7],
+        [tip - 0.5, d / 2],
+        [exit, d / 2],
       ]
     : [
         [-480, 22],
-        [-422, 20],
-        [-410, 20],
-        [-175, ro(-175, 26, 11, -410, -150) - 6],
-        [-158, d / 2],
-        [-150, d / 2],
+        [fx0, 20],
+        [fx1, 20],
+        [tip - 25, ro(tip - 25) - 6],
+        [tip - 8, d / 2],
+        [exit, d / 2],
       ];
-  v.polyline([...bore, ...flipY(bore, 0).reverse()], { closed: true, w: 0, fill: COLORS.waterFill });
-  const exit = v2 ? -149 : -150;
-  v.rect([exit, -d / 2], [-125, d / 2], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
-  v.line([exit + 4, 0], [-126, 0], { w: W.medium, color: COLORS.water }).setAttribute('marker-end', 'url(#arrow)');
-  // housing wall (2 mm alu) and the reinforcing plate
-  both(
-    [
-      [-290, v2 ? 20 : 19.5],
-      [-288, v2 ? 20 : 19.5],
-      [-288, 62],
-      [-290, 62],
-    ],
-    { w: W.thin, fill: COLORS.ink },
-  );
-  both(
-    [
-      [-298, v2 ? 20 : 19.5],
-      [-290, v2 ? 20 : 19.5],
-      [-290, v2 ? 50 : 45],
-      [-298, v2 ? 50 : 45],
-    ],
-    st(v2 ? 'alu' : 'plastic', W.thin),
-  );
+  v.polyline([...bore, ...flipY(bore).reverse()], { closed: true, w: 0, fill: COLORS.waterFill });
+  v.rect([exit, -d / 2], [exit + 25, d / 2], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
+  v.line([exit + 4, 0], [exit + 24, 0], { w: W.medium, color: COLORS.water }).setAttribute('marker-end', 'url(#arrow)');
+  // housing wall (2 mm alu sheet) and the reinforcing plate outside it
+  const hole = v2 ? 20 : 19.5;
+  both(box(M.x0, hole, M.x0 + M.sheet, 62), { w: W.thin, fill: COLORS.ink });
+  both(box(M.x0 - 8, hole, M.x0, s.plate / 2), st(v2 ? 'alu' : 'plastic', W.thin));
   if (v2) {
     // bayonet collar (colour = nozzle size) with two grip lugs, DN25 flange, aluminium lance
-    v.rect([-490, 22], [-450, 25], st('plastic', W.thin));
-    v.rect([-490, -25], [-450, -22], st('plastic', W.thin));
+    const [cr, c0, c1] = SIDE.v2.collar;
+    v.rect([-490, 22], [c0, 25], st('plastic', W.thin));
+    v.rect([-490, -25], [c0, -22], st('plastic', W.thin));
+    both(box(c0, 20, c1, cr), { w: W.medium, hatch: 'plastic', fill: '#d3ecd9' });
+    both(box(-465, 44, -445, 56), { w: W.thin, fill: PAPER });
+    both(box(c1, 19.5, fx0, 24), st('alu', W.thin));
     both(
       [
-        [-450, 20],
-        [-430, 20],
-        [-430, 48],
-        [-450, 48],
-      ],
-      { w: W.medium, hatch: 'plastic', fill: '#d3ecd9' },
-    );
-    both(
-      [
-        [-465, 44],
-        [-445, 44],
-        [-445, 56],
-        [-465, 56],
-      ],
-      { w: W.thin, fill: PAPER },
-    );
-    both(
-      [
-        [-430, 19.5],
-        [-423, 19.5],
-        [-423, 24],
-        [-430, 24],
-      ],
-      st('alu', W.thin),
-    );
-    both(
-      [
-        [-423, 19.4],
-        [-409, 19],
-        [-409, 42],
-        [-423, 42],
+        [fx0, 19.4],
+        [fx1, 19],
+        [fx1, s.flangeR],
+        [fx0, s.flangeR],
       ],
       st('alu'),
     );
     both(
       [
-        [-409, 19],
-        [-409, 24],
-        [-161, 14.4],
-        [-161, 11.5],
-        [-152, 11.5],
-        [-152, 7],
-        [-161, 7],
+        [fx1, 19],
+        [fx1, s.r0],
+        [tip - 11, ro(tip - 11)],
+        [tip - 11, 11.5],
+        [tip - 2, 11.5],
+        [tip - 2, 7],
+        [tip - 11, 7],
       ],
       st('alu'),
     );
     // nozzle insert (coloured cap) with O-ring and bayonet pin on the spigot
+    const [rr, rl] = SIDE.v2.ring;
     both(
       [
-        [-161, 11.5],
-        [-161, 16],
-        [-149, 16],
-        [-149, d / 2],
-        [-150.5, d / 2],
-        [-152, 7],
-        [-152, 11.5],
+        [exit - rl, 11.5],
+        [exit - rl, rr],
+        [exit, rr],
+        [exit, d / 2],
+        [tip - 0.5, d / 2],
+        [tip - 2, 7],
+        [tip - 2, 11.5],
       ],
       { w: W.medium, hatch: 'plastic', fill: '#d3ecd9' },
     );
     for (const sg of [1, -1]) {
-      v.circle([-157.5, sg * 11.5], 1.1, { w: W.thin, fill: COLORS.ink });
-      v.rect([-155, sg * 11.5], [-153.5, sg * 13.2], { w: W.thin, fill: PAPER });
+      v.circle([tip - 7.5, sg * 11.5], 1.1, { w: W.thin, fill: COLORS.ink });
+      v.rect([tip - 5, sg * 11.5], [tip - 3.5, sg * 13.2], { w: W.thin, fill: PAPER });
     }
   } else {
-    v.rect([-480, 22], [-422, 25], st('plastic', W.thin));
-    v.rect([-480, -25], [-422, -22], st('plastic', W.thin));
+    v.rect([-480, 22], [fx0, 25], st('plastic', W.thin));
+    v.rect([-480, -25], [fx0, -22], st('plastic', W.thin));
+    both(box(fx0, 20, fx1, s.flangeR), st('plastic'));
     both(
       [
-        [-422, 20],
-        [-410, 20],
-        [-410, 40],
-        [-422, 40],
+        [fx1, 20],
+        [fx1, s.r0],
+        [tip, s.r1],
+        [tip, d / 2],
+        [tip - 8, d / 2],
+        [tip - 25, ro(tip - 25) - 6],
       ],
       st('plastic'),
     );
-    const r175 = ro(-175, 26, 11, -410, -150);
-    both(
-      [
-        [-410, 20],
-        [-410, 26],
-        [-150, 11],
-        [-150, d / 2],
-        [-158, d / 2],
-        [-175, r175 - 6],
-      ],
-      st('plastic'),
-    );
-    both(
-      [
-        [-156, 11.2],
-        [-150, 11],
-        [-150, 12.5],
-        [-156, 12.5],
-      ],
-      { w: W.thin, fill: '#9aa0a6' },
-    );
-    for (const sg of [1, -1]) v.rect([-430, sg * 26], [-422, sg * 34], { w: W.thin, fill: PAPER });
+    const [rr, rl] = SIDE.v1.ring;
+    both(box(tip - rl, s.r1 + 0.2, tip, rr + 0.5), { w: W.thin, fill: '#9aa0a6' });
+    for (const sg of [1, -1]) v.rect([fx0 - 8, sg * 26], [fx0, sg * 34], { w: W.thin, fill: PAPER });
   }
   const left = v2 ? -490 : -480;
   v.polyline(
@@ -409,149 +328,108 @@ function sideSection(v: View, v2: boolean, d: number): void {
     ],
     { w: W.thin },
   );
-  v.center([left - 4, 0], [-122, 0]);
-}
-
-type Box = { x0: number; x1: number; y0: number; y1: number };
-
-/** Sutherland–Hodgman clip of a closed polygon against an axis-aligned box. */
-function clip(pts: Pt[], b: Box): Pt[] {
-  const edges: [(p: Pt) => boolean, (p: Pt, q: Pt) => Pt][] = [
-    [(p) => p[0] >= b.x0, (p, q) => [b.x0, p[1] + ((q[1] - p[1]) * (b.x0 - p[0])) / (q[0] - p[0])]],
-    [(p) => p[0] <= b.x1, (p, q) => [b.x1, p[1] + ((q[1] - p[1]) * (b.x1 - p[0])) / (q[0] - p[0])]],
-    [(p) => p[1] >= b.y0, (p, q) => [p[0] + ((q[0] - p[0]) * (b.y0 - p[1])) / (q[1] - p[1]), b.y0]],
-    [(p) => p[1] <= b.y1, (p, q) => [p[0] + ((q[0] - p[0]) * (b.y1 - p[1])) / (q[1] - p[1]), b.y1]],
-  ];
-  let out = pts;
-  for (const [inside, cut] of edges) {
-    const src = out;
-    out = [];
-    src.forEach((p, i) => {
-      const q = src[(i + 1) % src.length];
-      if (inside(p)) {
-        out.push(p);
-        if (!inside(q)) out.push(cut(p, q));
-      } else if (inside(q)) out.push(cut(p, q));
-    });
-    if (!out.length) break;
-  }
-  return out;
+  v.center([left - 4, 0], [exit + 28, 0]);
 }
 
 /** Partial front view (machine x, y) of the runner, both jets and the V2 deflectors. */
-function jetGeometry(v: View, v2: boolean, box: Box): void {
+function jetGeometry(v: View, v2: boolean, b: Box, dTop: number, dSide: number): void {
   const ring = (r: number, s: Stroke) => {
-    const a = (Math.acos(Math.min(1, box.x1 / r)) * 180) / Math.PI;
-    v.arc([0, 230], r, a, 360 - a, s);
+    const a = (Math.acos(Math.min(1, b.x1 / r)) * 180) / Math.PI;
+    v.arc([0, AX], r, a, 360 - a, s);
   };
-  for (let i = 0; i < 22; i++) {
-    const a = (i / 22) * Math.PI * 2;
-    const pts: Pt[] = [
-      [87.5, 0],
-      [154.5, 0],
-    ];
-    for (let k = 0; k <= 14; k++) {
-      const e = 0.985 - (1.97 * k) / 14;
-      pts.push([121 + e * 34, 2.4 + 16.25 * Math.sqrt(1 - e * e)]);
-    }
-    const c = clip(
-      pts.map(([x, y]) => [x * Math.cos(a) - y * Math.sin(a), 230 + x * Math.sin(a) + y * Math.cos(a)] as Pt),
-      box,
-    );
+  const L = spec('L');
+  for (let i = 0; i < M.buckets; i++) {
+    const a = (i / M.buckets) * Math.PI * 2;
+    const pts = silhouette(L, 14).map((p) => {
+      const [x, y] = rot(p, a);
+      return [x, AX + y] as Pt;
+    });
+    const c = clipPoly(pts, b);
     if (c.length > 2) v.polyline(c, { closed: true, w: W.thin, fill: PAPER });
   }
-  ring(87, { w: W.thin });
-  ring(115, { w: W.thin, dash: 'center', color: COLORS.muted });
-  ring(154.5, { w: W.thin, dash: 'hidden', color: COLORS.muted });
+  ring(RUNNER.ring[1], { w: W.thin });
+  ring(M.rPitch, { w: W.thin, dash: 'center', color: COLORS.muted });
+  ring(R_TIP_MM, { w: W.thin, dash: 'hidden', color: COLORS.muted });
   v.polyline(
     [
-      [box.x1, 60],
-      [box.x1 - 3, 180],
-      [box.x1 + 3, 280],
-      [box.x1, 400],
+      [b.x1, AX - 120],
+      [b.x1 - 3, AX - 40],
+      [b.x1 + 3, AX + 40],
+      [b.x1, AX + 120],
     ],
     { w: W.thin },
   );
-  v.center([-150, 230], [box.x1 + 2, 230]);
-  v.center([0, 60], [0, 400]);
+  v.center([b.x0 + 40, AX], [b.x1 + 2, AX]);
+  v.center([0, AX - 120], [0, AX + 120]);
   // roof sheet, spear injector (flange, cone, stainless tip) and side nozzle
-  v.rect([box.x0, 458], [-30, 460], { w: W.thin, fill: COLORS.ink });
-  v.rect([-165, 460], [-65, 468], { w: W.medium, fill: PAPER });
+  const x = SPEAR.x;
+  const br = SPEAR.bodyR;
+  v.rect([b.x0, R - M.sheet], [-30, R], { w: W.thin, fill: COLORS.ink });
+  v.rect([x - SPEAR.flange.half, SPEAR.flange.y0], [x + SPEAR.flange.half, SPEAR.flange.y1], {
+    w: W.medium,
+    fill: PAPER,
+  });
   v.polyline(
     [
-      [-147, box.y1],
-      [-147, 470],
-      [-126, 386],
-      [-104, 386],
-      [-83, 470],
-      [-83, box.y1],
+      [x - br, b.y1],
+      [x - br, SPEAR.bodyBot],
+      [x - SPEAR.coneR, N + 6],
+      [x + SPEAR.coneR, N + 6],
+      [x + br, SPEAR.bodyBot],
+      [x + br, b.y1],
     ],
     { w: W.medium },
   );
-  v.rect([-127, 380], [-103, 388], { w: W.medium, fill: PAPER });
-  if (v2) {
-    v.polyline(
-      [
-        [box.x0, 131.8],
-        [-161, 129.4],
-        [-161, 100.6],
-        [box.x0, 98.2],
-      ],
-      { w: W.medium, fill: PAPER },
-    );
-    v.rect([-161, 99], [-149, 131], { w: W.medium, fill: '#d3ecd9' });
-  } else {
-    v.polyline(
-      [
-        [box.x0, 128.7],
-        [-150, 126],
-        [-150, 104],
-        [box.x0, 101.3],
-      ],
-      { w: W.medium, fill: PAPER },
-    );
-    v.rect([-156, 102.5], [-150, 127.5], { w: W.thin, fill: '#9aa0a6' });
-  }
+  v.rect([x - SPEAR.tipR, N], [x + SPEAR.tipR, N + 8], { w: W.medium, fill: PAPER });
+  const s = v2 ? SIDE.v2 : SIDE.v1;
+  const fx1 = SIDE.flangeX + s.flangeL / 2;
+  const r0 = s.r0 + ((s.r1 - s.r0) * (b.x0 - fx1)) / (SIDE.tip - fx1);
+  const y = SIDE.y;
+  const [rr, rl] = s.ring;
+  const ringX = v2 ? SIDE.tip + 1 : SIDE.tip;
+  v.polyline(
+    [
+      [b.x0, y + r0],
+      [ringX - rl, y + s.r1 + 0.4],
+      [ringX - rl, y - s.r1 - 0.4],
+      [b.x0, y - r0],
+    ],
+    { w: W.medium, fill: PAPER },
+  );
+  v.rect([ringX - rl, y - rr], [ringX, y + rr], { w: W.medium, fill: v2 ? '#d3ecd9' : '#9aa0a6' });
   // jets, tangent to the pitch circle
-  v.rect([-121, 230], [-109, 380], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
-  v.rect([v2 ? -149 : -150, 112], [0, 118], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
-  v.center([-115, 222], [-115, box.y1]);
-  v.center([box.x0, 115], [6, 115]);
+  v.rect([x - dTop / 2, AX], [x + dTop / 2, N], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
+  v.rect([ringX, y - dSide / 2], [0, y + dSide / 2], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
+  v.center([x, AX - 8], [x, b.y1]);
+  v.center([b.x0, y], [6, y]);
   for (const t of [
-    [-115, 230],
-    [0, 115],
+    [x, AX],
+    [0, y],
   ] as Pt[])
     v.circle(t, 2, { w: W.thin, color: COLORS.water, fill: COLORS.water });
   if (!v2) return;
-  // deflector blades: rest (solid) and tripped (phantom); the cut jet is thrown at the wall
-  const tip = (pivot: Pt, len: number, ang: number): Pt => [
-    pivot[0] + Math.cos(ang * deg) * len,
-    pivot[1] + Math.sin(ang * deg) * len,
+  // deflector blades: rest (solid) and tripped (phantom); the cut jets slide off the blades,
+  // away from the runner (water.ts)
+  const end = (p: Pt, len: number, ang: number): Pt => [
+    p[0] + Math.cos(ang * deg) * len,
+    p[1] + Math.sin(ang * deg) * len,
   ];
-  for (const [pivot, len, a0, a1] of [
-    [[-170, 400], 88, -66, -31],
-    [[-170, 50], 93, 18.7, 53.7],
-  ] as [Pt, number, number, number][]) {
-    v.line(pivot, [pivot[0] + 70, pivot[1]], { w: W.thin, color: COLORS.muted, dash: 'center' });
-    v.line(pivot, tip(pivot, len, a0), { w: W.thick, color: COLORS.v2 });
-    v.line(pivot, tip(pivot, len, a1), { w: W.medium, color: COLORS.v2, dash: 'phantom' });
-    v.arc(pivot, 34, 0, a0, { w: W.thin, color: COLORS.v2 });
-    v.arc(pivot, 50, 0, a1, { w: W.thin, color: COLORS.v2 });
-    v.circle(pivot, 7, { w: W.medium, fill: PAPER, color: COLORS.v2 });
-    v.circle(pivot, 5, { w: W.thin, color: COLORS.v2 });
+  for (const dfl of DEFLECTORS) {
+    const p = dfl.pivot;
+    v.line(p, [p[0] + 60, p[1]], { w: W.thin, color: COLORS.muted, dash: 'center' });
+    v.line(p, end(p, dfl.len, dfl.rest), { w: W.thick, color: COLORS.v2 });
+    v.line(p, end(p, dfl.len, dfl.trip), { w: W.medium, color: COLORS.v2, dash: 'phantom' });
+    if (dfl.rest) v.arc(p, 30, 0, dfl.rest, { w: W.thin, color: COLORS.v2 });
+    v.arc(p, 46, 0, dfl.trip, { w: W.thin, color: COLORS.v2 });
+    v.circle(p, 7, { w: W.medium, fill: PAPER, color: COLORS.v2 });
+    v.circle(p, 5, { w: W.thin, color: COLORS.v2 });
   }
-  for (const [from, to] of [
-    [
-      [-115, 366],
-      [-182, 328],
-    ],
-    [
-      [-122, 115],
-      [-186, 82],
-    ],
-  ] as [Pt, Pt][]) {
+  const jets: [Pt, Pt][] = [
+    [x, N - DEFLECTORS[0].hit],
+    [SIDE.tip + DEFLECTORS[1].hit, y],
+  ].map((h, i) => [h as Pt, (i ? [h[0] + 26, h[1] - 40] : [h[0] - 60, h[1] - 22]) as Pt]);
+  for (const [from, to] of jets)
     v.line(from, to, { w: W.medium, color: COLORS.water, dash: 'hidden' }).setAttribute('marker-end', 'url(#arrow)');
-  }
 }
 
 export const injectors: DrawingSheet = {
@@ -560,68 +438,77 @@ export const injectors: DrawingSheet = {
   group: 'turbine',
   title: l('Injecteurs et jets', 'Injectors and jets'),
   description: l(
-    'Coupe de l’injecteur à pointeau du haut (1:2) avec l’olive fermée et ouverte (course 24 mm), coupe de l’injecteur latéral — buse fixe imprimée en V1, lance alu à inserts à baïonnette en V2 — et tableau des inserts Ø4 à Ø12 avec leur débit à 76 m et 21 m de chute nette. À droite, la géométrie des jets (tangents au cercle primitif) et, en V2, la cinématique des déflecteurs de sécurité.',
-    'Section of the top spear injector (1:2) with the olive closed and open (24 mm stroke), section of the side injector — printed fixed nozzle on V1, aluminium lance with bayonet inserts on V2 — and a table of Ø4 to Ø12 inserts with their flow at 76 m and 21 m net head. On the right, the jet geometry (tangent to the pitch circle) and, on V2, the kinematics of the safety deflectors.',
+    `Coupe de l’injecteur à pointeau du haut (1:2) avec l’olive fermée et ouverte (course ${SPEAR.stroke} mm), coupe de l’injecteur latéral — buse fixe imprimée en V1, lance alu à inserts à baïonnette en V2 — et tableau des inserts Ø4 à Ø${M.maxNozzle} avec leur débit à 76 m et 21 m de chute nette. À droite, la géométrie des jets (tangents au cercle primitif Ø${2 * M.rPitch}) et, en V2, la cinématique des déflecteurs de sécurité.`,
+    `Section of the top spear injector (1:2) with the olive closed and open (${SPEAR.stroke} mm stroke), section of the side injector — printed fixed nozzle on V1, aluminium lance with bayonet inserts on V2 — and a table of Ø4 to Ø${M.maxNozzle} inserts with their flow at 76 m and 21 m net head. On the right, the jet geometry (tangent to the Ø${2 * M.rPitch} pitch circle) and, on V2, the kinematics of the safety deflectors.`,
   ),
   scene: 'turbine',
   parts: ['injector-top', 'injector-side', 'injector-quick', 'deflector', 'valve-branch'],
   render(ctx) {
     const v2 = ctx.version === 'v2';
+    const pre = presetParams('siteA');
+    const [dTop, dSide] = [pre.top.d, pre.side.d];
     const d = new Drawing();
     d.frame({
       title: l('Injecteurs et jets', 'Injectors and jets'),
       subtitle: v2
         ? l('V2 : lance à inserts baïonnette + déflecteurs de sécurité', 'V2: bayonet insert lance + safety deflectors')
         : l(
-            'V1 prototype : buse fixe imprimée Ø6 (Ø8 en option), sans déflecteur',
-            'V1 prototype: printed Ø6 fixed nozzle (Ø8 option), no deflector',
+            `V1 prototype : buse fixe imprimée Ø${dSide} (Ø8 en option), sans déflecteur`,
+            `V1 prototype: printed Ø${dSide} fixed nozzle (Ø8 option), no deflector`,
           ),
       number: 'PL-T04',
       scale: '1:2',
     });
     const p = d.paper();
+    const T = SPEAR.bodyTop;
+    const wy = SPEAR.wheel.y;
 
-    // ---- spear injector, section B–B 1:2 (axis x' = 0)
-    const sv = d.view(66, 375, 0.5);
+    // ---- spear injector, section 1:2 (axis x' = 0)
+    const sv = d.view(66, 312, 0.5);
     spearSection(sv);
-    sv.dim([-6, 380], [6, 380], 13, { dir: 'h', label: 'Ø12', size: 2.2 });
-    sv.dim([-43, 702], [43, 702], -6, { dir: 'h', size: 2.2, prefix: 'Ø' });
-    sv.dim([12, 410], [12, 434], 12, { dir: 'v', size: 2.2, label: l('course 24', 'stroke 24') });
-    sv.dim([50, 380], [50, 468], 6, { dir: 'v', size: 2.2 });
-    sv.dim([50, 380], [43, 708], 13, { dir: 'v', size: 2.2 });
-    sv.leader([32, 600], 8, -8, 'Ø64');
-    sv.leader([-26, 600], -16, -10, l('corps métal', 'metal body'));
-    sv.leader([-6, 400], -18, -4, l('olive fermée', 'olive closed'));
-    sv.leader([-8, 440], -20, 2, l('ouverte (fantôme)', 'open (phantom)'), { color: COLORS.muted });
-    sv.leader([-10, 384], -14, 12, l('buse inox', 'stainless tip'));
-    sv.leader([-14, 650], -12, -14, l('presse-étoupe', 'gland'));
-    sv.leader([-38, 702], -8, -8, l('volant', 'handwheel'));
-    sv.leader([-80, 560], 2, -16, 'PVC Ø50');
-    sv.leader([-45, 464], -6, -10, l('bride 4 × M5', '4 × M5 flange'));
-    sv.caption([-10, 302], l('INJECTEUR À POINTEAU — coupe', 'SPEAR INJECTOR — section'), '1:2');
+    sv.dim([-dTop / 2, N], [dTop / 2, N], 13, { dir: 'h', label: `Ø${dTop}`, size: 2.2 });
+    sv.dim([-43, wy], [43, wy], -6, { dir: 'h', size: 2.2, prefix: 'Ø' });
+    sv.dim([12, N + 30], [12, N + 30 + SPEAR.stroke], 12, {
+      dir: 'v',
+      size: 2.2,
+      label: l(`course ${SPEAR.stroke}`, `stroke ${SPEAR.stroke}`),
+    });
+    sv.dim([50, N], [50, SPEAR.flange.y1], 6, { dir: 'v', size: 2.2 });
+    sv.dim([50, N], [43, wy + SPEAR.wheel.tube], 13, { dir: 'v', size: 2.2 });
+    sv.leader([32, T - 30], 8, -8, `Ø${2 * SPEAR.bodyR}`);
+    sv.leader([-26, T - 20], -16, -10, l('corps métal', 'metal body'));
+    sv.leader([-6, N + 20], -18, 7, l('olive fermée', 'olive closed'));
+    sv.leader([-8, N + 60], -20, 4, l('ouverte (fantôme)', 'open (phantom)'), { color: COLORS.muted });
+    sv.leader([-10, N + 4], -14, 12, l('buse inox', 'stainless tip'));
+    sv.leader([-14, T + 12], -12, -12, l('presse-étoupe', 'gland'));
+    sv.leader([-38, wy], -8, -8, l('volant', 'handwheel'));
+    sv.leader([-80, SPEAR.inlet.y + 10], 2, -14, 'PVC Ø50');
+    sv.leader([-45, M.roof + 4], -8, 6, l('bride 4 × M5', '4 × M5 flange'));
+    sv.caption([-10, N - 66], l('INJECTEUR À POINTEAU — coupe', 'SPEAR INJECTOR — section'), '1:2');
 
     // ---- side injector, section 1:2
-    const dSide = 6;
-    const exit = v2 ? -149 : -150;
-    const xv = d.view(350, 58, 0.5);
+    const exit = v2 ? SIDE.tip + 1 : SIDE.tip;
+    const s = v2 ? SIDE.v2 : SIDE.v1;
+    const fx0 = SIDE.flangeX - s.flangeL / 2;
+    const xv = d.view(345, 58, 0.5);
     sideSection(xv, v2, dSide);
-    xv.dim([-290, 62], [exit, 16], -5, { dir: 'h', size: 2.2 });
-    xv.dim([v2 ? -423 : -422, 42], [exit, 16], -22, { dir: 'h', size: 2.2 });
+    xv.dim([M.x0, 62], [exit, 16], -5, { dir: 'h', size: 2.2 });
+    xv.dim([fx0, 42], [exit, 16], -22, { dir: 'h', size: 2.2 });
     xv.dim([exit, -dSide / 2], [exit, dSide / 2], 10, { dir: 'v', label: `Ø${dSide}`, size: 2.2 });
     const lab = (at: Pt, ex: number, ey: number, t: Text) => {
       const q = xv.map(at);
       xv.leader(at, ex - q[0], ey - q[1], t);
     };
-    lab([-294, -50], 209, 91, l('paroi + platine', 'wall + plate'));
-    p.text(xv.map([v2 ? -416 : -416, 47]), v2 ? 'DN25' : l('4 × M6', '4 × M6'), { size: 2, anchor: 'middle' });
+    lab([M.x0 - 4, -s.plate / 2 + 4], 226, 91, l('paroi + platine', 'wall + plate'));
+    p.text(xv.map([SIDE.flangeX, 47]), v2 ? 'DN25' : l('4 × M6', '4 × M6'), { size: 2, anchor: 'middle' });
     if (v2) {
-      lab([-447, -50], 131, 91, l('collier baïonnette ¼ tour, oreilles', '¼-turn bayonet collar, grips'));
-      lab([-240, -18], 232, 98, l('lance alu', 'alu lance'));
-      lab([-155, -16], 268, 91, l('insert + joint', 'insert + O-ring'));
+      lab([-447, -50], 126, 91, l('collier baïonnette ¼ tour, oreilles', '¼-turn bayonet collar, grips'));
+      lab([-320, -20], 176, 98, l('lance alu', 'alu lance'));
+      lab([SIDE.tip - 5, -16], 258, 98, l('insert + joint', 'insert + O-ring'));
     } else {
-      lab([-440, -24], 131, 91, l('tube PVC Ø50 → bride imprimée', 'PVC Ø50 pipe → printed flange'));
-      lab([-260, -16], 232, 98, l('corps imprimé PETG / ASA', 'printed PETG / ASA body'));
-      lab([-153, -12.5], 268, 91, l('bague repère', 'marker ring'));
+      lab([-440, -24], 126, 91, l('tube PVC Ø50 → bride imprimée', 'PVC Ø50 pipe → printed flange'));
+      lab([-320, -18], 176, 98, l('corps imprimé PETG / ASA', 'printed PETG / ASA body'));
+      lab([SIDE.tip - 3, -12.5], 258, 98, l('bague repère', 'marker ring'));
     }
     xv.caption(
       [-400, -92],
@@ -645,7 +532,7 @@ export const injectors: DrawingSheet = {
       l(`${tr(dec(flow(dm, 76), 2))} L/s`, `${flow(dm, 76).toFixed(2)} L/s`),
       l(`${tr(dec(flow(dm, 21), 2))} L/s`, `${flow(dm, 21).toFixed(2)} L/s`),
       `${Math.round(1000 * G * (flow(dm, 76) / 1000) * 76)} W`,
-      dm <= 6 ? 'S' : dm === 7 ? 'S / L' : 'L',
+      setFor(dm),
     ]);
     const cols = [
       { label: l('Buse', 'Nozzle'), w: 16 },
@@ -655,7 +542,7 @@ export const injectors: DrawingSheet = {
       { label: l('P hydr. 76 m', 'Hydr. P 76 m'), w: 30, align: 'end' as const },
       { label: l('Augets', 'Buckets'), w: 20, align: 'middle' as const },
     ];
-    const rh = 4.8;
+    const rh = 4.6;
     d.table(tx, ty, cols, rows, rh);
     INSERTS.forEach(([, color], i) => {
       const y = ty + rh * (i + 1) + 1.1;
@@ -668,8 +555,8 @@ export const injectors: DrawingSheet = {
       ny,
       152,
       l(
-        'Chute nette 76 m (site A, jet ≈ 38,6 m/s) et 21 m (site B, ≈ 20,3 m/s) ; le débit réel baisse avec les pertes de la conduite (Ø55 int., 350 m). * Ø7 et Ø12 : inserts optionnels, non modélisés. Jeu d’augets : S jusqu’à Ø6, L dès Ø8.',
-        'Net head 76 m (site A, jet ≈ 38.6 m/s) and 21 m (site B, ≈ 20.3 m/s); real flow drops with penstock losses (55 ID, 350 m). * Ø7 and Ø12: optional inserts, not modelled. Bucket set: S up to Ø6, L from Ø8.',
+        `Chute nette 76 m (site A) et 21 m (site B) ; le débit réel baisse avec les pertes de la conduite (Ø55 int., 350 m). * Ø7, Ø12 et Ø${M.maxNozzle} : inserts optionnels, non modélisés. Jeu d’augets selon le rendement d’auget du simulateur : S jusqu’à Ø7, L dès Ø8.`,
+        `Net head 76 m (site A) and 21 m (site B); real flow drops with penstock losses (55 ID, 350 m). * Ø7, Ø12 and Ø${M.maxNozzle}: optional inserts, not modelled. Bucket set from the simulator’s bucket efficiency: S up to Ø7, L from Ø8.`,
       ),
     );
     ny = note(
@@ -678,34 +565,54 @@ export const injectors: DrawingSheet = {
       ny,
       152,
       l(
-        `Données constructeur Hydronome (site officiel, 2024) : buse Ø14 maxi (Q ≈ ${tr(dec(flow(14, 76), 1))} L/s à 76 m), 2 injecteurs ou 1 injecteur variable.`,
-        `Hydronome maker data (official site, 2024): Ø14 max nozzle (Q ≈ ${flow(14, 76).toFixed(1)} L/s at 76 m), 2 injectors or 1 variable injector.`,
+        `Données constructeur Hydronome (site officiel) : buse Ø14 maxi (Q ≈ ${tr(dec(flow(14, 76), 1))} L/s à 76 m), 2 injecteurs ou 1 injecteur variable ; la roue L ${M.buckets} augets Ø${2 * R_TIP_MM} du modèle accepte cette buse.`,
+        `Hydronome maker data (official site): Ø14 max nozzle (Q ≈ ${flow(14, 76).toFixed(1)} L/s at 76 m), 2 injectors or 1 variable injector; the model’s ${M.buckets}-bucket Ø${2 * R_TIP_MM} L runner takes this nozzle.`,
       ),
       { color: COLORS.v2 },
     );
 
     // ---- jet geometry + deflector kinematics, partial view 1:2
-    const box: Box = { x0: -196, x1: 12, y0: 40, y1: 470 };
-    const jv = d.view(394, 255, 0.5);
-    jetGeometry(jv, v2, box);
-    jv.dim([-115, 230], [0, 230], 0, { dir: 'h', size: 2 });
-    jv.dim([0, 115], [0, 230], 0, { dir: 'v', size: 2 });
-    jv.dim([-121, 380], [-121, 333.2], -4, { dir: 'v', size: 2 });
-    jv.dim([-103, 380], [-87.45, 357.4], -3, { size: 2, label: tr(dec(27.5, 1)) });
-    jv.dimRadius([0, 230], 115, 200, { label: 'R115', size: 2 });
-    jv.leader([-115, 230], -12, 10, l('tangence', 'tangent point'), { color: COLORS.water });
-    jv.leader([-109, 345], 10, 4, l('jet libre', 'free jet'), { color: COLORS.water });
-    jv.leader([-60, 230 - 154.5 * Math.sin(67 * deg)], -6, 10, l('Ø309 augets', 'Ø309 tips'));
+    const jb: Box = { x0: -196, x1: 12, y0: 26, y1: M.roof + 20 };
+    const jv = d.view(396, 245, 0.5);
+    jetGeometry(jv, v2, jb, dTop, dSide);
+    const x = SPEAR.x;
+    const yTip = AX + Math.sqrt(R_TIP_MM ** 2 - x * x);
+    const corner: Pt = [x + SPEAR.tipR, N];
+    const dist = (q: Pt) => Math.hypot(q[0], q[1] - AX);
+    const gapL = dist(corner) - R_TIP_MM;
+    const k = gapL / dist(corner);
+    jv.dim([x, AX], [0, AX], 0, { dir: 'h', size: 2 });
+    jv.dim([0, SIDE.y], [0, AX], 0, { dir: 'v', size: 2 });
+    jv.dim([x, N], [x, yTip], -4, { dir: 'v', size: 2 });
+    jv.dim(corner, [corner[0] - corner[0] * k, corner[1] - (corner[1] - AX) * k], -3, {
+      size: 2,
+      label: tr(dec(gapL, 1)),
+    });
+    jv.dimRadius([0, AX], M.rPitch, 200, { label: `R${M.rPitch}`, size: 2 });
+    jv.leader([x, AX], -12, 10, l('tangence', 'tangent point'), { color: COLORS.water });
+    jv.leader([x + dTop / 2, N - 40], 14, 10, l('jet libre', 'free jet'), { color: COLORS.water });
+    jv.leader(
+      [R_TIP_MM * Math.cos(247 * deg), AX + R_TIP_MM * Math.sin(247 * deg)],
+      -6,
+      10,
+      l(`Ø${2 * R_TIP_MM} augets`, `Ø${2 * R_TIP_MM} tips`),
+    );
+    const [dt, ds] = DEFLECTORS;
+    const ang = (a: number) => tr(dec(a, Number.isInteger(a) ? 0 : 1)) + '°';
     if (v2) {
-      p.text(jv.map([-144, 362]), '−66°', { size: 2, mono: true, color: COLORS.v2, anchor: 'end' });
-      p.text(jv.map([-98, 388]), '−31°', { size: 2, mono: true, color: COLORS.v2 });
-      p.text(jv.map([-128, 58]), '18,7°', { size: 2, mono: true, color: COLORS.v2 });
-      p.text(jv.map([-132, 100]), '53,7°', { size: 2, mono: true, color: COLORS.v2, anchor: 'end' });
-      jv.leader([-170, 400], -4, -10, l('pivot Ø10', 'Ø10 pivot'), { color: COLORS.v2 });
-      jv.leader([-160, 330], -2, -8, l('jet coupé → paroi', 'cut jet → wall'), { color: COLORS.water });
+      const at = (dfl: typeof dt, r: number, a: number): Pt => [
+        dfl.pivot[0] + r * Math.cos(a * deg),
+        dfl.pivot[1] + r * Math.sin(a * deg),
+      ];
+      p.text(jv.map(at(dt, 34, -55)), ang(dt.rest), { size: 2, mono: true, color: COLORS.v2 });
+      p.text(jv.map(at(dt, 52, 9)), ang(dt.trip), { size: 2, mono: true, color: COLORS.v2 });
+      p.text(jv.map(at(ds, 52, ds.trip / 2)), ang(ds.trip), { size: 2, mono: true, color: COLORS.v2 });
+      p.text(jv.map(at(ds, 18, 38)), ang(ds.rest), { size: 2, mono: true, color: COLORS.v2 });
+      jv.leader(dt.pivot, -4, 8, l('pivot Ø10', 'Ø10 pivot'), { color: COLORS.v2 });
+      jv.leader([x - 45, N - dt.hit - 16.5], -2, -8, l('jet coupé → paroi', 'cut jet → wall'), { color: COLORS.water });
     }
     jv.caption(
-      [-92, 28],
+      [-92, 10],
       v2 ? l('JETS ET DÉFLECTEURS', 'JETS AND DEFLECTORS') : l('GÉOMÉTRIE DES JETS', 'JET GEOMETRY'),
       tr(l('1:2 — vue partielle', '1:2 — partial view')),
     );
@@ -714,19 +621,23 @@ export const injectors: DrawingSheet = {
     let ry = Math.max(ny + 2, 186);
     p.text([tx, ry], l('JETS — CALAGE', 'JETS — SETTING OUT'), { size: 2.3, weight: 'bold' });
     ry += 2.5;
+    const nz = dist([x, N]);
+    const free = N - yTip;
+    const gapS = dist(corner) - tipR(spec('S'));
+    const D = 2 * M.rPitch;
     const jn: Text[] = [
       l(
-        'Les deux jets sont dans le plan médian de la roue et tangents au cercle primitif Ø230 : jet haut à 115 à gauche de l’axe, jet latéral à 115 sous l’axe.',
-        'Both jets lie in the runner mid-plane, tangent to the Ø230 pitch circle: top jet 115 left of the axis, side jet 115 below it.',
+        `Les deux jets sont dans le plan médian de la roue et tangents au cercle primitif Ø${D} : jet haut à ${-x} à gauche de l’axe, jet latéral à ${AX - SIDE.y} sous l’axe.`,
+        `Both jets lie in the runner mid-plane, tangent to the Ø${D} pitch circle: top jet ${-x} left of the axis, side jet ${AX - SIDE.y} below it.`,
       ),
       l(
-        'Buses à 189 du centre de roue : jet libre ≈ 47 avant le premier auget, jeu buse / augets ≈ 27,5 (jeu L) – 33 (jeu S).',
-        'Nozzles 189 from the runner centre: free jet ≈ 47 before the first bucket, nozzle / bucket clearance ≈ 27.5 (L set) – 33 (S set).',
+        `Buses à ≈ ${Math.round(nz)} du centre de roue : jet libre ≈ ${Math.round(free)} avant le cercle des pointes Ø${2 * R_TIP_MM}, jeu buse / augets ≈ ${tr(dec(gapL, 1))} (jeu L) – ${Math.round(gapS)} (jeu S).`,
+        `Nozzles ≈ ${Math.round(nz)} from the runner centre: free jet ≈ ${Math.round(free)} before the Ø${2 * R_TIP_MM} tip circle, nozzle / bucket clearance ≈ ${dec(gapL, 1).en} (L set) – ${Math.round(gapS)} (S set).`,
       ),
       v2
         ? l(
-            'Déflecteurs : volets inox sur axes Ø10 traversant la cloison. Repos −66° / 18,7° (trait plein), déclenchés −31° / 53,7° (fantôme) en < 0,5 s par ressort, gâche 12 V à manque de courant. Le jet coupé part contre la paroi, la conduite reste en débit : pas de coup de bélier.',
-            'Deflectors: stainless blades on Ø10 shafts through the partition. Rest −66° / 18.7° (solid), tripped −31° / 53.7° (phantom) in < 0.5 s by spring, fail-safe 12 V latch. The cut jet goes to the wall and the penstock keeps flowing: no water hammer.',
+            `Déflecteurs : volets inox (${dt.len} et ${ds.len}) sur axes Ø10 traversant la cloison. Repos ${ang(dt.rest)} / ${ang(ds.rest)} (trait plein), déclenchés ${ang(dt.trip)} / ${ang(ds.trip)} (fantôme) en < 0,5 s : à l’arrière, levier sur chaque axe + biellette, ressort de traction entre un goujon du flasque et l’axe du levier bas, retenu par le noyau d’une gâche 12 V à manque de courant. Le jet coupé part contre la paroi, la conduite reste en débit : pas de coup de bélier.`,
+            `Deflectors: stainless blades (${dt.len} and ${ds.len}) on Ø10 shafts through the partition. Rest ${ang(dt.rest)} / ${ang(ds.rest)} (solid), tripped ${ang(dt.trip)} / ${ang(ds.trip)} (phantom) in < 0.5 s: at the rear, a lever on each shaft + link rod, tension spring between a rear-panel stud and the lower lever pin, held by the plunger of a fail-safe 12 V latch. The cut jet goes to the wall and the penstock keeps flowing: no water hammer.`,
           )
         : l(
             'V1 : pas de déflecteur ; en cas de perte de charge électrique, seul le délesteur empêche l’emballement de la roue (voir la V2).',
@@ -741,8 +652,8 @@ export const injectors: DrawingSheet = {
     let sy = 234;
     const sn: Text[] = [
       l(
-        'L’olive Ø23 vient en appui sur le cône de buse (fermé) ; une levée de 24 mm (≈ 2,5 tours de volant) dégage tout l’orifice Ø12.',
-        'The Ø23 olive seats on the nozzle cone (closed); a 24 mm lift (≈ 2.5 handwheel turns) clears the whole Ø12 orifice.',
+        `L’olive Ø23 vient en appui sur le cône de buse (fermé) ; une levée de ${SPEAR.stroke} mm (≈ 2,5 tours de volant) dégage tout l’orifice Ø${dTop}.`,
+        `The Ø23 olive seats on the nozzle cone (closed); a ${SPEAR.stroke} mm lift (≈ 2.5 handwheel turns) clears the whole Ø${dTop} orifice.`,
       ),
       l(
         'Le débit varie, la vitesse du jet reste ≈ √(2 g H). Fermer lentement : coup de bélier.',

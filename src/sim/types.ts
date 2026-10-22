@@ -67,6 +67,8 @@ export interface SimState {
   staticBar: number; // gauge pressure with every valve closed
   vJet: number; // jet velocity, m/s
   mainValve: number; // 0..1 actual main valve position
+  /** Bypass / drain valve position 0..1 (flushes the penstock without feeding the runner). */
+  bypass: number;
   nozzles: NozzleState[];
 
   // ---- mechanics -----------------------------------------------------------

@@ -11,8 +11,9 @@ import { D } from './dims';
 
 const TEETH = 12;
 const POLES = 14;
-const Z_STATOR: [number, number] = [-0.072, -0.036];
-const Z_BELL: [number, number] = [-0.088, -0.03];
+/** Axial extents (Z) of the stator stack and of the rotor bell, in the 200 mm dry chamber. */
+export const Z_STATOR: [number, number] = [-0.112, -0.076];
+export const Z_BELL: [number, number] = [-0.128, -0.07];
 const R_SHOE = 0.0565;
 
 function statorLamination(thick: number): THREE.ExtrudeGeometry {
@@ -233,8 +234,8 @@ export function buildGenerator(
     const start = new THREE.Vector3(0.03 + i * 0.006, D.axisY - 0.035, Z_STATOR[0] - 0.002);
     const pts = [
       start,
-      new THREE.Vector3(0.05 + i * 0.006, D.axisY - 0.08, -0.06),
-      new THREE.Vector3(0.12, 0.06, -0.05 + i * 0.002),
+      new THREE.Vector3(0.05 + i * 0.006, D.axisY - 0.08, -0.1),
+      new THREE.Vector3(0.12, 0.06, -0.07 + i * 0.002),
       new THREE.Vector3(0.19 - 0.016 + i * 0.016, D.baseT + 0.025, -0.035),
     ];
     leads.add(mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, 0.0016, 6), colors[i]));
@@ -270,21 +271,21 @@ export function buildGenerator(
 
   // --- V2 sensors: Hall RPM sensor facing the rotor, NTC on a coil (pressure transducer: see hydraulics)
   const hallBracket = new THREE.BoxGeometry(0.012, 0.05, 0.012);
-  sensors.add(mesh(hallBracket, MAT.alu(), [0, D.axisY + 0.105, -0.06]));
+  sensors.add(mesh(hallBracket, MAT.alu(), [0, D.axisY + 0.112, -0.1]));
   const hall = new THREE.CylinderGeometry(0.006, 0.006, 0.03, 16);
-  sensors.add(mesh(hall, MAT.printBlack(), [0, D.axisY + 0.093, -0.06]));
+  sensors.add(mesh(hall, MAT.printBlack(), [0, D.axisY + 0.097, -0.1]));
   const hallLed = emissive(0xff8a00, 0);
-  sensors.add(mesh(new THREE.SphereGeometry(0.0022, 8, 6), hallLed, [0.007, D.axisY + 0.102, -0.06]));
+  sensors.add(mesh(new THREE.SphereGeometry(0.0022, 8, 6), hallLed, [0.007, D.axisY + 0.106, -0.1]));
   const ntc = new THREE.SphereGeometry(0.003, 10, 8);
-  sensors.add(mesh(ntc, MAT.printBlack(), [0, D.axisY + 0.051, -0.054]));
+  sensors.add(mesh(ntc, MAT.printBlack(), [0, D.axisY + 0.051, -0.094]));
   sensors.add(
     mesh(
       new THREE.TubeGeometry(
         new THREE.CatmullRomCurve3([
-          new THREE.Vector3(0, D.axisY + 0.051, -0.054),
-          new THREE.Vector3(0.05, D.axisY + 0.09, -0.08),
-          new THREE.Vector3(0.12, 0.12, -0.12),
-          new THREE.Vector3(0.19, 0.075, -0.12),
+          new THREE.Vector3(0, D.axisY + 0.051, -0.094),
+          new THREE.Vector3(0.05, D.axisY + 0.07, -0.12),
+          new THREE.Vector3(0.12, 0.12, -0.14),
+          new THREE.Vector3(0.19, 0.075, -0.14),
         ]),
         24,
         0.0011,

@@ -37,7 +37,8 @@ export function nozzleArea(dMm: number, cd = 0.96): number {
 
 /** Bucket efficiency vs. jet diameter: buckets are designed for one jet size. */
 export function bucketEfficiency(jetMm: number, set: 'S' | 'L'): number {
-  const match = set === 'L' ? 8 : 6;
+  // S: prototype buckets for a Ø6 jet; L: the 26-bucket Ø244 runner, good from Ø8 to Ø14
+  const match = set === 'L' ? 10 : 6;
   const m = (jetMm - match) / match;
   const k = m > 0 ? 0.8 : 0.5; // too big a jet spills over the rim, too small loses less
   return 0.86 * Math.max(0.35, 1 - k * m * m);

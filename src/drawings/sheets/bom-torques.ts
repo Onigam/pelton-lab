@@ -8,6 +8,8 @@ import { l, tr, type L } from '../../i18n';
 import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
 import type { DrawingSheet } from '../types';
 import { estW, fit, grid, HEAD_FILL, para, wrap, type Cell } from './elec-symbols';
+import { BASE, M, PLATE, SHAFT, VENTS } from './turbine-geom';
+import { presetParams } from '../../sim/presets';
 
 const V2C = COLORS.v2;
 const SZ = 1.9;
@@ -27,22 +29,25 @@ function lab(
   });
 }
 
-/** Reference / standard column of the BOM (dimensions in mm). */
+/** Reference / standard column of the BOM (dimensions in mm, from the 3D model where it has them). */
 const REF: Record<string, string | L> = {
-  base: '580 × 360 × 10',
-  partition: '580 × 460 × 8',
-  window: '580 × 460 × 8',
+  base: `${BASE.x1 - BASE.x0} × ${BASE.z1 - BASE.z0} × ${M.baseT}`,
+  partition: `${PLATE.w} × ${PLATE.h} × ${M.partT}`,
+  window: `${PLATE.w} × ${PLATE.h} × 8`,
   gasket: l('EPDM 10 × 4, ≈ 4 m', 'EPDM 10 × 4, ≈ 4 m'),
-  'rear-panel': l('grille Ø100, PE M20', 'Ø100 grille, M20 gland'),
+  'rear-panel': l(
+    `ouïes Ø${VENTS.d} + ${VENTS.w} × ${VENTS.h}, PE M20`,
+    `Ø${VENTS.d} + ${VENTS.w} × ${VENTS.h} vents, M20 gland`,
+  ),
   cover: l('EN AW-5083 H111 ép. 2', 'EN AW-5083 H111 t. 2'),
   'bearing-1': '6204-2RS C3 · 20×47×14',
   'bearing-2': '6204-2RS C3 · 20×47×14',
   'bearing-3': '6204-2RS C3 · 20×47×14',
   seal: 'TC 20 × 35 × 7',
-  shaft: 'Ø20 h6 × 400',
-  'wheel-hub': 'Ø190 × 12, 4 × M5',
-  buckets: l('Ø primitif 230, jeu S/L', 'pitch Ø230, set S/L'),
-  'wheel-ring': '22 × M4 A4 + nylstop',
+  shaft: `Ø20 h6 × ${SHAFT.len}`,
+  'wheel-hub': `Ø${2 * M.hubR} × ${M.hubT}, 4 × M5`,
+  buckets: l(`Ø primitif ${2 * M.rPitch}, jeu S/L`, `pitch Ø${2 * M.rPitch}, set S/L`),
+  'wheel-ring': `${M.buckets} × M4 A4 + nylstop`,
   'wheel-lock': 'Taper-Lock 1108 Ø20 + M16',
   stator: l('12 dents Ø113 × 36', '12 teeth Ø113 × 36'),
   rotor: l('cloche Ø156, 14 pôles', 'Ø156 bell, 14 poles'),
@@ -50,17 +55,18 @@ const REF: Record<string, string | L> = {
   rectifier: '3~ 90 A / 1 600 V',
   terminal: l('16 mm², PE M20 IP68', '16 mm², M20 IP68 gland'),
   cable: 'H1Z2Z2-K 2 × 6 mm²',
-  'injector-top': l('buse Ø10 max', 'Ø10 max nozzle'),
+  'injector-top': l(`buse Ø${presetParams('siteA').top.d} max`, `Ø${presetParams('siteA').top.d} max nozzle`),
   manifold: 'PVC-U Ø50 PN16',
   'valve-branch': 'DN32 PN16',
   gauge: '0–10 bar · Ø63 · 1/4" BSP',
   'valve-main': 'DN50 PN16',
+  'valve-bypass': l('Ø40 PVC, ¼ tour, fermée', 'Ø40 PVC, ¼-turn, closed'),
   'penstock-end': 'PE100 Ø63 PN10',
-  trestles: l('madriers 75 × 200', '75 × 200 beams'),
-  'bearing-block': '2 × 6204 · 6 × M6',
+  trestles: l('madriers 75 × 150', '75 × 150 beams'),
+  'bearing-block': '2 × 6204 · 4 × M6',
   'injector-side': l('buse Ø6 / Ø8', 'Ø6 / Ø8 nozzle'),
   skid: l('profilés 40 × 40 rainure 8', '40 × 40 slot-8 extrusions'),
-  'bearing-cartridge': '6082-T6 · 2 × 6204 · 4 × M6',
+  'bearing-cartridge': '6082-T6 · 2 × 6204 · 6 × M5',
   'injector-quick': l('inserts Ø4–10, DN25 PN16', 'Ø4–10 inserts, DN25 PN16'),
   deflector: l('gâche 12 V, < 0,5 s', '12 V latch, < 0.5 s'),
   latches: l('inox 304, ≈ 900 N', '304 stainless, ≈ 900 N'),
@@ -121,7 +127,7 @@ function torques(p: View, v2: boolean): number {
   const rows: [L, string | L, string, L, '' | 'v1' | 'v2', boolean][] = [
     [
       l('Augets / bague de serrage', 'Buckets / clamping ring'),
-      '22 × M4 A4 nylstop',
+      `${M.buckets} × M4 A4 nylstop`,
       '2',
       l('en étoile, 3 passes ; recontrôle à 50 h', 'star pattern, 3 passes; re-check at 50 h'),
       '',
@@ -153,7 +159,7 @@ function torques(p: View, v2: boolean): number {
     ],
     [
       l('Palier imprimé', 'Printed bearing housing'),
-      '6 × M6',
+      '4 × M6',
       '3',
       l('à travers la cloison PMMA', 'through the PMMA partition'),
       'v1',
@@ -161,8 +167,8 @@ function torques(p: View, v2: boolean): number {
     ],
     [
       l('Cartouche de palier', 'Bearing cartridge'),
-      '4 × M6 A4',
-      '3',
+      '6 × M5 A4',
+      '4',
       l('bride alu sur PMMA, rondelles larges', 'alu flange on PMMA, large washers'),
       'v2',
       false,

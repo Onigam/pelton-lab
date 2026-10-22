@@ -9,8 +9,8 @@ const ASSEMBLY_1: GuideStep[] = [
     id: 'kit',
     title: l('Préparer le kit et l’atelier', 'Prepare the kit and the workspace'),
     text: l(
-      'Étalez toutes les pièces sur un établi propre et pointez-les sur la nomenclature : pièces imprimées, plaques de PMMA, capot aluminium, roulements, joints et visserie inox. Vérifiez que le jeu d’**augets** correspond bien au diamètre de l’injecteur prévu (6 ou 8 mm). Triez la visserie par taille dans des barquettes.',
-      'Lay every part out on a clean bench and tick it off the bill of materials: printed parts, PMMA plates, aluminium cover, bearings, seals and stainless fasteners. Check that the **bucket** set matches the planned injector diameter (6 or 8 mm). Sort the fasteners by size into trays.',
+      'Étalez toutes les pièces sur un établi propre et pointez-les sur la nomenclature : pièces imprimées, plaques de PMMA, capot aluminium, roulements, joints et visserie inox. Vérifiez que le jeu d’**augets** correspond bien à l’injecteur prévu : jeu S pour la buse Ø6 du prototype, jeu L pour les buses Ø8 à Ø14. Triez la visserie par taille dans des barquettes.',
+      'Lay every part out on a clean bench and tick it off the bill of materials: printed parts, PMMA plates, aluminium cover, bearings, seals and stainless fasteners. Check that the **bucket** set matches the planned injector: S set for the prototype’s Ø6 nozzle, L set for Ø8 to Ø14 nozzles. Sort the fasteners by size into trays.',
     ),
     parts: [],
     tools: [
@@ -21,8 +21,8 @@ const ASSEMBLY_1: GuideStep[] = [
       l('Graisse, gants, chiffons', 'Grease, gloves, rags'),
     ],
     tip: l(
-      'Pesez les 22 augets dès maintenant et appariez-les deux à deux à ±0,5 g : vous les monterez en vis-à-vis à l’étape de la roue.',
-      'Weigh the 22 buckets now and pair them within ±0.5 g: they will be fitted opposite each other at the runner step.',
+      'Pesez les 26 augets dès maintenant et appariez-les deux à deux à ±0,5 g : vous monterez les 13 paires en vis-à-vis à l’étape de la roue.',
+      'Weigh the 26 buckets now and pair them within ±0.5 g: the 13 pairs will be fitted opposite each other at the runner step.',
     ),
     duration: '30 min',
     v2: {
@@ -36,8 +36,8 @@ const ASSEMBLY_1: GuideStep[] = [
     id: 'support',
     title: l('Monter le support', 'Set up the stand'),
     text: l(
-      'Installez les **tréteaux** de part et d’autre du canal de fuite et posez les deux madriers dessus, de niveau. Le socle doit se retrouver à environ 1 m du sol et jamais à moins de 30 à 40 cm au-dessus de l’eau, pour que celle-ci quitte la roue librement.',
-      'Set the **trestles** on either side of the tailrace and lay the two beams across them, level. The base must end up about 1 m above the ground and never less than 30–40 cm above the water, so that the water can leave the runner freely.',
+      'Installez les **tréteaux** de part et d’autre du canal de fuite et posez les deux madriers dessus, de niveau. Le socle doit se retrouver à environ 0,9 m du sol, ce qui met l’axe de la roue vers 1,1 m, et jamais à moins de 30 à 40 cm au-dessus de l’eau, pour que celle-ci quitte la roue librement ; le constructeur demande au moins 50 cm entre la turbine et le sol.',
+      'Set the **trestles** on either side of the tailrace and lay the two beams across them, level. The base must end up about 0.9 m above the ground, which puts the runner axis at about 1.1 m, and never less than 30–40 cm above the water, so that the water can leave the runner freely; the maker asks for at least 50 cm between the turbine and the ground.',
     ),
     parts: ['trestles'],
     tools: [l('Niveau à bulle, mètre', 'Spirit level, tape measure'), l('Dalles ou cales', 'Paving slabs or shims')],
@@ -46,8 +46,8 @@ const ASSEMBLY_1: GuideStep[] = [
       'Stand the feet on paving slabs: ground soaked by the tailrace sinks over the weeks.',
     ),
     warning: l(
-      'Une turbine qui s’emballe vibre fort : un support instable peut basculer avec 30 kg de machine et une conduite sous pression dessus.',
-      'A runaway turbine vibrates hard: an unstable stand can tip over with 30 kg of machine and a pressurised pipe on it.',
+      'Une turbine qui s’emballe vibre fort : un support instable peut basculer avec une vingtaine de kilos de machine (22 kg pour le modèle commercial) et une conduite sous pression dessus.',
+      'A runaway turbine vibrates hard: an unstable stand can tip over with some twenty kilos of machine (22 kg for the commercial model) and a pressurised pipe on it.',
     ),
     duration: '30 min',
     v2: {
@@ -108,8 +108,8 @@ const ASSEMBLY_1: GuideStep[] = [
     id: 'bearings',
     title: l('Monter le palier et les roulements', 'Fit the bearing housing and bearings'),
     text: l(
-      'Pressez les **roulements 1 et 2** dans le **palier principal** en appuyant uniquement sur la bague extérieure, celle qui est ajustée serrée : l’effort ne doit jamais traverser les billes. Glissez l’entretoise entre eux, puis fixez le palier à travers la cloison avec ses six vis M6.',
-      'Press **bearings 1 and 2** into the **main bearing housing** by pushing only on the outer ring, the one with the tight fit: the force must never go through the balls. Slide the spacer between them, then fix the housing through the partition with its six M6 screws.',
+      'Pressez les **roulements 1 et 2** dans le **palier principal** en appuyant uniquement sur la bague extérieure, celle qui est ajustée serrée : l’effort ne doit jamais traverser les billes. Glissez l’entretoise entre eux, puis fixez le palier à travers la cloison avec ses quatre vis M6.',
+      'Press **bearings 1 and 2** into the **main bearing housing** by pushing only on the outer ring, the one with the tight fit: the force must never go through the balls. Slide the spacer between them, then fix the housing through the partition with its four M6 screws.',
     ),
     parts: ['bearing-block', 'bearing-1', 'bearing-2'],
     tools: [
@@ -129,8 +129,8 @@ const ASSEMBLY_1: GuideStep[] = [
     duration: '30 min',
     v2: {
       text: l(
-        'La **cartouche de palier** arrive prémontée, graissée et contrôlée à l’atelier : engagez-la dans l’alésage de la cloison et fixez sa bride par quatre vis M6. Aucun roulement n’est manipulé sur place.',
-        'The **bearing cartridge** arrives pre-assembled, greased and checked on the bench: slide it into the partition bore and fix its flange with four M6 screws. No bearing is handled on site.',
+        'La **cartouche de palier** arrive prémontée, graissée et contrôlée à l’atelier : engagez-la dans l’alésage de la cloison et fixez sa bride par six vis M5. Aucun roulement n’est manipulé sur place.',
+        'The **bearing cartridge** arrives pre-assembled, greased and checked on the bench: slide it into the partition bore and fix its flange with six M5 screws. No bearing is handled on site.',
       ),
       parts: ['bearing-cartridge', 'bearing-1', 'bearing-2'],
     },
@@ -164,8 +164,8 @@ const ASSEMBLY_1: GuideStep[] = [
     id: 'wheel',
     title: l('Assembler la roue Pelton', 'Assemble the Pelton runner'),
     text: l(
-      'Posez le **moyeu de roue** à plat et placez les 22 **augets** dans leurs logements, les paires de même masse face à face. Coiffez avec la **bague de serrage**, engagez les 22 vis M4 et serrez en étoile en trois passes : à la main, à 1 N·m, puis au couple final.',
-      'Lay the **hub disc** flat and place the 22 **buckets** in their seats, with pairs of equal mass facing each other. Cap them with the **clamping ring**, start the 22 M4 bolts and tighten in a star pattern in three passes: by hand, at 1 N·m, then to final torque.',
+      'Posez le **moyeu de roue** (Ø140) à plat et placez les 26 **augets** dans leurs logements, les paires de même masse face à face. Coiffez avec la **bague de serrage**, engagez les 26 vis M4 sur le cercle de Ø124 et serrez en étoile en trois passes : à la main, à 1 N·m, puis au couple final.',
+      'Lay the **hub disc** (Ø140) flat and place the 26 **buckets** in their seats, with pairs of equal mass facing each other. Cap them with the **clamping ring**, start the 26 M4 bolts on the Ø124 circle and tighten in a star pattern in three passes: by hand, at 1 N·m, then to final torque.',
     ),
     parts: ['wheel-hub', 'buckets', 'wheel-ring'],
     tools: [
@@ -173,8 +173,8 @@ const ASSEMBLY_1: GuideStep[] = [
       l('Clé de 7 et embout hexagonal 3 mm', '7 mm spanner and 3 mm hex bit'),
     ],
     tip: l(
-      'Avant le serrage final, vérifiez au réglet que toutes les arêtes d’augets sont au même rayon, à ±0,5 mm près.',
-      'Before final tightening, check with a rule that every splitter edge sits at the same radius, within ±0.5 mm.',
+      'Avant le serrage final, vérifiez au réglet que toutes les pointes d’augets sont sur le même cercle (Ø244 avec le jeu L), à ±0,5 mm près.',
+      'Before final tightening, check with a rule that every bucket tip sits on the same circle (Ø244 with the L set), within ±0.5 mm.',
     ),
     warning: l(
       'Au-delà de 2 N·m, le PETG s’écrase puis flue : la roue perd son serrage en quelques semaines et les augets prennent du jeu.',
@@ -387,8 +387,8 @@ const ASSEMBLY_2: GuideStep[] = [
     id: 'injectors',
     title: l('Monter les injecteurs', 'Fit the injectors'),
     text: l(
-      'Montez l’**injecteur à pointeau** sur la bride du haut et l’**injecteur fixe** imprimé sur le côté. Chaque jet doit frapper l’arête centrale des augets, tangent au cercle primitif de 230 mm : vérifiez-le à travers la vitre en glissant une tige droite dans la buse.',
-      'Fit the **spear-valve injector** on the top flange and the printed **fixed injector** on the side. Each jet must strike the buckets’ splitter ridge, tangent to the 230 mm pitch circle: check it through the window by sliding a straight rod into the nozzle.',
+      'Montez l’**injecteur à pointeau** sur la bride du toit plat et l’**injecteur fixe** imprimé sur la paroi haute. Chaque jet doit frapper l’arête centrale des augets, tangent au cercle primitif de 190 mm : le jet du haut descend à la verticale à 95 mm de l’axe, le jet latéral arrive à l’horizontale 95 mm sous l’axe. Vérifiez-le à travers la vitre en glissant une tige droite dans la buse.',
+      'Fit the **spear-valve injector** on the flat-roof flange and the printed **fixed injector** on the tall wall. Each jet must strike the buckets’ splitter ridge, tangent to the 190 mm pitch circle: the top jet comes straight down 95 mm from the axis, the side jet arrives horizontally 95 mm below the axis. Check it through the window by sliding a straight rod into the nozzle.',
     ),
     parts: ['injector-top', 'injector-side'],
     tools: [l('Tige de visée', 'Sighting rod'), l('Joints plats, ruban PTFE', 'Flat gaskets, PTFE tape')],
@@ -409,10 +409,10 @@ const ASSEMBLY_2: GuideStep[] = [
     id: 'manifold',
     title: l('Assembler la nourrice', 'Assemble the manifold'),
     text: l(
-      'Assemblez la **nourrice** en col de cygne : coupe d’équerre, ébavurage, décapant, colle PVC pression, emboîtement d’un seul geste. Montez les deux **vannes de branche**, rouge vers l’injecteur du haut et bleue vers l’injecteur latéral, puis le **manomètre** sur son té, avec du ruban PTFE.',
-      'Build the gooseneck **manifold**: square cut, deburr, primer, PVC pressure cement, push home in one stroke. Fit the two **branch valves**, red to the top injector and blue to the side injector, then the **pressure gauge** on its tee, with PTFE tape.',
+      'Assemblez la **nourrice** en col de cygne : coupe d’équerre, ébavurage, décapant, colle PVC pression, emboîtement d’un seul geste. Montez les deux **vannes de branche**, rouge vers l’injecteur du haut et bleue vers l’injecteur latéral, puis le **manomètre** sur son té, avec du ruban PTFE. Entre le té du manomètre et les vannes de branche, comme sur le plan d’injection du constructeur, collez le piquage de la **vanne de dérivation** et sa descente vers le canal de fuite : elle servira à purger l’air et à chasser les sédiments sans faire passer l’eau par la roue. Laissez-la fermée.',
+      'Build the gooseneck **manifold**: square cut, deburr, primer, PVC pressure cement, push home in one stroke. Fit the two **branch valves**, red to the top injector and blue to the side injector, then the **pressure gauge** on its tee, with PTFE tape. Between the gauge tee and the branch valves, as on the maker’s injection drawing, glue in the **bypass valve** tee and its drop pipe to the tailrace: it will be used to purge air and flush out sediment without sending water through the runner. Leave it closed.',
     ),
-    parts: ['manifold', 'valve-branch', 'gauge'],
+    parts: ['manifold', 'valve-branch', 'gauge', 'valve-bypass'],
     tools: [
       l('Coupe-tube PVC, ébavureur', 'PVC pipe cutter, deburrer'),
       l('Décapant et colle PVC pression', 'PVC primer and pressure cement'),
@@ -432,7 +432,7 @@ const ASSEMBLY_2: GuideStep[] = [
         'En V2, la nourrice est livrée assemblée, éprouvée à 1,5 × PN et étiquetée. Une **ventouse automatique** au point haut du col de cygne purge l’air en continu.',
         'In V2 the manifold arrives assembled, pressure-tested at 1.5 × PN and labelled. An **automatic air-release valve** at the high point of the gooseneck bleeds air continuously.',
       ),
-      parts: ['manifold', 'valve-branch', 'gauge', 'air-valve'],
+      parts: ['manifold', 'valve-branch', 'gauge', 'valve-bypass', 'air-valve'],
     },
   },
   {
@@ -490,8 +490,8 @@ const ASSEMBLY_2: GuideStep[] = [
     id: 'commissioning',
     title: l('Mise en service', 'Commissioning'),
     text: l(
-      'Raccordez la charge électrique avant d’ouvrir l’eau : régulateur ou batteries en ligne, délesteur actif. Ouvrez la vanne principale très lentement, vannes de branche fermées, purgez l’air au point haut, et contrôlez environ 7,4 bar statiques pour 76 m de chute. Ouvrez ensuite une vanne de branche puis le pointeau, réglez la tension fixe du régulateur et vérifiez une vitesse proche de 1 500 tr/min. Terminez en simulant des batteries pleines : le délesteur doit prendre le relais sans que la vitesse grimpe.',
-      'Connect the electrical load before opening the water: controller or batteries online, dump load active. Open the main valve very slowly with the branch valves closed, bleed the air at the high point, and check about 7.4 bar static for 76 m of head. Then open a branch valve and the spear, set the controller’s fixed voltage and check a speed close to 1,500 rpm. Finish by simulating full batteries: the dump load must take over without the speed climbing.',
+      'Raccordez la charge électrique avant d’ouvrir l’eau : régulateur ou batteries en ligne, délesteur actif. Vannes de branche fermées et **vanne de dérivation entrouverte**, ouvrez la vanne principale très lentement : l’air et les dépôts sortent par la dérivation. Quand l’eau coule claire et sans bulles, refermez la dérivation lentement, purgez le reste d’air au point haut et contrôlez environ 7,4 bar statiques pour 76 m de chute. Ouvrez ensuite une vanne de branche puis le pointeau, réglez la tension fixe du régulateur et vérifiez une vitesse d’environ 1 700 à 1 900 tr/min (la vidéo cite 1 500 tr/min en moyenne sur le prototype). Terminez en simulant des batteries pleines : le délesteur doit prendre le relais sans que la vitesse grimpe.',
+      'Connect the electrical load before opening the water: controller or batteries online, dump load active. With the branch valves closed and the **bypass valve slightly open**, open the main valve very slowly: air and debris leave through the bypass. Once the water runs clear and bubble-free, close the bypass slowly, bleed any remaining air at the high point and check about 7.4 bar static for 76 m of head. Then open a branch valve and the spear, set the controller’s fixed voltage and check a speed of about 1,700–1,900 rpm (the video quotes 1,500 rpm on average for the prototype). Finish by simulating full batteries: the dump load must take over without the speed climbing.',
     ),
     parts: [],
     tools: [
@@ -504,8 +504,8 @@ const ASSEMBLY_2: GuideStep[] = [
       'Log everything: static and running pressure, voltage, current, speed, housing temperature after one hour. These are your reference values for years to come.',
     ),
     warning: l(
-      'Ne laissez jamais la turbine tourner à vide : sans charge, elle approche le double de sa vitesse nominale et sa tension à vide peut dépasser 100 V. Et toute manœuvre de vanne se fait en au moins 20 secondes.',
-      'Never let the turbine run unloaded: without a load it approaches twice its rated speed and its open-circuit voltage can exceed 100 V. And every valve movement takes at least 20 seconds.',
+      'Ne laissez jamais la turbine tourner à vide : sans charge, elle approche le double de sa vitesse nominale et sa tension à vide peut atteindre 120 à 140 V. Et toute manœuvre de vanne, dérivation comprise, se fait en au moins 20 secondes.',
+      'Never let the turbine run unloaded: without a load it approaches twice its rated speed and its open-circuit voltage can reach 120–140 V. And every valve movement, the bypass included, takes at least 20 seconds.',
     ),
     duration: '1 h',
     v2: {

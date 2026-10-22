@@ -4,8 +4,10 @@
 // 3 kVA inverter); cable sections are labelled on every link.
 import { l, tr, type L } from '../../i18n';
 import { cableResistance } from '../../sim/physics';
+import { presetParams } from '../../sim/presets';
 import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
 import type { DrawingSheet } from '../types';
+import { hydro, nf } from './hyd-symbols';
 import {
   acWire,
   arrowHead,
@@ -216,12 +218,15 @@ function variantsNote(p: View): void {
   const x = 282;
   const w = 75;
   lab(p, [x, 20.5], l('VARIANTES DE RACCORDEMENT', 'TURBINE CONNECTION VARIANTS'), { b: true, s: 1.9 });
+  // site A operating point from the simulator (steady state, Ø6 nozzle)
+  const vSet = presetParams('siteA').vSet;
+  const rpm = nf(Math.round(hydro().a6.pt.rpm / 10) * 10, 0);
   const items: [string, L][] = [
     [
       'A',
       l(
-        'Site A : TriStar TS-MPPT-45 en tension d’entrée fixe (≈ 57 V) → vitesse constante ≈ 1 500 tr/min. Un MPPT classique fait « pomper » la vitesse.',
-        'Site A: TriStar TS-MPPT-45 in fixed input-voltage mode (≈ 57 V) → constant speed ≈ 1,500 rpm. A plain MPPT makes the speed hunt.',
+        `Site A : TriStar TS-MPPT-45 en tension d’entrée fixe (≈ ${vSet} V) → vitesse constante ≈ ${rpm.fr} tr/min. Un MPPT classique fait « pomper » la vitesse.`,
+        `Site A: TriStar TS-MPPT-45 in fixed input-voltage mode (≈ ${vSet} V) → constant speed ≈ ${rpm.en} rpm. A plain MPPT makes the speed hunt.`,
       ),
     ],
     [

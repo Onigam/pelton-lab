@@ -5,7 +5,7 @@ import { group, mesh } from '../util';
 import { bucketGeometry, bucketSpecFor } from './bucket';
 import { D, SPIN } from './dims';
 
-// Pelton runner: hub disc + 22 clamped buckets + clamping ring + taper-lock bush.
+// Pelton runner: hub disc + 26 clamped buckets + clamping ring + taper-lock bush.
 // Built inside the rotating "spinner" group (origin on the shaft axis, at the wheel plane).
 
 export interface Runner {
@@ -20,12 +20,12 @@ function hubDisc(): THREE.Mesh {
   const holes: [number, number, number][] = [[0, 0, D.shaftR + 0.012]];
   for (let i = 0; i < 4; i++) {
     const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
-    holes.push([Math.cos(a) * 0.03, Math.sin(a) * 0.03, 0.0035]);
+    holes.push([Math.cos(a) * 0.025, Math.sin(a) * 0.025, 0.0035]);
   }
   // lightening pockets, as printed hubs usually have
   for (let i = 0; i < 6; i++) {
     const a = (i / 6) * Math.PI * 2;
-    holes.push([Math.cos(a) * 0.052, Math.sin(a) * 0.052, 0.009]);
+    holes.push([Math.cos(a) * 0.044, Math.sin(a) * 0.044, 0.007]);
   }
   for (const [x, y, r] of holes) {
     const h = new THREE.Path();
@@ -49,7 +49,7 @@ function clampRing(): THREE.Group {
   const shape = new THREE.Shape();
   shape.absarc(0, 0, D.hubR + 0.002, 0, Math.PI * 2, false);
   const hole = new THREE.Path();
-  hole.absarc(0, 0, 0.062, 0, Math.PI * 2, true);
+  hole.absarc(0, 0, D.boltR - 0.01, 0, Math.PI * 2, true);
   shape.holes.push(hole);
   const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.005, bevelEnabled: false, curveSegments: 64 });
   g.add(mesh(geo, MAT.printBlack(), [0, 0, D.hubT / 2 + 0.004]));
@@ -61,7 +61,7 @@ function clampRing(): THREE.Group {
   const m = new THREE.Matrix4();
   for (let i = 0; i < D.buckets; i++) {
     const a = (i / D.buckets) * Math.PI * 2;
-    m.makeTranslation(Math.cos(a) * 0.075, Math.sin(a) * 0.075, D.hubT / 2 + 0.0105);
+    m.makeTranslation(Math.cos(a) * D.boltR, Math.sin(a) * D.boltR, D.hubT / 2 + 0.0105);
     heads.setMatrixAt(i, m);
   }
   heads.castShadow = true;
@@ -70,7 +70,7 @@ function clampRing(): THREE.Group {
   const nuts = new THREE.InstancedMesh(head, inox, D.buckets);
   for (let i = 0; i < D.buckets; i++) {
     const a = (i / D.buckets) * Math.PI * 2;
-    m.makeTranslation(Math.cos(a) * 0.075, Math.sin(a) * 0.075, -D.hubT / 2 - 0.006);
+    m.makeTranslation(Math.cos(a) * D.boltR, Math.sin(a) * D.boltR, -D.hubT / 2 - 0.006);
     nuts.setMatrixAt(i, m);
   }
   g.add(nuts);
@@ -114,7 +114,7 @@ function blurDisc(): THREE.Mesh {
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
   const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false });
-  const m = new THREE.Mesh(new THREE.PlaneGeometry(0.31, 0.31), mat);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 0.25), mat);
   m.userData.noShadow = true;
   return m;
 }

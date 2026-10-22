@@ -38,15 +38,18 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Le socle est la référence de tout l’assemblage : la cloison, le palier principal, la vitre et le capot viennent s’y aligner. Sous la roue, une large lumière d’environ 300 × 140 mm laisse l’eau tomber directement : une Pelton travaille à l’air libre, l’eau doit quitter les augets sans jamais remonter vers la roue. Sur le prototype de la vidéo, il repose sur deux madriers à environ 1 m du sol, bien au-delà des 30 à 40 cm de chute libre minimum qu’indique Sylvain.',
       'The base plate is the datum of the whole assembly: partition, main bearing housing, window and cover all line up on it. Under the runner, a wide opening of about 300 × 140 mm lets the water drop straight out: a Pelton works at atmospheric pressure, so the water must leave the buckets and never splash back onto the wheel. On the prototype in the video it sits on two wooden beams about 1 m above the ground, well above the 30–40 cm minimum free fall Sylvain mentions.',
     ),
-    material: l('PMMA noir coulé 10 mm', 'Black cast PMMA, 10 mm'),
+    material: l('PMMA noir coulé 20 mm', 'Black cast PMMA, 20 mm'),
     specs: [
-      sp('Empreinte', 'Footprint', '580 × 360 mm'),
-      sp('Épaisseur', 'Thickness', '10 mm'),
+      sp('Empreinte', 'Footprint', l('≈ 614 × 442 mm (carter 574 × 402)', '≈ 614 × 442 mm (housing 574 × 402)')),
+      sp('Épaisseur', 'Thickness', '20 mm'),
       sp('Lumière d’évacuation', 'Water outlet', '≈ 300 × 140 mm'),
       sp(
         'Garde sous le socle',
         'Clearance below',
-        l('≥ 30–40 cm (≈ 1 m sur le prototype)', '≥ 30–40 cm (≈ 1 m on the prototype)'),
+        l(
+          '≥ 30–40 cm (vidéo), turbine ≥ 50 cm du sol (constructeur), ≈ 0,9 m sur le prototype',
+          '≥ 30–40 cm (video), turbine ≥ 50 cm above ground (maker), ≈ 0.9 m on the prototype',
+        ),
       ),
       sp('Fixation', 'Fastening', l('4 brides imprimées sur les madriers', '4 printed cleats onto the beams')),
     ],
@@ -70,13 +73,28 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'PMMA wall that separates the wet chamber (runner) from the dry chamber (generator).',
     ),
     description: l(
-      'À plus de 35 m/s, le jet se pulvérise en brouillard dans toute la chambre de la roue. La cloison isole ce brouillard du générateur, de ses bobines et du redresseur : sans elle, l’humidité finirait par attaquer l’isolant des fils et les contacts. Comme le montre la vidéo, ce sont des plaques de plexiglas découpées sur mesure, assemblées puis jointées ; seul l’arbre la traverse, à travers le palier principal et son joint à lèvre.',
-      'At more than 35 m/s the jet turns into a fine mist that fills the runner chamber. The partition keeps this mist away from the generator, its coils and the rectifier: without it, moisture would eventually attack the wire insulation and the contacts. As shown in the video, it is made of custom-cut plexiglass plates, assembled and sealed; only the shaft goes through it, via the main bearing housing and its lip seal.',
+      'À plus de 35 m/s, le jet se pulvérise en brouillard dans toute la chambre de la roue. La cloison isole ce brouillard du générateur, de ses bobines et du redresseur : sans elle, l’humidité finirait par attaquer l’isolant des fils et les contacts. Comme le montre la vidéo, ce sont des plaques de plexiglas découpées sur mesure, assemblées puis jointées ; seul l’arbre la traverse, à travers le palier principal et son joint à lèvre. Placée à mi-profondeur, elle laisse 200 mm de chambre humide devant et 200 mm de compartiment générateur derrière, comme sur le modèle commercial.',
+      'At more than 35 m/s the jet turns into a fine mist that fills the runner chamber. The partition keeps this mist away from the generator, its coils and the rectifier: without it, moisture would eventually attack the wire insulation and the contacts. As shown in the video, it is made of custom-cut plexiglass plates, assembled and sealed; only the shaft goes through it, via the main bearing housing and its lip seal. Set at mid-depth, it leaves a 200 mm wet chamber in front and a 200 mm generator compartment behind, as on the commercial model.',
     ),
-    material: l('PMMA coulé (GS) 8 mm, joints MS-polymère', 'Cast PMMA (GS) 8 mm, MS-polymer sealant'),
+    material: l('PMMA coulé (GS) 10 mm, joints MS-polymère', 'Cast PMMA (GS) 10 mm, MS-polymer sealant'),
     specs: [
-      sp('Épaisseur', 'Thickness', '8 mm'),
-      sp('Profil', 'Outline', l('Hexagonal « maison », 580 × 460 mm', 'Hexagonal “house” outline, 580 × 460 mm')),
+      sp('Épaisseur', 'Thickness', '10 mm'),
+      sp(
+        'Profil',
+        'Outline',
+        l(
+          'En coin, 574 × 328 mm (paroi haute 288 mm, paroi basse 60 mm)',
+          'Wedge, 574 × 328 mm (288 mm tall wall, 60 mm low wall)',
+        ),
+      ),
+      sp(
+        'Position',
+        'Position',
+        l(
+          '200 mm de chambre humide devant, 200 mm de générateur derrière',
+          '200 mm wet chamber in front, 200 mm generator compartment behind',
+        ),
+      ),
       sp('Étanchéité', 'Sealing', l('Cordon MS-polymère sur tout le pourtour', 'MS-polymer bead all around')),
       sp(
         'Traversée',
@@ -114,7 +132,11 @@ const TURBINE_STRUCTURE: PartInfo[] = [
     material: l('PMMA coulé incolore 8 mm', 'Clear cast PMMA, 8 mm'),
     specs: [
       sp('Épaisseur', 'Thickness', '8 mm'),
-      sp('Profil', 'Outline', l('Hexagonal « maison », 580 × 460 mm', 'Hexagonal “house” outline, 580 × 460 mm')),
+      sp(
+        'Profil',
+        'Outline',
+        l('En coin, 574 × 328 mm (toit plat puis pan incliné)', 'Wedge, 574 × 328 mm (flat roof then sloped roof)'),
+      ),
       sp('Fixation', 'Fastening', l('Vis inox A4 M5 + rondelles larges', 'A4 stainless M5 screws + large washers')),
       sp('Dilatation', 'Thermal expansion', '≈ 0,07 mm/m/°C'),
     ],
@@ -172,12 +194,12 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Closes the dry chamber, holds bearing 3 and lets the generator breathe.',
     ),
     description: l(
-      'Le panneau noir ferme le carter côté générateur. Il porte le troisième roulement, qui tient le bout de l’arbre derrière le rotor, et une grille ronde par laquelle la face ventilateur du rotor aspire l’air frais. Le générateur chauffe en permanence (pertes cuivre et fer) : sans renouvellement d’air, l’intérieur du carter monterait vite en température au détriment des bobines et des aimants.',
-      'The black panel closes the housing on the generator side. It holds the third bearing, which supports the end of the shaft behind the rotor, and a round grille through which the rotor’s fan face draws cool air. The generator heats up continuously (copper and iron losses): without air exchange, the inside of the housing would quickly get hot, at the expense of the coils and magnets.',
+      'Le panneau noir ferme le carter côté générateur. Il porte le troisième roulement, qui tient le bout de l’arbre derrière le rotor, et des grilles par lesquelles la face ventilateur du rotor aspire l’air frais. Le générateur chauffe en permanence (pertes cuivre et fer) : sans renouvellement d’air, l’intérieur du carter monterait vite en température au détriment des bobines et des aimants.',
+      'The black panel closes the housing on the generator side. It holds the third bearing, which supports the end of the shaft behind the rotor, and grilles through which the rotor’s fan face draws cool air. The generator heats up continuously (copper and iron losses): without air exchange, the inside of the housing would quickly get hot, at the expense of the coils and magnets.',
     ),
     material: l(
-      'PMMA noir 8 mm, grille et flasque imprimés en ASA',
-      'Black PMMA 8 mm, printed ASA grille and bearing flange',
+      'PMMA noir 6 mm, grille et flasque imprimés en ASA',
+      'Black PMMA 6 mm, printed ASA grille and bearing flange',
     ),
     specs: [
       sp(
@@ -188,8 +210,8 @@ const TURBINE_STRUCTURE: PartInfo[] = [
           'Tool-less removable air filters, wash 1–2 times a year',
         ),
       ),
-      sp('Épaisseur', 'Thickness', '8 mm'),
-      sp('Grille d’aération', 'Vent grille', 'Ø 100 mm'),
+      sp('Épaisseur', 'Thickness', '6 mm'),
+      sp('Grilles d’aération', 'Vent grilles', l('Ø 80 mm + 70 × 60 mm', 'Ø 80 mm + 70 × 60 mm')),
       sp('Roulement porté', 'Bearing held', '6204-2RS (n° 3)'),
       sp('Sortie câble', 'Cable exit', l('Presse-étoupe M20 IP68', 'M20 IP68 cable gland')),
     ],
@@ -209,16 +231,28 @@ const TURBINE_STRUCTURE: PartInfo[] = [
     category: 'structure',
     name: l('Capot aluminium', 'Aluminium cover'),
     short: l(
-      'Tôle d’aluminium marin pliée en profil de « maison » qui enveloppe toute la turbine.',
-      'Marine aluminium sheet folded into a “house” profile that wraps the whole turbine.',
+      'Tôle d’aluminium marin pliée en coin, toit plat puis pan incliné, qui enveloppe toute la turbine.',
+      'Marine aluminium sheet folded into a wedge, flat roof then sloped roof, that wraps the whole turbine.',
     ),
     description: l(
-      'Le capot est découpé et plié à la demande par une entreprise toulousaine, en aluminium marin. L’alliage 5083 résiste à l’eau et à l’humidité sans peinture, se plie sans fissurer et reste léger. Son profil hexagonal fait ruisseler l’eau sur les pans et donne de la raideur à une tôle de seulement 2 mm.',
-      'The cover is cut and folded to order by a company in Toulouse, from marine-grade aluminium. Alloy 5083 withstands water and humidity without paint, bends without cracking and stays light. Its hexagonal profile sheds water down the slopes and stiffens a sheet only 2 mm thick.',
+      'Le capot est découpé et plié à la demande par une entreprise toulousaine, en aluminium marin. L’alliage 5083 résiste à l’eau et à l’humidité sans peinture, se plie sans fissurer et reste léger. Son profil en coin reprend celui du modèle commercial : une paroi haute de 288 mm côté injecteur, avec un petit chanfrein, un toit plat à 328 mm que traverse l’injecteur du haut, puis un pan incliné qui descend jusqu’à une paroi basse de 60 mm. Les plis font ruisseler l’eau loin des injecteurs et donnent de la raideur à une tôle de seulement 2 mm.',
+      'The cover is cut and folded to order by a company in Toulouse, from marine-grade aluminium. Alloy 5083 withstands water and humidity without paint, bends without cracking and stays light. Its wedge profile follows the commercial model: a 288 mm tall wall on the injector side with a small bevel, a flat roof at 328 mm that the top injector passes through, then a sloped roof running down to a 60 mm low end wall. The folds shed water away from the injectors and stiffen a sheet only 2 mm thick.',
     ),
     material: l('Aluminium 5083 H111, 2 mm', 'Aluminium 5083 H111, 2 mm'),
     specs: [
-      sp('Encombrement carter', 'Housing envelope', '580 × 360 × 460 mm'),
+      sp(
+        'Encombrement carter (L × H × P)',
+        'Housing envelope (L × H × D)',
+        l('574 × 328 × 402 mm (données constructeur)', '574 × 328 × 402 mm (maker data)'),
+      ),
+      sp(
+        'Profil',
+        'Outline',
+        l(
+          'Paroi haute 288 mm, toit plat à 328 mm, paroi basse 60 mm',
+          '288 mm tall wall, flat roof at 328 mm, 60 mm low wall',
+        ),
+      ),
       sp('Épaisseur', 'Thickness', '2 mm'),
       sp('Fabrication', 'Process', l('Découpe laser + pliage presse', 'Laser cutting + press-brake bending')),
       sp('Masse', 'Mass', '≈ 2,5 kg'),
@@ -243,7 +277,14 @@ const BEARING_SPECS: Spec[] = [
   sp('Référence', 'Part number', '6204-2RS C3'),
   sp('Dimensions', 'Dimensions', '20 × 47 × 14 mm'),
   sp('Charge dynamique C', 'Dynamic load rating C', '12,7 kN'),
-  sp('Durée de vie constatée', 'Field life', l('3 à 5 ans à ≈ 1 500 tr/min', '3–5 years at ≈ 1,500 rpm')),
+  sp(
+    'Durée de vie constatée',
+    'Field life',
+    l(
+      '3 à 5 ans (vidéo), ≥ 4 ans annoncés pour le modèle commercial',
+      '3–5 years (video), ≥ 4 years claimed for the commercial model',
+    ),
+  ),
   sp('Prix', 'Price', '≈ 10 €'),
 ];
 
@@ -353,7 +394,7 @@ const TURBINE_ROTATING: PartInfo[] = [
       sp('Dimensions', 'Dimensions', '20 × 35 × 7 mm'),
       sp('Type', 'Type', l('TC, double lèvre', 'TC, double lip')),
       sp('Vitesse périphérique max', 'Max surface speed', '≈ 10 m/s'),
-      sp('Vitesse à 1 500 tr/min', 'Speed at 1,500 rpm', '1,6 m/s'),
+      sp('Vitesse à 1 800 tr/min', 'Speed at 1,800 rpm', '≈ 1,9 m/s'),
     ],
     maintenance: l(
       'À changer avec les roulements. Un arbre rayé à l’endroit de la lèvre doit être repoli ou remplacé, sinon le joint neuf fuira.',
@@ -379,14 +420,22 @@ const TURBINE_ROTATING: PartInfo[] = [
       'Connects the Pelton runner to the generator rotor, through the partition.',
     ),
     description: l(
-      'Entraînement direct : la roue et le rotor tournent à la même vitesse, sans courroie ni multiplicateur, ce qui supprime une source de pertes et de pannes. Le couple est faible, environ 3 N·m pour 500 W à 1 500 tr/min, mais l’arbre doit être raide pour garder l’entrefer du générateur et résister aux vibrations. L’inox 316L ne rouille pas dans la chambre humide et offre une portée lisse au joint à lèvre.',
-      'Direct drive: the runner and the rotor spin at the same speed, with no belt or gearbox, which removes a source of losses and failures. The torque is low, about 3 N·m for 500 W at 1,500 rpm, but the shaft must be stiff to keep the generator air gap and to withstand vibration. 316L stainless steel does not rust in the wet chamber and gives a smooth running surface for the lip seal.',
+      'Entraînement direct : la roue et le rotor tournent à la même vitesse, sans courroie ni multiplicateur, ce qui supprime une source de pertes et de pannes. Le couple est faible, environ 2,6 N·m pour 500 W à 1 800 tr/min, mais l’arbre doit être raide pour garder l’entrefer du générateur et résister aux vibrations. L’inox 316L ne rouille pas dans la chambre humide et offre une portée lisse au joint à lèvre.',
+      'Direct drive: the runner and the rotor spin at the same speed, with no belt or gearbox, which removes a source of losses and failures. The torque is low, about 2.6 N·m for 500 W at 1,800 rpm, but the shaft must be stiff to keep the generator air gap and to withstand vibration. 316L stainless steel does not rust in the wet chamber and gives a smooth running surface for the lip seal.',
     ),
     material: l('Inox 316L rectifié', 'Ground 316L stainless steel'),
     specs: [
       sp('Diamètre', 'Diameter', 'Ø 20 h6'),
-      sp('Longueur', 'Length', '322 mm'),
-      sp('Couple à 499 W / 1 500 tr/min', 'Torque at 499 W / 1,500 rpm', '≈ 3,2 N·m'),
+      sp('Longueur', 'Length', '343 mm'),
+      sp(
+        'Hauteur d’axe',
+        'Axis height',
+        l(
+          '174 mm au-dessus du dessous du socle, ≈ 1,09 m du sol sur le support',
+          '174 mm above the base underside, ≈ 1.09 m above ground on the stand',
+        ),
+      ),
+      sp('Couple à 499 W / 1 800 tr/min', 'Torque at 499 W / 1,800 rpm', '≈ 2,6 N·m'),
       sp('Bout côté roue', 'Runner end', l('Rainure de clavette 6 mm + filetage M16', '6 mm keyway + M16 thread')),
     ],
     tip: l(
@@ -401,18 +450,19 @@ const TURBINE_ROTATING: PartInfo[] = [
     category: 'mechanical',
     name: l('Moyeu de roue', 'Runner hub disc'),
     short: l(
-      'Disque imprimé qui porte les 22 augets en couronne.',
-      'Printed disc that carries the 22 buckets in a ring.',
+      'Disque imprimé qui porte les 26 augets en couronne.',
+      'Printed disc that carries the 26 buckets in a ring.',
     ),
     description: l(
-      'Le moyeu positionne chaque auget au bon angle et au bon rayon : c’est lui qui fixe le diamètre primitif de 230 mm, donc la vitesse de rotation pour une chute donnée. Il est imprimé en 3D, ce qui permet de fabriquer un moyeu par taille d’auget. Au centre, quatre vis le relient à la bride acier qui reçoit le moyeu amovible conique.',
-      'The hub disc sets each bucket at the right angle and radius: it fixes the 230 mm pitch diameter, and therefore the rotational speed for a given head. It is 3D printed, so one hub can be made for each bucket size. In the centre, four screws connect it to the steel flange that receives the taper-lock bush.',
+      'Le moyeu positionne chaque auget au bon angle et au bon rayon : c’est lui qui fixe le diamètre primitif de 190 mm, donc la vitesse de rotation pour une chute donnée (pointes des augets sur Ø244, la cote du modèle commercial). Il est imprimé en 3D, ce qui permet de fabriquer un moyeu par taille d’auget. Au centre, quatre vis le relient à la bride acier qui reçoit le moyeu amovible conique.',
+      'The hub disc sets each bucket at the right angle and radius: it fixes the 190 mm pitch diameter, and therefore the rotational speed for a given head (bucket tips on Ø244, the commercial model’s figure). It is 3D printed, so one hub can be made for each bucket size. In the centre, four screws connect it to the steel flange that receives the taper-lock bush.',
     ),
     material: l('PETG, remplissage 100 % autour des logements', 'PETG, 100% infill around the seats'),
     specs: [
-      sp('Diamètre du disque', 'Disc diameter', 'Ø170 mm'),
+      sp('Diamètre du disque', 'Disc diameter', 'Ø140 mm'),
       sp('Épaisseur', 'Thickness', '12 mm'),
-      sp('Logements d’augets', 'Bucket seats', l('22, au pas de 16,4°', '22, at a 16.4° pitch')),
+      sp('Logements d’augets', 'Bucket seats', l('26, au pas de 13,8°', '26, at a 13.8° pitch')),
+      sp('Diamètre primitif', 'Pitch diameter', 'Ø190 mm'),
       sp('Liaison au moyeu', 'Hub connection', l('4 vis M5 sur bride acier', '4 × M5 screws to a steel flange')),
     ],
     tip: l(
@@ -431,8 +481,8 @@ const TURBINE_ROTATING: PartInfo[] = [
       'The “spoons” that split the jet in two and turn it back.',
     ),
     description: l(
-      'L’arête centrale de chaque auget fend le jet en deux ; l’eau suit les deux coquilles incurvées, fait presque demi-tour (environ 165°) et sort sur les côtés. En inversant la vitesse de l’eau, l’auget récupère l’essentiel de son énergie cinétique, à condition de tourner à environ 0,46 fois la vitesse du jet. Comme le montre la vidéo, il existe plusieurs tailles : chaque jeu d’augets est assorti à un diamètre d’injecteur, avec une largeur proche de 3,2 fois le diamètre du jet.',
-      'The central splitter ridge of each bucket cuts the jet in two; the water follows the two curved cups, almost reverses (about 165°) and leaves sideways. By reversing the water’s velocity, the bucket recovers most of its kinetic energy, provided it moves at about 0.46 times the jet speed. As shown in the video, there are several sizes: each bucket set is matched to an injector diameter, with a width close to 3.2 times the jet diameter.',
+      'L’arête centrale de chaque auget fend le jet en deux ; l’eau suit les deux coquilles incurvées, fait presque demi-tour (environ 165°) et sort sur les côtés. En inversant la vitesse de l’eau, l’auget récupère l’essentiel de son énergie cinétique, à condition de tourner à environ 0,46 à 0,5 fois la vitesse du jet. Comme le montre la vidéo, il existe plusieurs tailles, chacune assortie à des diamètres d’injecteur : dans notre modèle, le petit jeu S correspond au jet Ø6 du prototype, et le jeu L, centré vers Ø10, aux buses Ø8 à Ø14 du constructeur. Le prototype filmé a des augets imprimés ; le modèle commercial passe à 26 augets injectés en polymère renforcé.',
+      'The central splitter ridge of each bucket cuts the jet in two; the water follows the two curved cups, almost reverses (about 165°) and leaves sideways. By reversing the water’s velocity, the bucket recovers most of its kinetic energy, provided it moves at about 0.46–0.5 times the jet speed. As shown in the video, there are several sizes, each matched to a range of injector diameters: in our model the small S set suits the prototype’s Ø6 jet, and the L set, centred around Ø10, the maker’s Ø8 to Ø14 nozzles. The prototype in the video has printed buckets; the commercial model moves to 26 injection-moulded reinforced-polymer buckets.',
     ),
     material: l('PETG ou ASA imprimé', 'Printed PETG or ASA'),
     specs: [
@@ -444,23 +494,31 @@ const TURBINE_ROTATING: PartInfo[] = [
           '26 injection-moulded reinforced-polymer buckets, runner Ø244 mm OD, max nozzle Ø14 mm',
         ),
       ),
-      sp('Nombre', 'Count', '22'),
-      sp('Diamètre primitif', 'Pitch diameter', '230 mm'),
-      sp('Largeur (jet 6 mm)', 'Width (6 mm jet)', '≈ 19 mm'),
-      sp('Largeur (jet 8 mm)', 'Width (8 mm jet)', '≈ 26 mm'),
+      sp('Nombre', 'Count', '26'),
+      sp('Diamètre primitif', 'Pitch diameter', 'Ø190 mm'),
+      sp('Ø extérieur (pointes)', 'Tip diameter', l('Ø244 (jeu L), ≈ Ø235 (jeu S)', 'Ø244 (L set), ≈ Ø235 (S set)')),
+      sp(
+        'Jeu L (buses Ø8–14, centré Ø10)',
+        'L set (Ø8–14 nozzles, centred on Ø10)',
+        l(
+          '≈ 44 × 40 × 11 mm (long. radiale × largeur × profondeur)',
+          '≈ 44 × 40 × 11 mm (radial length × width × depth)',
+        ),
+      ),
+      sp('Jeu S (jet Ø6, prototype)', 'S set (Ø6 jet, prototype)', '≈ 35 × 32 × 9 mm'),
       sp('Déviation du jet', 'Jet deflection', '≈ 165°'),
-      sp('Vitesse optimale', 'Optimum speed', 'u ≈ 0,46 · v_jet'),
+      sp('Vitesse optimale', 'Optimum speed', 'u ≈ 0,46–0,5 · v_jet'),
     ],
     maintenance: l(
       'Chaque année, inspectez l’arête centrale (usure par le sable) et le pied de chaque auget (fissures). Remplacez le jeu complet plutôt qu’un auget isolé, pour garder l’équilibrage.',
       'Every year, inspect the splitter edge (sand erosion) and the root of each bucket (cracks). Replace the whole set rather than a single bucket, to keep the runner balanced.',
     ),
     tip: l(
-      'Pesez les augets à la sortie de l’imprimante et appariez-les à ±0,5 g en vis-à-vis : une roue déséquilibrée à 1 500 tr/min use les roulements en quelques mois.',
-      'Weigh the buckets as they come off the printer and pair opposite ones within ±0.5 g: an unbalanced runner at 1,500 rpm wears out the bearings in a few months.',
+      'Pesez les augets à la sortie de l’imprimante et appariez-les à ±0,5 g en vis-à-vis : une roue déséquilibrée à 1 800 tr/min use les roulements en quelques mois.',
+      'Weigh the buckets as they come off the printer and pair opposite ones within ±0.5 g: an unbalanced runner at 1,800 rpm wears out the bearings in a few months.',
     ),
     video: ['00:18', '09:24', '09:36', '09:50'],
-    qty: 22,
+    qty: 26,
     upgrade: l(
       'En V2, les augets sont vendus en kits appairés à chaque insert d’injecteur, pesés et numérotés, et montés avec un gabarit qui garantit l’angle et le rayon de chaque pièce.',
       'In V2, buckets come in kits matched to each injector insert, weighed and numbered, and are fitted with a jig that guarantees the angle and radius of every piece.',
@@ -472,8 +530,8 @@ const TURBINE_ROTATING: PartInfo[] = [
     category: 'mechanical',
     name: l('Bague de serrage', 'Clamping ring'),
     short: l(
-      'Anneau qui pince le pied des 22 augets contre le moyeu.',
-      'Ring that clamps the roots of the 22 buckets against the hub disc.',
+      'Anneau qui pince le pied des 26 augets contre le moyeu.',
+      'Ring that clamps the roots of the 26 buckets against the hub disc.',
     ),
     description: l(
       'Chaque auget est pris en sandwich entre le moyeu et la bague, et une vis M4 traverse l’ensemble au droit de chaque pied. Ce montage répartit l’effort centrifuge et l’impact du jet sur toute la couronne au lieu de tout faire porter à une seule vis. On peut aussi changer un jeu d’augets sans réimprimer le moyeu.',
@@ -481,13 +539,13 @@ const TURBINE_ROTATING: PartInfo[] = [
     ),
     material: l('PETG imprimé, visserie inox A4', 'Printed PETG, A4 stainless bolts'),
     specs: [
-      sp('Vis', 'Bolts', l('22 × M4 inox A4 + écrous nylstop', '22 × M4 A4 stainless + nyloc nuts')),
+      sp('Vis', 'Bolts', l('26 × M4 inox A4 sur Ø124 + écrous nylstop', '26 × M4 A4 stainless on Ø124 + nyloc nuts')),
       sp('Couple de serrage', 'Tightening torque', l('2 N·m, en étoile', '2 N·m, star pattern')),
-      sp('Épaisseur', 'Thickness', '6 mm'),
+      sp('Dimensions', 'Dimensions', 'Ø144 / Ø104 × 5 mm'),
     ],
     maintenance: l(
-      'Contrôlez le couple des 22 vis après les 50 premières heures, puis une fois par an : le plastique flue un peu sous charge.',
-      'Check the torque of the 22 bolts after the first 50 hours, then once a year: the plastic creeps a little under load.',
+      'Contrôlez le couple des 26 vis après les 50 premières heures, puis une fois par an : le plastique flue un peu sous charge.',
+      'Check the torque of the 26 bolts after the first 50 hours, then once a year: the plastic creeps a little under load.',
     ),
     tip: l(
       'Serrez en étoile en trois passes (à la main, 1 N·m, puis 2 N·m). Plus fort, vous écrasez le PETG et la roue se met à battre.',
@@ -552,8 +610,15 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
     specs: [
       sp('Configuration', 'Layout', l('12 dents / 14 pôles (7 paires)', '12 teeth / 14 poles (7 pole pairs)')),
       sp('Couplage', 'Connection', l('Étoile, 4 bobines par phase', 'Star (Y), 4 coils per phase')),
-      sp('Fréquence à 1 500 tr/min', 'Frequency at 1,500 rpm', '175 Hz'),
-      sp('Constante de tension (DC)', 'Voltage constant (DC)', l('≈ 0,04 V par tr/min', '≈ 0.04 V per rpm')),
+      sp('Fréquence à 1 800 tr/min', 'Frequency at 1,800 rpm', '210 Hz'),
+      sp(
+        'Constante de tension (DC)',
+        'Voltage constant (DC)',
+        l(
+          '≈ 0,04 V par tr/min (site A, kₑ 0,37) ; ≈ 0,06 (site B, kₑ 0,58)',
+          '≈ 0.04 V per rpm (site A, kₑ 0.37); ≈ 0.06 (site B, kₑ 0.58)',
+        ),
+      ),
       sp('Classe thermique', 'Insulation class', l('H (200 °C)', 'H (200 °C)')),
     ],
     maintenance: l(
@@ -588,7 +653,14 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       sp('Diamètre extérieur', 'Outer diameter', '≈ 160 mm'),
       sp('Aimants', 'Magnets', l('14, polarités alternées', '14, alternating poles')),
       sp('Entrefer', 'Air gap', '≈ 1 mm'),
-      sp('Vitesse', 'Speed', l('≈ 1 500 tr/min (jusqu’à 2 000–2 500)', '≈ 1,500 rpm (up to 2,000–2,500)')),
+      sp(
+        'Vitesse',
+        'Speed',
+        l(
+          '≈ 1 700–1 900 tr/min à 76 m, ≈ 920 à 21 m (vidéo : 1 500 en moyenne, jusqu’à 2 000–2 500)',
+          '≈ 1,700–1,900 rpm at 76 m, ≈ 920 at 21 m (video: 1,500 on average, up to 2,000–2,500)',
+        ),
+      ),
     ],
     tip: l(
       'Équilibrez le rotor seul avant de l’assembler à la roue : une pâte à modeler sur un axe posé sur deux lames suffit à trouver le point lourd.',
@@ -637,8 +709,8 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Turns the generator’s three AC phases into DC for the batteries.',
     ),
     description: l(
-      'Six diodes laissent passer à chaque instant la phase la plus haute et la plus basse : la sortie est une tension continue légèrement ondulée, directement utilisable par un régulateur ou un parc de batteries 48 V. À 175 Hz et en triphasé, l’ondulation est faible et ne demande aucun condensateur. Le courant traverse toujours deux diodes, soit environ 2 V de chute : à 9,4 A, cela fait près de 19 W de chaleur à évacuer, d’où le dissipateur.',
-      'Six diodes always pass the highest and the lowest phase: the output is a slightly rippled DC voltage that a controller or a 48 V battery bank can use directly. At 175 Hz and with three phases the ripple is small and needs no capacitor. The current always flows through two diodes, about 2 V of drop: at 9.4 A that is almost 19 W of heat to remove, hence the heatsink.',
+      'Six diodes laissent passer à chaque instant la phase la plus haute et la plus basse : la sortie est une tension continue légèrement ondulée, directement utilisable par un régulateur ou un parc de batteries 48 V. À environ 210 Hz et en triphasé, l’ondulation est faible et ne demande aucun condensateur. Le courant traverse toujours deux diodes, soit environ 2 V de chute : à 9,4 A, cela fait près de 19 W de chaleur à évacuer, d’où le dissipateur.',
+      'Six diodes always pass the highest and the lowest phase: the output is a slightly rippled DC voltage that a controller or a 48 V battery bank can use directly. At about 210 Hz and with three phases the ripple is small and needs no capacitor. The current always flows through two diodes, about 2 V of drop: at 9.4 A that is almost 19 W of heat to remove, hence the heatsink.',
     ),
     material: l('Module à diodes isolé, dissipateur aluminium', 'Isolated diode module, aluminium heatsink'),
     specs: [
@@ -766,7 +838,22 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
           'Variable injector only with good intake filtration (sand jams and wears it)',
         ),
       ),
-      sp('Buse', 'Nozzle', l('Ø 10 mm max, ouverture réglable', 'Ø 10 mm max, adjustable opening')),
+      sp(
+        'Buse',
+        'Nozzle',
+        l(
+          'Ø 12 mm, ouverture réglable (buses jusqu’à Ø14 chez le constructeur)',
+          'Ø 12 mm, adjustable opening (nozzles up to Ø14 from the maker)',
+        ),
+      ),
+      sp(
+        'Implantation',
+        'Layout',
+        l(
+          'Jet vertical à travers le toit plat, 95 mm à gauche de l’axe (vu de face), tangent au primitif Ø190',
+          'Vertical jet through the flat roof, 95 mm left of the axis (front view), tangent to the Ø190 pitch circle',
+        ),
+      ),
       sp('Vitesse du jet (74 m)', 'Jet velocity (74 m)', '≈ 37 m/s'),
       sp('Coefficient de débit', 'Discharge coefficient', 'Cd ≈ 0,95–0,98'),
       sp('Réglage', 'Adjustment', l('Vis et volant, manuel', 'Screw and handwheel, manual')),
@@ -795,8 +882,8 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
       'PVC pipework that rises over the housing and feeds the injectors.',
     ),
     description: l(
-      'La nourrice amène l’eau de la conduite forcée jusqu’à l’injecteur du haut par un col de cygne, et alimente l’injecteur latéral par une dérivation. Ses coudes doivent être larges et peu nombreux : chaque changement de direction coûte un peu de chute. C’est aussi la partie la plus exposée aux ruptures : Sylvain raconte que ses premiers échecs étaient des raccords qui pétaient, par excès de pression ou mauvaise colle.',
-      'The manifold carries the water from the penstock to the top injector through a gooseneck, and feeds the side injector through a branch. Its bends must be wide and few: every change of direction costs a little head. It is also the part most exposed to bursts: Sylvain says his first failures were fittings blowing apart, from too much pressure or bad glue.',
+      'La nourrice amène l’eau de la conduite forcée jusqu’à l’injecteur du haut par un col de cygne, et alimente l’injecteur latéral par une branche basse. Sur son premier tronçon se succèdent, comme sur le plan d’injection du constructeur, la vanne principale, le té du manomètre puis la vanne de dérivation qui purge la conduite vers le canal de fuite sans passer par la roue. Ses coudes doivent être larges et peu nombreux : chaque changement de direction coûte un peu de chute. C’est aussi la partie la plus exposée aux ruptures : Sylvain raconte que ses premiers échecs étaient des raccords qui pétaient, par excès de pression ou mauvaise colle.',
+      'The manifold carries the water from the penstock to the top injector through a gooseneck, and feeds the side injector through a lower branch. Along its first section come, as on the maker’s injection drawing, the main valve, the gauge tee and then the bypass valve that flushes the penstock to the tailrace without going through the runner. Its bends must be wide and few: every change of direction costs a little head. It is also the part most exposed to bursts: Sylvain says his first failures were fittings blowing apart, from too much pressure or bad glue.',
     ),
     material: l('PVC-U pression PN16, collé', 'PVC-U pressure pipe PN16, solvent-welded'),
     specs: [
@@ -881,6 +968,40 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
     video: ['01:05', '02:30'],
   },
   {
+    id: 'valve-bypass',
+    scene: 'turbine',
+    category: 'hydraulic',
+    name: l('Vanne de dérivation (purge)', 'Bypass valve (purge)'),
+    short: l(
+      'Branche descendante entre le manomètre et les vannes d’injecteurs : vide la conduite sans passer par la roue.',
+      'Downward branch between the gauge and the injector valves: drains the penstock without going through the runner.',
+    ),
+    description: l(
+      'Le plan d’injection publié par Hydronome place une vanne de dérivation juste après le manomètre, avant les vannes d’injecteurs. Ouverte, elle laisse sortir l’eau directement au canal de fuite : on purge l’air au premier remplissage, on chasse le sable et les feuilles accumulés dans la conduite, et on peut vidanger avant une intervention sans faire tourner la turbine. Fermée en service normal, elle doit être manœuvrée lentement comme toute vanne sur une conduite sous pression.',
+      'The injection drawing published by Hydronome places a bypass valve right after the gauge, before the injector valves. When open, water goes straight to the tailrace: you purge the air at first filling, flush out sand and leaves collected in the pipe, and drain it before a job without spinning the turbine. Closed in normal operation, it must be operated slowly like any valve on a pressurised pipe.',
+    ),
+    material: l('PVC pression, vanne à boisseau sphérique union', 'Pressure PVC, union ball valve'),
+    specs: [
+      sp(
+        'Position',
+        'Position',
+        l('Entre manomètre et vannes d’injecteurs', 'Between the gauge and the injector valves'),
+      ),
+      sp('Diamètre', 'Size', l('Ø40 PVC, sortie vers le canal de fuite', 'Ø40 PVC, outlet to the tailrace')),
+      sp('Usage', 'Use', l('Purge d’air, chasse des sédiments, vidange', 'Air purge, sediment flush, draining')),
+      sp(
+        'Source',
+        'Source',
+        l('Plan d’injection Hydronome (site officiel)', 'Hydronome injection drawing (official site)'),
+      ),
+    ],
+    tip: l(
+      'Au remplissage, ouvrez d’abord la dérivation : l’air sort par là au lieu de buter contre les buses fermées.',
+      'When filling, open the bypass first: the air escapes there instead of pushing against closed nozzles.',
+    ),
+    video: ['01:18'],
+  },
+  {
     id: 'valve-main',
     scene: 'turbine',
     category: 'hydraulic',
@@ -961,8 +1082,8 @@ const TURBINE_V1: PartInfo[] = [
       'Two red trestles and two wooden beams: the turbine sits 1 m above the channel.',
     ),
     description: l(
-      'Sur le site d’essai, la turbine repose sur deux madriers posés sur des tréteaux métalliques rouges, de petites brides bleues imprimées l’empêchant de glisser. C’est simple et réglable, et cela laisse environ 1 m de chute libre sous la turbine, bien plus que les 30 à 40 cm minimum. Le bois mouillé en permanence travaille et pourrit, et rien n’amortit les vibrations : c’est une installation de prototype.',
-      'On the test site the turbine rests on two wooden beams laid on red steel trestles, with small blue printed cleats stopping it from sliding. It is simple and adjustable, and leaves about 1 m of free fall under the turbine, far more than the 30–40 cm minimum. Permanently wet timber moves and rots, and nothing damps the vibration: this is a prototype set-up.',
+      'Sur le site d’essai, la turbine repose sur deux madriers posés sur des tréteaux métalliques rouges, de petites brides bleues imprimées l’empêchant de glisser. C’est simple et réglable, et cela laisse environ 0,9 m de chute libre sous le socle, l’axe de la roue se trouvant vers 1,1 m du sol : bien plus que les 30 à 40 cm minimum de la vidéo et les 50 cm demandés par le constructeur. Le bois mouillé en permanence travaille et pourrit, et rien n’amortit les vibrations : c’est une installation de prototype.',
+      'On the test site the turbine rests on two wooden beams laid on red steel trestles, with small blue printed cleats stopping it from sliding. It is simple and adjustable, and leaves about 0.9 m of free fall under the base, with the runner axis about 1.1 m above the ground: far more than the 30–40 cm minimum given in the video and the 50 cm the maker asks for. Permanently wet timber moves and rots, and nothing damps the vibration: this is a prototype set-up.',
     ),
     material: l(
       'Tréteaux acier peint, madriers sapin, brides PETG',
@@ -978,8 +1099,9 @@ const TURBINE_V1: PartInfo[] = [
         ),
       ),
       sp('Hauteur du socle', 'Base height', l('≈ 0,92 m au-dessus du sol', '≈ 0.92 m above ground')),
-      sp('Madriers', 'Beams', '2 × 75 × 200 mm'),
-      sp('Chute libre sous la turbine', 'Free fall under the turbine', '≈ 1 m'),
+      sp('Axe de la roue', 'Runner axis', l('≈ 1,09 m au-dessus du sol', '≈ 1.09 m above ground')),
+      sp('Madriers', 'Beams', '2 × 75 × 150 mm'),
+      sp('Chute libre sous la turbine', 'Free fall under the turbine', '≈ 0,9 m'),
     ],
     tip: l(
       'Calez les tréteaux sur des dalles et vérifiez le niveau après les premières semaines : le sol détrempé par le canal de fuite s’affaisse.',
@@ -1005,8 +1127,12 @@ const TURBINE_V1: PartInfo[] = [
     specs: [
       sp('Roulements', 'Bearings', '2 × 6204-2RS'),
       sp('Joint', 'Seal', '20 × 35 × 7'),
-      sp('Entraxe des roulements', 'Bearing spacing', '≈ 60 mm'),
-      sp('Fixation', 'Fastening', l('6 vis M6 à travers la cloison', '6 × M6 screws through the partition')),
+      sp('Entraxe des roulements', 'Bearing spacing', '≈ 93 mm'),
+      sp(
+        'Fixation',
+        'Fastening',
+        l('Bride 120 × 120, 4 vis M6 à travers la cloison', '120 × 120 flange, 4 × M6 screws through the partition'),
+      ),
     ],
     maintenance: l(
       'Au changement de roulements, vérifiez que le neuf ne rentre pas « tout seul » : un logement élargi doit être réimprimé.',
@@ -1035,6 +1161,14 @@ const TURBINE_V1: PartInfo[] = [
     material: l('PETG ou ASA imprimé', 'Printed PETG or ASA'),
     specs: [
       sp('Buse', 'Nozzle', 'Ø 6 / Ø 8 mm'),
+      sp(
+        'Implantation',
+        'Layout',
+        l(
+          'Jet horizontal à travers la paroi haute, 95 mm sous l’axe, tangent au primitif Ø190',
+          'Horizontal jet through the tall wall, 95 mm below the axis, tangent to the Ø190 pitch circle',
+        ),
+      ),
       sp('Débit à 74 m (Ø 6)', 'Flow at 74 m (Ø 6)', '≈ 1,1 L/s'),
       sp('Débit à 72 m (Ø 8)', 'Flow at 72 m (Ø 8)', '≈ 1,8 L/s'),
       sp('Pression max', 'Max pressure', '10 bar'),
@@ -1121,7 +1255,7 @@ const TURBINE_V2: PartInfo[] = [
         ),
       ),
       sp('Graissage', 'Lubrication', l('Graisseur M6, graisse hydrofuge', 'M6 grease nipple, water-resistant grease')),
-      sp('Fixation', 'Fastening', l('Bride 4 × M6', '4 × M6 flange')),
+      sp('Fixation', 'Fastening', l('Bride Ø124, 6 × M5 sur Ø104', 'Ø124 flange, 6 × M5 on Ø104')),
       sp('Temps d’échange', 'Swap time', '≈ 10 min'),
     ],
     maintenance: l(
@@ -1145,19 +1279,27 @@ const TURBINE_V2: PartInfo[] = [
     category: 'hydraulic',
     name: l('Injecteur à inserts rapides', 'Quick-change insert injector'),
     short: l(
-      'Corps d’injecteur fixe à baïonnette : on change la buse (Ø4 à Ø10) en quelques secondes.',
-      'Fixed-injector body with a bayonet: the nozzle (Ø4 to Ø10) is swapped in seconds.',
+      'Corps d’injecteur fixe à baïonnette : on change la buse (Ø4 à Ø14) en quelques secondes.',
+      'Fixed-injector body with a bayonet: the nozzle (Ø4 to Ø14) is swapped in seconds.',
     ),
     description: l(
-      'Au lieu d’imprimer un injecteur complet par diamètre, on garde un corps unique sur bride normalisée et on change seulement l’insert de buse, verrouillé par baïonnette et étanché par un joint torique. Chaque insert porte une couleur et correspond à un kit d’augets assorti, ce qui évite les erreurs de montage. On adapte ainsi la turbine aux saisons : petite buse en été, grande en hiver.',
-      'Instead of printing a complete injector for each diameter, a single body on a standard flange is kept and only the nozzle insert changes, locked by a bayonet and sealed by an O-ring. Each insert is colour-coded and matches a bucket kit, which prevents assembly mistakes. The turbine is thus adapted to the seasons: small nozzle in summer, large one in winter.',
+      'Au lieu d’imprimer un injecteur complet par diamètre, on garde un corps unique sur bride normalisée et on change seulement l’insert de buse, verrouillé par baïonnette et étanché par un joint torique. Chaque insert porte une couleur et correspond à un kit d’augets assorti (jeu S jusqu’à Ø6, jeu L de Ø8 à Ø14, le maximum annoncé par le constructeur), ce qui évite les erreurs de montage. On adapte ainsi la turbine aux saisons : petite buse en été, grande en hiver.',
+      'Instead of printing a complete injector for each diameter, a single body on a standard flange is kept and only the nozzle insert changes, locked by a bayonet and sealed by an O-ring. Each insert is colour-coded and matches a bucket kit (S set up to Ø6, L set from Ø8 to Ø14, the maker’s stated maximum), which prevents assembly mistakes. The turbine is thus adapted to the seasons: small nozzle in summer, large one in winter.',
     ),
     material: l(
       'Corps aluminium ou inox, inserts POM-C ou laiton, joint EPDM',
       'Aluminium or stainless body, POM-C or brass inserts, EPDM O-ring',
     ),
     specs: [
-      sp('Inserts', 'Inserts', 'Ø 4 / 5 / 6 / 8 / 10 mm'),
+      sp('Inserts', 'Inserts', 'Ø 4 / 5 / 6 / 8 / 10 / 12 / 14 mm'),
+      sp(
+        'Implantation',
+        'Layout',
+        l(
+          'Jet horizontal, 95 mm sous l’axe (position de l’injecteur latéral)',
+          'Horizontal jet, 95 mm below the axis (side injector position)',
+        ),
+      ),
       sp('Verrouillage', 'Locking', l('Baïonnette quart de tour + joint torique', 'Quarter-turn bayonet + O-ring')),
       sp('Bride', 'Flange', 'DN25 PN16'),
       sp('Repérage', 'Identification', l('Code couleur par diamètre', 'Colour code per diameter')),
@@ -1183,19 +1325,22 @@ const TURBINE_V2: PartInfo[] = [
       'Spring-loaded blade that swings into the jet in under half a second on a fault.',
     ),
     description: l(
-      'Si la charge électrique disparaît (batteries pleines sans délesteur, BMS ouvert, câble arraché), la roue s’emballe à près du double de sa vitesse nominale. Le déflecteur est la protection classique des Pelton industrielles : un volet tenu par une gâche électrique bascule dans le jet et l’envoie directement au canal de fuite. L’eau continue de couler dans la conduite, donc pas de coup de bélier, et la roue ralentit d’elle-même.',
-      'If the electrical load disappears (full batteries with no dump load, BMS open, cable torn off), the runner races to nearly twice its rated speed. The deflector is the classic protection of industrial Pelton turbines: a blade held by an electric latch swings into the jet and sends it straight to the tailrace. Water keeps flowing in the penstock, so there is no water hammer, and the runner slows down by itself.',
+      'Si la charge électrique disparaît (batteries pleines sans délesteur, BMS ouvert, câble arraché), la roue s’emballe à près du double de sa vitesse nominale. Le déflecteur est la protection classique des Pelton industrielles : un volet tenu par une gâche électrique bascule dans le jet et l’envoie directement au canal de fuite. L’eau continue de couler dans la conduite, donc pas de coup de bélier, et la roue ralentit d’elle-même. Côté mécanique, les deux volets sont calés sur des axes inox qui traversent la cloison et le flasque arrière. Dehors, un levier sur chaque axe et une biellette les rendent solidaires ; un ressort de traction, accroché d’un côté à un goujon vissé sur le flasque et de l’autre à l’axe de la biellette sur le levier bas, tire l’ensemble vers la position « déclenché ». Tant qu’elle est alimentée, la gâche 12 V avance son noyau sous l’ergot du levier bas et retient tout ; sans courant, le noyau recule et le ressort fait basculer les deux volets.',
+      'If the electrical load disappears (full batteries with no dump load, BMS open, cable torn off), the runner races to nearly twice its rated speed. The deflector is the classic protection of industrial Pelton turbines: a blade held by an electric latch swings into the jet and sends it straight to the tailrace. Water keeps flowing in the penstock, so there is no water hammer, and the runner slows down by itself. Mechanically, both blades are keyed on stainless shafts that pass through the partition and the rear panel. Outside, a lever on each shaft and a link rod tie them together; a tension spring, hooked on one side to a stud screwed into the rear panel and on the other to the link pin of the lower lever, pulls the whole linkage towards “tripped”. While powered, the 12 V latch pushes its plunger under the catch of the lower lever and holds everything; without power the plunger pulls back and the spring swings both blades.',
     ),
     material: l(
-      'Lame aluminium 5083 ou imprimée ASA, axe inox, ressort de torsion',
-      'Aluminium 5083 or printed ASA blade, stainless pivot, torsion spring',
+      'Lames aluminium 5083 ou inox, axes inox, leviers et biellette acier, ressort de traction',
+      'Aluminium 5083 or stainless blades, stainless shafts, steel levers and link rod, tension spring',
     ),
     specs: [
       sp('Temps de basculement', 'Trip time', '< 0,5 s'),
       sp(
         'Actionneur',
         'Actuator',
-        l('Gâche électrique 12 V, à manque de courant', '12 V door-lock solenoid, fail-safe'),
+        l(
+          'Ressort de traction + gâche électrique 12 V à manque de courant',
+          'Tension spring + fail-safe 12 V latch solenoid',
+        ),
       ),
       sp(
         'Déclencheurs',
@@ -1270,8 +1415,8 @@ const TURBINE_V2: PartInfo[] = [
       sp('Température', 'Temperature', l('CTN 10 kΩ noyée dans le bobinage', '10 kΩ NTC embedded in the winding')),
     ],
     tip: l(
-      'Câblez les capteurs en câble blindé et séparé du câble de puissance : à 175 Hz, le triphasé redressé parasite les mesures analogiques.',
-      'Use shielded cable for the sensors, routed apart from the power cable: at 175 Hz, the rectified three-phase output disturbs analogue readings.',
+      'Câblez les capteurs en câble blindé et séparé du câble de puissance : à plus de 200 Hz, le triphasé redressé parasite les mesures analogiques.',
+      'Use shielded cable for the sensors, routed apart from the power cable: at over 200 Hz, the rectified three-phase output disturbs analogue readings.',
     ),
     video: ['05:55', '06:00'],
     version: 'v2',
@@ -1504,13 +1649,28 @@ const SITE_PARTS: PartInfo[] = [
         'Site B',
         l('21 m, 90–100 W en étiage, 250–300 W, jusqu’à 500 W', '21 m, 90–100 W at low water, 250–300 W, up to 500 W'),
       ),
-      sp('Vitesse', 'Speed', '≈ 1 500 tr/min'),
+      sp(
+        'Vitesse',
+        'Speed',
+        l(
+          '≈ 1 700–1 900 tr/min à 76 m, ≈ 920 tr/min à 21 m (vidéo : ≈ 1 500 en moyenne)',
+          '≈ 1,700–1,900 rpm at 76 m, ≈ 920 rpm at 21 m (video: ≈ 1,500 on average)',
+        ),
+      ),
       sp('Tension de sortie', 'Output voltage', '50–54 V DC'),
+      sp(
+        'Modèle commercial',
+        'Commercial model',
+        l(
+          'Carter 574 × 328 × 402 mm, roue 26 augets Ø244, 22 kg',
+          '574 × 328 × 402 mm housing, 26-bucket Ø244 runner, 22 kg',
+        ),
+      ),
       sp('Gamme du constructeur', 'Builder’s range', l('≈ 100 W à 20–25 kW', '≈ 100 W to 20–25 kW')),
     ],
     tip: l(
-      'Gardez au moins 30 à 40 cm de chute libre sous la turbine : si l’eau remonte dans le carter, la roue barbote et le rendement s’effondre.',
-      'Keep at least 30–40 cm of free fall under the turbine: if water backs up into the housing, the runner churns and efficiency collapses.',
+      'Gardez au moins 30 à 40 cm de chute libre sous la turbine (le constructeur la place à 50 cm du sol au minimum) : si l’eau remonte dans le carter, la roue barbote et le rendement s’effondre.',
+      'Keep at least 30–40 cm of free fall under the turbine (the maker sets it at least 50 cm above the ground): if water backs up into the housing, the runner churns and efficiency collapses.',
     ),
     video: ['00:00', '02:40', '15:45'],
   },

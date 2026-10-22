@@ -58,44 +58,45 @@ interface HotspotDef {
 }
 
 const HOTSPOTS: HotspotDef[] = [
-  { part: 'buckets', at: [0.12, D.axisY + 0.13, 0.14], fr: 'Roue Pelton', en: 'Pelton runner' },
-  { part: 'injector-top', at: [D.topJetX, 0.74, D.pipeZ], fr: 'Injecteur à pointeau', en: 'Spear injector' },
-  { part: 'injector-side', at: [-0.36, D.sideJetY - 0.05, 0.16], fr: 'Injecteur fixe', en: 'Fixed nozzle' },
-  { part: 'injector-quick', at: [-0.36, D.sideJetY - 0.05, 0.16], fr: 'Injecteur à buses', en: 'Quick-change nozzle' },
+  { part: 'buckets', at: [0.1, D.axisY + 0.11, 0.15], fr: 'Roue Pelton', en: 'Pelton runner' },
+  { part: 'injector-top', at: [D.topJetX, D.roof + 0.25, D.pipeZ], fr: 'Injecteur à pointeau', en: 'Spear injector' },
+  { part: 'injector-side', at: [-0.36, D.sideJetY - 0.045, 0.16], fr: 'Injecteur fixe', en: 'Fixed nozzle' },
+  { part: 'injector-quick', at: [-0.36, D.sideJetY - 0.045, 0.16], fr: 'Injecteur à buses', en: 'Quick-change nozzle' },
   { part: 'valve-main', at: [-0.97, 0.39, D.pipeZ], fr: 'Vanne principale', en: 'Main valve' },
   { part: 'gauge', at: [-0.82, 0.54, 0.14], fr: 'Manomètre', en: 'Pressure gauge' },
-  { part: 'manifold', at: [-0.48, 0.75, D.pipeZ], fr: 'Col de cygne', en: 'Gooseneck manifold', minor: true },
-  { part: 'valve-branch', at: [-0.66, 0.5, 0.16], fr: 'Vannes de branche', en: 'Branch valves', minor: true },
+  { part: 'valve-bypass', at: [-0.745, 0.0, 0.14], fr: 'Vanne de dérivation', en: 'Bypass valve' },
+  { part: 'manifold', at: [-0.46, 0.64, D.pipeZ], fr: 'Col de cygne', en: 'Gooseneck manifold', minor: true },
+  { part: 'valve-branch', at: [-0.66, 0.47, 0.16], fr: 'Vannes de branche', en: 'Branch valves', minor: true },
   { part: 'penstock-end', at: [-1.28, 0.36, D.pipeZ], fr: 'Arrivée PEHD', en: 'HDPE inlet', minor: true },
-  { part: 'stator', at: [0.07, D.axisY + 0.05, -0.054], fr: 'Stator bobiné', en: 'Wound stator' },
-  { part: 'rotor', at: [-0.05, D.axisY - 0.085, -0.075], fr: 'Rotor à aimants', en: 'Magnet rotor' },
-  { part: 'magnets', at: [0.0, D.axisY + 0.06, -0.035], fr: 'Aimants N52', en: 'N52 magnets', minor: true },
-  { part: 'bearing-block', at: [0.04, D.axisY + 0.04, 0.01], fr: 'Palier', en: 'Bearing housing', minor: true },
+  { part: 'stator', at: [0.07, D.axisY + 0.05, -0.094], fr: 'Stator bobiné', en: 'Wound stator' },
+  { part: 'rotor', at: [-0.05, D.axisY - 0.085, -0.115], fr: 'Rotor à aimants', en: 'Magnet rotor' },
+  { part: 'magnets', at: [0.0, D.axisY + 0.06, -0.075], fr: 'Aimants N52', en: 'N52 magnets', minor: true },
+  { part: 'bearing-block', at: [0.04, D.axisY + 0.04, -0.03], fr: 'Palier', en: 'Bearing housing', minor: true },
   {
     part: 'bearing-cartridge',
-    at: [0.04, D.axisY + 0.05, 0.01],
+    at: [0.04, D.axisY + 0.05, -0.03],
     fr: 'Cartouche palier',
     en: 'Bearing cartridge',
     minor: true,
   },
-  { part: 'bearing-1', at: [0, D.axisY + 0.026, 0.023], fr: 'Roulement 1', en: 'Bearing 1', minor: true },
+  { part: 'bearing-1', at: [0, D.axisY + 0.026, -0.017], fr: 'Roulement 1', en: 'Bearing 1', minor: true },
   { part: 'shaft', at: [0.0, D.axisY + 0.015, 0.15], fr: 'Arbre inox', en: 'Stainless shaft', minor: true },
-  { part: 'seal', at: [0.02, D.axisY - 0.02, 0.05], fr: 'Joint à lèvre', en: 'Lip seal', minor: true },
-  { part: 'cover', at: [0.2, 0.43, -0.06], fr: 'Capot alu marin', en: 'Marine-alu cover' },
-  { part: 'window', at: [0.22, 0.1, D.zFront], fr: 'Hublot PMMA', en: 'PMMA window', minor: true },
-  { part: 'partition', at: [-0.24, 0.26, D.zPart], fr: 'Cloison étanche', en: 'Watertight partition', minor: true },
-  { part: 'rear-panel', at: [-0.15, 0.27, D.zBack], fr: 'Flasque arrière', en: 'Rear panel', minor: true },
+  { part: 'seal', at: [0.02, D.axisY - 0.02, 0.01], fr: 'Joint à lèvre', en: 'Lip seal', minor: true },
+  { part: 'cover', at: [0.0, D.roof + 0.01, -0.06], fr: 'Capot alu marin', en: 'Marine-alu cover' },
+  { part: 'window', at: [0.2, 0.08, D.zFront], fr: 'Hublot PMMA', en: 'PMMA window', minor: true },
+  { part: 'partition', at: [-0.2, 0.2, D.zPart], fr: 'Cloison étanche', en: 'Watertight partition', minor: true },
+  { part: 'rear-panel', at: [0.13, 0.2, D.zBack], fr: 'Flasque arrière', en: 'Rear panel', minor: true },
   { part: 'rectifier', at: [0.19, 0.075, -0.1], fr: 'Redresseur', en: 'Rectifier' },
   { part: 'terminal', at: [0.19, 0.05, -0.035], fr: 'Bornier', en: 'Terminal block', minor: true },
   { part: 'cable', at: [0.2, -0.2, -0.5], fr: 'Câble 6 mm²', en: '6 mm² cable', minor: true },
-  { part: 'base', at: [0.27, 0.02, 0.19], fr: 'Embase', en: 'Base plate', minor: true },
-  { part: 'trestles', at: [0.45, 0.55, 0.5], fr: 'Tréteaux', en: 'Trestles', rootSpace: true },
-  { part: 'skid', at: [0.32, 0.5, 0.24], fr: 'Châssis', en: 'Skid frame', rootSpace: true },
-  { part: 'deflector', at: [-0.2, 0.43, 0.15], fr: 'Déflecteur', en: 'Jet deflector' },
-  { part: 'latches', at: [D.W / 2 + 0.01, 0.1, 0.11], fr: 'Grenouillères', en: 'Toggle latches', minor: true },
-  { part: 'sensors', at: [0, D.axisY + 0.14, -0.06], fr: 'Capteurs', en: 'Sensors' },
-  { part: 'controller-box', at: [0.45, 0.72, 0.02], fr: 'Coffret IP65', en: 'IP65 box', rootSpace: true },
-  { part: 'air-valve', at: [-0.48, 0.83, D.pipeZ], fr: 'Ventouse', en: 'Air valve', minor: true },
+  { part: 'base', at: [0.27, 0.02, 0.21], fr: 'Embase', en: 'Base plate', minor: true },
+  { part: 'trestles', at: [0.49, 0.55, 0.5], fr: 'Tréteaux', en: 'Trestles', rootSpace: true },
+  { part: 'skid', at: [0.33, 0.5, 0.26], fr: 'Châssis', en: 'Skid frame', rootSpace: true },
+  { part: 'deflector', at: [-0.2, 0.31, 0.15], fr: 'Déflecteur', en: 'Jet deflector' },
+  { part: 'latches', at: [D.x1 + 0.01, 0.05, 0.13], fr: 'Grenouillères', en: 'Toggle latches', minor: true },
+  { part: 'sensors', at: [0, D.axisY + 0.14, -0.1], fr: 'Capteurs', en: 'Sensors' },
+  { part: 'controller-box', at: [0.43, 0.72, 0.02], fr: 'Coffret IP65', en: 'IP65 box', rootSpace: true },
+  { part: 'air-valve', at: [-0.46, 0.73, D.pipeZ], fr: 'Ventouse', en: 'Air valve', minor: true },
 ];
 
 export function createTurbineModel(): TurbineModel {
@@ -208,8 +209,9 @@ export function createTurbineModel(): TurbineModel {
 
     // V2 deflector blades
     const e = s.deflector;
-    hyd.deflectorTop.rotation.z = THREE.MathUtils.lerp(-66, -31, e) * deg;
-    hyd.deflectorSide.rotation.z = THREE.MathUtils.lerp(18.7, 53.7, e) * deg;
+    hyd.setDeflector(e);
+    // vertical bypass valve: lever across the pipe when closed, along it when open
+    hyd.bypassLever.rotation.z = s.bypass * (Math.PI / 2);
 
     // colour-coded nozzle insert (V2) follows the side nozzle diameter
     const d = side?.d ?? 6;

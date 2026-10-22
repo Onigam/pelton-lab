@@ -1,4 +1,6 @@
 import { l, type L } from '../../i18n';
+import { WAVE_SPEED_HDPE } from '../../sim/physics';
+import { presetParams } from '../../sim/presets';
 import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
 import type { DrawCtx, DrawingSheet } from '../types';
 import {
@@ -28,9 +30,11 @@ import {
 
 const BLUE = COLORS.acN;
 const LINE = { w: W.thick };
+/** V2 main valve closing time (s), from the simulator presets. */
+const CLOSE_S = presetParams('siteA').valveCloseTime;
 
 /** Process line through a list of paper points. */
-const pipe = (p: View, pts: Pt[], dash?: 'hidden') => p.polyline(pts, { ...LINE, dash });
+const pipe = (p: View, pts: Pt[]) => p.polyline(pts, LINE);
 
 /** Tag (bold) + up to two description lines, centred under/over a symbol. */
 function tag(
@@ -56,7 +60,10 @@ function intake(p: View): void {
   p.line([16, 36], [35, 36], { w: W.medium, color: COLORS.water });
   flowArrow(p, [20, 36]);
   p.text([16, 33], l('Ruisseau', 'Stream'), { size: 1.9, color: COLORS.water });
-  levelMark(p, [29.5, 36], l('retenue +76 m (A) · +21 m (B)', 'pond +76 m (A) · +21 m (B)'), { water: true });
+  const { a6, b } = hydro();
+  levelMark(p, [29.5, 36], cat(l('retenue +', 'pond +'), nf(a6.hGross, 0), ' m (A) · +', nf(b.hGross, 0), ' m (B)'), {
+    water: true,
+  });
   // collection box with the sand-trap hopper downstream, water level under the screen
   const box: Pt[] = [
     [36, 38],
@@ -154,8 +161,14 @@ function penstock(p: View): void {
   breakMark(p, [116, 96]);
   flowArrow(p, [76, 96]);
   flowArrow(p, [134, 102], -45);
-  p.text([68, 94], l('L-01 · PEHD PE100 Ø63 PN10 (Øi 55)', 'L-01 · HDPE PE100 Ø63 PN10 (ID 55)'), { size: 1.8 });
-  p.text([82, 100.5], l('longueur 350 m (A) · 55 m (B)', 'length 350 m (A) · 55 m (B)'), { size: 1.75, color: INK_2 });
+  const { a6, b } = hydro();
+  p.text([68, 94], cat(l('L-01 · PEHD PE100 Ø63 PN10 (Øi ', 'L-01 · HDPE PE100 Ø63 PN10 (ID '), nf(a6.bore, 0), ')'), {
+    size: 1.8,
+  });
+  p.text([82, 100.5], cat(l('longueur ', 'length '), nf(a6.len, 0), ' m (A) · ', nf(b.len, 0), ' m (B)'), {
+    size: 1.75,
+    color: INK_2,
+  });
 }
 
 function manifold(p: View, v2: boolean): void {
@@ -173,7 +186,7 @@ function manifold(p: View, v2: boolean): void {
     [165, 115.5],
     'V-01',
     v2
-      ? [l('principale DN50', 'main DN50'), l('à réducteur ≥ 20 s', 'gear-operated ≥ 20 s')]
+      ? [l('principale DN50', 'main DN50'), l(`à réducteur ≥ ${CLOSE_S} s`, `gear-operated ≥ ${CLOSE_S} s`)]
       : [l('principale DN50', 'main DN50'), l('¼ tour', 'quarter-turn')],
     { color: v2 ? c2 : undefined },
   );
@@ -197,20 +210,22 @@ function manifold(p: View, v2: boolean): void {
     sig.setAttribute('marker-end', 'url(#arrow)');
     p.text([182, 148.5], l('4–20 mA → contrôleur', '4–20 mA → controller'), { size: 1.75, color: c2, anchor: 'end' });
   } else v2note(p, [182, 136], l('transmetteur PT-01 4–20 mA', 'PT-01 4–20 mA transmitter'), 'end');
-  // bypass / drain branch (recommended, not in the 3D manifold yet)
+  // bypass / drain branch Ø40 (3D part `valve-bypass`), normally closed: purges to the tailrace
   junction(p, [199, 108]);
-  pipe(
-    p,
-    [
-      [199, 108],
-      [199, 162],
-    ],
-    'hidden',
-  );
+  pipe(p, [
+    [199, 108],
+    [199, 162],
+  ]);
   ballValve(p, [199, 126], { rot: 90, closed: true, lever: INK });
-  tag(p, [203, 125], 'V-02', [l('dérivation / purge', 'bypass / drain'), l('(recommandée)', '(recommended)')], {
-    anchor: 'start',
-  });
+  tag(
+    p,
+    [203, 125],
+    'V-02',
+    [l('dérivation / purge Ø40', 'bypass / drain Ø40'), l('fermée en service', 'closed in service')],
+    {
+      anchor: 'start',
+    },
+  );
   flowArrow(p, [199, 145], -90);
   reducer(p, [212, 108]);
   tag(p, [212, 103.4], 'R-01', []);
@@ -258,7 +273,8 @@ function machine(p: View, v2: boolean): void {
   p.line([316, 100], [316, 118], { w: 0.7, color: COLORS.water });
   nozzle(p, [306, 132], v2 ? 'quick' : 'fixed', { accent: COLORS.v2, color: v2 ? c2 : INK });
   p.line([306, 132], [330, 132], { w: 0.7, color: COLORS.water });
-  tag(p, [321, 84], 'N-01', [l('pointeau Ø12 max', 'spear Ø12 max')], { anchor: 'start' });
+  const spear = presetParams('siteA').top.d;
+  tag(p, [321, 84], 'N-01', [l(`pointeau Ø${spear} max`, `spear Ø${spear} max`)], { anchor: 'start' });
   tag(p, [289, 139.5], 'N-02', v2 ? [l('inserts Ø4–10', 'inserts Ø4–10')] : [l('buse fixe Ø6/8', 'fixed Ø6/8')], {
     color: v2 ? c2 : undefined,
   });
@@ -278,14 +294,10 @@ function machine(p: View, v2: boolean): void {
   // free fall and tailrace (the bypass joins it)
   p.line([330, 152], [330, 160], { w: 0.7, color: COLORS.water });
   flowArrow(p, [330, 159.5], -90);
-  pipe(
-    p,
-    [
-      [199, 162],
-      [318, 162],
-    ],
-    'hidden',
-  );
+  pipe(p, [
+    [199, 162],
+    [318, 162],
+  ]);
   p.polyline(
     [
       [318, 160],
@@ -387,11 +399,8 @@ const LEGEND: [L, (p: View, at: Pt) => void][] = [
     },
   ],
   [
-    l('À prévoir / signal 4–20 mA', 'To add / 4–20 mA signal'),
-    (p, at) => {
-      p.line([at[0] - 4, at[1] - 1.5], [at[0] + 4, at[1] - 1.5], { ...LINE, dash: 'hidden' });
-      p.line([at[0] - 4, at[1] + 1.5], [at[0] + 4, at[1] + 1.5], { w: W.thin, color: COLORS.signal, dash: [1.6, 0.8] });
-    },
+    l('Signal 4–20 mA (V2)', '4–20 mA signal (V2)'),
+    (p, at) => p.line([at[0] - 4, at[1]], [at[0] + 4, at[1]], { w: W.thin, color: COLORS.signal, dash: [1.6, 0.8] }),
   ],
 ];
 
@@ -454,6 +463,7 @@ export const hydraulicDiagram: DrawingSheet = {
     'valve-main',
     'gauge',
     'manifold',
+    'valve-bypass',
     'valve-branch',
     'injector-top',
     'injector-side',
@@ -487,16 +497,17 @@ export const hydraulicDiagram: DrawingSheet = {
           'Operate V-01 slowly: the pressure wave travels back and forth in 2L/a ≈ ',
         ),
         nf(a6.twoLa, 0),
-        l(
-          ' s (350 m, a ≈ 350 m/s). Plus rapide, la fermeture ajoute +',
-          ' s (350 m, a ≈ 350 m/s). Any faster closure adds +',
-        ),
+        ' s (',
+        nf(a6.len, 0),
+        ' m, a ≈ ',
+        nf(WAVE_SPEED_HDPE, 0),
+        l(' m/s). Plus rapide, la fermeture ajoute +', ' m/s). Any faster closure adds +'),
         nf(a6.surgeBar, 1),
         l(' à +', ' to +'),
         nf(a8.surgeBar, 1),
         l(
-          ' bar à la pression statique. V2 : vanne à réducteur, fermeture en 20 s au moins.',
-          ' bar to the static pressure. V2: gear-operated valve, at least 20 s to close.',
+          ` bar à la pression statique. V2 : vanne à réducteur, fermeture en ${CLOSE_S} s au moins.`,
+          ` bar to the static pressure. V2: gear-operated valve, at least ${CLOSE_S} s to close.`,
         ),
       ),
       l(
@@ -506,9 +517,11 @@ export const hydraulicDiagram: DrawingSheet = {
       cat(
         l('Conduite PN10 pour ', 'PN10 penstock for '),
         nf(a6.staticBar, 1),
+        l(' bar statiques (site A) : ', ' bar static (site A): only '),
+        nf(10 - a6.staticBar, 1),
         l(
-          ' bar statiques (site A) : 2,5 bar de marge seulement, donc jamais de fermeture brusque. Nourrice, vannes et raccords PN16, collages au décapant + colle « pression ».',
-          ' bar static (site A): only 2.5 bar of margin, so never close abruptly. Manifold, valves and fittings PN16, joints with primer + pressure cement.',
+          ' bar de marge seulement, donc jamais de fermeture brusque. Nourrice, vannes et raccords PN16, collages au décapant + colle « pression ».',
+          ' bar of margin, so never close abruptly. Manifold, valves and fittings PN16, joints with primer + pressure cement.',
         ),
       ),
       l(

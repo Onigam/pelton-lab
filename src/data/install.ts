@@ -120,8 +120,8 @@ export const INSTALL: GuideStep[] = [
     id: 'turbine',
     title: l('Installer la turbine', 'Install the turbine'),
     text: l(
-      'Installez la **turbine** au point bas du tracé, sur son support, en gardant au moins 30 à 40 cm de chute libre entre le socle et la surface de l’eau. Raccordez la conduite sur la vanne principale fermée, et gardez de la place autour pour ouvrir le capot et changer les roulements.',
-      'Set the **turbine** at the low point of the route, on its stand, keeping at least 30–40 cm of free fall between the base and the water surface. Connect the penstock to the closed main valve, and leave room around it to open the cover and change the bearings.',
+      'Installez la **turbine** au point bas du tracé, sur son support, en gardant au moins 30 à 40 cm de chute libre entre le socle et la surface de l’eau ; le constructeur la place à 50 cm du sol au minimum, et ses 22 kg se portent à deux. Raccordez la conduite sur la vanne principale fermée, menez la descente de la **vanne de dérivation** jusqu’au canal de fuite, et gardez de la place autour pour ouvrir le capot et changer les roulements.',
+      'Set the **turbine** at the low point of the route, on its stand, keeping at least 30–40 cm of free fall between the base and the water surface; the maker sets it at least 50 cm above the ground, and its 22 kg are a two-person lift. Connect the penstock to the closed main valve, run the **bypass valve** drop pipe down to the tailrace, and leave room around it to open the cover and change the bearings.',
     ),
     parts: ['turbine'],
     tools: [l('Niveau', 'Level'), l('Clé à sangle', 'Strap wrench')],
@@ -145,8 +145,8 @@ export const INSTALL: GuideStep[] = [
     id: 'tailrace',
     title: l('Creuser le canal de fuite', 'Dig the tailrace'),
     text: l(
-      'Creusez un **canal de fuite** qui ramène l’eau au ruisseau par le chemin le plus court, avec un fond empierré sous la turbine pour que l’eau ne creuse pas le sol. L’eau doit s’évacuer librement : si elle remonte jusqu’à la roue, celle-ci barbote et le rendement s’effondre.',
-      'Dig a **tailrace** that returns the water to the stream by the shortest route, with a stone-lined bed under the turbine so the water does not scour the ground. The water must drain away freely: if it backs up to the runner, the wheel churns and efficiency collapses.',
+      'Creusez un **canal de fuite** qui ramène l’eau au ruisseau par le chemin le plus court, avec un fond empierré sous la turbine pour que l’eau ne creuse pas le sol. L’eau doit s’évacuer librement : si elle remonte jusqu’à la roue, celle-ci barbote et le rendement s’effondre. Le canal reçoit aussi la sortie de la vanne de dérivation, qui peut débiter fort pendant une purge : protégez le point d’impact avec quelques pierres.',
+      'Dig a **tailrace** that returns the water to the stream by the shortest route, with a stone-lined bed under the turbine so the water does not scour the ground. The water must drain away freely: if it backs up to the runner, the wheel churns and efficiency collapses. The channel also takes the bypass valve outlet, which can discharge hard during a flush: protect the point of impact with a few stones.',
     ),
     parts: ['tailrace'],
     tools: [l('Pelle, pioche', 'Shovel, pickaxe'), l('Pierres plates, géotextile', 'Flat stones, geotextile')],
@@ -252,8 +252,8 @@ export const INSTALL: GuideStep[] = [
     id: 'start',
     title: l('Mettre le site en service', 'Commission the site'),
     text: l(
-      'Batteries et délesteur en ligne, ouvrez la vanne principale très lentement et purgez l’air. Relevez la pression statique, puis en marche, la vitesse et la puissance, et laissez tourner 24 heures avant de partir : comme le dit Sylvain, la turbine doit tourner quand on s’en va. Montrez enfin au propriétaire le nettoyage de la grille et la manœuvre lente des vannes.',
-      'With batteries and dump load online, open the main valve very slowly and bleed the air. Record the static pressure, then the running pressure, speed and power, and let it run for 24 hours before leaving: as Sylvain says, the turbine has to be running when you go. Finally, show the owner how to clean the screen and how to operate the valves slowly.',
+      'Batteries et délesteur en ligne, vannes d’injecteurs fermées, entrouvrez la **vanne de dérivation** puis ouvrez la vanne principale très lentement : l’air et le sable du chantier sortent par la dérivation au lieu de buter contre les buses. Quand l’eau coule claire et sans bulles, refermez la dérivation lentement. Relevez la pression statique, puis en marche la pression, la vitesse (≈ 1 700 à 1 900 tr/min sous 76 m, ≈ 920 tr/min sous 21 m) et la puissance, et laissez tourner 24 heures avant de partir : comme le dit Sylvain, la turbine doit tourner quand on s’en va. Montrez enfin au propriétaire le nettoyage de la grille, la purge par la dérivation et la manœuvre lente des vannes.',
+      'With batteries and dump load online and the injector valves closed, crack open the **bypass valve**, then open the main valve very slowly: air and construction sand leave through the bypass instead of pushing against the nozzles. Once the water runs clear and bubble-free, close the bypass slowly. Record the static pressure, then the running pressure, the speed (≈ 1,700–1,900 rpm under 76 m, ≈ 920 rpm under 21 m) and the power, and let it run for 24 hours before leaving: as Sylvain says, the turbine has to be running when you go. Finally, show the owner how to clean the screen, how to flush through the bypass and how to operate the valves slowly.',
     ),
     parts: [],
     tools: [l('Tachymètre, pince ampèremétrique DC', 'Tachometer, DC clamp meter'), l('Carnet de bord', 'Logbook')],

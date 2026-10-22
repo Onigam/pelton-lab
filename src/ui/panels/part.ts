@@ -48,8 +48,8 @@ const SCENE_TEXT = {
   turbine: {
     title: { fr: 'La micro-turbine Pelton', en: 'The Pelton micro-turbine' },
     text: {
-      fr: 'Une chambre **humide** où le jet frappe les augets de la roue, une **cloison étanche** en PMMA, et une chambre **sèche** où la génératrice à aimants produit le courant. Basculez V1 / V2 pour comparer le prototype de la vidéo à notre version industrialisable.',
-      en: 'A **wet** chamber where the jet hits the runner buckets, a PMMA **watertight partition**, and a **dry** chamber where the magnet generator makes the current. Toggle V1 / V2 to compare the prototype from the video with our industrialisable version.',
+      fr: 'Une chambre **humide** où le jet frappe les augets de la roue, une **cloison étanche** en PMMA, et une chambre **sèche** où la génératrice à aimants produit le courant. Carter (574 × 328 × 402 mm) et roue (26 augets, Ø244) reprennent les cotes publiées par le constructeur. Basculez V1 / V2 pour comparer le prototype de la vidéo à notre version industrialisable.',
+      en: 'A **wet** chamber where the jet hits the runner buckets, a PMMA **watertight partition**, and a **dry** chamber where the magnet generator makes the current. Housing (574 × 328 × 402 mm) and runner (26 buckets, Ø244) follow the maker’s published dimensions. Toggle V1 / V2 to compare the prototype from the video with our industrialisable version.',
     },
   },
   techroom: {

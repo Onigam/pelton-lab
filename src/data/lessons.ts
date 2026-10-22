@@ -296,20 +296,21 @@ const LESSONS_1: Lesson[] = [
         'Why 165° and not 180°? If the water went straight back, it would hit the back of the next bucket. The few missing degrees let it escape sideways, at a tiny cost.',
       ),
       l(
-        'En théorie, l’auget doit avancer à la **moitié de la vitesse du jet** ; en pratique, à cause des frottements, l’optimum se situe vers **u ≈ 0,46·v**. Avec v ≈ 37 m/s et un diamètre primitif de 230 mm, cela donne environ **1 400 à 1 500 tr/min**, la vitesse citée dans la vidéo.',
-        'In theory the bucket should move at **half the jet speed**; in practice, because of friction, the optimum is around **u ≈ 0.46·v**. With v ≈ 37 m/s and a 230 mm pitch diameter, that gives about **1,400–1,500 rpm**, the speed quoted in the video.',
+        'En théorie, l’auget doit avancer à la **moitié de la vitesse du jet** ; en pratique, à cause des frottements, l’optimum se situe vers **u ≈ 0,46 à 0,5·v**. Avec v ≈ 37 m/s, u ≈ 17 m/s ; sur un diamètre primitif de 190 mm, N = 60 × 17 / (π × 0,19) ≈ **1 700 tr/min**, et jusqu’à 1 900 tr/min vers u/v = 0,5. La vidéo cite « 1 500 tr/min en moyenne, jusqu’à 2 000–2 500 » : même ordre de grandeur, notre roue reprenant les cotes du modèle commercial, qui peuvent différer de celles du prototype filmé.',
+        'In theory the bucket should move at **half the jet speed**; in practice, because of friction, the optimum is around **u ≈ 0.46–0.5·v**. With v ≈ 37 m/s, u ≈ 17 m/s; on a 190 mm pitch diameter, N = 60 × 17 / (π × 0.19) ≈ **1,700 rpm**, and up to 1,900 rpm towards u/v = 0.5. The video quotes “1,500 rpm on average, up to 2,000–2,500”: the same order of magnitude, since our runner follows the commercial model’s dimensions, which may differ from the filmed prototype’s.',
       ),
       l(
-        'La taille compte : la largeur de l’auget doit valoir environ **3,2 fois le diamètre du jet**. Trop petit, il déborde ; trop grand, il est lourd et brasse l’air humide. D’où les différentes tailles d’augets montrées par Sylvain, chacune assortie à un injecteur.',
-        'Size matters: the bucket width should be about **3.2 times the jet diameter**. Too small and it spills; too large and it is heavy and churns the damp air. Hence the different bucket sizes Sylvain shows, each matched to an injector.',
+        'La taille compte : la largeur de l’auget vaut en gros **3 à 4 fois le diamètre du jet** (≈ 3,2 × d sur les grandes roues classiques). Trop petit, il déborde ; trop grand, il est lourd et brasse l’air humide. D’où les différentes tailles d’augets montrées par Sylvain : sur notre roue de 26 augets (pointes sur Ø244), le jeu L de 40 mm de large est centré vers un jet de Ø10 et accepte les buses Ø8 à Ø14 du constructeur ; le jeu S, plus petit, sert au jet de Ø6 du prototype.',
+        'Size matters: the bucket width is roughly **3 to 4 times the jet diameter** (≈ 3.2 × d on large classic runners). Too small and it spills; too large and it is heavy and churns the damp air. Hence the different bucket sizes Sylvain shows: on our 26-bucket runner (tips on Ø244), the 40 mm wide L set is centred on a Ø10 jet and accepts the maker’s Ø8 to Ø14 nozzles; the smaller S set serves the prototype’s Ø6 jet.',
       ),
     ],
     figures: [
       fig('Vitesse du jet', 'Jet velocity', '≈ 37 m/s'),
       fig('Déviation', 'Deflection', '≈ 165°'),
-      fig('u / v optimal', 'Optimum u / v', '≈ 0,46'),
-      fig('Largeur d’auget', 'Bucket width', '≈ 3,2 × d'),
-      fig('Roue', 'Runner', l('22 augets, Ø 230 mm', '22 buckets, Ø 230 mm')),
+      fig('u / v optimal', 'Optimum u / v', '≈ 0,46–0,5'),
+      fig('Largeur d’auget', 'Bucket width', '≈ 3–4 × d'),
+      fig('Roue', 'Runner', l('26 augets, primitif Ø190, pointes Ø244', '26 buckets, Ø190 pitch, Ø244 tips')),
+      fig('Vitesse à 76 m', 'Speed at 76 m', l('≈ 1 700–1 900 tr/min', '≈ 1,700–1,900 rpm')),
     ],
     formula: 'u ≈ 0.46 · v_jet   ;   N = 60 · u / (π · D)',
     focus: { scene: 'turbine', part: 'buckets' },
@@ -329,14 +330,14 @@ const LESSONS_1: Lesson[] = [
       },
       {
         q: l(
-          'On passe d’un jet de 6 mm à un jet de 8 mm. Quelle largeur d’auget viser ?',
-          'The jet goes from 6 mm to 8 mm. What bucket width should be targeted?',
+          'Le jeu d’augets L fait 40 mm de large. Autour de quel diamètre de jet est-il optimisé ?',
+          'The L bucket set is 40 mm wide. Around which jet diameter is it optimised?',
         ),
-        choices: [l('≈ 19 mm', '≈ 19 mm'), l('≈ 26 mm', '≈ 26 mm'), l('≈ 50 mm', '≈ 50 mm')],
+        choices: [l('≈ Ø4 mm', '≈ Ø4 mm'), l('≈ Ø10 mm', '≈ Ø10 mm'), l('≈ Ø25 mm', '≈ Ø25 mm')],
         answer: 1,
         explain: l(
-          '3,2 × 8 ≈ 26 mm. C’est pourquoi le passage à la buse de 8 mm impose aussi de changer de roue.',
-          '3.2 × 8 ≈ 26 mm. This is why moving to the 8 mm nozzle also means changing the runner.',
+          'Avec une largeur de 3 à 4 fois le jet : 40 / 4 = 10 mm (40 / 3,2 ≈ 12,5). D’où un jeu centré vers Ø10 qui couvre les buses Ø8 à Ø14 ; le jet de Ø6 du prototype demande le jeu S, plus petit.',
+          'With a width of 3 to 4 times the jet: 40 / 4 = 10 mm (40 / 3.2 ≈ 12.5). Hence a set centred on Ø10 that covers Ø8 to Ø14 nozzles; the prototype’s Ø6 jet needs the smaller S set.',
         ),
       },
     ],
@@ -358,8 +359,8 @@ const LESSONS_2: Lesson[] = [
         'Area goes with the **square of the diameter**: going from 6 to 8 mm multiplies it by (8/6)² ≈ 1.78. The flow therefore rises from **1.1 to ~1.8 L/s**, exactly the figure Sylvain gives (“1.7, 1.8 litres”).',
       ),
       l(
-        'La puissance suit : avec ~72 m nets (la conduite perd un peu plus à fort débit), la puissance hydraulique atteint ~1,27 kW. Avec une roue aux augets plus gros, bien assortis au jet, Sylvain vise **~950 W**, presque le double des 499 W actuels, soit un rendement global proche de 75 %.',
-        'Power follows: with ~72 m net (the penstock loses a bit more at higher flow), hydraulic power reaches ~1.27 kW. With a runner carrying larger buckets, properly matched to the jet, Sylvain expects **~950 W**, almost double the current 499 W, an overall efficiency close to 75%.',
+        'La puissance suit : avec ~72 m nets (la conduite perd un peu plus à fort débit), la puissance hydraulique atteint ~1,27 kW. Avec une roue aux augets plus gros, bien assortis au jet, Sylvain vise **~950 W**, presque le double des 499 W actuels, soit un rendement global proche de 75 %. Sur la roue du modèle commercial, le constructeur accepte des buses jusqu’à **Ø14 mm**, à condition que le ruisseau et la conduite suivent.',
+        'Power follows: with ~72 m net (the penstock loses a bit more at higher flow), hydraulic power reaches ~1.27 kW. With a runner carrying larger buckets, properly matched to the jet, Sylvain expects **~950 W**, almost double the current 499 W, an overall efficiency close to 75%. On the commercial model’s runner, the maker accepts nozzles up to **Ø14 mm**, provided the stream and the penstock can keep up.',
       ),
       l(
         'Buse fixe ou **pointeau** ? La buse fixe n’a aucune pièce mobile mais son débit est figé ; l’injecteur à pointeau (l’« olive » italienne) fait varier la section annulaire en gardant un jet compact. Ce qu’il ne faut jamais faire : régler le débit avec une vanne à moitié fermée, qui détruit la chute au lieu de la transformer en vitesse.',
@@ -423,8 +424,8 @@ const LESSONS_2: Lesson[] = [
         '“Magnets turning around coils”, as Sylvain sums it up: that is the principle of every generator, wind or hydro. When the magnetic flux through a coil changes, a voltage appears across it: this is **Faraday’s law**.',
       ),
       l(
-        'La tension est proportionnelle à la vitesse : **E = k·ω**. Ici, 14 aimants (7 paires de pôles) tournent autour de 12 bobines ; à 1 500 tr/min, la fréquence électrique est de 175 Hz et la tension redressée à vide d’environ 60 V. En charge, la turbine sort 50 à 54 V : la différence se perd dans la résistance des bobines et dans les diodes.',
-        'Voltage is proportional to speed: **E = k·ω**. Here, 14 magnets (7 pole pairs) spin around 12 coils; at 1,500 rpm the electrical frequency is 175 Hz and the rectified open-circuit voltage about 60 V. Under load the turbine delivers 50–54 V: the difference is lost in the coil resistance and the diodes.',
+        'La tension est proportionnelle à la vitesse : **E = k·ω**. Ici, 14 aimants (7 paires de pôles) tournent autour de 12 bobines ; sur le site A, à 1 800 tr/min, la fréquence électrique est de 210 Hz et la tension redressée à vide d’environ 70 V (k ≈ 0,37 V·s/rad, soit ≈ 0,04 V par tr/min). En charge, elle retombe vers 55 à 60 V à l’entrée du régulateur et 50 à 54 V côté batteries : la différence se perd dans la résistance des bobines, les diodes et le câble.',
+        'Voltage is proportional to speed: **E = k·ω**. Here, 14 magnets (7 pole pairs) spin around 12 coils; on site A, at 1,800 rpm, the electrical frequency is 210 Hz and the rectified open-circuit voltage about 70 V (k ≈ 0.37 V·s/rad, i.e. ≈ 0.04 V per rpm). Under load it drops to 55–60 V at the controller input and 50–54 V on the battery side: the difference is lost in the coil resistance, the diodes and the cable.',
       ),
       l(
         'Les bobines sont réparties en **trois phases** décalées de 120°. Le couple est plus régulier qu’en monophasé, donc moins de vibrations, et un **pont de six diodes** donne un courant continu peu ondulé, directement utilisable par un régulateur ou des batteries 48 V.',
@@ -437,7 +438,7 @@ const LESSONS_2: Lesson[] = [
     ],
     figures: [
       fig('Bobines / aimants', 'Coils / magnets', '12 / 14'),
-      fig('Fréquence à 1 500 tr/min', 'Frequency at 1,500 rpm', '175 Hz'),
+      fig('Fréquence à 1 800 tr/min', 'Frequency at 1,800 rpm', '210 Hz'),
       fig('Sortie DC', 'DC output', '50–54 V'),
       fig('Aimants', 'Magnets', l('N52, 80 °C max', 'N52, 80 °C max')),
     ],
@@ -447,18 +448,18 @@ const LESSONS_2: Lesson[] = [
     quiz: [
       {
         q: l(
-          'La turbine passe de 1 500 à 3 000 tr/min parce qu’elle a perdu sa charge. Sa tension à vide…',
-          'The turbine goes from 1,500 to 3,000 rpm because it lost its load. Its open-circuit voltage…',
+          'La turbine passe de 1 800 à 3 600 tr/min parce qu’elle a perdu sa charge. Sa tension à vide…',
+          'The turbine goes from 1,800 to 3,600 rpm because it lost its load. Its open-circuit voltage…',
         ),
         choices: [
-          l('reste vers 60 V', 'stays around 60 V'),
-          l('double, vers 120 V', 'doubles, to about 120 V'),
+          l('reste vers 70 V', 'stays around 70 V'),
+          l('double, vers 140 V', 'doubles, to about 140 V'),
           l('baisse', 'drops'),
         ],
         answer: 1,
         explain: l(
-          'E = k·ω : deux fois plus vite, deux fois plus de tension. Assez pour approcher les 150 V maximum d’un TriStar MPPT 45 et détruire des appareils 48 V.',
-          'E = k·ω: twice the speed, twice the voltage. Enough to approach the 150 V limit of a TriStar MPPT 45 and destroy 48 V equipment.',
+          'E = k·ω : deux fois plus vite, deux fois plus de tension. Assez pour frôler les 150 V maximum d’un TriStar MPPT 45 et détruire des appareils 48 V.',
+          'E = k·ω: twice the speed, twice the voltage. Enough to come close to the 150 V limit of a TriStar MPPT 45 and destroy 48 V equipment.',
         ),
       },
       {
@@ -510,7 +511,7 @@ const LESSONS_2: Lesson[] = [
     figures: [
       fig('Régulateur (site A)', 'Controller (site A)', 'TS-MPPT-45'),
       fig('Mode', 'Mode', l('Tension d’entrée fixe', 'Fixed input voltage')),
-      fig('Vitesse', 'Speed', '≈ 1 500 tr/min'),
+      fig('Vitesse (site A)', 'Speed (site A)', l('≈ 1 700–1 900 tr/min', '≈ 1,700–1,900 rpm')),
       fig('Économie (site B)', 'Saving (site B)', '≈ 500 €'),
     ],
     formula: 'V = k · ω   ⇒   V = const ⇔ ω = const',
@@ -563,12 +564,12 @@ const LESSONS_2: Lesson[] = [
     ),
     body: [
       l(
-        'Un panneau solaire sans charge ne risque rien. Une turbine, si : le jet continue de pousser quand on cesse de consommer. Sans **charge électrique**, plus rien ne freine la roue, qui monte à sa **vitesse d’emballement**, environ **1,8 à 2 fois** la vitesse nominale, soit près de 3 000 tr/min ici.',
-        'An unloaded solar panel is at no risk. A turbine is: the jet keeps pushing when nobody uses power. With no **electrical load**, nothing brakes the runner, which climbs to its **runaway speed**, about **1.8–2 times** the rated speed, close to 3,000 rpm here.',
+        'Un panneau solaire sans charge ne risque rien. Une turbine, si : le jet continue de pousser quand on cesse de consommer. Sans **charge électrique**, plus rien ne freine la roue, qui monte à sa **vitesse d’emballement**, environ **1,8 à 2 fois** la vitesse nominale, soit 3 000 à 3 800 tr/min sur le site A.',
+        'An unloaded solar panel is at no risk. A turbine is: the jet keeps pushing when nobody uses power. With no **electrical load**, nothing brakes the runner, which climbs to its **runaway speed**, about **1.8–2 times** the rated speed, 3,000–3,800 rpm on site A.',
       ),
       l(
-        'À cette vitesse, la tension à vide double aussi (plus de 100 V), au risque de détruire le régulateur ou les appareils 48 V, et les efforts centrifuges sur les augets imprimés, les aimants collés et les roulements sont multipliés par quatre. C’est pourquoi, comme le répète Sylvain, la turbine doit tourner 24 h/24 **en charge constante**.',
-        'At that speed the open-circuit voltage doubles too (over 100 V), which can destroy the controller or 48 V equipment, and centrifugal loads on the printed buckets, the bonded magnets and the bearings are multiplied by four. That is why, as Sylvain insists, the turbine must run around the clock **under constant load**.',
+        'À cette vitesse, la tension à vide double aussi (120 à 140 V sur le site A), au risque de détruire le régulateur ou les appareils 48 V, et les efforts centrifuges sur les augets imprimés, les aimants collés et les roulements sont multipliés par quatre. C’est pourquoi, comme le répète Sylvain, la turbine doit tourner 24 h/24 **en charge constante**.',
+        'At that speed the open-circuit voltage doubles too (120–140 V on site A), which can destroy the controller or 48 V equipment, and centrifugal loads on the printed buckets, the bonded magnets and the bearings are multiplied by four. That is why, as Sylvain insists, the turbine must run around the clock **under constant load**.',
       ),
       l(
         'Quand les batteries sont pleines et que personne ne consomme, le **régulateur de délestage** détourne le surplus vers des **résistances** qui chauffent l’air, les « résistances de freinage ». La turbine ne voit aucune différence : elle produit toujours la même puissance, simplement envoyée ailleurs.',
@@ -581,7 +582,7 @@ const LESSONS_2: Lesson[] = [
     ],
     figures: [
       fig('Emballement', 'Runaway speed', '≈ 1,8–2 × N'),
-      fig('Tension à vide', 'Open-circuit voltage', '> 100 V'),
+      fig('Tension à vide (site A)', 'Open-circuit voltage (site A)', '≈ 120–140 V'),
       fig('Résistances', 'Resistors', '≥ 1,25 × P max'),
       fig('Fonctionnement', 'Duty', l('24 h/24, toujours en charge', '24/7, always loaded')),
     ],
@@ -597,7 +598,7 @@ const LESSONS_2: Lesson[] = [
         choices: [
           l('Elle s’arrête d’elle-même', 'It stops by itself'),
           l('Elle s’emballe vers le double de sa vitesse nominale', 'It runs away towards twice its rated speed'),
-          l('Elle reste à 1 500 tr/min', 'It stays at 1,500 rpm'),
+          l('Elle reste vers 1 800 tr/min', 'It stays around 1,800 rpm'),
         ],
         answer: 1,
         explain: l(
@@ -830,8 +831,8 @@ const LESSONS_3: Lesson[] = [
     ),
     body: [
       l(
-        'Une Pelton bien conçue demande peu : les **roulements** durent 3 à 5 ans, voire plus, à environ 1 500 tr/min. Un roulement coûte une dizaine d’euros, il y en a trois, et avec les **joints** l’entretien revient à 50 ou 60 € de pièces tous les 3 à 5 ans.',
-        'A well-designed Pelton asks for little: the **bearings** last 3 to 5 years or more at about 1,500 rpm. A bearing costs around ten euros, there are three of them, and with the **seals** the service comes to 50–60 € of parts every 3 to 5 years.',
+        'Une Pelton bien conçue demande peu : selon Sylvain, les **roulements** durent 3 à 5 ans, voire plus, alors que la roue tourne nuit et jour vers 1 500 à 1 900 tr/min. Un roulement coûte une dizaine d’euros, il y en a trois, et avec les **joints** l’entretien revient à 50 ou 60 € de pièces tous les 3 à 5 ans. Le modèle commercial monte trois roulements SKF en opposition, annoncés sans entretien pendant au moins 4 ans.',
+        'A well-designed Pelton asks for little: according to Sylvain, the **bearings** last 3 to 5 years or more, while the runner spins day and night at about 1,500–1,900 rpm. A bearing costs around ten euros, there are three of them, and with the **seals** the service comes to 50–60 € of parts every 3 to 5 years. The commercial model uses three SKF bearings in opposed mounting, claimed maintenance-free for at least 4 years.',
       ),
       l(
         'Au quotidien, la priorité est la **prise d’eau** : un coup de brosse par trimestre sur la grille Coanda, plus après les crues, et un coup d’œil au débordement. Le **manomètre** est le meilleur outil de diagnostic : si l’écart entre pression statique et pression en marche grandit, quelque chose s’encrasse.',
@@ -918,7 +919,7 @@ const LESSONS_3: Lesson[] = [
       fig('Déflecteur', 'Deflector', '< 0,5 s'),
       fig('Échange de palier', 'Bearing swap', '≈ 10 min'),
       fig('Épreuve', 'Pressure test', '1,5 × PN'),
-      fig('Inserts de buse', 'Nozzle inserts', 'Ø 4–10 mm'),
+      fig('Inserts de buse', 'Nozzle inserts', 'Ø 4–14 mm'),
     ],
     focus: { scene: 'turbine', part: 'deflector' },
     video: '03:35',

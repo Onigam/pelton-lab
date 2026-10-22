@@ -5,6 +5,46 @@ import type { PartRegistry } from '../registry';
 import { canvasTexture, group, mesh } from '../util';
 import { D, profile, profileShape } from './dims';
 
+/**
+ * V2 fail-safe jet deflector, one blade per jet on a shaft crossing the partition and the
+ * rear panel. Angles in degrees (0 = +X, counter-clockwise seen from the front):
+ * - top blade: hangs down when latched, swings up to +15° so the jet slides off towards the
+ *   wall instead of reaching the buckets;
+ * - side blade: stands up when latched, swings down to -40° and throws the jet onto the drain.
+ * Outside the rear panel, a lever on each shaft and a link rod tie both blades together; a
+ * tension spring pulls the linkage towards "tripped" and a solenoid latch holds it latched.
+ */
+export const DEFLECTOR = {
+  pivots: [
+    [-0.17, 0.262],
+    [-0.15, 0.125],
+  ] as [number, number][],
+  blade: [0.087, 0.085],
+  latched: [-90, 90],
+  tripped: [15, -40],
+  /** Outside levers (length, angle offset from the blade) — chosen so the link rod stays rigid. */
+  lever: [0.03, 0.045],
+  leverOffset: [-45, -105],
+  /** Fixed hook of the tension spring on the rear panel. */
+  springAnchor: [-0.225, 0.085] as [number, number],
+};
+/** Deflector pivot axes (top jet, side jet): they cross the partition. */
+export const DEFLECTOR_PIVOTS = DEFLECTOR.pivots;
+
+/** Rear-panel vents (with washable air filters on the commercial model). */
+export const VENT = { round: [0.13, 0.13] as [number, number], r: 0.04, rect: [0.19, 0.05, 0.26, 0.11] };
+
+/** Wooden beams (V1) on both sides of the drain. */
+export const BEAMS_X = [-0.15 - 0.04, D.x1 - 0.057];
+
+/** V2 aluminium skid: leg positions. */
+export const SKID = { xs: [D.x0 + 0.03, D.x1 - 0.03], zs: [-0.24, 0.24] };
+
+/** Drain opening in the base, under the runner (wet chamber only). */
+export const DRAIN = { x0: -0.15, x1: 0.15, z0: 0.03, z1: 0.17 };
+/** Centre of the housing along X (the shaft is offset towards the tall wall). */
+const CX = (D.x0 + D.x1) / 2;
+
 // Enclosure and support: base plate with drain, PMMA partition and window, EPDM gaskets,
 // vented rear panel, folded marine-aluminium cover; V1 trestles + beams, V2 aluminium
 // skid, toggle latches and the IP65 controller box.
@@ -26,20 +66,21 @@ function frameShape(outer: THREE.Vector2[], inner: THREE.Vector2[]): THREE.Shape
 
 function buildBase(): THREE.Group {
   const g = group('base');
-  // black HDPE plate with the drain opening under the wet chamber
-  const w = D.W / 2 + 0.02;
+  // black cast PMMA plate (20 mm) with the drain opening under the wet chamber
+  const xa = D.x0 - 0.02;
+  const xb = D.x1 + 0.02;
   const s = new THREE.Shape();
-  s.moveTo(-w, D.zBack - 0.02);
-  s.lineTo(w, D.zBack - 0.02);
-  s.lineTo(w, D.zFront + 0.02);
-  s.lineTo(-w, D.zFront + 0.02);
-  s.lineTo(-w, D.zBack - 0.02);
+  s.moveTo(xa, D.zBack - 0.02);
+  s.lineTo(xb, D.zBack - 0.02);
+  s.lineTo(xb, D.zFront + 0.02);
+  s.lineTo(xa, D.zFront + 0.02);
+  s.lineTo(xa, D.zBack - 0.02);
   const hole = new THREE.Path();
-  hole.moveTo(-0.2, 0.05);
-  hole.lineTo(-0.2, 0.128);
-  hole.lineTo(0.2, 0.128);
-  hole.lineTo(0.2, 0.05);
-  hole.lineTo(-0.2, 0.05);
+  hole.moveTo(DRAIN.x0, DRAIN.z0);
+  hole.lineTo(DRAIN.x0, DRAIN.z1);
+  hole.lineTo(DRAIN.x1, DRAIN.z1);
+  hole.lineTo(DRAIN.x1, DRAIN.z0);
+  hole.lineTo(DRAIN.x0, DRAIN.z0);
   s.holes.push(hole);
   const geo = new THREE.ExtrudeGeometry(s, { depth: D.baseT, bevelEnabled: false });
   geo.rotateX(Math.PI / 2);
@@ -47,24 +88,23 @@ function buildBase(): THREE.Group {
   const plate = mesh(geo, MAT.printBlack());
   g.add(plate);
   // drain funnel under the opening (stainless)
-  const funnel = new THREE.CylinderGeometry(0.2, 0.12, 0.08, 4, 1, true);
+  const funnel = new THREE.CylinderGeometry(0.212, 0.13, 0.08, 4, 1, true);
   funnel.rotateY(Math.PI / 4);
-  funnel.scale(1.4, 1, 0.27);
-  const f = mesh(funnel, MAT.inox(), [0, -0.04, 0.089]);
+  funnel.scale(1, 1, (DRAIN.z1 - DRAIN.z0) / (DRAIN.x1 - DRAIN.x0));
+  const f = mesh(funnel, MAT.inox(), [(DRAIN.x0 + DRAIN.x1) / 2, -0.04, (DRAIN.z0 + DRAIN.z1) / 2]);
   (f.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
   g.add(f);
   // aluminium angles along both long edges where the cover is screwed
   for (const z of [D.zBack + 0.004, D.zFront - 0.004]) {
-    g.add(mesh(new THREE.BoxGeometry(D.W, 0.02, 0.003), MAT.aluDark(), [0, D.baseT + 0.01, z]));
+    g.add(mesh(new THREE.BoxGeometry(D.W, 0.02, 0.003), MAT.aluDark(), [CX, D.baseT + 0.01, z]));
   }
   // splash ramp inside the wet chamber guiding water to the drain
-  const ramp = new THREE.BoxGeometry(D.W - 0.02, 0.004, 0.06);
-  for (const s2 of [-1, 1]) {
-    const r = mesh(ramp, MAT.printBlack(), [0, D.baseT + 0.018, 0.09]);
-    r.scale.x = 0.15;
-    r.position.x = s2 * 0.245;
-    r.rotation.z = s2 * 0.5;
-    g.add(r);
+  const ramp = new THREE.BoxGeometry(0.08, 0.004, DRAIN.z1 - DRAIN.z0);
+  for (const [x, a] of [
+    [DRAIN.x0 - 0.04, -0.5],
+    [DRAIN.x1 + 0.04, 0.5],
+  ]) {
+    g.add(mesh(ramp, MAT.printBlack(), [x, D.baseT + 0.018, (DRAIN.z0 + DRAIN.z1) / 2], [0, 0, a]));
   }
   return g;
 }
@@ -75,9 +115,9 @@ function buildPartition(): THREE.Mesh {
   hole.absarc(0, D.axisY, 0.025, 0, Math.PI * 2, true);
   s.holes.push(hole);
   // passages for the V2 deflector shafts (harmless on V1)
-  for (const y of [0.4, 0.05]) {
+  for (const [x, y] of DEFLECTOR_PIVOTS) {
     const h = new THREE.Path();
-    h.absarc(-0.17, y, 0.007, 0, Math.PI * 2, true);
+    h.absarc(x, y, 0.007, 0, Math.PI * 2, true);
     s.holes.push(h);
   }
   const geo = new THREE.ExtrudeGeometry(s, { depth: D.partT, bevelEnabled: false, curveSegments: 32 });
@@ -123,28 +163,30 @@ function louvreTexture(): THREE.CanvasTexture {
 function buildRearPanel(): THREE.Group {
   const g = group('rear-panel');
   const s = profileShape(D.sheet);
+  // vents kept clear of the deflector linkage (x < -0.07) and the bearing boss
   const round = new THREE.Path();
-  round.absarc(-0.15, 0.2, 0.045, 0, Math.PI * 2, true);
+  round.absarc(VENT.round[0], VENT.round[1], VENT.r, 0, Math.PI * 2, true);
   s.holes.push(round);
+  const [rx0, ry0, rx1, ry1] = VENT.rect;
   const rect = new THREE.Path();
-  rect.moveTo(0.13, 0.27);
-  rect.lineTo(0.13, 0.34);
-  rect.lineTo(0.21, 0.34);
-  rect.lineTo(0.21, 0.27);
-  rect.lineTo(0.13, 0.27);
+  rect.moveTo(rx0, ry0);
+  rect.lineTo(rx0, ry1);
+  rect.lineTo(rx1, ry1);
+  rect.lineTo(rx1, ry0);
+  rect.lineTo(rx0, ry0);
   s.holes.push(rect);
   const geo = new THREE.ExtrudeGeometry(s, { depth: 0.006, bevelEnabled: false, curveSegments: 32 });
   geo.translate(0, 0, D.zBack + D.sheet);
   g.add(mesh(geo, MAT.printBlack()));
   // grilles behind the vents
   const lv = new THREE.MeshStandardMaterial({ map: louvreTexture(), roughness: 0.7 });
-  const disc = new THREE.Mesh(new THREE.CircleGeometry(0.046, 32), lv);
-  disc.position.set(-0.15, 0.2, D.zBack + D.sheet + 0.003);
+  const disc = new THREE.Mesh(new THREE.CircleGeometry(VENT.r + 0.001, 32), lv);
+  disc.position.set(VENT.round[0], VENT.round[1], D.zBack + D.sheet + 0.003);
   disc.rotation.y = Math.PI;
-  const ring = new THREE.TorusGeometry(0.048, 0.004, 8, 40);
-  g.add(disc, mesh(ring, MAT.printBlack(), [-0.15, 0.2, D.zBack + D.sheet - 0.001]));
-  const rc = new THREE.Mesh(new THREE.PlaneGeometry(0.08, 0.07), lv);
-  rc.position.set(0.17, 0.305, D.zBack + D.sheet + 0.003);
+  const ring = new THREE.TorusGeometry(VENT.r + 0.003, 0.004, 8, 40);
+  g.add(disc, mesh(ring, MAT.printBlack(), [VENT.round[0], VENT.round[1], D.zBack + D.sheet - 0.001]));
+  const rc = new THREE.Mesh(new THREE.PlaneGeometry(rx1 - rx0, ry1 - ry0), lv);
+  rc.position.set((rx0 + rx1) / 2, (ry0 + ry1) / 2, D.zBack + D.sheet + 0.003);
   rc.rotation.y = Math.PI;
   g.add(rc);
   // bearing-3 boss on the inside + grease cap outside
@@ -223,15 +265,15 @@ function buildCover(): THREE.Group {
     ctx.font = 'bold 26px monospace';
     ctx.fillText('PELTON µ-HYDRO', 14, 38);
     ctx.font = '18px monospace';
-    ctx.fillText('H 21–76 m · Q 0.7–4 L/s', 14, 66);
-    ctx.fillText('48 V DC · 1500 tr/min', 14, 88);
+    ctx.fillText('H 15–130 m · Q 1–40 L/s', 14, 66);
+    ctx.fillText('48 V DC · 26 augets Ø244', 14, 88);
   }).texture;
   const plate = new THREE.Mesh(
     new THREE.PlaneGeometry(0.1, 0.0375),
     new THREE.MeshStandardMaterial({ map: label, metalness: 0.6, roughness: 0.4 }),
   );
-  plate.position.set(D.W / 2 + 0.0005, 0.16, -0.08);
-  plate.rotation.y = Math.PI / 2;
+  plate.position.set(D.x0 - 0.0005, 0.16, -0.08);
+  plate.rotation.y = -Math.PI / 2;
   g.add(plate);
   return g;
 }
@@ -242,8 +284,8 @@ function buildTrestles(): THREE.Group {
   const top = D.baseY - 0.15;
   for (const z of [-0.5, 0.5]) {
     // top bar + 4 splayed legs (folding trestle)
-    g.add(mesh(new THREE.BoxGeometry(0.9, 0.04, 0.05), red, [0, top - 0.02, z]));
-    for (const x of [-0.36, 0.36]) {
+    g.add(mesh(new THREE.BoxGeometry(0.9, 0.04, 0.05), red, [CX, top - 0.02, z]));
+    for (const x of [CX - 0.36, CX + 0.36]) {
       for (const s of [-1, 1]) {
         const leg = new THREE.BoxGeometry(0.035, top, 0.035);
         const l = mesh(leg, red, [x, top / 2 - 0.02, z + s * 0.1]);
@@ -251,15 +293,16 @@ function buildTrestles(): THREE.Group {
         g.add(l);
       }
     }
-    g.add(mesh(new THREE.BoxGeometry(0.75, 0.025, 0.02), red, [0, 0.3, z + 0.07]));
+    g.add(mesh(new THREE.BoxGeometry(0.75, 0.025, 0.02), red, [CX, 0.3, z + 0.07]));
   }
   // two wooden beams (madriers 75 × 150) across the trestles, under the base plate
   const wood = MAT.wood();
-  for (const x of [-0.25, 0.25]) {
+  // beams clear of the drain opening so the water falls freely between them
+  for (const x of BEAMS_X) {
     g.add(mesh(new THREE.BoxGeometry(0.075, 0.15, 1.5), wood, [x, D.baseY - 0.075, 0]));
   }
   // lag screws holding the base
-  for (const x of [-0.25, 0.25]) {
+  for (const x of BEAMS_X) {
     for (const z of [-0.15, 0.15]) {
       g.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.006, 6), MAT.zinc(), [x, D.baseY + D.baseT + 0.003, z]));
     }
@@ -273,17 +316,18 @@ function buildSkid(): THREE.Group {
   const prof = (len: number, axis: 'x' | 'y' | 'z') =>
     new THREE.BoxGeometry(axis === 'x' ? len : 0.04, axis === 'y' ? len : 0.04, axis === 'z' ? len : 0.04);
   const top = D.baseY - 0.03;
-  const xs = [-0.3, 0.3];
-  const zs = [-0.22, 0.22];
+  const xs = SKID.xs;
+  const zs = SKID.zs;
+  const span = xs[1] - xs[0];
   for (const x of xs) for (const z of zs) g.add(mesh(prof(top - 0.06, 'y'), alu, [x, (top - 0.06) / 2 + 0.06, z]));
   for (const y of [top, 0.25]) {
-    for (const z of zs) g.add(mesh(prof(0.64, 'x'), alu, [0, y, z]));
-    for (const x of xs) g.add(mesh(prof(0.4, 'z'), alu, [x, y, 0]));
+    for (const z of zs) g.add(mesh(prof(span + 0.04, 'x'), alu, [CX, y, z]));
+    for (const x of xs) g.add(mesh(prof(zs[1] - zs[0], 'z'), alu, [x, y, 0]));
   }
   // diagonal braces on the sides
   for (const z of zs) {
-    const b = mesh(prof(0.75, 'x'), alu, [0, (top + 0.25) / 2, z]);
-    b.rotation.z = Math.atan2(top - 0.25, 0.6);
+    const b = mesh(prof(Math.hypot(span, top - 0.25), 'x'), alu, [CX, (top + 0.25) / 2, z]);
+    b.rotation.z = Math.atan2(top - 0.25, span);
     b.scale.y = 0.6;
     g.add(b);
   }
@@ -292,7 +336,7 @@ function buildSkid(): THREE.Group {
     for (const z of zs) {
       g.add(mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.06, 8), MAT.zinc(), [x, 0.035, z]));
       g.add(mesh(new THREE.CylinderGeometry(0.035, 0.04, 0.012, 24), MAT.rubber(), [x, 0.006, z]));
-      g.add(mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.022, 20), MAT.rubber(), [x * 0.85, top + 0.031, z * 0.85]));
+      g.add(mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.01, 20), MAT.rubber(), [x, top + 0.025, z * 0.85]));
     }
   }
   // lifting eyes
@@ -301,10 +345,10 @@ function buildSkid(): THREE.Group {
     g.add(mesh(eye, MAT.inox(), [x, top + 0.035, 0]));
   }
   // stainless tailrace funnel
-  const funnel = new THREE.CylinderGeometry(0.16, 0.06, 0.18, 4, 1, true);
+  const funnel = new THREE.CylinderGeometry(0.22, 0.08, 0.18, 4, 1, true);
   funnel.rotateY(Math.PI / 4);
-  funnel.scale(1.3, 1, 0.45);
-  const f = mesh(funnel, MAT.inox(), [0, top - 0.11, 0.09]);
+  funnel.scale(1, 1, 0.55);
+  const f = mesh(funnel, MAT.inox(), [(DRAIN.x0 + DRAIN.x1) / 2, top - 0.11, (DRAIN.z0 + DRAIN.z1) / 2]);
   (f.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
   g.add(f);
   return g;
@@ -313,15 +357,20 @@ function buildSkid(): THREE.Group {
 function buildLatches(): THREE.Group {
   const g = group('latches');
   const inox = MAT.inox();
-  for (const x of [-1, 1]) {
-    for (const z of [-0.11, 0.11]) {
-      const latch = group('latch', [x * (D.W / 2 + 0.006), 0.07, z]);
+  // tall wall (clear of the side-injector plate at z 0.06–0.16) and low wall (60 mm high);
+  // each keeper sits on the base plate
+  for (const [x, wx, y, zs] of [
+    [-1, D.x0 - 0.006, 0.07, [-0.13, 0.185]],
+    [1, D.x1 + 0.006, 0.05, [-0.13, 0.13]],
+  ] as [number, number, number, number[]][]) {
+    const keeperY = D.baseT - y + 0.006;
+    for (const z of zs) {
+      const latch = group('latch', [wx, y, z]);
       latch.add(mesh(new THREE.BoxGeometry(0.006, 0.04, 0.03), inox));
       latch.add(mesh(new THREE.BoxGeometry(0.01, 0.012, 0.024), inox, [x * 0.004, 0.022, 0]));
       const hook = new THREE.TorusGeometry(0.008, 0.0015, 6, 16, Math.PI);
-      latch.add(mesh(hook, inox, [x * 0.002, -0.03, 0], [0, Math.PI / 2, Math.PI]));
-      // keeper on the base
-      latch.add(mesh(new THREE.BoxGeometry(0.008, 0.012, 0.02), inox, [x * 0.004, -0.05, 0]));
+      latch.add(mesh(hook, inox, [x * 0.002, keeperY + 0.012, 0], [0, Math.PI / 2, Math.PI]));
+      latch.add(mesh(new THREE.BoxGeometry(0.008, 0.012, 0.02), inox, [x * 0.004, keeperY, 0]));
       g.add(latch);
     }
   }
@@ -329,7 +378,7 @@ function buildLatches(): THREE.Group {
 }
 
 function buildControllerBox(): { g: THREE.Group; leds: THREE.MeshStandardMaterial[] } {
-  const g = group('controller-box', [0.45, D.baseY - 0.36, -0.05]);
+  const g = group('controller-box', [SKID.xs[1] + 0.13, D.baseY - 0.36, -0.05]);
   const box = new RoundedBoxGeometry(0.2, 0.26, 0.13, 3, 0.012);
   g.add(mesh(box, MAT.enclosureGrey()));
   const door = new THREE.Mesh(new THREE.PlaneGeometry(0.17, 0.23), pmma(0.3));

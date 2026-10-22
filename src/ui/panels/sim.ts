@@ -338,12 +338,13 @@ export class SimPanel {
             t('slamShut'),
           ),
         ),
+        toggle(t('bypassValve'), p.bypassOpen, (v) => this.set({ bypassOpen: v })),
         toggle(t('topInjector'), p.top.enabled && p.top.open, (v) => this.nozzle('top', { enabled: true, open: v })),
         slider(
           'spearMax',
           p.top.d,
           6,
-          24,
+          14,
           0.5,
           (v) => `Ø ${v} mm`,
           (v) => this.nozzle('top', { d: v }, false),
@@ -364,7 +365,7 @@ export class SimPanel {
           'nozzle',
           p.side.d,
           3,
-          16,
+          14,
           0.5,
           (v) => `Ø ${v} mm`,
           (v) => this.nozzle('side', { d: v }, false),
@@ -587,7 +588,7 @@ export class SimPanel {
       `${t('sizingSite')} ${p.headGross} m · PE ${p.pipeDiam} mm × ${p.pipeLength} m · ${t('availableFlow')} `,
       h('b', {}, `${avail.toFixed(2)} L/s`),
     );
-    const rows = e.nozzleTable([3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16]);
+    const rows = e.nozzleTable([3, 4, 5, 6, 7, 8, 9, 10, 12, 14]);
     const best = rows
       .filter((r) => r.sustainable)
       .reduce<(typeof rows)[number] | null>((a, r) => (!a || r.pBus > a.pBus ? r : a), null);

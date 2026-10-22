@@ -20,6 +20,11 @@ import {
   sigWire,
   tag,
 } from './elec-symbols';
+import { hydro, nf } from './hyd-symbols';
+
+/** Operating speeds (rpm) of sites A (Ø6) and B from the simulator steady state. */
+const speeds = () => ({ nA: hydro().a6.pt.rpm, nB: hydro().b.pt.rpm });
+const NMAX = 4000;
 
 const PATTERN = 'AabBCcaABbcC'; // standard 12N14P layout, uppercase = clockwise
 const PH_COL = [PHASE.U, PHASE.V, PHASE.W];
@@ -435,15 +440,15 @@ function emfChart(p: View): void {
   const oy = 190;
   const w = 88;
   const h = 58;
-  const X = (n: number) => ox + (n / 3000) * w;
+  const X = (n: number) => ox + (n / NMAX) * w;
   const Yv = (e: number) => oy - (e / 160) * h;
   lab(p, [128, 124.6], l('TENSION À VIDE E = ke · ω', 'OPEN-CIRCUIT VOLTAGE E = ke · ω'), { b: true, s: 1.9 });
-  for (let n = 0; n <= 3000; n += 500) p.line([X(n), oy], [X(n), Yv(160)], { w: 0.1, color: '#d6cfc2' });
+  for (let n = 0; n <= NMAX; n += 500) p.line([X(n), oy], [X(n), Yv(160)], { w: 0.1, color: '#d6cfc2' });
   for (let e = 0; e <= 160; e += 40) {
     p.line([ox, Yv(e)], [ox + w, Yv(e)], { w: 0.1, color: '#d6cfc2' });
     lab(p, [ox - 1.2, Yv(e)], String(e), { a: 'end' });
   }
-  for (let n = 0; n <= 3000; n += 1000) {
+  for (let n = 0; n <= NMAX; n += 1000) {
     lab(p, [X(n), oy + 3], String(n), { a: 'middle' });
     lab(p, [X(n), Yv(160) - 3.4], n ? String(Math.round((7 * n) / 60)) : 'f (Hz)', { a: 'middle', c: INK_2 });
   }
@@ -457,50 +462,57 @@ function emfChart(p: View): void {
   };
   limit(150, l('150 V : entrée max TS-MPPT-45', '150 V: TS-MPPT-45 max input'));
   limit(120, l('120 V : limite TBTS en continu', '120 V: DC extra-low-voltage limit'));
+  const { nA, nB } = speeds();
   const sites: [number, number, string][] = [
-    [presetParams('siteA').ke, 1500, 'A'],
-    [presetParams('siteB').ke, 730, 'B'],
+    [presetParams('siteA').ke, nA, 'A'],
+    [presetParams('siteB').ke, nB, 'B'],
   ];
   for (const [ke, nNom, s] of sites) {
     const k = (ke * 2 * Math.PI) / 60;
-    const nMax = Math.min(3000, 160 / k);
+    const nMax = Math.min(NMAX, 160 / k);
     const col = s === 'A' ? COLORS.acN : COLORS.copper;
     p.line([X(0), Yv(0)], [X(nMax), Yv(k * nMax)], { w: W.medium, color: col });
     dot(p, [X(nNom), Yv(k * nNom)], INK, 0.9);
     p.circle([X(2 * nNom), Yv(k * 2 * nNom)], 1.1, { w: W.medium, color: COLORS.red, fill: COLORS.paper });
-    const at: Pt = s === 'A' ? [X(2000) + 2, Yv(k * 2000) + 4.6] : [X(1000) - 2, Yv(k * 1000) - 3.6];
+    const at: Pt = s === 'A' ? [X(2600) + 2, Yv(k * 2600) + 4.6] : [X(1000) - 2, Yv(k * 1000) - 3.6];
     lab(p, at, l(`site ${s} · ke ${fr(ke, 2)}`, `site ${s} · ke ${ke.toFixed(2)}`), {
       a: s === 'A' ? 'start' : 'end',
       c: col,
       b: true,
     });
   }
-  lab(p, [X(1500) + 1.6, Yv(70.7) + 2.4], l('nominal', 'rated'));
-  lab(p, [X(1460) + 2.4, Yv(113) + 1.4], l('emballement', 'runaway'), { c: COLORS.red });
+  const kA = (sites[0][0] * 2 * Math.PI) / 60;
+  const kB = (sites[1][0] * 2 * Math.PI) / 60;
+  lab(p, [X(nA) + 1.6, Yv(kA * nA) + 2.4], l('nominal', 'rated'));
+  lab(p, [X(2 * nB) + 2.4, Yv(kB * 2 * nB) + 1.4], l('emballement', 'runaway'), { c: COLORS.red });
 }
 
 function figures(p: View): void {
   const ke = presetParams('siteA').ke;
   const kB = presetParams('siteB').ke;
-  const e = (ke * 1500 * 2 * Math.PI) / 60;
+  const { nA, nB } = speeds();
+  const w = (n: number) => (n * 2 * Math.PI) / 60;
+  const e = ke * w(nA);
   const perRpm = (ke * 2 * Math.PI) / 60;
+  const [fA, rA, rB] = [nf((7 * nA) / 60, 0), nf(nA, 0), nf(nB, 0)];
+  const over = 2 * e > 120;
   lab(p, [128, 204.6], l('REPÈRES (modèle du simulateur)', 'KEY FIGURES (simulator model)'), { b: true, s: 1.9 });
   const lines: L[] = [
     l(
-      `Site A : ke = ${fr(ke, 2)} V·s/rad = ${fr(perRpm, 3)} V par tr/min → à 1 500 tr/min, E ≈ ${fr(e, 0)} V DC, ≈ ${fr(e / 1.35, 0)} V AC entre phases, 175 Hz.`,
-      `Site A: ke = ${ke.toFixed(2)} V·s/rad = ${perRpm.toFixed(3)} V per rpm → at 1,500 rpm, E ≈ ${e.toFixed(0)} V DC, ≈ ${(e / 1.35).toFixed(0)} V AC line-to-line, 175 Hz.`,
+      `Site A : ke = ${fr(ke, 2)} V·s/rad = ${fr(perRpm, 3)} V par tr/min → à ${rA.fr} tr/min, E ≈ ${fr(e, 0)} V DC, ≈ ${fr(e / 1.35, 0)} V AC entre phases, ${fA.fr} Hz.`,
+      `Site A: ke = ${ke.toFixed(2)} V·s/rad = ${perRpm.toFixed(3)} V per rpm → at ${rA.en} rpm, E ≈ ${e.toFixed(0)} V DC, ≈ ${(e / 1.35).toFixed(0)} V AC line-to-line, ${fA.en} Hz.`,
     ),
     l(
-      `Site B : ke = ${fr(kB, 2)} V·s/rad (plus de spires, chute de 21 m) → ≈ 730 tr/min, E ≈ ${fr(kB * 76.4, 0)} V.`,
-      `Site B: ke = ${kB.toFixed(2)} V·s/rad (more turns, 21 m head) → ≈ 730 rpm, E ≈ ${(kB * 76.4).toFixed(0)} V.`,
+      `Site B : ke = ${fr(kB, 2)} V·s/rad (plus de spires, chute de 21 m) → ≈ ${rB.fr} tr/min, E ≈ ${fr(kB * w(nB), 0)} V.`,
+      `Site B: ke = ${kB.toFixed(2)} V·s/rad (more turns, 21 m head) → ≈ ${rB.en} rpm, E ≈ ${(kB * w(nB)).toFixed(0)} V.`,
     ),
     l(
       'I = (E − 1,6 V − U bus) / (R gén + R câble), avec R gén = 0,55 Ω (phase + pont, vu côté DC) ; f = 7 · n / 60.',
       'I = (E − 1.6 V − U bus) / (R gen + R cable), with R gen = 0.55 Ω (phase + bridge, seen from DC); f = 7 · n / 60.',
     ),
     l(
-      `À vide, la roue s’emballe vers 2 × n : E ≈ ${fr(2 * e, 0)} V sur le site A, au-delà de la TBTS. Option HT : bobinage × 4 → E × 4, R × 16, I ÷ 4.`,
-      `Unloaded, the runner races to about 2 × n: E ≈ ${(2 * e).toFixed(0)} V on site A, above extra-low voltage. HV option: winding × 4 → E × 4, R × 16, I ÷ 4.`,
+      `À vide, la roue s’emballe vers 2 × n : E ≈ ${fr(2 * e, 0)} V sur le site A, ${over ? 'au-delà de' : 'sous'} la TBTS. Option HT : bobinage × 4 → E × 4, R × 16, I ÷ 4.`,
+      `Unloaded, the runner races to about 2 × n: E ≈ ${(2 * e).toFixed(0)} V on site A, ${over ? 'above' : 'below'} extra-low voltage. HV option: winding × 4 → E × 4, R × 16, I ÷ 4.`,
     ),
   ];
   let y = 207.6;
@@ -510,6 +522,8 @@ function figures(p: View): void {
 // ------------------------------------------------------------------ tests, safety, dimensions
 
 function tests(p: View, v2: boolean): number {
+  const perRpm = (presetParams('siteA').ke * 2 * Math.PI) / 60;
+  const u300 = (perRpm * 300) / 1.35; // AC line voltage at 300 rpm
   lab(p, [238, 124.6], l('ESSAIS DE RÉCEPTION DU GÉNÉRATEUR', 'GENERATOR ACCEPTANCE TESTS'), { b: true, s: 1.9 });
   const rows: [L, L, L][] = [
     [
@@ -527,8 +541,8 @@ function tests(p: View, v2: boolean): number {
         'Rotor turned by hand or with a drill (≈ 300 rpm), AC voltmeter between phases.',
       ),
       l(
-        '3 tensions égales à ± 5 % (≈ 10 V à 300 tr/min, 35 Hz).',
-        '3 equal voltages within ± 5% (≈ 10 V at 300 rpm, 35 Hz).',
+        `3 tensions égales à ± 5 % (≈ ${fr(u300, 0)} V à 300 tr/min, 35 Hz).`,
+        `3 equal voltages within ± 5% (≈ ${u300.toFixed(0)} V at 300 rpm, 35 Hz).`,
       ),
     ],
     [
@@ -558,7 +572,7 @@ function tests(p: View, v2: boolean): number {
         'Rotor entraîné, voltmètre DC sur + et − du bornier ; repérer la polarité.',
         'Rotor turning, DC voltmeter on + and − of the terminals; mark the polarity.',
       ),
-      l('U ≈ 0,047 V par tr/min − 1,6 V (site A).', 'U ≈ 0.047 V per rpm − 1.6 V (site A).'),
+      l(`U ≈ ${fr(perRpm, 3)} V par tr/min − 1,6 V (site A).`, `U ≈ ${perRpm.toFixed(3)} V per rpm − 1.6 V (site A).`),
     ],
   ];
   if (v2)
@@ -626,6 +640,8 @@ function safety(p: View): void {
 }
 
 function mainDims(p: View): void {
+  const { nA } = speeds();
+  const [fA, rA] = [nf((7 * nA) / 60, 0), nf(nA, 0)];
   lab(p, [14, 250.6], l('COTES PRINCIPALES (reconstitution)', 'MAIN DIMENSIONS (reconstruction)'), { b: true, s: 1.9 });
   const cells: [L, string][] = [
     [l('Stator, épanouissements', 'Stator, tooth tips'), 'Ø 113'],
@@ -647,8 +663,8 @@ function mainDims(p: View): void {
     p,
     [14, 271.5],
     l(
-      '7 paires de pôles → 175 Hz à 1 500 tr/min · classe d’isolation H (200 °C) · vernis d’imprégnation après bobinage.',
-      '7 pole pairs → 175 Hz at 1,500 rpm · insulation class H (200 °C) · varnish impregnation after winding.',
+      `7 paires de pôles → ${fA.fr} Hz à ${rA.fr} tr/min (site A) · classe d’isolation H (200 °C) · vernis d’imprégnation après bobinage.`,
+      `7 pole pairs → ${fA.en} Hz at ${rA.en} rpm (site A) · insulation class H (200 °C) · varnish impregnation after winding.`,
     ),
     { c: INK_2 },
   );

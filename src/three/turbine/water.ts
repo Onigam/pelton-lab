@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
 import { canvasTexture } from '../util';
 import { D } from './dims';
+import { DRAIN } from './housing';
 
 // Water inside the machine: jet cores (textured tubes), spray particles splitting
 // sideways off the buckets, and the sheet of water falling through the drain.
@@ -43,6 +44,8 @@ interface Jet {
   reach: number;
   /** Distance to the deflector blade when it is engaged. */
   deflectAt: number;
+  /** Mean velocity of the water leaving the tripped blade. */
+  deflectVel: THREE.Vector3;
 }
 
 export class MachineWater {
@@ -62,7 +65,13 @@ export class MachineWater {
     this.group.name = 'machine-water';
     const coreMat = () =>
       new THREE.MeshBasicMaterial({ map: this.streaks, transparent: true, opacity: 0.85, depthWrite: false });
-    const mk = (origin: THREE.Vector3, dir: THREE.Vector3, reach: number, deflectAt: number) => {
+    const mk = (
+      origin: THREE.Vector3,
+      dir: THREE.Vector3,
+      reach: number,
+      deflectAt: number,
+      deflectVel: THREE.Vector3,
+    ) => {
       const geo = new THREE.CylinderGeometry(1, 1, 1, 14, 1, true);
       geo.translate(0, -0.5, 0); // origin at the top, extends along -Y
       const core = new THREE.Mesh(geo, coreMat());
@@ -70,12 +79,16 @@ export class MachineWater {
       core.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), dir);
       core.userData.noShadow = true;
       this.group.add(core);
-      this.jets.push({ core, origin, dir, reach, deflectAt });
+      this.jets.push({ core, origin, dir, reach, deflectAt, deflectVel });
     };
-    // top jet: vertical, down to the pitch circle tangent point
-    mk(new THREE.Vector3(D.topJetX, D.topNozzleY, D.pipeZ), new THREE.Vector3(0, -1, 0), D.topNozzleY - D.axisY, 0.02);
-    // side jet: horizontal towards +X under the shaft
-    mk(new THREE.Vector3(D.sideNozzleX, D.sideJetY, D.pipeZ), new THREE.Vector3(1, 0, 0), -D.sideNozzleX, 0.03);
+    // top jet: vertical, down to the pitch circle tangent point; the tripped blade (rising
+    // towards +X) sends it down along its face towards the tall wall
+    const top = new THREE.Vector3(D.topJetX, D.topNozzleY, D.pipeZ);
+    mk(top, new THREE.Vector3(0, -1, 0), D.topNozzleY - D.axisY, 0.018, new THREE.Vector3(-1.5, -0.7, 0));
+    // side jet: horizontal towards +X under the shaft; the tripped blade throws it down onto
+    // the drain, under the runner
+    const side = new THREE.Vector3(D.sideNozzleX, D.sideJetY, D.pipeZ);
+    mk(side, new THREE.Vector3(1, 0, 0), -D.sideNozzleX, 0.03, new THREE.Vector3(0.9, -1.2, 0));
 
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
@@ -114,7 +127,7 @@ export class MachineWater {
   setFloor(floorY: number): void {
     const h = Math.max(0.05, -floorY);
     this.drain.scale.set(1, h, 1);
-    this.drain.position.set(0, -h / 2, 0.089);
+    this.drain.position.set((DRAIN.x0 + DRAIN.x1) / 2, -h / 2, (DRAIN.z0 + DRAIN.z1) / 2);
   }
 
   private spawn(p: THREE.Vector3, v: THREE.Vector3, life: number) {
@@ -146,9 +159,10 @@ export class MachineWater {
       while (this.emitCarry > 1) {
         this.emitCarry -= 1;
         if (deflect > 0.5) {
-          // jet hits the deflector blade and is thrown against the wall, away from the runner
-          tmp.copy(jet.origin).addScaledVector(jet.dir, jet.deflectAt + Math.random() * 0.01);
-          vel.set(-1.2 - Math.random(), -0.4 - Math.random() * 0.6, (Math.random() - 0.5) * 1.6);
+          // jet hits the deflector blade and slides off it, away from the runner
+          tmp.copy(jet.origin).addScaledVector(jet.dir, jet.deflectAt + Math.random() * 0.006);
+          vel.copy(jet.deflectVel).multiplyScalar(0.7 + Math.random() * 0.6);
+          vel.z += (Math.random() - 0.5) * 1.6;
         } else {
           // impact along the last part of the jet, split sideways by the bucket ridge
           tmp.copy(jet.origin).addScaledVector(jet.dir, jet.reach * (0.6 + Math.random() * 0.4));
@@ -181,7 +195,7 @@ export class MachineWater {
         this.velocities[o] *= 0.4;
       }
       const x = this.positions[o];
-      if (x < -D.W / 2 + 0.01 || x > D.W / 2 - 0.01) this.velocities[o] *= -0.2;
+      if (x < D.x0 + 0.01 || x > D.x1 - 0.01) this.velocities[o] *= -0.2;
       if (this.positions[o + 1] < D.baseT + 0.004 || this.life[i] <= 0) {
         this.life[i] = 0;
         this.positions[o + 1] = -10;

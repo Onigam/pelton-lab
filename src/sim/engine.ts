@@ -22,7 +22,8 @@ import type { AlarmKey, NozzleState, Season, SimState } from './types';
 // Hydraulics and mechanics run in real time (fast dynamics, sub-stepped); the energy
 // balance (battery, sun, consumption) runs on an accelerated clock.
 
-const R_PITCH = 0.115;
+/** Pitch radius of the 26-bucket Ø244 runner (pitch Ø190), see three/turbine/dims.ts. */
+const R_PITCH = 0.095;
 const INERTIA = 0.022; // kg·m², runner + rotor bell
 const R_GEN = 0.55; // Ω, phase + rectifier equivalent (48 V winding)
 const V_DIODE = 1.6;
@@ -98,6 +99,7 @@ function emptyState(): SimState {
     staticBar: 0,
     vJet: 0,
     mainValve: 1,
+    bypass: 0,
     nozzles: [nz('top', 'variable'), nz('side', 'fixed')],
     omega: 0,
     rpm: 0,
@@ -166,6 +168,7 @@ export class SimEngine {
   private surgeAmp = 0;
   private surgeT = 0;
   private mainPos = 1;
+  private bypassPos = 0;
   private topPos = 1;
   private sidePos = 1;
   private deflectTimer = 0;
@@ -203,6 +206,7 @@ export class SimEngine {
     this.airTimer = 0;
     this.surgeAmp = 0;
     this.mainPos = p.mainOpen ? 1 : 0;
+    this.bypassPos = p.bypassOpen ? 1 : 0;
     this.topPos = p.top.open ? 1 : 0;
     this.sidePos = p.side.open ? 1 : 0;
     this.mppt = { v: p.vSet, dir: 1, lastP: 0, timer: 0 };
@@ -361,7 +365,7 @@ export class SimEngine {
     const u = 0.47 * vJet;
     const omega = u / R_PITCH;
     // matchedBuckets: assume a runner designed for this jet (sizing curves), else the mounted set
-    const etaB = matchedBuckets ? bucketEfficiency(8, 'L') : bucketEfficiency(dJet, p.bucketSet);
+    const etaB = matchedBuckets ? bucketEfficiency(10, 'L') : bucketEfficiency(dJet, p.bucketSet);
     const tHyd = jetTorque(q, vJet, u, R_PITCH, etaB);
     const pShaft = Math.max(0, (tHyd - frictionTorque(omega, p.bearingWear, p.version === 'v2')) * omega);
     // generator + cable + controller
@@ -510,6 +514,7 @@ export class SimEngine {
     this.mainPos = moveTo(this.mainPos, p.mainOpen, p.valveCloseTime);
     this.topPos = moveTo(this.topPos, p.top.open, 1);
     this.sidePos = moveTo(this.sidePos, p.side.open, 1);
+    this.bypassPos = moveTo(this.bypassPos, p.bypassOpen, 1.5);
 
     // --- intake
     const captured = Math.min(s.qStream, SCREEN_CAPACITY * Math.pow(1 - p.screenClog, 1.5)) / 1000;
@@ -519,7 +524,9 @@ export class SimEngine {
     const ap = (Math.PI * d * d) / 4;
     const len = Math.max(5, p.pipeLength);
     const noz = this.nozzleAreas();
-    const an = noz.top + noz.side;
+    // the bypass drains water out of the manifold without reaching the runner
+    const aBypass = nozzleArea(25, 0.6) * Math.pow(this.bypassPos, 1.5);
+    const an = noz.top + noz.side + aBypass;
     const sputter = this.airTimer > 0 ? 1 - 0.18 * (0.5 + 0.5 * Math.sin(this.realTime * 11)) : 1;
     const head = p.headGross * this.airFactor * sputter;
     const v0 = this.q / ap;
@@ -617,7 +624,7 @@ export class SimEngine {
     }
 
     // --- publish
-    const pHyd = RHO * G * q1 * hNozzle;
+    const pHyd = RHO * G * (qTop + qSide) * hNozzle;
     s.qCaptured = captured * 1000;
     s.qOverflow = Math.max(0, s.qStream - s.qCaptured) + extraOverflow * 1000;
     s.intakeLevel = this.buffer / INTAKE_VOLUME;
@@ -629,6 +636,7 @@ export class SimEngine {
     s.pressureBar = Math.max(0, (RHO * G * (head - hf + surge)) / 1e5);
     s.vJet = vJet;
     s.mainValve = this.mainPos;
+    s.bypass = this.bypassPos;
     const [top, side] = s.nozzles;
     Object.assign(top, {
       enabled: p.top.enabled,

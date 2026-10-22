@@ -33,6 +33,8 @@ export interface SimParams {
   screenClog: number;
   // machine
   mainOpen: boolean;
+  /** Bypass / drain valve open (purge air, flush sediment). */
+  bypassOpen: boolean;
   /** Seconds to close the main valve (V1 quarter-turn ≈ 1 s, V2 gear valve ≈ 20 s). */
   valveCloseTime: number;
   top: NozzleParams; // variable spear injector
@@ -71,6 +73,7 @@ const base: SimParams = {
   weatherOverride: null,
   screenClog: 0,
   mainOpen: true,
+  bypassOpen: false,
   valveCloseTime: 20, // V2 gear-operated valve (V1 quarter-turn: 1 s)
   top: { enabled: false, d: 12, opening: 0.6, open: false },
   side: { enabled: true, d: 6, opening: 1, open: true },
@@ -78,7 +81,7 @@ const base: SimParams = {
   bearingWear: false,
   ctrlMode: 'fixed',
   vSet: 57,
-  ke: 0.45,
+  ke: 0.37,
   transportHV: false,
   cableLength: 70,
   cableSection: 6,
@@ -109,7 +112,7 @@ export function presetParams(id: PresetId): SimParams {
     p.side = { enabled: true, d: 7, opening: 1, open: true };
     p.bucketSet = 'L';
     p.ctrlMode = 'direct';
-    p.ke = 0.74;
+    p.ke = 0.58;
     p.vSet = 52;
     p.cableLength = 15;
     p.batteryKWh = 9.6;

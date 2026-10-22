@@ -130,8 +130,11 @@ export function bucketGeometry(spec: BucketSpec, hubR: number, hubT: number): TH
   return mergeGeometries([half, mirror, stem(spec, hubR, hubT)])!;
 }
 
-/** Bucket size matched to a jet diameter: width ≈ 3.2 d is the classic rule (scaled up for printability). */
+/**
+ * Bucket sets of the 26-bucket runner (tips on Ø244): L is sized for the maker's nozzles up to
+ * Ø14 (matched around Ø10), S is the smaller prototype set matched to a Ø6 jet.
+ */
 export function bucketSpecFor(set: 'S' | 'L', rPitch: number): BucketSpec {
-  const k = set === 'L' ? 1 : 0.84;
-  return { rc: rPitch + 0.006, a: 0.034 * k, b: 0.021 * k, depth: 0.013 * k, t: 0.0024 };
+  const k = set === 'L' ? 1 : 0.8;
+  return { rc: rPitch + 0.005, a: 0.022 * k, b: 0.02 * k, depth: 0.011 * k, t: 0.0022 };
 }

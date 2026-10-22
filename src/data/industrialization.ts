@@ -97,8 +97,8 @@ export const UPGRADES: UpgradeRow[] = [
       'One printed fixed injector per diameter, an Italian spear injector, several bucket sizes matched by hand.',
     ),
     v2: l(
-      'Corps unique sur bride normalisée, inserts à baïonnette Ø4 / 5 / 6 / 8 / 10 mm à joint torique et code couleur, kit d’augets assorti à chaque insert.',
-      'Single body on a standard flange, O-ring sealed bayonet inserts Ø4 / 5 / 6 / 8 / 10 mm with a colour code, a bucket kit matched to each insert.',
+      'Corps unique sur bride normalisée, inserts à baïonnette Ø4 à Ø14 mm (le maximum annoncé par le constructeur) à joint torique et code couleur, kit d’augets assorti à chaque insert : jeu S jusqu’à Ø6, jeu L de Ø8 à Ø14.',
+      'Single body on a standard flange, O-ring sealed bayonet inserts from Ø4 to Ø14 mm (the maker’s stated maximum) with a colour code, a bucket kit matched to each insert: S set up to Ø6, L set from Ø8 to Ø14.',
     ),
     benefit: l(
       'Adaptation saisonnière en quelques minutes, orifices précis, et impossible de monter une buse avec les mauvais augets.',
@@ -126,8 +126,8 @@ export const UPGRADES: UpgradeRow[] = [
       'No more runaway even if the dump load fails, and no water hammer since the water keeps flowing.',
     ),
     diy: l(
-      'Lame en aluminium ou imprimée en ASA, ressort de torsion, gâche électrique de porte à une quinzaine d’euros et un relais.',
-      'Aluminium or printed ASA blade, torsion spring, an electric door strike costing about fifteen euros and a relay.',
+      'Lames en aluminium, deux leviers et une biellette en plat acier, un ressort de traction accroché sur un goujon du flasque arrière, une gâche électrique 12 V à une quinzaine d’euros et un relais.',
+      'Aluminium blades, two levers and a link rod cut from steel flat bar, a tension spring hooked on a stud of the rear panel, a 12 V latch solenoid costing about fifteen euros and a relay.',
     ),
     parts: ['deflector', 'controller-box'],
   },
@@ -177,8 +177,8 @@ export const UPGRADES: UpgradeRow[] = [
     id: 'air-hammer',
     area: l('Air et coup de bélier', 'Air and water hammer'),
     v1: l(
-      'Vanne principale quart de tour, aucune purge au point haut du col de cygne ; des raccords ont déjà « pété ».',
-      'Quarter-turn main valve, no bleed at the gooseneck high point; fittings have already “blown”.',
+      'Vanne principale quart de tour, aucune purge au point haut du col de cygne (seule la vanne de dérivation, en partie basse, chasse l’air au remplissage) ; des raccords ont déjà « pété ».',
+      'Quarter-turn main valve, no bleed at the gooseneck high point (only the low bypass valve flushes air out at filling); fittings have already “blown”.',
     ),
     v2: l(
       'Ventouse automatique au point haut et vanne à réducteur qui demande une vingtaine de tours pour se fermer.',
@@ -192,14 +192,14 @@ export const UPGRADES: UpgradeRow[] = [
       'Ventouse d’irrigation 1/2" à une vingtaine d’euros, vanne papillon ou à boisseau à réducteur DN50 du commerce.',
       'A 1/2" irrigation air valve for about twenty euros, an off-the-shelf DN50 gear-operated butterfly or ball valve.',
     ),
-    parts: ['air-valve', 'valve-main', 'manifold'],
+    parts: ['air-valve', 'valve-main', 'valve-bypass', 'manifold'],
   },
   {
     id: 'runner',
     area: l('Équilibrage de la roue', 'Runner balancing'),
     v1: l(
-      'Augets imprimés montés à la main, bague de serrage imprimée en PETG.',
-      'Printed buckets fitted by hand, printed PETG clamping ring.',
+      'Augets imprimés montés à la main, bague de serrage imprimée en PETG (le modèle commercial passe à 26 augets injectés en polymère renforcé).',
+      'Printed buckets fitted by hand, printed PETG clamping ring (the commercial model moves to 26 injection-moulded reinforced-polymer buckets).',
     ),
     v2: l(
       'Augets pesés et numérotés, gabarit d’angle et de rayon, bague inox 316L découpée laser, équilibrage de la roue avec le rotor.',

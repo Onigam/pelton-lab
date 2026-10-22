@@ -1,19 +1,17 @@
-import { l, tr } from '../../i18n';
+import { l } from '../../i18n';
 import { COLORS, Drawing, W, type HatchKind, type Pt, type Stroke, type Text, type View } from '../svg';
 import type { DrawingSheet } from '../types';
+import { BELL, clipPoly, M, note, RUNNER, SHAFT, spec, STATOR, type Box } from './turbine-geom';
 
 // PL-T02 — shaft line, axial section A–A at 1:2 (z along the sheet, radius up).
-// Positions from src/three/turbine (dims.ts, drivetrain.ts, generator.ts, runner.ts), m → mm.
+// Positions from the 3D model (drivetrain.ts, generator.ts, runner.ts through turbine-geom.ts), mm.
 
-const Z_PART = 40; // partition centre, 10 thick → dry face 35, wet face 45
-const ZB1 = 23; // zPartDry - 12
-const ZB2 = -70; // zPartDry - 105
-const ZB3 = -165; // zBack + 15
-const SHAFT: [number, number] = [-172, 150];
-const WHEEL_Z = 110;
-const SEAL_Z = 49.5;
+const { b1: ZB1, b2: ZB2, b3: ZB3, seal: SEAL_Z, partDry: PD, partWet: PW } = SHAFT;
+const WHEEL_Z = M.wheelZ;
+const [S0, S1] = STATOR.z;
+const [B0, B1] = BELL.z;
 const BIG = 1000; // sentinel radius: replaced by the break radius of each half
-const R_TOP = 160;
+const R_TOP = 150;
 const R_BOT = -95;
 
 interface Shape {
@@ -22,7 +20,6 @@ interface Shape {
   mirror: boolean;
   open?: boolean;
 }
-type Box = { z0: number; z1: number; r0: number; r1: number };
 
 const sec = (hatch: HatchKind, w = W.medium): Stroke => ({ w, hatch, fill: COLORS.paper });
 const solid = (w = W.medium): Stroke => ({ w, fill: COLORS.paper });
@@ -38,30 +35,6 @@ const circle = ([cz, cr]: Pt, r: number, n = 20): Pt[] =>
     { length: n },
     (_, i) => [cz + r * Math.cos((i / n) * Math.PI * 2), cr + r * Math.sin((i / n) * Math.PI * 2)] as Pt,
   );
-
-/** Sutherland–Hodgman clip of a closed polygon against an axis-aligned box. */
-function clipPoly(pts: Pt[], b: Box): Pt[] {
-  const edges: [(p: Pt) => boolean, (p: Pt, q: Pt) => Pt][] = [
-    [(p) => p[0] >= b.z0, (p, q) => [b.z0, p[1] + ((q[1] - p[1]) * (b.z0 - p[0])) / (q[0] - p[0])]],
-    [(p) => p[0] <= b.z1, (p, q) => [b.z1, p[1] + ((q[1] - p[1]) * (b.z1 - p[0])) / (q[0] - p[0])]],
-    [(p) => p[1] >= b.r0, (p, q) => [p[0] + ((q[0] - p[0]) * (b.r0 - p[1])) / (q[1] - p[1]), b.r0]],
-    [(p) => p[1] <= b.r1, (p, q) => [p[0] + ((q[0] - p[0]) * (b.r1 - p[1])) / (q[1] - p[1]), b.r1]],
-  ];
-  let out = pts;
-  for (const [inside, cut] of edges) {
-    const src = out;
-    out = [];
-    src.forEach((p, i) => {
-      const q = src[(i + 1) % src.length];
-      if (inside(p)) {
-        out.push(p);
-        if (!inside(q)) out.push(cut(p, q));
-      } else if (inside(q)) out.push(cut(p, q));
-    });
-    if (!out.length) break;
-  }
-  return out;
-}
 
 /** 6204-2RS section (top half) centred on z. */
 function bearing(z: number): Shape[] {
@@ -97,99 +70,73 @@ function bearing(z: number): Shape[] {
 function shapes(v2: boolean): Shape[] {
   const s: Shape[] = [];
   const add = (pts: Pt[], st: Stroke, mirror = true) => s.push({ pts, st, mirror });
-  // housing plates (cut by break lines at R_TOP / R_BOT)
+  const [r0, r1] = SHAFT.rear;
+  const [w0, w1] = SHAFT.window;
+  // housing plates (cut by break lines at R_TOP / R_BOT): rear panel + bearing boss, partition, window
   add(
     [
-      [-178, 16],
-      [-178, BIG],
-      [-172, BIG],
-      [-172, 34],
-      [-152, 32],
-      [-152, 23.5],
-      [-172, 23.5],
-      [-172, 16],
+      [r0, 16],
+      [r0, BIG],
+      [r1, BIG],
+      [r1, 34],
+      [r1 + 20, 32],
+      [r1 + 20, 23.5],
+      [r1, 23.5],
+      [r1, 16],
     ],
     sec('plastic'),
   );
-  add(
-    [
-      [Z_PART - 5, 25],
-      [Z_PART - 5, BIG],
-      [Z_PART + 5, BIG],
-      [Z_PART + 5, 25],
-    ],
-    sec('pmma'),
-  );
-  add(
-    [
-      [170, -BIG],
-      [178, -BIG],
-      [178, BIG],
-      [170, BIG],
-    ],
-    sec('pmma'),
-    false,
-  );
+  add(rect(PD, PW, 25, BIG), sec('pmma'));
+  add(rect(w0, w1, -BIG, BIG), sec('pmma'), false);
   // grease cap (stainless cup) on the rear panel
+  const c0 = r0 - 12;
   add(
     [
-      [-190, -22],
-      [-190, 22],
-      [-178, 20],
-      [-178, 17],
-      [-187, 17],
-      [-187, -17],
-      [-178, -17],
-      [-178, -20],
+      [c0, -22],
+      [c0, 22],
+      [r0, 20],
+      [r0, 17],
+      [c0 + 3, 17],
+      [c0 + 3, -17],
+      [r0, -17],
+      [r0, -20],
     ],
     sec('steel'),
     false,
   );
   // bearing housing: V1 printed block (square flange 120) / V2 turned cartridge (Ø124 flange)
-  if (v2) {
-    add(
-      [
-        [35, 23.5],
-        [35, 62],
-        [23, 62],
-        [21, 36],
-        [-79, 34],
-        [-79, 21],
-        [-77, 21],
-        [-77, 23.5],
-      ],
-      sec('alu'),
-    );
-  } else {
-    add(
-      [
-        [35, 24],
-        [35, 60],
-        [19, 60],
-        [19, 34],
-        [-79, 34],
-        [-79, 21],
-        [-77, 21],
-        [-77, 23.5],
-        [30, 23.5],
-        [30, 24],
-      ],
-      sec('plastic'),
-    );
-  }
-  add(rect(30.2, 31.8, 23.5, 25.5), solid(W.thin)); // internal circlip DIN 472 Ø47
-  add(rect(-63, 16, 10, 14), sec('steel', W.thin)); // spacer between inner rings
-  for (const z of [ZB1, ZB2, ZB3]) s.push(...bearing(z));
-  // seal carrier + lip seal 20 × 35 × 7 (main lip and garter spring on the water side, +z)
+  const end = ZB2 - 9;
   add(
-    [
-      [45, 17.5],
-      [45, 30],
-      [54, 30],
-      [54, 17.5],
-    ],
+    v2
+      ? [
+          [PD, 23.5],
+          [PD, 62],
+          [PD - 12, 62],
+          [PD - 14, 36],
+          [end, 34],
+          [end, 21],
+          [end + 2, 21],
+          [end + 2, 23.5],
+        ]
+      : [
+          [PD, 24],
+          [PD, 60],
+          [PD - 16, 60],
+          [PD - 16, 34],
+          [end, 34],
+          [end, 21],
+          [end + 2, 21],
+          [end + 2, 23.5],
+          [PD - 5, 23.5],
+          [PD - 5, 24],
+        ],
     sec(v2 ? 'alu' : 'plastic'),
   );
+  add(rect(PD - 4.8, PD - 3.2, 23.5, 25.5), solid(W.thin)); // internal circlip DIN 472 Ø47
+  add(rect(ZB2 + 7, ZB1 - 7, 10, 14), sec('steel', W.thin)); // spacer between inner rings
+  for (const z of [ZB1, ZB2, ZB3]) s.push(...bearing(z));
+  // seal carrier + lip seal 20 × 35 × 7 (main lip and garter spring on the water side, +z)
+  add(rect(PW, PW + 9, 17.5, 30), sec(v2 ? 'alu' : 'plastic'));
   add(
     shift(
       [
@@ -208,117 +155,129 @@ function shapes(v2: boolean): Shape[] {
   add(circle([SEAL_Z + 1.2, 12.8], 0.7, 10), solid(W.thin));
   if (v2) {
     add(
-      [
-        [59, 10.2],
-        [59, 14],
-        [56.5, 14],
-        [54.2, 19],
-        [54, 18.4],
-        [55.6, 13],
-        [56, 10.2],
-      ],
+      shift(
+        [
+          [19, 10.2],
+          [19, 14],
+          [16.5, 14],
+          [14.2, 19],
+          [14, 18.4],
+          [15.6, 13],
+          [16, 10.2],
+        ],
+        PW - 5,
+      ),
       sec('rubber', W.thin),
     ); // V-ring
+    const gz = PD - 60; // grease nipple (drivetrain.ts)
     add(
       [
-        [-29, 35.2],
-        [-21, 35.2],
-        [-22, 46],
-        [-28, 46],
+        [gz - 4, 35.2],
+        [gz + 4, 35.2],
+        [gz + 3, 46],
+        [gz - 3, 46],
       ],
       solid(W.thin),
       false,
-    ); // grease nipple
-    add(circle([-25, 49], 3.2, 14), solid(W.thin), false);
+    );
+    add(circle([gz, 49], 3.2, 14), solid(W.thin), false);
   }
   // generator: stator stack + coil end turns, rotor (hub, fan disc, bell, back iron, magnets)
-  add(rect(-72, -36, 34.2, 56.5), sec('steel'));
-  add(rect(-78.2, -72, 43.2, 51.4), sec('copper', W.thin));
-  add(rect(-36, -29.8, 43.2, 51.4), sec('copper', W.thin));
-  add(rect(-103, -85, 10, 21), sec('alu'));
-  add(rect(-88, -82, 21, 50), sec('plastic'));
-  add(rect(-88, -82, 68, 78), sec('plastic'));
-  add(rect(-82, -30, 65, 78), sec('plastic'));
-  add(rect(-82, -30, 61.5, 65), sec('steel', W.thin));
-  add(rect(-73, -35, 57.5, 61.4), { w: W.thin, fill: '#c9ced6' });
-  add(rect(-97, -91, 15, 21), solid(W.thin), false); // set screw
-  if (v2) add(rect(-66, -54, 80, 108), { w: W.thin, fill: COLORS.paper }, false); // Hall sensor
+  add(rect(S0, S1, STATOR.rBore, STATOR.rTip), sec('steel'));
+  add(rect(S0 - 6.2, S0, 43.2, 51.4), sec('copper', W.thin));
+  add(rect(S1, S1 + 6.2, 43.2, 51.4), sec('copper', W.thin));
+  add(rect(B0 - 15, B0 + 3, M.shaftR, 21), sec('alu'));
+  add(rect(B0, B0 + 6, 21, 50), sec('plastic'));
+  add(rect(B0, B0 + 6, 68, BELL.r), sec('plastic'));
+  add(rect(B0 + 6, B1, 65, BELL.r), sec('plastic'));
+  add(rect(B0 + 6, B1, BELL.rIron, 65), sec('steel', W.thin));
+  add(rect(S0 - 1, S1 + 1, BELL.rMag[0], BELL.rMag[1]), { w: W.thin, fill: '#c9ced6' });
+  add(rect(B0 - 9, B0 - 3, 15, 21), solid(W.thin), false); // set screw
+  if (v2) add(rect(-106, -94, 82, 112), { w: W.thin, fill: COLORS.paper }, false); // Hall sensor (generator.ts)
   // runner: hub disc, clamp ring, steel flange, taper bush, washer, M4 bolts, bucket (top only)
-  add(rect(WHEEL_Z - 6, WHEEL_Z + 6, 22, 85), sec('plastic'));
-  add(rect(WHEEL_Z + 10, WHEEL_Z + 15, 62, 87), sec('plastic'));
+  const hz = M.hubT / 2;
+  const [g0, g1] = RUNNER.ring;
+  const FR = RUNNER.flangeR;
+  add(rect(WHEEL_Z - hz, WHEEL_Z + hz, RUNNER.bore, M.hubR), sec('plastic'));
+  add(rect(WHEEL_Z + RUNNER.ringZ[0], WHEEL_Z + RUNNER.ringZ[1], g0, g1), sec('plastic'));
   add(
-    [
-      [104, 11],
-      [104, 22],
-      [116, 22],
-      [116, 45],
-      [136, 45],
-      [136, 16],
-      [120, 19],
-      [120, 11],
-    ],
+    shift(
+      [
+        [-hz, 11],
+        [-hz, RUNNER.bore],
+        [hz, RUNNER.bore],
+        [hz, FR],
+        [hz + 20, FR],
+        [hz + 20, 16],
+        [hz + 4, 19],
+        [hz + 4, 11],
+      ],
+      WHEEL_Z,
+    ),
     sec('steel'),
   );
   add(
-    [
-      [120, 10],
-      [120, 19],
-      [136, 16],
-      [136, 10],
-    ],
+    shift(
+      [
+        [hz + 4, 10],
+        [hz + 4, 19],
+        [hz + 20, 16],
+        [hz + 20, 10],
+      ],
+      WHEEL_Z,
+    ),
     sec('steel'),
   );
-  add(rect(136, 138, 10, 17), sec('steel', W.thin));
-  add(rect(100, 104, 58, 85), solid(W.thin));
-  add(rect(116, 120, 58, 62), solid(W.thin));
-  add(rect(98, 128, 73, 77), solid(W.thin));
-  add(rect(125, 128, 71.5, 78.5), solid(W.thin));
-  add(rect(96.5, 99.5, 71.5, 78.5), solid(W.thin));
-  add(rect(100, 120, 85, 109.1), solid(W.medium), false);
+  add(rect(WHEEL_Z + hz + 20, WHEEL_Z + hz + 22, 10, 17), sec('steel', W.thin));
+  const [k0, k1] = RUNNER.cheek;
+  add(rect(WHEEL_Z - hz - 4, WHEEL_Z - hz, k0, k1), solid(W.thin));
+  add(rect(WHEEL_Z + hz, WHEEL_Z + hz + 4, k0, k1), solid(W.thin));
+  const br = M.boltR;
+  add(rect(WHEEL_Z - hz - 6, WHEEL_Z + hz + 12, br - 2, br + 2), solid(W.thin));
+  add(rect(WHEEL_Z + hz + 9, WHEEL_Z + hz + 12, br - 3.5, br + 3.5), solid(W.thin));
+  add(rect(WHEEL_Z - hz - 7.5, WHEEL_Z - hz - 4.5, br - 3.5, br + 3.5), solid(W.thin));
+  const L = spec('L');
+  add(rect(WHEEL_Z - 10, WHEEL_Z + 10, M.hubR, L.rc - 0.35 * L.a), solid(W.medium), false);
   const cup: Pt[] = [];
   for (let i = 0; i <= 32; i++) {
     const e = -0.985 + (1.97 * i) / 32;
-    cup.push([WHEEL_Z + 21 * Math.sqrt(1 - e * e), 121 + e * 34]);
+    cup.push([WHEEL_Z + L.b * Math.sqrt(1 - e * e), L.rc + e * L.a]);
   }
   for (let i = 32; i >= 0; i--) cup.push([2 * WHEEL_Z - cup[i][0], cup[i][1]]);
   add(cup, solid(W.medium), false);
   // shaft (not sectioned): Ø20, chamfer, M16 end, 6 × 6 key
+  const [z0, z1] = [SHAFT.z0, SHAFT.z1];
+  const t0 = WHEEL_Z + hz + 22; // thread starts under the nut
   add(
     [
-      [-172, 8.5],
-      [-170.5, 10],
-      [138, 10],
-      [138, 8],
-      [149, 8],
-      [150, 7],
-      [150, -7],
-      [149, -8],
-      [138, -8],
-      [138, -10],
-      [-170.5, -10],
-      [-172, -8.5],
+      [z0, 8.5],
+      [z0 + 1.5, 10],
+      [t0, 10],
+      [t0, 8],
+      [z1 - 1, 8],
+      [z1, 7],
+      [z1, -7],
+      [z1 - 1, -8],
+      [t0, -8],
+      [t0, -10],
+      [z0 + 1.5, -10],
+      [z0, -8.5],
     ],
     solid(W.thick),
     false,
   );
-  add(rect(95, 125, 6.5, 12.5), solid(W.thin), false);
-  add(rect(138, 148, -14.5, 14.5), solid(W.medium), false); // M16 nut (not sectioned)
-  add(
-    [
-      [138, 12],
-      [148, 12],
-    ],
-    { w: W.thin },
-    false,
-  );
-  add(
-    [
-      [138, -12],
-      [148, -12],
-    ],
-    { w: W.thin },
-    false,
-  );
+  add(rect(WHEEL_Z - 15, WHEEL_Z + 15, 6.5, 12.5), solid(W.thin), false);
+  add(rect(t0, t0 + 10, -14.5, 14.5), solid(W.medium), false); // M16 nut (not sectioned)
+  for (const r of [12, -12])
+    s.push({
+      pts: [
+        [t0, r],
+        [t0 + 10, r],
+      ],
+      st: { w: W.thin },
+      mirror: false,
+      open: true,
+    });
   return s;
 }
 
@@ -346,32 +305,6 @@ function breakLine(v: View, z0: number, z1: number, r: number): void {
     ],
     { w: W.thin },
   );
-}
-
-function note(
-  d: Drawing,
-  x: number,
-  y: number,
-  w: number,
-  text: Text,
-  o: { size?: number; bullet?: string; color?: string } = {},
-): number {
-  const size = o.size ?? 2;
-  const indent = o.bullet ? 4 : 0;
-  const max = Math.floor((w - indent) / (size * 0.64));
-  const rows: string[] = [];
-  let cur = '';
-  for (const word of tr(text).split(' ')) {
-    if (cur && (cur + ' ' + word).length > max) {
-      rows.push(cur);
-      cur = word;
-    } else cur = cur ? cur + ' ' + word : word;
-  }
-  if (cur) rows.push(cur);
-  const p = d.paper();
-  if (o.bullet) p.text([x, y], o.bullet, { size, baseline: 'top', weight: 'bold', color: o.color });
-  rows.forEach((r, i) => p.text([x + indent, y + i * size * 1.75], r, { size, baseline: 'top', color: o.color }));
-  return y + rows.length * size * 1.75 + size * 0.5;
 }
 
 /** Small square tag referring to the fits table. */
@@ -428,28 +361,24 @@ export const shaftLine: DrawingSheet = {
     const list = shapes(v2);
 
     // ---- main section 1:2
-    const v = d.view(118, 98, 0.5);
+    const v = d.view(120, 98, 0.5);
     render(v, list);
-    for (const [z0, z1] of [
-      [-178, -172],
-      [35, 45],
-      [170, 178],
-    ]) {
+    for (const [z0, z1] of [SHAFT.rear, [PD, PW], SHAFT.window]) {
       breakLine(v, z0, z1, R_TOP);
       breakLine(v, z0, z1, R_BOT);
     }
-    v.center([-196, 0], [184, 0]);
+    v.center([SHAFT.rear[0] - 20, 0], [SHAFT.window[1] + 6, 0]);
     for (const z of [ZB3, ZB2, ZB1, WHEEL_Z]) v.center([z, -26], [z, -101]);
-    v.center([WHEEL_Z, 26], [WHEEL_Z, 158]);
+    v.center([WHEEL_Z, 26], [WHEEL_Z, 140]);
     // water / dry sides
-    p.text(v.map([71, -86]), l('CHAMBRE HUMIDE', 'WET CHAMBER'), {
+    p.text(v.map([(PW + SHAFT.window[0]) / 2, -86]), l('CHAMBRE HUMIDE', 'WET CHAMBER'), {
       size: 2.2,
       weight: 'bold',
       color: COLORS.water,
       anchor: 'middle',
       halo: true,
     });
-    p.text(v.map([-128, -86]), l('CHAMBRE SÈCHE', 'DRY CHAMBER'), {
+    p.text(v.map([(SHAFT.rear[1] + PD) / 2, -86]), l('CHAMBRE SÈCHE', 'DRY CHAMBER'), {
       size: 2.2,
       weight: 'bold',
       color: COLORS.muted,
@@ -458,55 +387,56 @@ export const shaftLine: DrawingSheet = {
     });
     // axial dimension chain (datum: rear end of the shaft)
     const yb = -101;
-    v.dim([ZB3, yb], [ZB2, yb], 4, { dir: 'h' });
-    v.dim([ZB2, yb], [ZB1, yb], 4, { dir: 'h' });
-    v.dim([ZB1, yb], [WHEEL_Z, yb], 4, { dir: 'h' });
-    v.dim([WHEEL_Z, yb], [SHAFT[1], yb], 4, { dir: 'h' });
-    v.dim([SHAFT[0], yb], [SHAFT[1], yb], 11, { dir: 'h', label: l('322 (arbre)', '322 (shaft)') });
-    v.dim([SHAFT[0], -30], [ZB3, -30], 0, { dir: 'h', size: 2 });
-    v.dim([-130, -10], [-130, 10], 0, { dir: 'v', label: 'Ø20 h6', size: 2 });
-    v.dim([164, -85], [164, 85], 0, { dir: 'v', label: 'Ø170', size: 2.2 });
+    const chain = [ZB3, ZB2, ZB1, WHEEL_Z, SHAFT.z1];
+    chain.slice(1).forEach((z, i) => v.dim([chain[i], yb], [z, yb], 4, { dir: 'h' }));
+    v.dim([SHAFT.z0, yb], [SHAFT.z1, yb], 11, {
+      dir: 'h',
+      label: l(`${SHAFT.len} (arbre)`, `${SHAFT.len} (shaft)`),
+    });
+    v.dim([SHAFT.z0, -42], [ZB3, -42], 0, { dir: 'h', size: 2 });
+    v.dim([-160, -10], [-160, 10], 0, { dir: 'v', label: 'Ø20 h6', size: 2 });
+    v.dim([WHEEL_Z + 50, -M.hubR], [WHEEL_Z + 50, M.hubR], 0, { dir: 'v', label: `Ø${2 * M.hubR}`, size: 2.2 });
     // fits tags (see table)
     tag(v, [ZB2 + 4, -10], 4, 13, 'a');
     tag(v, [ZB2 - 4, -23.5], -4, 16, 'b');
     tag(v, [ZB3 + 3, -23.5], 6, 12, 'c');
     tag(v, [SEAL_Z - 2, -10.4], -3, 22, 'd');
     tag(v, [SEAL_Z + 2, -17.5], 6, 16, 'e');
-    tag(v, [-94, -10], -2, 18, 'f');
-    tag(v, [128, -10], 2, 14, 'g');
-    // balloons (parts list)
+    tag(v, [B0 - 6, -10], -2, 18, 'f');
+    tag(v, [WHEEL_Z + 18, -10], 2, 14, 'g');
     // balloons: target point in the model, balloon centre in paper mm
     const b = (at: Pt, bx: number, by: number, n: string) => {
       const q = v.map(at);
       v.leader(at, bx - q[0], by - q[1], n, { balloon: true });
     };
-    b([-188, 15], 20, 70, '16');
-    b([-175, 130], 22, 26, '15');
-    b([-165, 22], 40, 40, '4');
-    b([-140, 10], 50, 28, '1');
-    b([-84, 75], 62, 40, '13');
-    b([-70, 22], 76, 24, '3');
-    b([-54, 52], 98, 30, '14');
-    b([-30, 13], 110, 22, '8');
-    b([-5, 34.5], 118, 38, '7');
-    b([ZB1, 22], 130, 26, '2');
-    if (v2) b([-25, 47], 126, 54, '17');
-    b([Z_PART, 120], 148, 24, '9');
-    b([50, 28], 150, 60, '6');
-    b([51.5, 16], 157, 74, '5');
-    b([105, 70], 154, 44, '10');
-    b([130, 40], 189, 52, '11');
-    b([145, 13], 194, 66, '12');
+    const [r0] = SHAFT.rear;
+    b([r0 - 10, 15], 16, 64, '16');
+    b([r0 + 3, 120], 28, 18, '15');
+    b([ZB3, 22], 34, 40, '4');
+    b([-160, 10], 44, 28, '1');
+    b([B0 + 4, 75], 56, 40, '13');
+    b([ZB2, 22], 66, 28, '3');
+    b([S0 + 18, 52], 80, 36, '14');
+    b([-70, 13], 92, 26, '8');
+    b([-45, 34.5], 104, 34, '7');
+    b([ZB1, 22], 112, 17, '2');
+    if (v2) b([PD - 60, 47], 98, 50, '17');
+    b([M.zPart, 120], 130, 22, '9');
+    b([PW + 5, 28], 138, 52, '6');
+    b([SEAL_Z + 2, 16], 145, 68, '5');
+    b([WHEEL_Z - 4, 50], 160, 74, '10');
+    b([WHEEL_Z + 24, 28], 190, 50, '11');
+    b([WHEEL_Z + 35, 13], 197, 66, '12');
     // detail E mark
-    v.circle([50, 20], 17, { w: W.thin, dash: 'phantom' });
-    p.text(v.map([60, 37]), 'E', { size: 3.4, weight: 'bold', halo: true });
-    v.caption([0, -130], l('COUPE A–A — ligne d’arbre', 'SECTION A–A — shaft line'), '1:2');
+    v.circle([SEAL_Z + 1, 20], 17, { w: W.thin, dash: 'phantom' });
+    p.text(v.map([SEAL_Z + 11, 37]), 'E', { size: 3.4, weight: 'bold', halo: true });
+    v.caption([0, -142], l('COUPE A–A — ligne d’arbre', 'SECTION A–A — shaft line'), '1:2');
 
     // ---- detail E, 2:1 (seal on the partition)
-    const box: Box = { z0: 27, z1: 63, r0: 7, r1: 33 };
-    const de = d.view(18 - box.z0 * 2, 186 + box.r1 * 2, 2);
+    const box: Box = { x0: PD - 8, x1: PW + 18, y0: 7, y1: 33 };
+    const de = d.view(18 - box.x0 * 2, 186 + box.y1 * 2, 2);
     render(de, list, box);
-    de.rect([box.z0, box.r0], [box.z1, box.r1], { w: W.thin, dash: 'phantom', color: COLORS.muted });
+    de.rect([box.x0, box.y0], [box.x1, box.y1], { w: W.thin, dash: 'phantom', color: COLORS.muted });
     de.leader([SEAL_Z + 3.4, 10.4], 26, 10, l('lèvre principale côté eau', 'main lip, water side'), {
       color: COLORS.water,
     });
@@ -514,24 +444,24 @@ export const shaftLine: DrawingSheet = {
     de.leader([SEAL_Z - 2.6, 10.6], 36, 17, l('lèvre pare-poussière', 'dust lip'));
     if (v2)
       de.leader(
-        [56.5, 16.5],
+        [PW + 11.5, 16.5],
         14,
         -18,
         l('V-ring déflecteur (tourne avec l’arbre)', 'V-ring slinger (turns with the shaft)'),
       );
-    p.text(de.map([60, 30.5]), l('EAU →', 'WATER →'), {
+    p.text(de.map([box.x1 - 3, 30.5]), l('EAU →', 'WATER →'), {
       size: 2.2,
       weight: 'bold',
       color: COLORS.water,
       anchor: 'end',
     });
-    p.text(de.map([29, 30.5]), l('← SEC', '← DRY'), { size: 2.2, weight: 'bold', color: COLORS.muted });
+    p.text(de.map([box.x0 + 2, 30.5]), l('← SEC', '← DRY'), { size: 2.2, weight: 'bold', color: COLORS.muted });
     p.text(
-      de.map([(box.z0 + box.z1) / 2, box.r0 - 5]),
+      de.map([(box.x0 + box.x1) / 2, box.y0 - 5]),
       l('DÉTAIL E — étanchéité de cloison', 'DETAIL E — partition seal'),
       { size: 2.8, weight: 'bold', anchor: 'middle' },
     );
-    p.text(de.map([(box.z0 + box.z1) / 2, box.r0 - 7.2]), '2:1', {
+    p.text(de.map([(box.x0 + box.x1) / 2, box.y0 - 7.2]), '2:1', {
       size: 2.2,
       anchor: 'middle',
       mono: true,
@@ -577,8 +507,8 @@ export const shaftLine: DrawingSheet = {
       ny,
       190,
       l(
-        'Porte-joint, entretoise et circlip : pièces de montage proposées (non modélisées en 3D).',
-        'Seal carrier, spacer and circlip: suggested assembly parts (not modelled in 3D).',
+        'Porte-joint, entretoise, circlip et bride de roue : pièces de montage proposées (non modélisées en 3D).',
+        'Seal carrier, spacer, circlip and runner flange: suggested assembly parts (not modelled in 3D).',
       ),
       { color: COLORS.muted },
     );
@@ -589,7 +519,7 @@ export const shaftLine: DrawingSheet = {
     const rows: Text[][] = [
       [
         '1',
-        l('Arbre Ø20 h6 × 322, M16 + rainure 6', 'Shaft Ø20 h6 × 322, M16 + 6 mm keyway'),
+        l(`Arbre Ø20 h6 × ${SHAFT.len}, M16 + rainure 6`, `Shaft Ø20 h6 × ${SHAFT.len}, M16 + 6 mm keyway`),
         l('inox 316L rectifié', 'ground 316L'),
         '1',
       ],
@@ -618,7 +548,15 @@ export const shaftLine: DrawingSheet = {
         '1',
       ],
       ['9', l('Cloison étanche ép. 10', '10 mm watertight partition'), 'PMMA', '1'],
-      ['10', l('Moyeu Ø170 + bague + 22 augets (PL-T03)', 'Ø170 hub + ring + 22 buckets (PL-T03)'), 'PETG', '1'],
+      [
+        '10',
+        l(
+          `Moyeu Ø${2 * M.hubR} + bague + ${M.buckets} augets (PL-T03)`,
+          `Ø${2 * M.hubR} hub + ring + ${M.buckets} buckets (PL-T03)`,
+        ),
+        'PETG',
+        '1',
+      ],
       [
         '11',
         l('Bride + douille Taper-Lock 1108 + clavette 6 × 6', 'Flange + Taper-Lock 1108 bush + 6 × 6 key'),
@@ -628,7 +566,7 @@ export const shaftLine: DrawingSheet = {
       ['12', l('Rondelle + écrou M16 nylstop', 'Washer + M16 nyloc nut'), l('inox A4', 'A4 stainless'), '1'],
       [
         '13',
-        l('Rotor Ø156 : cloche, culasse, 14 aimants', 'Ø156 rotor: bell, back iron, 14 magnets'),
+        l(`Rotor Ø${2 * BELL.r} : cloche, culasse, 14 aimants`, `Ø${2 * BELL.r} rotor: bell, back iron, 14 magnets`),
         l('PETG / acier / N52', 'PETG / steel / N52'),
         '1',
       ],
@@ -741,7 +679,7 @@ export const shaftLine: DrawingSheet = {
             '3 N·m',
             l('rondelles larges', 'wide washers'),
           ],
-      [l('Bride → moyeu roue', 'Flange → runner hub'), '4 × M5 A4', '4 N·m', 'Loctite 243'],
+      [l('Bride → moyeu roue', 'Flange → runner hub'), '4 × M5 A4', '3 N·m', 'Loctite 243'],
       [l('Vis pointeau rotor', 'Rotor set screw'), 'M6 A4', '4 N·m', 'Loctite 243'],
     ];
     d.table(
