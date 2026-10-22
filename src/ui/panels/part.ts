@@ -183,6 +183,21 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
         ctx.ui.isolate ? t('showAll') : t('isolate'),
       ),
       h('button', { class: 'btn', onclick: () => ctx.stage.frameParts([id], 1.5) }, icon(ICONS.focus, 16), t('focus')),
+      id === 'deflector' && ctx.engine.params.version === 'v2'
+        ? h(
+            'button',
+            {
+              class: 'btn btn--primary',
+              onclick: () => {
+                // look at the blades through the window, then trip once the camera is there
+                ctx.stage.frameParts([id], 1.7, new THREE.Vector3(-0.25, 0.12, 1));
+                setTimeout(() => ctx.engine.testDeflector(), 900);
+              },
+            },
+            icon(ICONS.bolt, 16),
+            t('testTrip'),
+          )
+        : null,
       ...sheetsForPart(id).map((sheet) =>
         h(
           'button',

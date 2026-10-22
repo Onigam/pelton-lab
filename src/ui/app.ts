@@ -20,6 +20,7 @@ import {
 import { renderPartPanel } from './panels/part';
 import { renderPlansPanel } from './panels/plans';
 import { SimPanel } from './panels/sim';
+import { panelEdge } from './panel-size';
 import { DrawingViewer } from './drawings';
 import type { Mode, Store, UiState } from './state';
 
@@ -85,6 +86,7 @@ export class App {
     this.visited.add(store.state.scene);
     this.simPanel = new SimPanel(this.ctx);
     this.panel.append(
+      panelEdge(),
       h('button', {
         class: 'panel__grip',
         'aria-label': t('menu'),

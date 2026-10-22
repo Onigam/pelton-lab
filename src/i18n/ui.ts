@@ -38,6 +38,13 @@ const S = {
   overviewBtn: ['Vue d’ensemble', 'Overview'],
   hidePanel: ['Masquer le panneau (3D plein écran)', 'Hide the panel (full-width 3D)'],
   showPanel: ['Afficher le panneau', 'Show the panel'],
+  panelWide: ['Lire en pleine largeur', 'Read at full width'],
+  testTrip: ['Tester le déclenchement', 'Test the trip'],
+  panelNarrow: ['Revenir à la vue 3D', 'Back to the 3D view'],
+  panelResize: [
+    'Glisser pour élargir le panneau, double-clic pour la largeur par défaut',
+    'Drag to widen the panel, double-click for the default width',
+  ],
   overviewHint: [
     'Voir tout le dispositif (double-clic sur une pièce : l’isoler ; double-clic dans le vide : tout revoir)',
     'See the whole device (double-click a part: isolate it; double-click empty space: see everything)',

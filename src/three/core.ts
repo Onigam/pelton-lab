@@ -243,10 +243,10 @@ export class Stage {
     this.frameBox(box, 0.82, duration, dir);
   }
 
-  frameParts(ids: string[], padding = 1.35): void {
+  frameParts(ids: string[], padding = 1.35, dir?: THREE.Vector3): void {
     const box = new THREE.Box3();
     for (const id of ids) box.union(this.active.registry.bounds(id));
-    this.frameBox(box, padding);
+    this.frameBox(box, padding, 0.9, dir);
   }
 
   home(): void {

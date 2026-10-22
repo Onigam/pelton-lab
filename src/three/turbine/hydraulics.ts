@@ -159,10 +159,20 @@ function buildDeflector(defl: THREE.Group): (e: number) => void {
     defl.add(b);
     return b;
   });
-  // shafts through the partition and the rear panel, with a bushing in the panel
+  // shafts through the partition and the rear panel: a flanged bronze bushing screwed on the
+  // wet side of the partition carries each cantilevered blade, a second one sits in the panel
+  const zWet = D.zPart + D.partT / 2;
   for (const [x, y] of DEFLECTOR.pivots) {
     const len = Z - zLever + 0.006;
     defl.add(mesh(zAxis(new THREE.CylinderGeometry(0.005, 0.005, len, 12)), inox, [x, y, Z - len / 2]));
+    defl.add(mesh(zAxis(new THREE.CylinderGeometry(0.015, 0.015, 0.003, 24)), MAT.brass(), [x, y, zWet + 0.0015]));
+    defl.add(mesh(zAxis(new THREE.CylinderGeometry(0.0085, 0.0085, 0.016, 20)), MAT.brass(), [x, y, zWet + 0.011]));
+    for (const a of [Math.PI / 4, (5 * Math.PI) / 4]) {
+      const screw = zAxis(new THREE.CylinderGeometry(0.0022, 0.0022, 0.002, 8));
+      defl.add(mesh(screw, inox, [x + Math.cos(a) * 0.0115, y + Math.sin(a) * 0.0115, zWet + 0.004]));
+    }
+    // shaft collar against the blade hub
+    defl.add(mesh(zAxis(new THREE.CylinderGeometry(0.0085, 0.0085, 0.006, 16)), steel, [x, y, Z - 0.028]));
     defl.add(
       mesh(zAxis(new THREE.CylinderGeometry(0.009, 0.009, 0.008, 16)), MAT.printBlack(), [x, y, D.zBack - 0.003]),
     );

@@ -73,7 +73,8 @@ a {
   position: fixed;
   inset: 0;
   display: grid;
-  grid-template-columns: var(--rail-w) minmax(0, 1fr) var(--panel-w);
+  /* the panel width can be dragged; it never eats more than the view keeps (panel-size.ts) */
+  grid-template-columns: var(--rail-w) minmax(0, 1fr) min(var(--panel-w), calc(100vw - var(--rail-w) - 320px));
   grid-template-rows: var(--top-h) minmax(0, 1fr) var(--strip-h);
   grid-template-areas:
     'top top top'
@@ -255,6 +256,9 @@ a {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  /* own stacking context: CSS2DRenderer gives each label a z-index by depth, which would
+     otherwise put labels above the panel and the toolbar */
+  z-index: 1;
 }
 
 .hotspot {
@@ -551,12 +555,18 @@ a {
   background: var(--violet-soft);
 }
 
+/* tabs wrap instead of scrolling (no scrollbar over the labels) and stay at the top while
+   reading a long sheet */
 .tabs {
   display: flex;
-  gap: 2px;
+  flex-wrap: wrap;
+  gap: 0 2px;
   border-bottom: 1px solid var(--line-2);
   margin: 4px 0 12px;
-  overflow-x: auto;
+  position: sticky;
+  top: -18px;
+  z-index: 2;
+  background: var(--card);
 }
 
 .tab {
@@ -1991,4 +2001,86 @@ body.mode-plans .label-layer {
 
 .dv__no {
   white-space: nowrap;
+}
+
+/* ------------------------------------------------------------- panel sizing (desktop) */
+
+.panel__edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  width: 10px;
+  z-index: 5;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.panel__edge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  width: 2px;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.panel__edge:hover::before,
+body.panel-resizing .panel__edge::before {
+  background: var(--copper);
+}
+
+.panel__wide {
+  position: absolute;
+  top: 50%;
+  left: -7px;
+  width: 22px;
+  height: 46px;
+  margin-top: -23px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-2);
+  border-radius: 11px;
+  background: var(--card);
+  color: var(--ink-2);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+
+.panel__wide:hover {
+  color: var(--ink);
+  border-color: var(--copper);
+}
+
+body.panel-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+@media (min-width: 761px) {
+  /* reading mode: the panel takes the whole width, text kept to a readable measure */
+  body.panel-wide:not(.panel-closed) #app {
+    grid-template-columns: var(--rail-w) 0 minmax(0, 1fr);
+  }
+  body.panel-wide:not(.panel-closed) #viewport {
+    visibility: hidden;
+  }
+  body.panel-wide .panel__body {
+    padding-inline: max(20px, calc((100% - 860px) / 2));
+  }
+  body.panel-wide .panel__edge {
+    cursor: default;
+  }
+}
+
+@media (max-width: 760px) {
+  .panel__edge {
+    display: none;
+  }
+  .tabs {
+    top: 0;
+  }
 }

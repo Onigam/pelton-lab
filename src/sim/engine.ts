@@ -234,6 +234,11 @@ export class SimEngine {
     this.reset();
   }
 
+  /** V2: trip the jet deflector as a fault would; it re-arms by itself a few seconds later. */
+  testDeflector(): void {
+    if (this.params.version === 'v2') this.deflectTimer = 8;
+  }
+
   applyScenario(id: ScenarioId): void {
     this.params = scenarioParams(id, this.params);
     this.reset();
