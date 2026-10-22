@@ -368,6 +368,17 @@ export function renderAboutPanel(_ctx: AppContext, root: HTMLElement): void {
       h(
         'li',
         {},
+        link(
+          'https://www.hydronome.fr/index.php/turbines-pelton/',
+          fr ? 'Fiche turbine Pelton Hydronome' : 'Hydronome Pelton turbine page',
+        ),
+        fr
+          ? ' — 5 kW nominal, chute 15–130 m, 1–40 L/s, roue 26 augets Ø244 mm, plans cotés et schémas de principe officiels'
+          : ' — 5 kW rated, 15–130 m head, 1–40 L/s, 26-bucket Ø244 mm runner, official dimensioned drawings and wiring principles',
+      ),
+      h(
+        'li',
+        {},
         link('http://www.larchipelle.fr', 'larchipelle.fr'),
         fr ? ' — la chaîne du reportage' : ' — the channel behind the report',
       ),

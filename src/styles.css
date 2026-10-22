@@ -1842,3 +1842,153 @@ body.panel-closed .panel {
     padding: 6px 10px;
   }
 }
+
+/* ------------------------------------------------------------- drawings viewer */
+
+.dv {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: none;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 24px 24px,
+    #e7decb;
+}
+
+body.mode-plans .dv {
+  display: block;
+}
+
+body.mode-plans .toolbar,
+body.mode-plans .peek,
+body.mode-plans .label-layer {
+  display: none;
+}
+
+.dv__stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+
+.dv__stage:active {
+  cursor: grabbing;
+}
+
+.dv__svg {
+  position: absolute;
+  box-shadow: 0 10px 40px -18px rgba(29, 43, 58, 0.6);
+  user-select: none;
+}
+
+.dv__bar {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: rgba(251, 248, 242, 0.95);
+  box-shadow: var(--shadow);
+  max-width: calc(100% - 24px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dv__no {
+  font-family: var(--mono);
+  font-size: 12px;
+  min-width: 92px;
+  text-align: center;
+}
+
+.dv__sep {
+  width: 1px;
+  height: 22px;
+  background: var(--line-2);
+}
+
+.dv__print {
+  position: fixed;
+  width: 0;
+  height: 0;
+  border: 0;
+  visibility: hidden;
+}
+
+.sheet-group {
+  margin-bottom: 6px;
+}
+
+.sheet-row {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 6px 10px;
+  margin-bottom: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  text-align: left;
+  font-size: 13px;
+}
+
+.sheet-row:hover {
+  border-color: var(--ink);
+}
+
+.sheet-row.is-active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.sheet-row__no {
+  font-family: var(--mono);
+  font-size: 11px;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.line-legend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.line-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* the panel toggle stays reachable above the drawings viewer */
+.panel-toggle {
+  z-index: 7;
+}
+
+.dv__bar {
+  flex-wrap: nowrap;
+  gap: 4px;
+}
+
+.dv__bar .icon-btn {
+  width: 30px;
+  height: 30px;
+}
+
+.dv__no {
+  white-space: nowrap;
+}

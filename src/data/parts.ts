@@ -180,6 +180,14 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Black PMMA 8 mm, printed ASA grille and bearing flange',
     ),
     specs: [
+      sp(
+        'Modèle commercial Hydronome',
+        'Hydronome commercial model',
+        l(
+          'Filtres à air démontables sans outil, à laver 1 à 2 fois par an',
+          'Tool-less removable air filters, wash 1–2 times a year',
+        ),
+      ),
       sp('Épaisseur', 'Thickness', '8 mm'),
       sp('Grille d’aération', 'Vent grille', 'Ø 100 mm'),
       sp('Roulement porté', 'Bearing held', '6204-2RS (n° 3)'),
@@ -334,6 +342,14 @@ const TURBINE_ROTATING: PartInfo[] = [
     ),
     material: l('NBR, ressort inox, armature acier', 'NBR, stainless garter spring, steel case'),
     specs: [
+      sp(
+        'Modèle commercial Hydronome',
+        'Hydronome commercial model',
+        l(
+          '3 roulements SKF en opposition, sans entretien, ≥ 4 ans',
+          '3 SKF bearings in opposed mounting, maintenance-free, ≥ 4 years',
+        ),
+      ),
       sp('Dimensions', 'Dimensions', '20 × 35 × 7 mm'),
       sp('Type', 'Type', l('TC, double lèvre', 'TC, double lip')),
       sp('Vitesse périphérique max', 'Max surface speed', '≈ 10 m/s'),
@@ -369,7 +385,7 @@ const TURBINE_ROTATING: PartInfo[] = [
     material: l('Inox 316L rectifié', 'Ground 316L stainless steel'),
     specs: [
       sp('Diamètre', 'Diameter', 'Ø 20 h6'),
-      sp('Longueur', 'Length', '≈ 400 mm'),
+      sp('Longueur', 'Length', '322 mm'),
       sp('Couple à 499 W / 1 500 tr/min', 'Torque at 499 W / 1,500 rpm', '≈ 3,2 N·m'),
       sp('Bout côté roue', 'Runner end', l('Rainure de clavette 6 mm + filetage M16', '6 mm keyway + M16 thread')),
     ],
@@ -394,7 +410,7 @@ const TURBINE_ROTATING: PartInfo[] = [
     ),
     material: l('PETG, remplissage 100 % autour des logements', 'PETG, 100% infill around the seats'),
     specs: [
-      sp('Diamètre du disque', 'Disc diameter', '≈ 190 mm'),
+      sp('Diamètre du disque', 'Disc diameter', 'Ø170 mm'),
       sp('Épaisseur', 'Thickness', '12 mm'),
       sp('Logements d’augets', 'Bucket seats', l('22, au pas de 16,4°', '22, at a 16.4° pitch')),
       sp('Liaison au moyeu', 'Hub connection', l('4 vis M5 sur bride acier', '4 × M5 screws to a steel flange')),
@@ -420,6 +436,14 @@ const TURBINE_ROTATING: PartInfo[] = [
     ),
     material: l('PETG ou ASA imprimé', 'Printed PETG or ASA'),
     specs: [
+      sp(
+        'Modèle commercial Hydronome',
+        'Hydronome commercial model',
+        l(
+          '26 augets en polymère renforcé injecté, roue Ø244 mm ext., injecteur Ø14 mm maxi',
+          '26 injection-moulded reinforced-polymer buckets, runner Ø244 mm OD, max nozzle Ø14 mm',
+        ),
+      ),
       sp('Nombre', 'Count', '22'),
       sp('Diamètre primitif', 'Pitch diameter', '230 mm'),
       sp('Largeur (jet 6 mm)', 'Width (6 mm jet)', '≈ 19 mm'),
@@ -618,7 +642,12 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
     ),
     material: l('Module à diodes isolé, dissipateur aluminium', 'Isolated diode module, aluminium heatsink'),
     specs: [
-      sp('Calibre', 'Rating', '50 A / 1 600 V'),
+      sp(
+        'Modèle commercial Hydronome',
+        'Hydronome commercial model',
+        l('Pont triphasé 90 A, sortie sur connecteurs MC4', '90 A 3-phase bridge, output on MC4 connectors'),
+      ),
+      sp('Calibre', 'Rating', '90 A / 1 600 V'),
       sp('Chute de tension', 'Voltage drop', '≈ 2 × 1 V'),
       sp('Pertes à 9,4 A', 'Losses at 9.4 A', '≈ 19 W'),
       sp('Dissipateur', 'Heatsink', '≈ 1 K/W'),
@@ -684,6 +713,14 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Tinned class 5 copper, double insulation (solar cable)',
     ),
     specs: [
+      sp(
+        'Recommandation constructeur',
+        'Maker recommendation',
+        l(
+          '10 ou 16 mm² selon distance et puissance (6 mm² possible dans certains cas)',
+          '10 or 16 mm² depending on distance and power (6 mm² possible in some cases)',
+        ),
+      ),
       sp('Type', 'Type', 'H1Z2Z2-K 2 × 6 mm²'),
       sp('Tension', 'Voltage', '50–54 V DC'),
       sp('Courant à 499 W', 'Current at 499 W', '9,4 A'),
@@ -721,6 +758,14 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
     ),
     material: l('Corps métallique, pointeau et buse inox', 'Metal body, stainless spear and nozzle'),
     specs: [
+      sp(
+        'Recommandation constructeur',
+        'Maker recommendation',
+        l(
+          'Injecteur variable seulement avec une bonne filtration au captage (le sable le bloque et l’use)',
+          'Variable injector only with good intake filtration (sand jams and wears it)',
+        ),
+      ),
       sp('Buse', 'Nozzle', l('Ø 10 mm max, ouverture réglable', 'Ø 10 mm max, adjustable opening')),
       sp('Vitesse du jet (74 m)', 'Jet velocity (74 m)', '≈ 37 m/s'),
       sp('Coefficient de débit', 'Discharge coefficient', 'Cd ≈ 0,95–0,98'),
@@ -850,6 +895,14 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
     ),
     material: l('PVC-U, sphère PVC, joints EPDM', 'PVC-U, PVC ball, EPDM seals'),
     specs: [
+      sp(
+        'Recommandation constructeur',
+        'Maker recommendation',
+        l(
+          'Vanne d’arrêt primaire sur la conduite, manomètre entre vanne primaire et vannes d’injecteurs',
+          'Primary shut-off valve on the pipe, gauge between the primary and the injector valves',
+        ),
+      ),
       sp('Type', 'Type', l('Vanne à boisseau sphérique double union', 'Double-union ball valve')),
       sp('Diamètre', 'Size', 'DN50'),
       sp('Pression nominale', 'Pressure rating', 'PN16'),
@@ -916,6 +969,14 @@ const TURBINE_V1: PartInfo[] = [
       'Painted steel trestles, softwood beams, PETG cleats',
     ),
     specs: [
+      sp(
+        'Recommandation constructeur',
+        'Maker recommendation',
+        l(
+          'Turbine à 50 cm du sol minimum pour l’évacuation de l’eau ; 22 kg',
+          'Turbine at least 50 cm above ground for the water to escape; 22 kg',
+        ),
+      ),
       sp('Hauteur du socle', 'Base height', l('≈ 0,92 m au-dessus du sol', '≈ 0.92 m above ground')),
       sp('Madriers', 'Beams', '2 × 75 × 200 mm'),
       sp('Chute libre sous la turbine', 'Free fall under the turbine', '≈ 1 m'),
@@ -1010,6 +1071,14 @@ const TURBINE_V2: PartInfo[] = [
       '40 × 40 slot-8 aluminium extrusions (or galvanised steel)',
     ),
     specs: [
+      sp(
+        'Recommandation constructeur',
+        'Maker recommendation',
+        l(
+          'Turbine à 50 cm du sol minimum pour l’évacuation de l’eau ; 22 kg',
+          'Turbine at least 50 cm above ground for the water to escape; 22 kg',
+        ),
+      ),
       sp('Profilés', 'Extrusions', l('40 × 40 mm, rainure 8', '40 × 40 mm, slot 8')),
       sp('Pieds', 'Feet', l('4 pieds articulés M12, semelle caoutchouc', '4 swivel M12 feet, rubber pads')),
       sp('Silentblocs', 'Rubber mounts', 'M8, 60 Shore A'),
@@ -1037,8 +1106,8 @@ const TURBINE_V2: PartInfo[] = [
       'Pre-assembled machined cartridge: 2 bearings, double lip seal, grease nipple. Swapped as one unit.',
     ),
     description: l(
-      'La cartouche regroupe tout ce qui s’use autour de l’arbre dans une pièce tournée en aluminium, montée et graissée à l’atelier. Côté humide, un V-ring déflecteur et une chicane labyrinthe rejettent l’eau avant même qu’elle n’atteigne le joint double lèvre. Le jour de l’entretien, on dévisse quatre vis, on glisse la cartouche de rechange et la turbine repart en dix minutes, sans presse sur place.',
-      'The cartridge gathers everything that wears around the shaft into one turned aluminium part, assembled and greased on the bench. On the wet side, a V-ring slinger and a labyrinth throw the water off before it even reaches the double lip seal. On service day you undo four screws, slide in the spare cartridge and the turbine is back on in ten minutes, with no press needed on site.',
+      'La cartouche regroupe tout ce qui s’use autour de l’arbre dans une pièce tournée en aluminium, montée et graissée à l’atelier. Côté humide, un V-ring déflecteur et une chicane labyrinthe rejettent l’eau avant même qu’elle n’atteigne le joint double lèvre. Le jour de l’entretien, on dévisse six vis M5, on glisse la cartouche de rechange et la turbine repart en dix minutes, sans presse sur place.',
+      'The cartridge gathers everything that wears around the shaft into one turned aluminium part, assembled and greased on the bench. On the wet side, a V-ring slinger and a labyrinth throw the water off before it even reaches the double lip seal. On service day you undo six M5 screws, slide in the spare cartridge and the turbine is back on in ten minutes, with no press needed on site.',
     ),
     material: l('Aluminium 6082-T6 tourné, anodisé', 'Turned aluminium 6082-T6, anodised'),
     specs: [
@@ -1235,7 +1304,7 @@ const TURBINE_V2: PartInfo[] = [
       sp(
         'Sécurité',
         'Safety',
-        l('Relais de surtension réglé à 60 V → déflecteur', 'Overvoltage relay set at 60 V → deflector'),
+        l('Relais de surtension réglé à 66 V → déflecteur', 'Overvoltage relay set at 66 V → deflector'),
       ),
       sp('Télémesure', 'Telemetry', l('ESP32, MQTT ou VE.Can vers le GX', 'ESP32, MQTT or VE.Can to the GX')),
       sp('Sortie', 'Output', l('Connecteur IP68 débrochable', 'Pluggable IP68 connector')),
@@ -1580,8 +1649,8 @@ const SITE_PARTS: PartInfo[] = [
       sp('Coût de la partie hydro (site B)', 'Hydro part cost (site B)', '≈ 3 000 €'),
     ],
     tip: l(
-      'Gardez le local hors gel et ventilé : les batteries lithium ne se chargent pas sous 0 °C et les résistances de délestage dégagent jusqu’à 1 kW de chaleur.',
-      'Keep the room frost-free and ventilated: lithium batteries cannot be charged below 0 °C and the dump resistors can give off up to 1 kW of heat.',
+      'Gardez le local hors gel et ventilé : les batteries lithium ne se chargent pas sous 0 °C et les résistances de délestage dégagent jusqu’à 2 kW de chaleur.',
+      'Keep the room frost-free and ventilated: lithium batteries cannot be charged below 0 °C and the dump resistors can give off up to 2 kW of heat.',
     ),
     video: ['15:00', '16:20', '17:00'],
   },
@@ -1724,6 +1793,14 @@ const TECHROOM_PARTS: PartInfo[] = [
     material: l('Boîtier aluminium à ailettes', 'Finned aluminium enclosure'),
     specs: [
       sp(
+        'Pack constructeur',
+        'Maker pack',
+        l(
+          'TriStar TS-45 PWM 45 A, préréglé en atelier selon la tension batterie',
+          'TriStar TS-45 PWM 45 A, preset in the workshop for the battery voltage',
+        ),
+      ),
+      sp(
         'Exemple',
         'Example',
         l('Morningstar TriStar TS-60 en mode délestage', 'Morningstar TriStar TS-60 in diversion mode'),
@@ -1760,8 +1837,16 @@ const TECHROOM_PARTS: PartInfo[] = [
       'Aluminium-housed wirewound resistors, vented steel box',
     ),
     specs: [
+      sp(
+        'Boîtier constructeur',
+        'Maker box',
+        l(
+          'Caisson alu ajouré, 4 résistances bobinées vitrifiées sur barrettes cuivre',
+          'Louvred aluminium box, 4 vitreous wire-wound resistors on copper bars',
+        ),
+      ),
       sp('Puissance', 'Rating', l('≥ 1,25 × la puissance max de la turbine', '≥ 1.25 × maximum turbine power')),
-      sp('Exemple', 'Example', l('≈ 1 kW à 54 V ≈ 2,9 Ω', '≈ 1 kW at 54 V ≈ 2.9 Ω')),
+      sp('Exemple', 'Example', l('2 × 1 kW à 54 V (≈ 2,9 Ω chacune)', '2 × 1 kW at 54 V (≈ 2.9 Ω each)')),
       sp('Température de surface', 'Surface temperature', l('> 150 °C', '> 150 °C')),
     ],
     maintenance: l(
@@ -1793,7 +1878,11 @@ const TECHROOM_PARTS: PartInfo[] = [
     ),
     specs: [
       sp('Sectionneur', 'Isolator', l('Interrupteur-sectionneur DC 2P 32 A', '2P 32 A DC switch-disconnector')),
-      sp('Protection', 'Protection', l('Disjoncteur DC 2P 20 A ou fusibles gPV', '2P 20 A DC breaker or gPV fuses')),
+      sp(
+        'Protection',
+        'Protection',
+        l('Disjoncteur DC 2P 25 A ou fusibles gPV 25 A', '2P 25 A DC breaker or 25 A gPV fuses'),
+      ),
       sp('Parafoudre', 'Surge arrester', l('Type 2, adapté à la tension DC', 'Type 2, rated for the DC voltage')),
     ],
     tip: l(

@@ -18,6 +18,7 @@ const S = {
   modeAssembly: ['Montage', 'Assembly'],
   modeInstall: ['Installation', 'Installation'],
   modeSim: ['Simulation', 'Simulation'],
+  modePlans: ['Plans', 'Drawings'],
   modeLessons: ['Leçons', 'Lessons'],
   modeParts: ['Pièces', 'Parts'],
   modeUpgrades: ['Version pro', 'Pro version'],
@@ -48,6 +49,34 @@ const S = {
   v2: ['V2 pro', 'V2 pro'],
   v1Long: ['V1 — prototype de la vidéo', 'V1 — prototype from the video'],
   v2Long: ['V2 — industrialisable, toujours DIY', 'V2 — industrialisable, still DIY'],
+
+  // drawings
+  plansTitle: ['Plans de conception', 'Design drawings'],
+  plansIntro: [
+    'Dix planches A3 générées à partir des cotes du modèle 3D : ensembles, coupes, schémas hydraulique et électrique, nomenclature. Ce sont des exemples à cotes indicatives, avec en regard les données constructeur publiées par Hydronome.',
+    'Ten A3 sheets generated from the 3D model dimensions: general arrangements, sections, hydraulic and electrical diagrams, bill of materials. They are examples with indicative dimensions, alongside the maker data published by Hydronome.',
+  ],
+  plansHelp: [
+    'Molette ou pincer : zoomer · glisser : déplacer · double-clic : ajuster. Le bouton V1 / V2 en haut change la variante dessinée.',
+    'Wheel or pinch: zoom · drag: pan · double-click: fit. The V1 / V2 toggle at the top switches the drawn variant.',
+  ],
+  groupTurbine: ['Turbine', 'Turbine'],
+  groupHydraulic: ['Hydraulique', 'Hydraulics'],
+  groupElectrical: ['Électricité', 'Electrical'],
+  groupAssembly: ['Montage', 'Assembly'],
+  fitSheet: ['Ajuster', 'Fit'],
+  zoomIn: ['Zoomer', 'Zoom in'],
+  zoomOut: ['Dézoomer', 'Zoom out'],
+  downloadSvg: ['Télécharger SVG', 'Download SVG'],
+  printA3: ['Imprimer A3', 'Print A3'],
+  seeIn3d: ['Voir en 3D', 'See in 3D'],
+  drawingsOfPart: ['Plans', 'Drawings'],
+  lineTypes: ['Types de traits', 'Line types'],
+  lineThick: ['Trait fort : contours vus', 'Thick: visible outlines'],
+  lineThin: ['Trait fin : cotes, hachures', 'Thin: dimensions, hatching'],
+  lineCenter: ['Trait mixte : axes', 'Dash-dot: centre lines'],
+  lineHidden: ['Tirets : contours cachés / variante', 'Dashed: hidden outlines / variant'],
+  makerSource: ['Données constructeur : hydronome.fr', 'Maker data: hydronome.fr'],
 
   // part panel
   overview: ['Aperçu', 'Overview'],

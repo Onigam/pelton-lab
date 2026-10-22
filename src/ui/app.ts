@@ -1,4 +1,5 @@
 import { LESSONS } from '../data/lessons';
+import { SHEETS } from '../drawings';
 import { getLang, onLangChange, setLang, tr } from '../i18n';
 import { colon, t, type UiKey } from '../i18n/ui';
 import type { SimEngine } from '../sim/engine';
@@ -17,7 +18,9 @@ import {
   renderUpgradesPanel,
 } from './panels/misc';
 import { renderPartPanel } from './panels/part';
+import { renderPlansPanel } from './panels/plans';
 import { SimPanel } from './panels/sim';
+import { DrawingViewer } from './drawings';
 import type { Mode, Store, UiState } from './state';
 
 // Application shell: header, mode rail, contextual right panel, viewport toolbar and
@@ -28,6 +31,7 @@ const MODES: [Mode, UiKey, keyof typeof ICONS][] = [
   ['assembly', 'modeAssembly', 'assembly'],
   ['install', 'modeInstall', 'install'],
   ['sim', 'modeSim', 'sim'],
+  ['plans', 'modePlans', 'plans'],
   ['lessons', 'modeLessons', 'lessons'],
   ['parts', 'modeParts', 'parts'],
   ['upgrades', 'modeUpgrades', 'upgrades'],
@@ -62,6 +66,7 @@ export class App {
   private stripClock = h('div', { class: 'strip__clock' });
   private peek = h('div', { class: 'peek' });
   private panelToggle = h('button', { class: 'panel-toggle' });
+  private viewer: DrawingViewer;
   private simPanel: SimPanel;
   private lastStrip = 0;
   private lastAlarmKey = '';
@@ -87,7 +92,11 @@ export class App {
       }),
       this.panelBody,
     );
-    viewport.append(this.toolbar, this.peek, this.panelToggle);
+    this.viewer = new DrawingViewer(
+      () => SHEETS,
+      (id) => store.set({ drawing: id }),
+    );
+    viewport.append(this.toolbar, this.peek, this.panelToggle, this.viewer.el);
     this.panelToggle.addEventListener('click', () => store.set({ panelOpen: !store.state.panelOpen }));
     this.strip.append(this.stripClock, this.stripValues, this.stripAlarms);
     host.append(this.header, this.rail, this.panel, this.strip);
@@ -95,6 +104,8 @@ export class App {
     stage.labelMode = store.state.labels;
     store.on((s, prev) => this.onState(s, prev));
     engine.onChange(() => {
+      // the drawings depend on the machine version
+      if (this.store.state.mode === 'plans') this.showDrawing(true);
       this.renderHeader();
       if (this.store.state.mode !== 'sim') this.renderPanel();
     });
@@ -119,6 +130,8 @@ export class App {
     if (s.cutaway !== prev.cutaway || s.scene !== prev.scene) this.applyCutaway();
     document.body.classList.toggle('sheet-open', s.sheet);
     document.body.classList.toggle('panel-closed', !s.panelOpen);
+    document.body.classList.toggle('mode-plans', s.mode === 'plans');
+    if (s.mode === 'plans' && (prev.mode !== 'plans' || s.drawing !== prev.drawing)) this.showDrawing(false);
     if (s.panelOpen !== prev.panelOpen) requestAnimationFrame(() => stage.frameAll(0.4));
     const panelKeys: (keyof UiState)[] = [
       'mode',
@@ -150,6 +163,7 @@ export class App {
 
   renderAll(): void {
     document.documentElement.lang = getLang();
+    if (this.store.state.mode === 'plans') this.showDrawing(true);
     this.renderHeader();
     this.renderRail();
     this.renderPanel();
@@ -275,7 +289,16 @@ export class App {
       case 'about':
         renderAboutPanel(this.ctx, body);
         break;
+      case 'plans':
+        renderPlansPanel(this.ctx, body);
+        break;
     }
+  }
+
+  /** Render the current drawing (keepView: keep zoom/pan, e.g. after a language change). */
+  private showDrawing(keepView: boolean): void {
+    const sheet = SHEETS.find((x) => x.id === this.store.state.drawing) ?? SHEETS[0];
+    this.viewer.show(sheet, this.ctx.engine.params.version, keepView);
   }
 
   // ------------------------------------------------------------ viewport toolbar

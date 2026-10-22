@@ -128,7 +128,7 @@ function diversionDecal(): THREE.MeshStandardMaterial {
       ctx.fillText('DUTY', 28, 212);
       ctx.fillText('0', 34, 262);
       ctx.fillText('100 %', w - 76, 262);
-      ctx.fillText('SET 56.4 V', 112, 342);
+      ctx.fillText('SET 53.5 V', 112, 342);
     },
     { transparent: true },
   );

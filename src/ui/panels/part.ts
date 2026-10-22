@@ -3,6 +3,7 @@ import { PARTS } from '../../data/parts';
 import type { PartInfo } from '../../data/types';
 import { tr } from '../../i18n';
 import { t, type UiKey } from '../../i18n/ui';
+import { sheetsForPart } from '../../drawings';
 import { inVersion } from '../../three/turbine';
 import type { SceneId } from '../../three/types';
 import { partInfo, videoUrl, type AppContext } from '../context';
@@ -182,6 +183,17 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
         ctx.ui.isolate ? t('showAll') : t('isolate'),
       ),
       h('button', { class: 'btn', onclick: () => ctx.stage.frameParts([id], 1.5) }, icon(ICONS.focus, 16), t('focus')),
+      ...sheetsForPart(id).map((sheet) =>
+        h(
+          'button',
+          {
+            class: 'btn btn--ghost',
+            onclick: () => ctx.store.set({ mode: 'plans', drawing: sheet.id, panelOpen: true }),
+          },
+          icon(ICONS.plans, 16),
+          `${sheet.number} · ${tr(sheet.title)}`,
+        ),
+      ),
       DETAIL_VIEW[id] && ctx.ui.scene === 'site'
         ? h(
             'button',

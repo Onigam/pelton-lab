@@ -99,7 +99,8 @@ function frame(now: number): void {
     syncSiteTurbine();
   }
   app!.tick(dt);
-  stage.render(dt);
+  // the drawings viewer covers the 3D view: no need to render it meanwhile
+  if (store.state.mode !== 'plans') stage.render(dt);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
