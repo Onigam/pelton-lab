@@ -2,11 +2,8 @@ import * as THREE from 'three';
 import { ASSEMBLY } from '../data/assembly';
 import { INSTALL } from '../data/install';
 import type { GuideStep } from '../data/types';
-import { UPGRADES } from '../data/industrialization';
-import type { SimEngine } from '../sim/engine';
 import type { Stage } from '../three/core';
 import type { PartDisplay } from '../three/registry';
-import { inVersion } from '../three/turbine';
 import { damp, ease } from '../three/util';
 import type { SceneId } from '../three/types';
 import type { Store } from './state';
@@ -32,20 +29,14 @@ export function guideFor(mode: string, scene: string): GuideStep[] | null {
   return null;
 }
 
-export function stepParts(step: GuideStep, version: 'v1' | 'v2'): string[] {
-  return version === 'v2' && step.v2?.parts ? step.v2.parts : step.parts;
-}
-
 export class DisplayController {
   private explode = 0;
   private stepKey = '';
   private stepStart = 0;
   private time = 0;
-  private hadFocus = false;
 
   constructor(
     private stage: Stage,
-    private engine: SimEngine,
     private store: Store,
   ) {}
 
@@ -54,8 +45,6 @@ export class DisplayController {
     const ui = this.store.state;
     const mod = this.stage.active;
     const reg = mod.registry;
-    const version = this.engine.params.version;
-    const isTurbine = mod.id === 'turbine';
     const guide = guideFor(ui.mode, mod.id);
     let changed = false;
     const show = (id: string, d: PartDisplay) => {
@@ -68,27 +57,23 @@ export class DisplayController {
 
     if (guide) {
       const step = Math.min(ui.step, guide.length - 1);
-      const key = `${ui.mode}:${step}:${version}`;
+      const key = `${ui.mode}:${step}`;
       if (key !== this.stepKey) {
         this.stepKey = key;
         this.stepStart = this.time;
-        this.onStepChange(guide, step, version);
+        this.onStepChange(guide, step);
       }
       const before = new Set<string>();
       const all = new Set<string>();
       guide.forEach((s, i) => {
-        for (const p of stepParts(s, version)) {
+        for (const p of s.parts) {
           all.add(p);
           if (i < step) before.add(p);
         }
       });
-      const current = new Set(stepParts(guide[step], version));
+      const current = new Set(guide[step].parts);
       const k = ease.out(Math.min(1, (this.time - this.stepStart) / STEP_ANIM));
       for (const id of reg.ids()) {
-        if (isTurbine && !inVersion(id, version)) {
-          show(id, 'hidden');
-          continue;
-        }
         if (current.has(id)) {
           show(id, 'solid');
           reg.setFactor(id, 1 - k);
@@ -112,36 +97,26 @@ export class DisplayController {
         this.stage.refreshOutline();
       }
       this.explode = damp(this.explode, ui.explode, 6, dt);
-      const upgrade = ui.mode === 'upgrades' ? UPGRADES.find((u) => u.id === ui.upgrade) : undefined;
-      const focus = new Set(upgrade?.parts ?? []);
       for (const id of reg.ids()) {
-        if (isTurbine && !inVersion(id, version)) {
-          show(id, 'hidden');
-          continue;
-        }
         reg.setFactor(id, this.explode);
         let d: PartDisplay = 'solid';
-        if (focus.size && isTurbine) d = focus.has(id) ? 'solid' : 'ghost';
-        else if (ui.isolate && ui.selected) d = id === ui.selected ? 'solid' : 'hidden';
+        if (ui.isolate && ui.selected) d = id === ui.selected ? 'solid' : 'hidden';
         else if (ui.xray && ui.selected) d = id === ui.selected ? 'solid' : 'ghost';
         else if (ui.xray && XRAY_SHELL[mod.id]?.(id)) d = 'ghost';
         show(id, d);
       }
-      if (focus.size && isTurbine) this.stage.highlight([...focus].filter((id) => reg.get(id)));
-      else if (this.hadFocus) this.stage.refreshOutline();
-      this.hadFocus = focus.size > 0;
     }
     if (changed) {
       this.stage.refreshLabels();
-      if (!guide && !(ui.mode === 'upgrades')) this.stage.refreshOutline();
+      if (!guide) this.stage.refreshOutline();
     }
   }
 
   /** Frame the parts of the new step (at their final position). */
-  private onStepChange(guide: GuideStep[], step: number, version: 'v1' | 'v2'): void {
+  private onStepChange(guide: GuideStep[], step: number): void {
     if (!this.store.state.autoFrame) return;
     const reg = this.stage.active.registry;
-    const ids = stepParts(guide[step], version).filter((id) => reg.get(id));
+    const ids = guide[step].parts.filter((id) => reg.get(id));
     if (!ids.length) {
       this.stage.home();
       return;

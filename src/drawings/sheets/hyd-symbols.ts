@@ -311,14 +311,9 @@ export function junction(p: View, at: Pt, color = INK): void {
 
 /**
  * Injector, tip at `at`, jet along local +x. 'spear' = body + needle + handwheel (variable),
- * 'fixed' = calibrated nozzle with flange, 'quick' = fixed body with a bayonet insert (V2).
+ * 'quick' = lance with flange and a bayonet insert (fixed diameter, quick change).
  */
-export function nozzle(
-  p: View,
-  at: Pt,
-  kind: 'spear' | 'fixed' | 'quick',
-  o: SymOpts & { accent?: string } = {},
-): void {
+export function nozzle(p: View, at: Pt, kind: 'spear' | 'quick', o: SymOpts & { accent?: string } = {}): void {
   const g = p.group(at, o.rot ?? 0, o.scale ?? 1);
   const c = o.color ?? INK;
   g.polyline(
@@ -344,7 +339,7 @@ export function nozzle(
     g.line([-19, -3.2], [-19, 3.2], { w: 0.7, color: o.accent ?? COLORS.red });
   } else {
     g.line([-7, -3.6], [-7, 3.6], { w: W.thick, color: c });
-    if (kind === 'quick') g.rect([-2.6, -1.9], [-0.9, 1.9], { w: W.thin, color: o.accent ?? c, fill: o.accent ?? c });
+    g.rect([-2.6, -1.9], [-0.9, 1.9], { w: W.thin, color: o.accent ?? c, fill: o.accent ?? c });
   }
 }
 
@@ -418,7 +413,7 @@ function siteB(): Case {
   const e = new SimEngine('siteB');
   const p = e.params;
   const dTop = p.top.d * Math.sqrt(p.top.opening);
-  // same Cd as the engine: 0.95 for the spear, 0.97 (V2) for the fixed nozzle
+  // same Cd as the engine: 0.95 for the spear, 0.97 for the fixed nozzle
   const aTop = 0.95 * dTop * dTop;
   const aSide = 0.97 * p.side.d * p.side.d;
   const qT = e.nozzleFlow(Math.sqrt((aTop + aSide) / 0.97));

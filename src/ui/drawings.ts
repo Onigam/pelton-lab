@@ -39,9 +39,9 @@ export class DrawingViewer {
     new ResizeObserver(() => this.fit()).observe(this.stage);
   }
 
-  /** Render a sheet (re-render on language/version change by calling again). */
-  show(sheet: DrawingSheet, version: 'v1' | 'v2', keepView = false): void {
-    const d = sheet.render({ version });
+  /** Render a sheet (re-render on language change by calling again). */
+  show(sheet: DrawingSheet, keepView = false): void {
+    const d = sheet.render();
     this.sheet = sheet;
     this.serialized = d.serialize();
     this.svg?.remove();

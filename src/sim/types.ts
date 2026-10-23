@@ -81,9 +81,7 @@ export interface SimState {
   overspeed: boolean;
   /** Bucket set mounted on the runner: S (matched to 6 mm jets) or L (8 mm). */
   bucketSet: 'S' | 'L';
-  /** Machine version: V1 prototype or V2 industrialised design. */
-  version: 'v1' | 'v2';
-  /** V2 jet deflector position: 0 retracted .. 1 cutting the jets. */
+  /** Jet deflector position: 0 retracted .. 1 cutting the jets. */
   deflector: number;
 
   // ---- electrical ----------------------------------------------------------

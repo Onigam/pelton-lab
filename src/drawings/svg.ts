@@ -23,7 +23,8 @@ export const COLORS = {
   acN: '#1d5fb5',
   pe: '#6b8f1a',
   signal: '#6b4fd8',
-  v2: '#6b4fd8',
+  /** Safety / protection elements (jet deflectors, protective devices). */
+  accent: '#6b4fd8',
   red: '#c0261f',
   copper: '#b8692e',
   paper: '#fbf8f2',

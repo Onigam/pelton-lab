@@ -7,7 +7,6 @@ import { installation, topView } from './turbine-ga-views';
 import {
   BASE,
   BELL,
-  CX,
   DEFLECTORS,
   DRAIN_MM,
   insetProfile,
@@ -67,39 +66,34 @@ function runnerFace(v: View): void {
   v.circle([0, AX], M.rPitch, { w: W.thin, dash: 'center', color: COLORS.muted });
 }
 
-/** Side injector seen from the front (V1 printed nozzle / V2 alu lance with bayonet insert). */
-function sideInjector(v: View, v2: boolean): void {
+/** Side injector seen from the front: alu lance with its bayonet collar and insert. */
+function sideInjector(v: View): void {
   const y = SIDE.y;
-  const s = v2 ? SIDE.v2 : SIDE.v1;
-  const fx0 = SIDE.flangeX - s.flangeL / 2;
-  const fx1 = SIDE.flangeX + s.flangeL / 2;
-  if (v2) {
-    const [r, c0, c1] = SIDE.v2.collar;
-    v.rect([c0, y - r], [c1, y + r], med());
-    for (const k of [-1, 1]) {
-      v.line([c0, y + (k * r) / 2], [c1, y + (k * r) / 2], { w: W.thin });
-      v.rect([-465, y + k * 44], [-445, y + k * 56], thin());
-    }
-  } else {
-    for (const k of [-1, 1]) v.rect([fx0 - 8, y + k * 30 - 4], [fx0, y + k * 30 + 4], thin());
+  const fx0 = SIDE.flangeX - SIDE.flangeL / 2;
+  const fx1 = SIDE.flangeX + SIDE.flangeL / 2;
+  const [r, c0, c1] = SIDE.collar;
+  v.rect([c0, y - r], [c1, y + r], med());
+  for (const k of [-1, 1]) {
+    v.line([c0, y + (k * r) / 2], [c1, y + (k * r) / 2], { w: W.thin });
+    v.rect([-465, y + k * 44], [-445, y + k * 56], thin());
   }
-  v.rect([fx0, y - s.flangeR], [fx1, y + s.flangeR], med());
+  v.rect([fx0, y - SIDE.flangeR], [fx1, y + SIDE.flangeR], med());
   v.polyline(
     [
-      [fx1, y + s.r0],
-      [SIDE.tip, y + s.r1],
-      [SIDE.tip, y - s.r1],
-      [fx1, y - s.r0],
+      [fx1, y + SIDE.r0],
+      [SIDE.tip, y + SIDE.r1],
+      [SIDE.tip, y - SIDE.r1],
+      [fx1, y - SIDE.r0],
     ],
     { closed: true, ...med() },
   );
-  const [rr, rl] = s.ring;
-  v.rect([SIDE.tip - rl, y - rr], [SIDE.tip, y + rr], { w: W.medium, fill: v2 ? '#2f9e44' : '#6b7178', opacity: 0.7 });
-  v.rect([M.x0 - 8, y - s.plate / 2], [M.x0, y + s.plate / 2], med());
+  const [rr, rl] = SIDE.ring;
+  v.rect([SIDE.tip - rl, y - rr], [SIDE.tip, y + rr], { w: W.medium, fill: '#2f9e44', opacity: 0.7 });
+  v.rect([M.x0 - 8, y - SIDE.plate / 2], [M.x0, y + SIDE.plate / 2], med());
 }
 
 /** Front view (from the window side): housing, runner through the PMMA, injectors, jets. */
-function frontView(v: View, v2: boolean, dTop: number, dSide: number): void {
+function frontView(v: View, dTop: number, dSide: number): void {
   const x = SPEAR.x;
   v.rect([BASE.x0, 0], [BASE.x1, M.baseT], { w: W.thick, fill: PAPER });
   runnerFace(v);
@@ -115,25 +109,23 @@ function frontView(v: View, v2: boolean, dTop: number, dSide: number): void {
   );
   v.rect([x - SPEAR.tipR, SPEAR.tip], [x + SPEAR.tipR, SPEAR.tip + 8], med());
   v.rect([x - dTop / 2, AX], [x + dTop / 2, SPEAR.tip], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
-  sideInjector(v, v2);
+  sideInjector(v);
   v.rect([SIDE.tip, SIDE.y - dSide / 2], [0, SIDE.y + dSide / 2], {
     w: W.thin,
     color: COLORS.water,
     fill: COLORS.waterFill,
   });
-  if (v2) {
-    // fail-safe deflector blades (at rest) and toggle latches
-    for (const dfl of DEFLECTORS) {
-      v.line(dfl.pivot, tip(dfl.pivot, dfl.len, dfl.rest), { w: W.thick, color: COLORS.v2 });
-      v.circle(dfl.pivot, 5, { w: W.thin, fill: PAPER, color: COLORS.v2 });
-    }
-    for (const [s, wx, y] of [
-      [-1, M.x0 - 6, 70],
-      [1, M.x1 + 6, 42],
-    ]) {
-      v.rect([wx - 3, y - 20], [wx + 3, y + 20], thin());
-      v.rect([wx + s * 4 - 4, y - 56], [wx + s * 4 + 4, y - 44], thin());
-    }
+  // fail-safe deflector blades (at rest) and toggle latches
+  for (const dfl of DEFLECTORS) {
+    v.line(dfl.pivot, tip(dfl.pivot, dfl.len, dfl.rest), { w: W.thick, color: COLORS.accent });
+    v.circle(dfl.pivot, 5, { w: W.thin, fill: PAPER, color: COLORS.accent });
+  }
+  for (const [s, wx, y] of [
+    [-1, M.x0 - 6, 70],
+    [1, M.x1 + 6, 42],
+  ]) {
+    v.rect([wx - 3, y - 20], [wx + 3, y + 20], thin());
+    v.rect([wx + s * 4 - 4, y - 56], [wx + s * 4 + 4, y - 44], thin());
   }
   // housing: wedge profile + folded return lips framing the window
   v.polyline(PROFILE, { closed: true, w: W.thick });
@@ -162,7 +154,7 @@ function frontView(v: View, v2: boolean, dTop: number, dSide: number): void {
   );
   pipeBreak(v, -430, PIPE.riserTop, PIPE.r50);
   v.rect([inl.x - inl.len / 2, inl.y - inl.r], [inl.x + inl.len / 2, inl.y + inl.r], med());
-  const sideL = v2 ? SIDE.v2.collar[1] : SIDE.flangeX - SIDE.v1.flangeL / 2 - 8;
+  const sideL = SIDE.collar[1];
   pipe(
     v,
     [
@@ -179,7 +171,7 @@ function frontView(v: View, v2: boolean, dTop: number, dSide: number): void {
 }
 
 /** Section A–A in the plane x = 0, looking towards +X (window on the right). Model (z, y). */
-function sectionA(v: View, v2: boolean): void {
+function sectionA(v: View): void {
   const ax = (r: number) => AX + r;
   const both = (z0: number, z1: number, r0: number, r1: number, st: Stroke) => {
     v.rect([z0, ax(r0)], [z1, ax(r1)], st);
@@ -239,28 +231,19 @@ function sectionA(v: View, v2: boolean): void {
   v.rect([-45, M.baseT], [-25, M.baseT + 25], thin());
   v.rect([M.zBack - 13, 19], [M.zBack + 5, 41], med());
   v.rect([M.zBack - 30, 24.5], [M.zBack - 13, 35.5], med('#3a3f46'));
-  // bearing housing (V1 printed block / V2 aluminium cartridge), from drivetrain.ts
+  // bearing housing (aluminium cartridge), from drivetrain.ts
   const pd = SHAFT.partDry;
   const end = SHAFT.b2 - 9;
   mirror(
-    v2
-      ? [
-          [pd, 23.5],
-          [pd, 62],
-          [pd - 12, 62],
-          [pd - 14, 36],
-          [end, 34],
-          [end, 23.5],
-        ]
-      : [
-          [pd, 23.5],
-          [pd, 60],
-          [pd - 14, 60],
-          [pd - 14, 34],
-          [end, 34],
-          [end, 23.5],
-        ],
-    hatch(v2 ? 'alu' : 'plastic'),
+    [
+      [pd, 23.5],
+      [pd, 62],
+      [pd - 12, 62],
+      [pd - 14, 36],
+      [end, 34],
+      [end, 23.5],
+    ],
+    hatch('alu'),
   );
   // generator: stator, rotor bell (fan + wall), magnets, hub (generator.ts)
   const [b0, b1] = BELL.z;
@@ -294,7 +277,7 @@ function sectionA(v: View, v2: boolean): void {
     v.rect([wz - 10, ax(s * M.hubR)], [wz + 10, ax(s * (L.rc - 0.35 * L.a))], thin());
     v.polyline(cup, { closed: true, ...med() });
   }
-  both(SHAFT.partWet, SHAFT.partWet + 9, 17.5, 30, hatch(v2 ? 'alu' : 'plastic', W.thin));
+  both(SHAFT.partWet, SHAFT.partWet + 9, 17.5, 30, hatch('alu', W.thin));
   // shaft (not sectioned) + bearings (simplified symbol)
   v.rect([SHAFT.z0, ax(-M.shaftR)], [SHAFT.z1, ax(M.shaftR)], med());
   v.rect([wz + 28, ax(-14.5)], [wz + 38, ax(14.5)], thin());
@@ -306,7 +289,7 @@ function sectionA(v: View, v2: boolean): void {
       v.polyline([a, b, [a[0], b[1]], [b[0], a[1]]], { w: W.thin }); // ISO simplified bearing cross
     }
   }
-  if (v2) v.rect([-106, ax(82)], [-94, ax(137)], thin()); // Hall sensor + bracket
+  v.rect([-106, ax(82)], [-94, ax(137)], thin()); // Hall sensor + bracket
   v.center([M.zBack - 20, AX], [M.zFront + 10, AX]);
   v.center([wz, -90], [wz, M.roof + 15]);
 }
@@ -379,11 +362,11 @@ function makerTable(d: Drawing, x: number, y: number): void {
       'Enveloppe, roue, buse maxi et compartiment générateur repris du site du constructeur (hydronome.fr) ; générateur, paliers et injecteurs restent une reconstruction pédagogique, pas le produit.',
       'Envelope, runner, max nozzle and generator bay taken from the maker’s site (hydronome.fr); generator, bearings and injectors remain an educational reconstruction, not the product.',
     ),
-    { size: 1.75, color: COLORS.v2 },
+    { size: 1.75 },
   );
 }
 
-function partsList(d: Drawing, v2: boolean, dTop: number): void {
+function partsList(d: Drawing, dTop: number): void {
   const p = d.paper();
   p.text([305, 138], l('NOMENCLATURE', 'PARTS LIST'), { size: 2.2, weight: 'bold' });
   const rows: Text[][] = [
@@ -400,36 +383,18 @@ function partsList(d: Drawing, v2: boolean, dTop: number): void {
       ),
     ],
     ['7', l(`Arbre Ø20 × ${SHAFT.len} + 3 × 6204-2RS (PL-T02)`, `Ø20 × ${SHAFT.len} shaft + 3 × 6204-2RS (PL-T02)`)],
-    [
-      '8',
-      v2
-        ? l('Cartouche de palier alu 6082', '6082 alu bearing cartridge')
-        : l('Palier imprimé PETG-CF', 'Printed PETG-CF bearing housing'),
-    ],
+    ['8', l('Cartouche de palier alu 6082', '6082 alu bearing cartridge')],
     ['9', l('Générateur 12 dents / 14 aimants', 'Generator 12 teeth / 14 magnets')],
     ['10', l(`Injecteur à pointeau Ø${dTop} (PL-T04)`, `Ø${dTop} spear injector (PL-T04)`)],
-    [
-      '11',
-      v2
-        ? l('Lance à inserts baïonnette Ø4–10', 'Bayonet insert lance Ø4–10')
-        : l('Injecteur fixe imprimé Ø6 / Ø8', 'Printed fixed nozzle Ø6 / Ø8'),
-    ],
+    ['11', l('Lance à inserts baïonnette Ø4–10', 'Bayonet insert lance Ø4–10')],
     ['12', l('Col de cygne PVC Ø50 + vannes de branche', 'Ø50 PVC gooseneck + branch valves')],
     ['13', l('Arrivée PEHD Ø63, vanne, manomètre', 'Ø63 HDPE inlet, valve, gauge')],
-    [
-      '14',
-      v2
-        ? l('Châssis alu 40 × 40, plots, entonnoir', '40 × 40 alu skid, mounts, funnel')
-        : l('Tréteaux + madriers 75 × 150', 'Trestles + 75 × 150 beams'),
-    ],
+    ['14', l('Châssis alu 40 × 40, plots, entonnoir', '40 × 40 alu skid, mounts, funnel')],
     ['15', l('Redresseur, bornier, presse-étoupe', 'Rectifier, terminals, cable gland')],
     ['16', l('Dérivation Ø40 + vanne de purge (fermée)', 'Ø40 bypass + purge valve (closed)')],
+    ['17', l('Déflecteurs de jet + gâche 12 V', 'Jet deflectors + 12 V latch')],
+    ['18', l('Grenouillères ×4, coffret IP65', '4 toggle latches, IP65 box')],
   ];
-  if (v2)
-    rows.push(
-      ['17', l('Déflecteurs de jet + gâche 12 V', 'Jet deflectors + 12 V latch')],
-      ['18', l('Grenouillères ×4, coffret IP65', '4 toggle latches, IP65 box')],
-    );
   d.table(
     305,
     140,
@@ -439,22 +404,6 @@ function partsList(d: Drawing, v2: boolean, dTop: number): void {
     ],
     rows,
     4,
-  );
-  note(
-    d,
-    305,
-    140 + (rows.length + 1) * 4 + 3,
-    100,
-    v2
-      ? l(
-          'V2 : repères 8, 11, 14, 17 et 18 remplacent les pièces du prototype ; même enveloppe, mêmes raccordements.',
-          'V2: items 8, 11, 14, 17 and 18 replace the prototype parts; same envelope, same connections.',
-        )
-      : l(
-          'V1 : prototype filmé (site A). Les repères 8, 11 et 14 changent en V2 (cartouche, lance à inserts, châssis alu).',
-          'V1: the filmed prototype (site A). Items 8, 11 and 14 change in V2 (cartridge, insert lance, alu skid).',
-        ),
-    { size: 1.8, color: COLORS.muted },
   );
 }
 
@@ -474,22 +423,13 @@ export const turbineGa: DrawingSheet = {
   ),
   scene: 'turbine',
   parts: ['base', 'cover', 'window', 'partition', 'rear-panel', 'valve-bypass'],
-  render(ctx) {
-    const v2 = ctx.version === 'v2';
+  render() {
     const pre = presetParams('siteA');
     const [dTop, dSide] = [pre.top.d, pre.side.d];
     const d = new Drawing();
     d.frame({
       title: l('Turbine — plan d’ensemble', 'Turbine — general arrangement'),
-      subtitle: v2
-        ? l(
-            'V2 industrialisée : châssis alu 40 × 40, lance à inserts, déflecteur',
-            'V2 industrialised: 40 × 40 alu skid, insert lance, deflector',
-          )
-        : l(
-            'V1 prototype : tréteaux + madriers, injecteur fixe imprimé',
-            'V1 prototype: trestles + beams, printed fixed nozzle',
-          ),
+      subtitle: l('Châssis alu 40 × 40, lance à inserts, déflecteur', '40 × 40 alu skid, insert lance, deflector'),
       number: 'PL-T01',
       scale: '1:5 · 1:20',
     });
@@ -498,7 +438,7 @@ export const turbineGa: DrawingSheet = {
 
     // ---- front view 1:5
     const fv = d.view(114, 152, 0.2);
-    frontView(fv, v2, dTop, dSide);
+    frontView(fv, dTop, dSide);
     fv.sectionMark([0, M.roof + 28], [0, -8], 'A', -1);
     fv.dim([BASE.x1, 0], [M.x1, M.lowH], 6, { dir: 'v', size: 2.2 });
     fv.dim([BASE.x1, 0], [BASE.x1, AX], 13, { dir: 'v' });
@@ -523,16 +463,15 @@ export const turbineGa: DrawingSheet = {
       [[-360, SIDE.y + 20], 26, 118, '11'],
       [[-300, 520], 30, 60, '12'],
     ]);
-    if (v2)
-      balloons(fv, [
-        [[-170, 250], 72, 78, '17'],
-        [[M.x1 + 6, 50], 192, 160, '18'],
-      ]);
+    balloons(fv, [
+      [[-170, 250], 72, 78, '17'],
+      [[M.x1 + 6, 50], 192, 160, '18'],
+    ]);
     fv.caption([0, -42], l('VUE DE FACE (côté hublot)', 'FRONT VIEW (window side)'), '1:5');
 
     // ---- section A–A 1:5 (z → right), aligned with the front view
     const sa = d.view(256, 152, 0.2);
-    sectionA(sa, v2);
+    sectionA(sa);
     const zc = [M.zBack, M.zPart, M.wheelZ, M.zFront];
     zc.slice(1).forEach((z, i) => sa.dim([zc[i], M.roof], [z, M.roof], -6, { dir: 'h', size: 2.2 }));
     sa.dim([M.zBack, M.roof], [M.zFront, M.roof], -12, { dir: 'h' });
@@ -567,7 +506,7 @@ export const turbineGa: DrawingSheet = {
 
     // ---- top view 1:5 (below the front view)
     const tv = d.view(114, 236, 0.2);
-    topView(tv, v2);
+    topView(tv);
     const zb = BASE.z0;
     const chain = [M.x0, M.x0 + M.bevel, 0, M.peakX, M.x1];
     chain.slice(1).forEach((xx, i) => tv.dim([chain[i], -zb], [xx, -zb], -6, { dir: 'h', size: 2 }));
@@ -594,13 +533,13 @@ export const turbineGa: DrawingSheet = {
 
     // ---- installation elevation 1:20
     const iv = d.view(374, 110, 0.05);
-    installation(iv, v2);
+    installation(iv);
     const Yg = (y: number) => y + M.baseY;
     iv.dim([M.inletX, 0], [M.inletX, Yg(M.inletY)], -3, { dir: 'v', size: 2 });
     iv.dim([-440, 0], [-440, M.baseY], 0, { dir: 'v', size: 2 });
     iv.dim([540, 0], [540, Yg(AX)], 2, { dir: 'v', size: 2 });
     iv.dim([M.inletX, Yg(M.inletY)], [0, Yg(AX)], -24, { dir: 'h', size: 2 });
-    iv.dim([90, 0], [90, v2 ? SKID_MM.top - 200 : M.baseY - 80], 0, { dir: 'v', size: 1.9, color: COLORS.water });
+    iv.dim([90, 0], [90, SKID_MM.top - 200], 0, { dir: 'v', size: 1.9, color: COLORS.water });
     p.text(iv.map([-1400, Yg(M.inletY) - 90]), l('PEHD Ø63 PN10', 'HDPE Ø63 PN10'), { size: 1.7 });
     p.text(iv.map([-1400, -120]), l('sol', 'ground'), { size: 1.7, color: COLORS.muted });
     p.text(iv.map([0, -190]), l('canal de fuite', 'tailrace'), { size: 1.7, color: COLORS.water, anchor: 'middle' });
@@ -611,7 +550,7 @@ export const turbineGa: DrawingSheet = {
     });
     balloons(iv, [
       [[-1300, Yg(M.inletY)], 318, 64, '13'],
-      [v2 ? [SKID_MM.xs[1], 400] : [CX + 360, 400], 398, 118, '14'],
+      [[SKID_MM.xs[1], 400], 398, 118, '14'],
       [[PIPE.bypass.x, Yg(PIPE.bypass.valveY)], 316, 92, '16'],
     ]);
     iv.caption([-400, -330], l('IMPLANTATION', 'INSTALLATION'), '1:20');
@@ -620,7 +559,7 @@ export const turbineGa: DrawingSheet = {
     let ny = 14;
     NOTES(2 * M.rPitch).forEach((t, i) => (ny = note(d, 205, ny, 96, t, { bullet: `${i + 1}.` })));
     makerTable(d, 202, 197);
-    partsList(d, v2, dTop);
+    partsList(d, dTop);
     return d;
   },
 };

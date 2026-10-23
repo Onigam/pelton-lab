@@ -259,7 +259,7 @@ export class Stage {
     this.refreshLabels();
   }
 
-  /** Outline a set of parts with the selection colour (guide steps, upgrades). */
+  /** Outline a set of parts with the selection colour (guide steps). */
   highlight(ids: string[]): void {
     const objs: THREE.Object3D[] = [];
     for (const id of ids) {

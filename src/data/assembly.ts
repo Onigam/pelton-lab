@@ -1,5 +1,5 @@
 // Turbine assembly guide: 19 steps. The `id` and `parts` of every step drive the 3D build
-// animation — keep the mapping unchanged. `v2` describes OUR industrialised variant.
+// animation: every part id must exist in parts.ts and be installed after the part it sits on.
 
 import type { GuideStep } from './types';
 import { l } from '../i18n';
@@ -9,8 +9,8 @@ const ASSEMBLY_1: GuideStep[] = [
     id: 'kit',
     title: l('Préparer le kit et l’atelier', 'Prepare the kit and the workspace'),
     text: l(
-      'Étalez toutes les pièces sur un établi propre et pointez-les sur la nomenclature : pièces imprimées, plaques de PMMA, capot aluminium, roulements, joints et visserie inox. Vérifiez que le jeu d’**augets** correspond bien à l’injecteur prévu : jeu S pour la buse Ø6 du prototype, jeu L pour les buses Ø8 à Ø14. Triez la visserie par taille dans des barquettes.',
-      'Lay every part out on a clean bench and tick it off the bill of materials: printed parts, PMMA plates, aluminium cover, bearings, seals and stainless fasteners. Check that the **bucket** set matches the planned injector: S set for the prototype’s Ø6 nozzle, L set for Ø8 to Ø14 nozzles. Sort the fasteners by size into trays.',
+      'Étalez toutes les pièces sur un établi propre et pointez-les sur la nomenclature : pièces imprimées, plaques de PMMA, tôlerie aluminium, cartouche de palier, injecteurs, coffret, joints et visserie inox. Vérifiez que le jeu d’**augets** correspond bien à l’injecteur prévu : jeu S pour les buses jusqu’à Ø6, jeu L pour les buses Ø8 à Ø14. Triez la visserie par taille dans des barquettes. Chaque pièce porte un numéro et un QR code (étiquette imprimée) qui renvoie à sa fiche, à son fichier STL ou DXF et à sa référence de rechange ; les gabarits (auget, alignement des paliers) et le tableau des couples de serrage sont fournis.',
+      'Lay every part out on a clean bench and tick it off the bill of materials: printed parts, PMMA plates, aluminium sheet parts, bearing cartridge, injectors, controller box, seals and stainless fasteners. Check that the **bucket** set matches the planned injector: S set for nozzles up to Ø6, L set for Ø8 to Ø14 nozzles. Sort the fasteners by size into trays. Every part carries a number and a QR code (printed label) linking to its data sheet, its STL or DXF file and its spare-part number; the jigs (bucket, bearing alignment) and the torque table are included.',
     ),
     parts: [],
     tools: [
@@ -25,126 +25,94 @@ const ASSEMBLY_1: GuideStep[] = [
       'Weigh the 26 buckets now and pair them within ±0.5 g: the 13 pairs will be fitted opposite each other at the runner step.',
     ),
     duration: '30 min',
-    v2: {
-      text: l(
-        'Le kit V2 arrive en caisses numérotées : chaque pièce porte un QR code qui renvoie à sa fiche, à sa référence de rechange et à ce guide. Les gabarits (auget, alignement des paliers) et le tableau des couples de serrage sont fournis.',
-        'The V2 kit arrives in numbered crates: every part carries a QR code linking to its data sheet, its spare-part number and this guide. The jigs (bucket, bearing alignment) and the torque table are included.',
-      ),
-    },
   },
   {
     id: 'support',
-    title: l('Monter le support', 'Set up the stand'),
+    title: l('Poser le châssis-skid', 'Set up the skid frame'),
     text: l(
-      'Installez les **tréteaux** de part et d’autre du canal de fuite et posez les deux madriers dessus, de niveau. Le socle doit se retrouver à environ 0,9 m du sol, ce qui met l’axe de la roue vers 1,1 m, et jamais à moins de 30 à 40 cm au-dessus de l’eau, pour que celle-ci quitte la roue librement ; le constructeur demande au moins 50 cm entre la turbine et le sol.',
-      'Set the **trestles** on either side of the tailrace and lay the two beams across them, level. The base must end up about 0.9 m above the ground, which puts the runner axis at about 1.1 m, and never less than 30–40 cm above the water, so that the water can leave the runner freely; the maker asks for at least 50 cm between the turbine and the ground.',
+      'Le **châssis-skid** arrive assemblé et réglé. Posez-le sur ses quatre pieds réglables, son entonnoir au-dessus du canal de fuite, mettez-le de niveau puis ancrez-le au sol. Vérifiez que l’eau pourra quitter la roue librement : la garde de 40 cm sous la roue est intégrée par construction, il ne faut jamais moins de 30 à 40 cm entre le socle et l’eau, et le constructeur demande au moins 50 cm entre la turbine et le sol.',
+      'The **skid frame** arrives assembled and adjusted. Stand it on its four levelling feet with its funnel over the tailrace, level it, then anchor it to the ground. Check that the water can leave the runner freely: the 40 cm clearance under the runner is built into the design, there must never be less than 30–40 cm between the base and the water, and the maker asks for at least 50 cm between the turbine and the ground.',
     ),
-    parts: ['trestles'],
-    tools: [l('Niveau à bulle, mètre', 'Spirit level, tape measure'), l('Dalles ou cales', 'Paving slabs or shims')],
+    parts: ['skid'],
+    tools: [
+      l('Niveau à bulle, mètre', 'Spirit level, tape measure'),
+      l('Dalles ou cales', 'Paving slabs or shims'),
+      l('Tire-fonds ou piquets', 'Ground screws or stakes'),
+    ],
     tip: l(
       'Posez les pieds sur des dalles : le sol détrempé par le canal de fuite s’affaisse au fil des semaines.',
       'Stand the feet on paving slabs: ground soaked by the tailrace sinks over the weeks.',
     ),
     warning: l(
-      'Une turbine qui s’emballe vibre fort : un support instable peut basculer avec une vingtaine de kilos de machine (22 kg pour le modèle commercial) et une conduite sous pression dessus.',
-      'A runaway turbine vibrates hard: an unstable stand can tip over with some twenty kilos of machine (22 kg for the commercial model) and a pressurised pipe on it.',
+      'Une turbine qui s’emballe vibre fort : un skid mal ancré ou mal calé peut se déplacer, voire basculer, avec une vingtaine de kilos de machine (22 kg pour le modèle commercial) et une conduite sous pression dessus.',
+      'A runaway turbine vibrates hard: a badly anchored or badly shimmed skid can walk or even tip over with some twenty kilos of machine (22 kg for the commercial model) and a pressurised pipe on it.',
     ),
     duration: '30 min',
-    v2: {
-      text: l(
-        'Le **châssis-skid** arrive assemblé. Posez-le sur ses quatre pieds réglables, faites le niveau, ancrez-le au sol et vérifiez la garde de 40 cm sous la roue, intégrée par construction.',
-        'The **skid frame** arrives assembled. Stand it on its four levelling feet, level it, anchor it to the ground and check the 40 cm clearance under the runner, built into the design.',
-      ),
-      parts: ['skid'],
-    },
   },
   {
     id: 'base',
     title: l('Poser le socle', 'Fit the base plate'),
     text: l(
-      'Posez le **socle** sur les madriers, lumière d’évacuation centrée au-dessus du canal, et bridez-le avec les quatre brides imprimées. Contrôlez le niveau dans les deux sens et l’équerrage en mesurant les diagonales.',
-      'Lay the **base plate** on the beams with the water outlet centred over the channel, and clamp it down with the four printed cleats. Check that it is level both ways and square by measuring the diagonals.',
+      'Boulonnez le **socle** en PMMA noir sur les profilés du skid, lumière d’évacuation centrée au-dessus du canal. Contrôlez le niveau dans les deux sens et l’équerrage en mesurant les diagonales : la cloison et le capot seront ensuite positionnés à partir de lui.',
+      'Bolt the black PMMA **base plate** onto the skid extrusions, with the water outlet centred over the channel. Check that it is level both ways and square by measuring the diagonals: the partition and the cover will then be positioned from it.',
     ),
     parts: ['base'],
-    tools: [l('Niveau, mètre', 'Level, tape measure'), l('Visseuse', 'Screwdriver')],
+    tools: [l('Niveau, mètre', 'Level, tape measure'), l('Clé Allen ou visseuse', 'Hex key or screwdriver')],
     tip: l(
       'Le socle est la référence de tout le reste : une erreur de niveau ici se retrouve dans l’alignement des trois roulements.',
-      'The base is the datum for everything else: a levelling error here ends up in the alignment of the three bearings.',
+      'The base plate is the datum for everything else: a levelling error here ends up in the alignment of the three bearings.',
     ),
     duration: '15 min',
-    v2: {
-      text: l(
-        'Le bac-socle en aluminium se boulonne sur le skid grâce à ses écrous sertis PEM ; ses languettes et encoches positionneront ensuite la cloison et le capot sans mesure.',
-        'The aluminium base tray bolts onto the skid through its PEM nuts; its tabs and slots will then locate the partition and the cover without any measuring.',
-      ),
-    },
   },
   {
     id: 'partition',
     title: l('Installer la cloison étanche', 'Install the watertight partition'),
     text: l(
-      'Présentez la **cloison étanche** dans sa feuillure du socle, bien d’équerre, puis fixez-la. Appliquez un cordon continu de MS-polymère sur toute la jonction avec le socle et lissez-le : c’est lui qui empêchera le brouillard de la chambre humide d’atteindre le générateur.',
-      'Set the **watertight partition** in its rebate in the base, perfectly square, then fix it. Run a continuous bead of MS polymer along the whole joint with the base and tool it smooth: this is what will keep the wet-chamber mist away from the generator.',
+      'Présentez la **cloison étanche** sur le socle, bien d’équerre, puis serrez-la sur son joint EPDM avec ses quatre vis : ni colle ni temps de séchage, et elle se démonte sans rien casser. Cette jonction est ce qui empêchera le brouillard de la chambre humide d’atteindre le générateur.',
+      'Offer up the **watertight partition** on the base plate, perfectly square, then clamp it on its EPDM gasket with its four screws: no glue, no curing time, and it can be taken apart without breaking anything. This joint is what will keep the wet-chamber mist away from the generator.',
     ),
     parts: ['partition'],
-    tools: [l('Pistolet à mastic', 'Caulking gun'), l('Équerre, ruban de masquage', 'Square, masking tape')],
+    tools: [l('Équerre', 'Square'), l('Tournevis ou clé Allen', 'Screwdriver or hex key')],
     tip: l(
-      'Masquez de part et d’autre du joint avant de mastiquer, lissez, puis retirez le ruban tout de suite : le cordon sera net.',
-      'Mask both sides of the joint before sealing, tool the bead, then pull the tape straight away: you get a clean line.',
+      'Serrez les quatre vis progressivement et en croix, juste assez pour comprimer le joint : un serrage excessif fait fissurer le PMMA autour des vis.',
+      'Tighten the four screws gradually and in a cross pattern, just enough to compress the gasket: over-tightening cracks the PMMA around the screws.',
     ),
     warning: l(
       'Pas de silicone acétique ni de cyanoacrylate au contact du PMMA : leurs vapeurs font fissurer la plaque.',
       'No acetic silicone or cyanoacrylate in contact with PMMA: their fumes make the plate craze and crack.',
     ),
-    duration: '20 min (+24 h)',
-    v2: {
-      text: l(
-        'La cloison V2 s’emboîte par ses tenons dans les encoches du bac et se serre sur un joint EPDM par quatre vis : ni colle, ni temps de séchage, et elle se démonte.',
-        'The V2 partition keys into the tray slots with its tabs and is clamped onto an EPDM gasket by four screws: no glue, no curing time, and it can be taken apart.',
-      ),
-    },
+    duration: '20 min',
   },
   {
     id: 'bearings',
-    title: l('Monter le palier et les roulements', 'Fit the bearing housing and bearings'),
+    title: l('Monter la cartouche de palier', 'Fit the bearing cartridge'),
     text: l(
-      'Pressez les **roulements 1 et 2** dans le **palier principal** en appuyant uniquement sur la bague extérieure, celle qui est ajustée serrée : l’effort ne doit jamais traverser les billes. Glissez l’entretoise entre eux, puis fixez le palier à travers la cloison avec ses quatre vis M6.',
-      'Press **bearings 1 and 2** into the **main bearing housing** by pushing only on the outer ring, the one with the tight fit: the force must never go through the balls. Slide the spacer between them, then fix the housing through the partition with its four M6 screws.',
+      'La **cartouche de palier** arrive prémontée, graissée et contrôlée à l’atelier, avec ses **roulements 1 et 2**. Engagez-la dans l’alésage de la cloison et fixez sa bride par six vis M5. Aucun roulement n’est manipulé sur place.',
+      'The **bearing cartridge** arrives pre-assembled, greased and checked on the bench, with its **bearings 1 and 2**. Slide it into the partition bore and fix its flange with six M5 screws. No bearing is handled on site.',
     ),
-    parts: ['bearing-block', 'bearing-1', 'bearing-2'],
-    tools: [
-      l('Presse ou tige filetée + rondelles épaisses', 'Press or threaded rod + thick washers'),
-      l('Douille au diamètre de la bague extérieure', 'Socket matching the outer ring'),
-      l('Clé dynamométrique', 'Torque wrench'),
-    ],
+    parts: ['bearing-cartridge', 'bearing-1', 'bearing-2'],
+    tools: [l('Clé dynamométrique', 'Torque wrench'), l('Clé Allen', 'Hex key')],
     tip: l(
-      'Passez les roulements une demi-heure au congélateur : ils se contractent de quelques centièmes et entrent sans forcer.',
-      'Put the bearings in the freezer for half an hour: they shrink by a few hundredths of a millimetre and slide in without force.',
+      'Serrez les six vis progressivement et en croix, la bride bien à plat contre la cloison : un serrage de travers désaligne les roulements.',
+      'Tighten the six screws gradually and in a cross pattern, with the flange flat against the partition: tightening it crooked misaligns the bearings.',
     ),
     warning: l(
-      'Ne frappez jamais un roulement au marteau, et surtout pas sur la bague extérieure quand vous le montez sur l’arbre : les billes marquent les pistes et le roulement est perdu, même s’il tourne encore.',
-      'Never hammer a bearing, and above all never on the outer ring when fitting it onto a shaft: the balls dent the raceways and the bearing is ruined, even if it still turns.',
+      'Ne frappez jamais la cartouche ni un roulement au marteau : le choc passe par les billes, marque les pistes et le roulement est perdu, même s’il tourne encore.',
+      'Never hammer the cartridge or a bearing: the shock goes through the balls, dents the raceways and the bearing is ruined, even if it still turns.',
     ),
-    torque: '3 N·m (M6)',
-    duration: '30 min',
-    v2: {
-      text: l(
-        'La **cartouche de palier** arrive prémontée, graissée et contrôlée à l’atelier : engagez-la dans l’alésage de la cloison et fixez sa bride par six vis M5. Aucun roulement n’est manipulé sur place.',
-        'The **bearing cartridge** arrives pre-assembled, greased and checked on the bench: slide it into the partition bore and fix its flange with six M5 screws. No bearing is handled on site.',
-      ),
-      parts: ['bearing-cartridge', 'bearing-1', 'bearing-2'],
-    },
+    torque: '3 N·m (M5)',
+    duration: '10 min',
   },
   {
     id: 'shaft',
     title: l('Joint à lèvre et arbre', 'Lip seal and shaft'),
     text: l(
-      'Graissez la lèvre du **joint à lèvre** et emmanchez-le côté humide, lèvre principale tournée vers la roue. Enfilez ensuite l’**arbre** depuis la chambre sèche à travers les deux roulements, en poussant sur les bagues intérieures, jusqu’à la butée.',
-      'Grease the lip of the **lip seal** and press it in on the wet side, main lip facing the runner. Then slide the **shaft** in from the dry chamber through both bearings, pushing on the inner rings, until it reaches its shoulder.',
+      'Le **joint à lèvre**, à double lèvre, est déjà dans la cartouche, protégé par le V-ring et la chicane labyrinthe : graissez simplement sa lèvre. Enfilez ensuite l’**arbre** depuis la chambre sèche à travers les deux roulements, avec la douille conique de montage fournie qui protège la lèvre, en poussant sur les bagues intérieures, jusqu’à la butée.',
+      'The double-lip **lip seal** is already inside the cartridge, shielded by the V-ring and the labyrinth: just grease its lip. Then slide the **shaft** in from the dry chamber through both bearings, using the supplied tapered fitting sleeve that protects the lip, pushing on the inner rings, until it reaches its shoulder.',
     ),
     parts: ['shaft', 'seal'],
     tools: [
-      l('Douille d’emmanchement pour le joint', 'Seal driver or socket'),
+      l('Douille conique de montage (fournie)', 'Tapered fitting sleeve (supplied)'),
       l('Graisse silicone', 'Silicone grease'),
       l('Ruban adhésif', 'Adhesive tape'),
     ],
@@ -153,48 +121,37 @@ const ASSEMBLY_1: GuideStep[] = [
       'Wrap the keyway and the thread with a turn of adhesive tape: their sharp edges cut the lip on the way through.',
     ),
     duration: '20 min',
-    v2: {
-      text: l(
-        'Le joint double lèvre est déjà dans la cartouche, protégé par le V-ring et la chicane. On enfile l’arbre avec la douille conique de montage fournie, qui protège la lèvre.',
-        'The double-lip seal is already inside the cartridge, shielded by the V-ring and the labyrinth. The shaft goes in with the supplied tapered fitting sleeve, which protects the lip.',
-      ),
-    },
   },
   {
     id: 'wheel',
     title: l('Assembler la roue Pelton', 'Assemble the Pelton runner'),
     text: l(
-      'Posez le **moyeu de roue** (Ø140) à plat et placez les 26 **augets** dans leurs logements, les paires de même masse face à face. Coiffez avec la **bague de serrage**, engagez les 26 vis M4 sur le cercle de Ø124 et serrez en étoile en trois passes : à la main, à 1 N·m, puis au couple final.',
-      'Lay the **hub disc** (Ø140) flat and place the 26 **buckets** in their seats, with pairs of equal mass facing each other. Cap them with the **clamping ring**, start the 26 M4 bolts on the Ø124 circle and tighten in a star pattern in three passes: by hand, at 1 N·m, then to final torque.',
+      'Posez le **moyeu de roue** (Ø140) à plat et placez les 26 **augets** pesés et numérotés dans leurs logements, les paires de même masse face à face ; un gabarit fixe l’angle et le rayon de chaque pièce pendant le serrage. Coiffez avec la **bague de serrage**, engagez les 26 vis M4 sur le cercle de Ø124 et serrez en étoile en trois passes : à la main, à 1 N·m, puis au couple final. Équilibrez enfin la roue complète, avec son moyeu conique, sur un banc à deux lames, et repérez sa position par rapport à l’arbre.',
+      'Lay the **hub disc** (Ø140) flat and place the 26 weighed and numbered **buckets** in their seats, with pairs of equal mass facing each other; a jig holds the angle and radius of each piece during tightening. Cap them with the **clamping ring**, start the 26 M4 bolts on the Ø124 circle and tighten in a star pattern in three passes: by hand, at 1 N·m, then to final torque. Finally, balance the finished runner together with its taper bush on a two-knife-edge stand, and mark its position relative to the shaft.',
     ),
     parts: ['wheel-hub', 'buckets', 'wheel-ring'],
     tools: [
       l('Clé dynamométrique 1–5 N·m', '1–5 N·m torque wrench'),
       l('Clé de 7 et embout hexagonal 3 mm', '7 mm spanner and 3 mm hex bit'),
+      l('Gabarit d’angle et de rayon', 'Angle-and-radius jig'),
     ],
     tip: l(
       'Avant le serrage final, vérifiez au réglet que toutes les pointes d’augets sont sur le même cercle (Ø244 avec le jeu L), à ±0,5 mm près.',
       'Before final tightening, check with a rule that every bucket tip sits on the same circle (Ø244 with the L set), within ±0.5 mm.',
     ),
     warning: l(
-      'Au-delà de 2 N·m, le PETG s’écrase puis flue : la roue perd son serrage en quelques semaines et les augets prennent du jeu.',
-      'Beyond 2 N·m the PETG is crushed and then creeps: the runner loses its clamping within weeks and the buckets work loose.',
+      'Au-delà de 2 N·m, le PETG des augets et du moyeu s’écrase puis flue : la roue perd son serrage en quelques semaines et les augets prennent du jeu.',
+      'Beyond 2 N·m the PETG of the buckets and hub is crushed and then creeps: the runner loses its clamping within weeks and the buckets work loose.',
     ),
     torque: '2 N·m (M4)',
     duration: '45 min',
-    v2: {
-      text: l(
-        'Les augets du kit V2 sont pesés et numérotés, et un gabarit fixe l’angle et le rayon de chaque pièce pendant le serrage. La bague inox découpée laser ne flue pas, et la roue complète est équilibrée sur banc avant expédition.',
-        'The V2 kit buckets are weighed and numbered, and a jig holds the angle and radius of each piece during tightening. The laser-cut stainless ring does not creep, and the finished runner is balanced on a stand before shipping.',
-      ),
-    },
   },
   {
     id: 'wheel-lock',
     title: l('Bloquer la roue sur l’arbre', 'Lock the runner on the shaft'),
     text: l(
-      'Glissez la roue sur l’arbre côté humide avec sa clavette, engagez le **moyeu conique** dans sa bride et serrez alternativement ses deux vis. Vissez l’écrou nylstop en bout d’arbre, puis faites tourner la roue à la main : elle doit tourner rond, sans frotter.',
-      'Slide the runner onto the shaft on the wet side with its key, seat the **taper-lock bush** in its flange and tighten its two screws alternately. Screw the nyloc nut onto the shaft end, then spin the runner by hand: it must run true, without rubbing.',
+      'Glissez la roue sur l’arbre côté humide avec sa clavette, en alignant ses repères sur ceux de l’arbre : la roue et son moyeu conique ayant été équilibrés ensemble, ils se remontent toujours dans la même position, sans réglage. Engagez le **moyeu conique** dans sa bride et serrez alternativement ses deux vis. Vissez l’écrou nylstop en bout d’arbre, puis faites tourner la roue à la main : elle doit tourner rond, sans frotter.',
+      'Slide the runner onto the shaft on the wet side with its key, lining up its marks with those on the shaft: since the runner and its taper bush were balanced together, they always go back in the same position, with no adjustment. Seat the **taper-lock bush** in its flange and tighten its two screws alternately. Screw the nyloc nut onto the shaft end, then spin the runner by hand: it must run true, without rubbing.',
     ),
     parts: ['wheel-lock'],
     tools: [l('Clé Allen 1/8"', '1/8" hex key'), l('Clé de 24', '24 mm spanner'), l('Comparateur', 'Dial gauge')],
@@ -208,21 +165,15 @@ const ASSEMBLY_1: GuideStep[] = [
     ),
     torque: '≈ 6 N·m (Taper-Lock 1108)',
     duration: '20 min',
-    v2: {
-      text: l(
-        'En V2, la roue et son moyeu conique sont équilibrés ensemble à l’atelier et repérés par rapport à l’arbre : on les remonte dans la même position, sans réglage.',
-        'In V2 the runner and its taper bush are balanced together on the bench and marked relative to the shaft: they go back in the same position, with no adjustment.',
-      ),
-    },
   },
   {
     id: 'stator',
     title: l('Fixer le stator', 'Mount the stator'),
     text: l(
-      'Fixez le **stator** sur sa platine dans la chambre sèche, centré sur l’arbre, et amenez les trois phases vers le bornier. Mesurez la résistance entre phases : les trois valeurs doivent être identiques à quelques pourcents près.',
-      'Fix the **stator** on its mounting plate in the dry chamber, centred on the shaft, and route the three phase leads towards the terminal block. Measure the phase-to-phase resistance: the three readings must agree within a few percent.',
+      'Fixez le **stator** sur sa platine dans la chambre sèche, centré sur l’arbre, et amenez les trois phases vers le bornier ; la sonde CTN est déjà noyée dans le bobinage. Fixez aussi les **capteurs** : le capteur à effet Hall face à la trajectoire de l’aimant cible de la cloche, à 2–3 mm, avec leurs câbles blindés rangés à l’écart des phases. Mesurez la résistance entre phases : les trois valeurs doivent être identiques à quelques pourcents près.',
+      'Fix the **stator** on its mounting plate in the dry chamber, centred on the shaft, and route the three phase leads towards the terminal block; the NTC probe is already embedded in the winding. Fit the **sensors** too: the Hall-effect sensor facing the path of the bell’s target magnet, 2–3 mm away, with their shielded cables routed away from the phase leads. Measure the phase-to-phase resistance: the three readings must agree within a few percent.',
     ),
-    parts: ['stator'],
+    parts: ['stator', 'sensors'],
     tools: [
       l('Multimètre', 'Multimeter'),
       l('Clés Allen', 'Hex keys'),
@@ -234,13 +185,6 @@ const ASSEMBLY_1: GuideStep[] = [
     ),
     torque: '4 N·m (M5)',
     duration: '30 min',
-    v2: {
-      text: l(
-        'La sonde CTN est déjà noyée dans le bobinage V2. On fixe en plus les **capteurs** : le capteur à effet Hall face à la cloche, à 2–3 mm de l’aimant cible, et l’on range leurs câbles blindés à l’écart des phases.',
-        'The NTC probe is already embedded in the V2 winding. The **sensors** are added here: the Hall-effect sensor facing the bell, 2–3 mm from the target magnet, with their shielded cables routed away from the phase leads.',
-      ),
-      parts: ['stator', 'sensors'],
-    },
   },
 ];
 
@@ -249,12 +193,12 @@ const ASSEMBLY_2: GuideStep[] = [
     id: 'rotor',
     title: l('Poser le rotor à aimants', 'Fit the magnet rotor'),
     text: l(
-      'Vérifiez à la boussole que les 14 **aimants** alternent bien nord et sud, puis descendez la **cloche du rotor** sur l’arbre, au-dessus du stator. Guidez-la avec une tige filetée et un écrou, jamais à mains nues, jusqu’en butée, puis contrôlez l’entrefer avec des cales en laiton.',
-      'Check with a compass that the 14 **magnets** alternate north and south, then lower the **rotor bell** onto the shaft, over the stator. Guide it down with a threaded rod and a nut, never by hand, until it seats, then check the air gap with brass feeler shims.',
+      'Vérifiez à la boussole que les 14 **aimants** alternent bien nord et sud, puis descendez la **cloche du rotor** sur l’arbre, au-dessus du stator, avec l’outil de pose à vis (une tige filetée et un écrou), jamais à mains nues, jusqu’en butée. La cloche ayant été équilibrée avec la roue, respectez le repère d’orientation gravé. Contrôlez ensuite l’entrefer avec des cales en laiton.',
+      'Check with a compass that the 14 **magnets** alternate north and south, then lower the **rotor bell** onto the shaft, over the stator, with the screw-driven fitting tool (a threaded rod and a nut), never by hand, until it seats. Since the bell was balanced together with the runner, follow the engraved orientation mark. Then check the air gap with brass feeler shims.',
     ),
     parts: ['rotor', 'magnets'],
     tools: [
-      l('Tige filetée + écrou de guidage', 'Threaded rod + guide nut'),
+      l('Outil de pose à vis (tige filetée + écrou)', 'Screw-driven fitting tool (threaded rod + nut)'),
       l('Cales en laiton (non magnétiques)', 'Brass (non-magnetic) shims'),
       l('Boussole', 'Compass'),
     ],
@@ -268,19 +212,13 @@ const ASSEMBLY_2: GuideStep[] = [
     ),
     torque: '5 N·m (M5)',
     duration: '30 min',
-    v2: {
-      text: l(
-        'En V2, un outil de pose à vis fourni descend le rotor sur le stator en douceur, et la cloche a été équilibrée avec la roue : il suffit de respecter le repère d’orientation gravé.',
-        'In V2 a supplied screw-driven fitting tool lowers the rotor over the stator smoothly, and the bell has been balanced together with the runner: just follow the engraved orientation mark.',
-      ),
-    },
   },
   {
     id: 'wiring',
     title: l('Câbler le redresseur', 'Wire the rectifier'),
     text: l(
-      'Montez le **pont redresseur** sur son dissipateur avec une fine couche de pâte thermique, raccordez les trois phases à ses entrées alternatives et sa sortie continue au **bornier**. Sertissez un embout sur chaque fil et repérez clairement le + et le −.',
-      'Mount the **rectifier** on its heatsink with a thin layer of thermal paste, connect the three phases to its AC inputs and its DC output to the **terminal block**. Crimp a ferrule on every wire and mark + and − clearly.',
+      'Montez le **pont redresseur** sur son grand dissipateur, dans le flux d’air du rotor, avec une fine couche de pâte thermique. Raccordez stator, redresseur et **bornier** avec le faisceau précâblé à connecteurs détrompés : impossible d’inverser une phase ou une polarité. Sertissez un embout sur chaque fil raccordé au bornier et repérez clairement le + et le −.',
+      'Mount the **rectifier** on its large heatsink, in the rotor’s airflow, with a thin layer of thermal paste. Connect stator, rectifier and **terminal block** with the pre-made harness with keyed connectors: a phase or polarity cannot be swapped. Crimp a ferrule on every wire going to the terminal block and mark + and − clearly.',
     ),
     parts: ['rectifier', 'terminal'],
     tools: [
@@ -298,19 +236,13 @@ const ASSEMBLY_2: GuideStep[] = [
     ),
     torque: '2 N·m',
     duration: '30 min',
-    v2: {
-      text: l(
-        'En V2, un faisceau précâblé à connecteurs détrompés relie stator, redresseur et bornier : impossible d’inverser une phase ou une polarité. Le redresseur est placé sur un dissipateur plus grand, dans le flux d’air du rotor.',
-        'In V2 a pre-made harness with keyed connectors links stator, rectifier and terminal block: a phase or polarity cannot be swapped. The rectifier sits on a larger heatsink, in the rotor’s airflow.',
-      ),
-    },
   },
   {
     id: 'window',
     title: l('Poser la vitre avant', 'Fit the front window'),
     text: l(
-      'Collez le **joint** EPDM sur le pourtour de la façade, raccord placé en haut. Posez la **vitre avant** et serrez ses vis M5 en croix, juste assez pour comprimer le joint d’environ un quart de son épaisseur.',
-      'Stick the EPDM **gasket** around the front face, with the joint at the top. Fit the **front window** and tighten its M5 screws in a cross pattern, just enough to compress the gasket by about a quarter of its thickness.',
+      'Clipsez le **joint** EPDM captif sur le chant de la façade, raccord placé en haut. Posez la **vitre avant** dans son cadre aluminium sur les écrous PEM et serrez ses vis M5 en croix, juste assez pour comprimer le joint d’environ un quart de son épaisseur : la façade se démonte ensuite et se remonte sans changer le joint ni risquer de fissure.',
+      'Clip the captive EPDM **gasket** onto the edge of the front face, with the joint at the top. Fit the **front window** in its aluminium frame on the PEM nuts and tighten its M5 screws in a cross pattern, just enough to compress the gasket by about a quarter of its thickness: the front then comes off and goes back on without replacing the gasket or risking a crack.',
     ),
     parts: ['window', 'gasket'],
     tools: [
@@ -327,25 +259,19 @@ const ASSEMBLY_2: GuideStep[] = [
     ),
     torque: '2 N·m (M5)',
     duration: '20 min',
-    v2: {
-      text: l(
-        'En V2, la vitre est pincée dans un cadre aluminium sur écrous PEM et le joint est un profilé captif : la façade se démonte et se remonte sans changer le joint ni risquer de fissure.',
-        'In V2 the window is clamped in an aluminium frame on PEM nuts and the gasket is a captive trim: the front comes off and goes back on without replacing the gasket or risking a crack.',
-      ),
-    },
   },
   {
     id: 'rear',
     title: l('Panneau arrière et roulement 3', 'Rear panel and bearing 3'),
     text: l(
-      'Pressez le **roulement 3** dans le flasque du **panneau arrière**, puis présentez le panneau sur le bout de l’arbre. Serrez ses vis progressivement en faisant tourner l’arbre à la main : il doit rester parfaitement libre jusqu’au serrage final.',
-      'Press **bearing 3** into the flange of the **rear panel**, then offer the panel up to the shaft end. Tighten its screws gradually while turning the shaft by hand: it must stay perfectly free right up to final tightening.',
+      'Pressez le **roulement 3** dans le flasque du **panneau arrière**, puis présentez le panneau sur le bout de l’arbre : il se centre sur ses deux pions usinés, ce qui garantit l’alignement des trois roulements. Serrez ses vis progressivement en faisant tourner l’arbre à la main : il doit rester parfaitement libre jusqu’au serrage final.',
+      'Press **bearing 3** into the flange of the **rear panel**, then offer the panel up to the shaft end: it locates on its two machined dowels, which guarantees the alignment of the three bearings. Tighten its screws gradually while turning the shaft by hand: it must stay perfectly free right up to final tightening.',
     ),
     parts: ['rear-panel', 'bearing-3'],
     tools: [l('Presse ou tige filetée', 'Press or threaded rod'), l('Clé dynamométrique', 'Torque wrench')],
     tip: l(
-      'Si l’arbre durcit pendant le serrage, desserrez, recentrez le panneau dans ses jeux et recommencez : trois roulements mal alignés s’usent les uns les autres en quelques mois.',
-      'If the shaft stiffens as you tighten, back off, re-centre the panel within its clearances and start again: three misaligned bearings wear each other out within months.',
+      'Si l’arbre durcit pendant le serrage, desserrez et vérifiez que le panneau est bien en appui sur ses deux pions : trois roulements mal alignés s’usent les uns les autres en quelques mois.',
+      'If the shaft stiffens as you tighten, back off and check that the panel is seated properly on its two dowels: three misaligned bearings wear each other out within months.',
     ),
     warning: l(
       'Ne tapez jamais le panneau pour le mettre en place : le choc passe par le roulement 3 et marque ses pistes.',
@@ -353,70 +279,54 @@ const ASSEMBLY_2: GuideStep[] = [
     ),
     torque: '3 N·m (M5)',
     duration: '20 min',
-    v2: {
-      text: l(
-        'En V2, le panneau arrière se centre sur deux pions usinés : l’alignement des trois roulements est garanti par construction, sans aucun réglage.',
-        'In V2 the rear panel locates on two machined dowels: the alignment of the three bearings is guaranteed by design, with no adjustment at all.',
-      ),
-    },
   },
   {
     id: 'cover',
     title: l('Fermer le capot', 'Close the cover'),
     text: l(
-      'Coiffez l’ensemble avec le **capot aluminium**, en l’engageant d’abord côté façade, puis fixez-le sur le socle et les plaques avec des vis inox A4 et des rondelles nylon. Vérifiez que l’eau qui ruisselle sur le capot ne peut pas couler vers la grille du panneau arrière.',
-      'Lower the **aluminium cover** over the assembly, engaging the front edge first, then fix it to the base and plates with A4 stainless screws and nylon washers. Check that rain running off the cover cannot flow towards the rear-panel grille.',
+      'Coiffez l’ensemble avec le **capot aluminium**, en l’engageant d’abord côté façade : il se pose sur ses languettes. Fermez les quatre **grenouillères** sur le joint captif, en réglant le crochet de chacune pour comprimer le joint d’environ un quart : pas une vis à serrer, et le capot s’enlève en dix secondes pour l’entretien. Vérifiez que l’eau qui ruisselle sur le capot ne peut pas couler vers la grille du panneau arrière.',
+      'Lower the **aluminium cover** over the assembly, engaging the front edge first: it drops onto its tabs. Close the four **toggle latches** onto the captive gasket, adjusting each hook to compress the gasket by about a quarter: not a single screw to turn, and the cover comes off in ten seconds for servicing. Check that rain running off the cover cannot flow towards the rear-panel grille.',
     ),
-    parts: ['cover'],
-    tools: [l('Visseuse', 'Cordless driver'), l('Graisse anti-grippage', 'Anti-seize compound')],
+    parts: ['cover', 'latches'],
+    tools: [
+      l('Clé plate', 'Spanner'),
+      l('Frein-filet', 'Threadlocker'),
+      l('Graisse anti-grippage', 'Anti-seize compound'),
+    ],
     tip: l(
-      'Une touche d’anti-grippage sur chaque vis inox évite la corrosion galvanique : le capot se démontera encore dans cinq ans.',
-      'A dab of anti-seize on every stainless screw prevents galvanic corrosion: the cover will still come off in five years.',
+      'Une touche d’anti-grippage sur les fixations inox des grenouillères évite la corrosion galvanique : elles se démonteront encore dans cinq ans.',
+      'A dab of anti-seize on the stainless fasteners of the latches prevents galvanic corrosion: they will still come off in five years.',
     ),
-    torque: '3 N·m (M5)',
     duration: '15 min',
-    v2: {
-      text: l(
-        'En V2, le capot se pose sur ses languettes et se ferme par les quatre **grenouillères** sur le joint captif : pas une vis à serrer, et il s’enlève en dix secondes pour l’entretien.',
-        'In V2 the cover drops onto its tabs and is closed by the four **toggle latches** onto the captive gasket: not a single screw to turn, and it comes off in ten seconds for servicing.',
-      ),
-      parts: ['cover', 'latches'],
-    },
   },
   {
     id: 'injectors',
     title: l('Monter les injecteurs', 'Fit the injectors'),
     text: l(
-      'Montez l’**injecteur à pointeau** sur la bride du toit plat et l’**injecteur fixe** imprimé sur la paroi haute. Chaque jet doit frapper l’arête centrale des augets, tangent au cercle primitif de 190 mm : le jet du haut descend à la verticale à 95 mm de l’axe, le jet latéral arrive à l’horizontale 95 mm sous l’axe. Vérifiez-le à travers la vitre en glissant une tige droite dans la buse.',
-      'Fit the **spear-valve injector** on the flat-roof flange and the printed **fixed injector** on the tall wall. Each jet must strike the buckets’ splitter ridge, tangent to the 190 mm pitch circle: the top jet comes straight down 95 mm from the axis, the side jet arrives horizontally 95 mm below the axis. Check it through the window by sliding a straight rod into the nozzle.',
+      'Montez l’**injecteur à pointeau** sur la bride du toit plat et l’**injecteur latéral** sur la paroi haute : les deux partagent la même bride normalisée, centrée par un pion, ce qui garantit l’alignement du jet. Chaque jet doit frapper l’arête centrale des augets, tangent au cercle primitif de 190 mm : le jet du haut descend à la verticale à 95 mm de l’axe, le jet latéral arrive à l’horizontale 95 mm sous l’axe. Vérifiez-le à travers la vitre en glissant une tige droite dans la buse. Posez dans l’injecteur latéral l’insert de buse de la saison, avec son kit d’augets assorti, puis armez le **déflecteur** à ressort sur son axe, retenu par sa gâche électrique.',
+      'Fit the **spear-valve injector** on the flat-roof flange and the **side injector** on the tall wall: both share the same standard flange, located by a dowel, which guarantees jet alignment. Each jet must strike the buckets’ splitter ridge, tangent to the 190 mm pitch circle: the top jet comes straight down 95 mm from the axis, the side jet arrives horizontally 95 mm below the axis. Check it through the window by sliding a straight rod into the nozzle. Fit the nozzle insert for the season in the side injector, with its matching bucket kit, then cock the spring-loaded **deflector** on its pivot, held by its electric latch.',
     ),
-    parts: ['injector-top', 'injector-side'],
+    parts: ['injector-top', 'injector-quick', 'deflector'],
     tools: [l('Tige de visée', 'Sighting rod'), l('Joints plats, ruban PTFE', 'Flat gaskets, PTFE tape')],
     tip: l(
       'Un jet décalé de 2 mm par rapport à l’arête coûte plusieurs points de rendement et use un seul côté des augets.',
       'A jet 2 mm off the splitter ridge costs several points of efficiency and wears only one side of the buckets.',
     ),
     duration: '30 min',
-    v2: {
-      text: l(
-        'En V2, les deux injecteurs partagent la même bride normalisée, centrée par un pion : l’alignement du jet est garanti. L’**injecteur à inserts** reçoit la buse de la saison, et le **déflecteur** à ressort est armé sur son axe, retenu par sa gâche électrique.',
-        'In V2 both injectors share the same standard flange, located by a dowel: jet alignment is guaranteed. The **insert injector** takes the nozzle for the season, and the spring-loaded **deflector** is cocked on its pivot, held by its electric latch.',
-      ),
-      parts: ['injector-top', 'injector-quick', 'deflector'],
-    },
   },
   {
     id: 'manifold',
     title: l('Assembler la nourrice', 'Assemble the manifold'),
     text: l(
-      'Assemblez la **nourrice** en col de cygne : coupe d’équerre, ébavurage, décapant, colle PVC pression, emboîtement d’un seul geste. Montez les deux **vannes de branche**, rouge vers l’injecteur du haut et bleue vers l’injecteur latéral, puis le **manomètre** sur son té, avec du ruban PTFE. Entre le té du manomètre et les vannes de branche, comme sur le plan d’injection du constructeur, collez le piquage de la **vanne de dérivation** et sa descente vers le canal de fuite : elle servira à purger l’air et à chasser les sédiments sans faire passer l’eau par la roue. Laissez-la fermée.',
-      'Build the gooseneck **manifold**: square cut, deburr, primer, PVC pressure cement, push home in one stroke. Fit the two **branch valves**, red to the top injector and blue to the side injector, then the **pressure gauge** on its tee, with PTFE tape. Between the gauge tee and the branch valves, as on the maker’s injection drawing, glue in the **bypass valve** tee and its drop pipe to the tailrace: it will be used to purge air and flush out sediment without sending water through the runner. Leave it closed.',
+      'Assemblez la **nourrice** en col de cygne : coupe d’équerre, ébavurage, décapant, colle PVC pression, emboîtement d’un seul geste. Montez les deux **vannes de branche**, rouge vers l’injecteur du haut et bleue vers l’injecteur latéral, puis le **manomètre** sur son té, avec du ruban PTFE. Entre le té du manomètre et les vannes de branche, comme sur le plan d’injection du constructeur, collez le piquage de la **vanne de dérivation** et sa descente vers le canal de fuite : elle servira à purger l’air et à chasser les sédiments sans faire passer l’eau par la roue. Laissez-la fermée. Posez enfin la **ventouse automatique** au point haut du col de cygne, qui purge l’air en continu, puis, après les 24 h de séchage, éprouvez l’ensemble à 1,5 × PN pendant une heure et étiquetez-le.',
+      'Build the gooseneck **manifold**: square cut, deburr, primer, PVC pressure cement, push home in one stroke. Fit the two **branch valves**, red to the top injector and blue to the side injector, then the **pressure gauge** on its tee, with PTFE tape. Between the gauge tee and the branch valves, as on the maker’s injection drawing, glue in the **bypass valve** tee and its drop pipe to the tailrace: it will be used to purge air and flush out sediment without sending water through the runner. Leave it closed. Finally, fit the **automatic air-release valve** at the high point of the gooseneck, which bleeds air continuously, then, after the 24 h cure, pressure-test the whole assembly at 1.5 × PN for one hour and label it.',
     ),
-    parts: ['manifold', 'valve-branch', 'gauge', 'valve-bypass'],
+    parts: ['manifold', 'valve-branch', 'gauge', 'valve-bypass', 'air-valve'],
     tools: [
       l('Coupe-tube PVC, ébavureur', 'PVC pipe cutter, deburrer'),
       l('Décapant et colle PVC pression', 'PVC primer and pressure cement'),
       l('Ruban PTFE', 'PTFE tape'),
+      l('Pompe d’épreuve manuelle, manomètre de référence', 'Hand test pump, reference gauge'),
     ],
     tip: l(
       'Collez tout la veille de la mise en eau : 24 h de séchage avant la pleine pression.',
@@ -426,21 +336,14 @@ const ASSEMBLY_2: GuideStep[] = [
       'Un raccord mal collé lâche brutalement à 7 bar : c’est la panne que Sylvain dit avoir le plus vécue. Personne dans l’axe des raccords lors de la première mise en pression.',
       'A badly glued fitting lets go violently at 7 bar: it is the failure Sylvain says he has had most often. Nobody stands in line with the fittings during the first pressurisation.',
     ),
-    duration: '1 h (+24 h)',
-    v2: {
-      text: l(
-        'En V2, la nourrice est livrée assemblée, éprouvée à 1,5 × PN et étiquetée. Une **ventouse automatique** au point haut du col de cygne purge l’air en continu.',
-        'In V2 the manifold arrives assembled, pressure-tested at 1.5 × PN and labelled. An **automatic air-release valve** at the high point of the gooseneck bleeds air continuously.',
-      ),
-      parts: ['manifold', 'valve-branch', 'gauge', 'valve-bypass', 'air-valve'],
-    },
+    duration: '2 h (+24 h)',
   },
   {
     id: 'inlet',
     title: l('Raccorder la conduite forcée', 'Connect the penstock'),
     text: l(
-      'Montez la **vanne principale** à l’entrée de la nourrice, en position fermée. Coupez le tube PEHD d’équerre, chanfreinez-le, engagez-le dans le **raccord à compression** jusqu’au repère, puis serrez l’écrou bleu à la main et finissez à la clé à sangle.',
-      'Fit the **main valve** at the manifold inlet, in the closed position. Cut the HDPE pipe square, chamfer it, push it into the **compression fitting** up to the mark, then tighten the blue nut by hand and finish with a strap wrench.',
+      'Montez la **vanne principale** à réducteur à l’entrée de la nourrice, en position fermée : il faut une vingtaine de tours de volant pour l’ouvrir ou la fermer, ce qui rend le coup de bélier impossible, même par mégarde. Coupez le tube PEHD d’équerre, chanfreinez-le, engagez-le dans le **raccord à compression** jusqu’au repère, puis serrez l’écrou bleu à la main et finissez à la clé à sangle.',
+      'Fit the gear-operated **main valve** at the manifold inlet, in the closed position: it takes about twenty turns of the handwheel to open or close it, which makes water hammer impossible, even by accident. Cut the HDPE pipe square, chamfer it, push it into the **compression fitting** up to the mark, then tighten the blue nut by hand and finish with a strap wrench.',
     ),
     parts: ['valve-main', 'penstock-end'],
     tools: [l('Coupe-tube PEHD', 'HDPE pipe cutter'), l('Clé à sangle', 'Strap wrench'), l('Feutre', 'Felt pen')],
@@ -453,21 +356,15 @@ const ASSEMBLY_2: GuideStep[] = [
       'The main valve stays closed throughout the build: a full penstock means 7.4 bar ready to blow out of the first open fitting.',
     ),
     duration: '20 min',
-    v2: {
-      text: l(
-        'En V2, la vanne principale est à réducteur : une vingtaine de tours de volant pour l’ouvrir ou la fermer, ce qui rend le coup de bélier impossible, même par mégarde.',
-        'In V2 the main valve is gear-operated: about twenty turns of the handwheel to open or close it, which makes water hammer impossible, even by accident.',
-      ),
-    },
   },
   {
     id: 'cable',
     title: l('Raccorder le câble de sortie', 'Connect the output cable'),
     text: l(
-      'Passez le **câble de sortie** 2 × 6 mm² dans le presse-étoupe du panneau arrière, raccordez-le au bornier en respectant + et −, puis serrez le presse-étoupe sur la gaine. À l’autre bout, il arrive dans le coffret de protection DC, sectionneur ouvert.',
-      'Feed the 2 × 6 mm² **output cable** through the rear-panel gland, connect it to the terminal block observing + and −, then tighten the gland onto the sheath. At the other end it lands in the DC protection box, with the isolator open.',
+      'Passez le **câble de sortie** 2 × 6 mm² dans le presse-étoupe du panneau arrière, raccordez-le au bornier en respectant + et −, puis serrez le presse-étoupe sur la gaine. À l’autre bout, il se branche par un connecteur IP68 détrompé sur le **coffret contrôleur** du skid, qui regroupe disjoncteur DC, parafoudre, relais de surtension et télémesure : inverser + et − devient impossible. De là, la liaison repart vers le coffret de protection DC du local technique, sectionneur ouvert.',
+      'Feed the 2 × 6 mm² **output cable** through the rear-panel gland, connect it to the terminal block observing + and −, then tighten the gland onto the sheath. At the other end it plugs through a keyed IP68 connector into the skid-mounted **controller box**, which holds the DC breaker, surge arrester, overvoltage relay and telemetry: + and − can no longer be swapped. From there the run continues to the DC protection box in the technical room, with the isolator open.',
     ),
-    parts: ['cable'],
+    parts: ['cable', 'controller-box'],
     tools: [l('Pince à dénuder, pince à sertir', 'Wire stripper, crimper'), l('Clé de presse-étoupe', 'Gland spanner')],
     tip: l(
       'Faites une boucle d’égouttage sous le presse-étoupe : l’eau qui ruisselle le long du câble tombe avant d’atteindre le carter.',
@@ -478,20 +375,13 @@ const ASSEMBLY_2: GuideStep[] = [
       'Reversed polarity on the batteries puts two bridge diodes in a dead short: the bridge, the fuse and sometimes the cable are destroyed.',
     ),
     duration: '20 min',
-    v2: {
-      text: l(
-        'En V2, le câble se branche par un connecteur IP68 détrompé sur le **coffret contrôleur** du skid, qui regroupe disjoncteur DC, parafoudre, relais de surtension et télémesure : inverser + et − devient impossible.',
-        'In V2 the cable plugs through a keyed IP68 connector into the skid-mounted **controller box**, which holds the DC breaker, surge arrester, overvoltage relay and telemetry: + and − can no longer be swapped.',
-      ),
-      parts: ['cable', 'controller-box'],
-    },
   },
   {
     id: 'commissioning',
     title: l('Mise en service', 'Commissioning'),
     text: l(
-      'Raccordez la charge électrique avant d’ouvrir l’eau : régulateur ou batteries en ligne, délesteur actif. Vannes de branche fermées et **vanne de dérivation entrouverte**, ouvrez la vanne principale très lentement : l’air et les dépôts sortent par la dérivation. Quand l’eau coule claire et sans bulles, refermez la dérivation lentement, purgez le reste d’air au point haut et contrôlez environ 7,4 bar statiques pour 76 m de chute. Ouvrez ensuite une vanne de branche puis le pointeau, réglez la tension fixe du régulateur et vérifiez une vitesse d’environ 1 700 à 1 900 tr/min (la vidéo cite 1 500 tr/min en moyenne sur le prototype). Terminez en simulant des batteries pleines : le délesteur doit prendre le relais sans que la vitesse grimpe.',
-      'Connect the electrical load before opening the water: controller or batteries online, dump load active. With the branch valves closed and the **bypass valve slightly open**, open the main valve very slowly: air and debris leave through the bypass. Once the water runs clear and bubble-free, close the bypass slowly, bleed any remaining air at the high point and check about 7.4 bar static for 76 m of head. Then open a branch valve and the spear, set the controller’s fixed voltage and check a speed of about 1,700–1,900 rpm (the video quotes 1,500 rpm on average for the prototype). Finish by simulating full batteries: the dump load must take over without the speed climbing.',
+      'La mise en service suit la check-list liée au QR code de la machine. Raccordez la charge électrique avant d’ouvrir l’eau : régulateur ou batteries en ligne, délesteur actif. Vannes de branche fermées et **vanne de dérivation entrouverte**, ouvrez la vanne principale très lentement : l’air et les dépôts sortent par la dérivation. Quand l’eau coule claire et sans bulles, refermez la dérivation lentement, purgez le reste d’air au point haut et contrôlez environ 7,4 bar statiques pour 76 m de chute. Ouvrez ensuite une vanne de branche puis le pointeau, réglez la tension fixe du régulateur et vérifiez une vitesse d’environ 1 700 à 1 900 tr/min (la vidéo cite 1 500 tr/min en moyenne). Testez le déflecteur en coupant volontairement la charge : il doit basculer en moins de 0,5 s, puis se réarme à la main. Terminez en simulant des batteries pleines : le délesteur doit prendre le relais sans que la vitesse grimpe. Laissez tourner une heure en relevant la température, puis vérifiez que pression, vitesse et puissance remontent bien sur le GX.',
+      'Commissioning follows the checklist linked to the machine’s QR code. Connect the electrical load before opening the water: controller or batteries online, dump load active. With the branch valves closed and the **bypass valve slightly open**, open the main valve very slowly: air and debris leave through the bypass. Once the water runs clear and bubble-free, close the bypass slowly, bleed any remaining air at the high point and check about 7.4 bar static for 76 m of head. Then open a branch valve and the spear, set the controller’s fixed voltage and check a speed of about 1,700–1,900 rpm (the video quotes 1,500 rpm on average). Trial the deflector by deliberately cutting the load: it must trip in under 0.5 s, then be reset by hand. Finish by simulating full batteries: the dump load must take over without the speed climbing. Let it run for one hour while logging the temperature, then check that pressure, speed and power show up on the GX.',
     ),
     parts: [],
     tools: [
@@ -508,12 +398,6 @@ const ASSEMBLY_2: GuideStep[] = [
       'Never let the turbine run unloaded: without a load it approaches twice its rated speed and its open-circuit voltage can reach 120–140 V. And every valve movement, the bypass included, takes at least 20 seconds.',
     ),
     duration: '1 h',
-    v2: {
-      text: l(
-        'En V2, la mise en service suit une check-list liée au QR code de la machine : épreuve hydraulique, essai du déflecteur par coupure volontaire de la charge, rodage d’une heure avec relevé de température, puis vérification que pression, vitesse et puissance remontent bien sur le GX.',
-        'In V2, commissioning follows a checklist linked to the machine’s QR code: pressure test, deflector trial by deliberately cutting the load, one-hour run-in with temperature readings, then a check that pressure, speed and power show up on the GX.',
-      ),
-    },
   },
 ];
 

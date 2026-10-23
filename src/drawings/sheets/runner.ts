@@ -268,7 +268,7 @@ export const runner: DrawingSheet = {
   ),
   scene: 'turbine',
   parts: ['wheel-hub', 'buckets', 'wheel-ring', 'wheel-lock'],
-  render(ctx) {
+  render() {
     const d = new Drawing();
     const LS = spec('L');
     const SS = spec('S');
@@ -277,10 +277,7 @@ export const runner: DrawingSheet = {
     const tipL = tipR(LS);
     d.frame({
       title: l(`Roue Pelton — ${N} augets`, `Pelton runner — ${N} buckets`),
-      subtitle: l(
-        `Roue commune V1 / V2 (planche ${ctx.version.toUpperCase()}) — augets jeu L, buse Ø${dL}`,
-        `Same runner on V1 / V2 (${ctx.version.toUpperCase()} sheet) — L bucket set, Ø${dL} nozzle`,
-      ),
+      subtitle: l(`Augets jeu L, buse Ø${dL}`, `L bucket set, Ø${dL} nozzle`),
       number: 'PL-T03',
       scale: '1:2 · 1:1',
     });
@@ -441,34 +438,25 @@ export const runner: DrawingSheet = {
     let ny = ty + 8 * 5 + 5;
     const kS = (2 * SS.b) / (3.2 * dS);
     const { a6, b } = hydro();
-    const paras: [Text, string?][] = [
-      [
-        l(
-          `Jeu L proche de la règle pour d = ${dL} : z calculé ≈ ${Math.round(15 + D / (2 * dL))} → ${N} augets. Le jeu S (prototype, d = ${dS}) est ≈ ${tr(dec(kS))} fois plus large que la règle : parois imprimées épaisses, tolérance au désalignement du jet.`,
-          `The L set is close to the rule for d = ${dL}: computed z ≈ ${Math.round(15 + D / (2 * dL))} → ${N} buckets. The S set (prototype, d = ${dS}) is ≈ ${dec(kS).en} times wider than the rule: thick printed walls, tolerance to jet misalignment.`,
-        ),
-      ],
-      [
-        l(
-          `Vitesse optimale (simulateur) : u/v ≈ 0,47 avec u = π·D·n/60 → n ≈ ${tr(nf(a6.pt.rpm, 0))} tr/min sur le site A (v ≈ ${tr(nf(a6.pt.vJet))} m/s), ≈ ${tr(nf(b.pt.rpm, 0))} tr/min sur le site B (v ≈ ${tr(nf(b.pt.vJet))} m/s).`,
-          `Best speed (simulator): u/v ≈ 0.47 with u = π·D·n/60 → n ≈ ${nf(a6.pt.rpm, 0).en} rpm on site A (v ≈ ${nf(a6.pt.vJet).en} m/s), ≈ ${nf(b.pt.rpm, 0).en} rpm on site B (v ≈ ${nf(b.pt.vJet).en} m/s).`,
-        ),
-      ],
-      [
-        l(
-          `Données constructeur Hydronome (site officiel) : 26 augets en polymère renforcé injecté, roue Ø244 ext., buse Ø14 maxi — reprises par le modèle (${N} augets, Ø${2 * tipL}, Ø${M.maxNozzle}).`,
-          `Hydronome maker data (official site): 26 injection-moulded reinforced-polymer buckets, Ø244 runner OD, Ø14 max nozzle — used by the model (${N} buckets, Ø${2 * tipL}, Ø${M.maxNozzle}).`,
-        ),
-        COLORS.v2,
-      ],
-      [
-        l(
-          `Calage : axe du jet dans le plan médian de la roue (± 1 mm) et tangent au cercle primitif Ø${D} ; le jet doit frapper l’arête médiane, sinon une coquille travaille plus que l’autre.`,
-          `Alignment: jet axis in the runner mid-plane (± 1 mm) and tangent to the Ø${D} pitch circle; the jet must hit the splitter ridge, otherwise one half-cup works harder than the other.`,
-        ),
-      ],
+    const paras: Text[] = [
+      l(
+        `Jeu L proche de la règle pour d = ${dL} : z calculé ≈ ${Math.round(15 + D / (2 * dL))} → ${N} augets. Le jeu S (d = ${dS}) est ≈ ${tr(dec(kS))} fois plus large que la règle : parois imprimées épaisses, tolérance au désalignement du jet.`,
+        `The L set is close to the rule for d = ${dL}: computed z ≈ ${Math.round(15 + D / (2 * dL))} → ${N} buckets. The S set (d = ${dS}) is ≈ ${dec(kS).en} times wider than the rule: thick printed walls, tolerance to jet misalignment.`,
+      ),
+      l(
+        `Vitesse optimale (simulateur) : u/v ≈ 0,47 avec u = π·D·n/60 → n ≈ ${tr(nf(a6.pt.rpm, 0))} tr/min sur le site A (v ≈ ${tr(nf(a6.pt.vJet))} m/s), ≈ ${tr(nf(b.pt.rpm, 0))} tr/min sur le site B (v ≈ ${tr(nf(b.pt.vJet))} m/s).`,
+        `Best speed (simulator): u/v ≈ 0.47 with u = π·D·n/60 → n ≈ ${nf(a6.pt.rpm, 0).en} rpm on site A (v ≈ ${nf(a6.pt.vJet).en} m/s), ≈ ${nf(b.pt.rpm, 0).en} rpm on site B (v ≈ ${nf(b.pt.vJet).en} m/s).`,
+      ),
+      l(
+        `Données constructeur Hydronome (site officiel) : 26 augets en polymère renforcé injecté, roue Ø244 ext., buse Ø14 maxi — reprises par le modèle (${N} augets, Ø${2 * tipL}, Ø${M.maxNozzle}).`,
+        `Hydronome maker data (official site): 26 injection-moulded reinforced-polymer buckets, Ø244 runner OD, Ø14 max nozzle — used by the model (${N} buckets, Ø${2 * tipL}, Ø${M.maxNozzle}).`,
+      ),
+      l(
+        `Calage : axe du jet dans le plan médian de la roue (± 1 mm) et tangent au cercle primitif Ø${D} ; le jet doit frapper l’arête médiane, sinon une coquille travaille plus que l’autre.`,
+        `Alignment: jet axis in the runner mid-plane (± 1 mm) and tangent to the Ø${D} pitch circle; the jet must hit the splitter ridge, otherwise one half-cup works harder than the other.`,
+      ),
     ];
-    for (const [t, color] of paras) ny = note(d, 236, ny, 168, t, { size: 2, lh: 1.75, color });
+    for (const t of paras) ny = note(d, 236, ny, 168, t, { size: 2, lh: 1.75 });
 
     // ---- parts list + assembly notes (bottom left)
     const ly = 214;

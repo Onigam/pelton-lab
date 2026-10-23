@@ -2,7 +2,7 @@ import { l, type L } from '../../i18n';
 import { WAVE_SPEED_HDPE } from '../../sim/physics';
 import { presetParams } from '../../sim/presets';
 import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
-import type { DrawCtx, DrawingSheet } from '../types';
+import type { DrawingSheet } from '../types';
 import {
   airValve,
   ballValve,
@@ -30,7 +30,7 @@ import {
 
 const BLUE = COLORS.acN;
 const LINE = { w: W.thick };
-/** V2 main valve closing time (s), from the simulator presets. */
+/** Main valve closing time (s), from the simulator presets. */
 const CLOSE_S = presetParams('siteA').valveCloseTime;
 
 /** Process line through a list of paper points. */
@@ -50,10 +50,6 @@ function tag(
     p.text([at[0], at[1] + 3.1 * (i + 1)], t, { size: 1.75, anchor, color: o.color ?? INK_2, halo: true }),
   );
 }
-
-/** V2-only item drawn on a V1 sheet: a short italic note in the V2 colour. */
-const v2note = (p: View, at: Pt, t: Text, anchor: 'start' | 'middle' | 'end' = 'start') =>
-  p.text(at, cat('V2 ▸ ', t as L), { size: 1.75, italic: true, color: COLORS.v2, anchor, halo: true });
 
 function intake(p: View): void {
   // stream and pond
@@ -171,8 +167,7 @@ function penstock(p: View): void {
   });
 }
 
-function manifold(p: View, v2: boolean): void {
-  const c2 = v2 ? COLORS.v2 : INK;
+function manifold(p: View): void {
   // main line Ø63 then Ø50
   pipe(p, [
     [151, 108],
@@ -180,36 +175,28 @@ function manifold(p: View, v2: boolean): void {
   ]);
   coupling(p, [154, 108]);
   tag(p, [154, 101], 'CC-01', []);
-  ballValve(p, [165, 108], v2 ? { op: 'gear', color: c2, lever: c2 } : { lever: BLUE });
-  tag(
-    p,
-    [165, 115.5],
-    'V-01',
-    v2
-      ? [l('principale DN50', 'main DN50'), l(`à réducteur ≥ ${CLOSE_S} s`, `gear-operated ≥ ${CLOSE_S} s`)]
-      : [l('principale DN50', 'main DN50'), l('¼ tour', 'quarter-turn')],
-    { color: v2 ? c2 : undefined },
-  );
-  if (!v2) v2note(p, [165, 124.8], l('à réducteur', 'gear-operated'), 'middle');
-  // gauge tee: PI-01 above, PT-01 (V2) below
+  ballValve(p, [165, 108], { op: 'gear' });
+  tag(p, [165, 115.5], 'V-01', [
+    l('principale DN50', 'main DN50'),
+    l(`à réducteur ≥ ${CLOSE_S} s`, `gear-operated ≥ ${CLOSE_S} s`),
+  ]);
+  // gauge tee: PI-01 above, PT-01 below
   junction(p, [184, 108]);
   p.line([184, 108], [184, 99.2], { w: W.medium });
   instrument(p, [184, 95], 'PI', '01');
   p.text([189, 93.5], '0–10 bar', { size: 1.75, color: INK_2 });
   p.text([189, 96.6], l('glycérine', 'glycerine'), { size: 1.75, color: INK_2 });
-  if (v2) {
-    p.line([184, 108], [184, 117.8], { w: W.medium, color: c2 });
-    instrument(p, [184, 122], 'PT', '01', c2);
-    const sig = p.polyline(
-      [
-        [184, 126.2],
-        [184, 150],
-      ],
-      { w: W.thin, color: COLORS.signal, dash: [1.6, 0.8] },
-    );
-    sig.setAttribute('marker-end', 'url(#arrow)');
-    p.text([182, 148.5], l('4–20 mA → contrôleur', '4–20 mA → controller'), { size: 1.75, color: c2, anchor: 'end' });
-  } else v2note(p, [182, 136], l('transmetteur PT-01 4–20 mA', 'PT-01 4–20 mA transmitter'), 'end');
+  p.line([184, 108], [184, 117.8], { w: W.medium });
+  instrument(p, [184, 122], 'PT', '01');
+  const sig = p.polyline(
+    [
+      [184, 126.2],
+      [184, 150],
+    ],
+    { w: W.thin, color: COLORS.signal, dash: [1.6, 0.8] },
+  );
+  sig.setAttribute('marker-end', 'url(#arrow)');
+  p.text([182, 148.5], l('4–20 mA → contrôleur', '4–20 mA → controller'), { size: 1.75, color: INK_2, anchor: 'end' });
   // bypass / drain branch Ø40 (3D part `valve-bypass`), normally closed: purges to the tailrace
   junction(p, [199, 108]);
   pipe(p, [
@@ -252,38 +239,31 @@ function manifold(p: View, v2: boolean): void {
   flowArrow(p, [270, 44]);
   flowArrow(p, [290, 70], -90);
   p.text([226.5, 41.5], l('L-03 · col de cygne Ø50', 'L-03 · gooseneck Ø50'), { size: 1.75, color: INK_2 });
-  if (v2) {
-    junction(p, [262, 44], c2);
-    airValve(p, [262, 44], { color: c2 });
-    tag(p, [266, 34.5], 'AV-01', [l('ventouse, point haut', 'air valve, high point')], { anchor: 'start', color: c2 });
-  } else v2note(p, [262, 36], l('ventouse AV-01 au point haut', 'AV-01 air valve at the high point'), 'middle');
+  junction(p, [262, 44]);
+  airValve(p, [262, 44]);
+  tag(p, [266, 34.5], 'AV-01', [l('ventouse, point haut', 'air valve, high point')], { anchor: 'start' });
   ballValve(p, [252, 132], { lever: BLUE });
   tag(p, [252, 139.5], 'V-04', [l('injecteur côté', 'side injector'), l('bleue, DN32', 'blue, DN32')]);
   flowArrow(p, [236, 132]);
   p.text([230, 129.4], 'L-04 · Ø50', { size: 1.75, color: INK_2 });
 }
 
-function machine(p: View, v2: boolean): void {
-  const c2 = v2 ? COLORS.v2 : INK;
+function machine(p: View): void {
   // housing, runner and jets
   p.rect([302, 94], [360, 152], { w: W.medium, dash: 'hidden', color: INK_2 });
   p.text([358, 149.5], 'T-01', { size: 2.1, weight: 'bold', anchor: 'end' });
   pelton(p, [330, 118], 14);
   nozzle(p, [316, 100], 'spear', { rot: -90 });
   p.line([316, 100], [316, 118], { w: 0.7, color: COLORS.water });
-  nozzle(p, [306, 132], v2 ? 'quick' : 'fixed', { accent: COLORS.v2, color: v2 ? c2 : INK });
+  nozzle(p, [306, 132], 'quick');
   p.line([306, 132], [330, 132], { w: 0.7, color: COLORS.water });
   const spear = presetParams('siteA').top.d;
   tag(p, [321, 84], 'N-01', [l(`pointeau Ø${spear} max`, `spear Ø${spear} max`)], { anchor: 'start' });
-  tag(p, [289, 139.5], 'N-02', v2 ? [l('inserts Ø4–10', 'inserts Ø4–10')] : [l('buse fixe Ø6/8', 'fixed Ø6/8')], {
-    color: v2 ? c2 : undefined,
-  });
-  if (v2) {
-    // fail-safe jet deflector
-    p.line([319.6, 104.5], [322.5, 98.5], { w: W.thick, color: c2 });
-    p.circle([322.5, 98.5], 0.7, { w: W.thin, color: c2, fill: COLORS.paper });
-    p.text([325, 98.6], l('DF-01 déflecteur', 'DF-01 deflector'), { size: 1.7, color: c2 });
-  } else v2note(p, [338, 91], l('déflecteur DF-01', 'DF-01 deflector'), 'middle');
+  tag(p, [289, 139.5], 'N-02', [l('inserts Ø4–10', 'inserts Ø4–10')]);
+  // fail-safe jet deflector
+  p.line([319.6, 104.5], [322.5, 98.5], { w: W.thick, color: COLORS.accent });
+  p.circle([322.5, 98.5], 0.7, { w: W.thin, color: COLORS.accent, fill: COLORS.paper });
+  p.text([325, 98.6], l('DF-01 déflecteur', 'DF-01 deflector'), { size: 1.7, color: COLORS.accent });
   levelMark(p, [298, 118], l('±0 injecteurs', '±0 nozzles'), { left: true });
   // generator on the shaft
   p.line([360, 117.2], [372.5, 117.2], { w: W.thin });
@@ -316,19 +296,16 @@ function machine(p: View, v2: boolean): void {
   });
   p.text([362, 146], l('chute libre', 'free fall'), { size: 1.75, color: INK_2 });
   p.text([362, 149.2], l('≥ 0,3–0,5 m', '≥ 0.3–0.5 m'), { size: 1.75, color: INK_2 });
-  // skid / trestles boundary
+  // skid boundary
   p.rect([144, 28], [403, 168], { w: W.thin, dash: 'phantom', color: INK_2 });
   p.text([147, 32.5], l('TURBINE PELTON — nourrice et injecteurs', 'PELTON TURBINE — manifold and injectors'), {
     size: 2.3,
     weight: 'bold',
   });
-  p.text(
-    [147, 36],
-    v2
-      ? l('V2 : skid alu, éléments V2 en violet', 'V2: aluminium skid, V2 items in purple')
-      : l('V1 : tréteaux + madriers (prototype de la vidéo)', 'V1: trestles + beams (prototype in the video)'),
-    { size: 1.75, color: v2 ? COLORS.v2 : INK_2 },
-  );
+  p.text([147, 36], l('Châssis alu 40 × 40, déflecteur en violet', '40 × 40 alu skid, deflector in purple'), {
+    size: 1.75,
+    color: INK_2,
+  });
 }
 
 const fmt = (v: number, d = 1) => nf(v, d);
@@ -389,7 +366,7 @@ const LEGEND: [L, (p: View, at: Pt) => void][] = [
   [l('Raccord à compression', 'Compression coupling'), (p, at) => coupling(p, at)],
   [l('Réduction concentrique', 'Concentric reducer'), (p, at) => reducer(p, at)],
   [l('Injecteur à pointeau', 'Spear injector'), (p, at) => nozzle(p, [at[0] + 5.5, at[1]], 'spear', { scale: 0.5 })],
-  [l('Injecteur fixe', 'Fixed nozzle'), (p, at) => nozzle(p, [at[0] + 4, at[1]], 'fixed', { scale: 0.8 })],
+  [l('Lance à inserts', 'Insert lance'), (p, at) => nozzle(p, [at[0] + 4, at[1]], 'quick', { scale: 0.8 })],
   [l('Roue Pelton', 'Pelton runner'), (p, at) => pelton(p, at, 4.4, INK, 12)],
   [
     l('Sens d’écoulement', 'Flow direction'),
@@ -399,7 +376,7 @@ const LEGEND: [L, (p: View, at: Pt) => void][] = [
     },
   ],
   [
-    l('Signal 4–20 mA (V2)', '4–20 mA signal (V2)'),
+    l('Signal 4–20 mA', '4–20 mA signal'),
     (p, at) => p.line([at[0] - 4, at[1]], [at[0] + 4, at[1]], { w: W.thin, color: COLORS.signal, dash: [1.6, 0.8] }),
   ],
 ];
@@ -454,8 +431,8 @@ export const hydraulicDiagram: DrawingSheet = {
   group: 'hydraulic',
   title: l('Schéma hydraulique', 'Hydraulic diagram'),
   description: l(
-    'Schéma de principe de type P&ID, sans échelle : l’eau part de la prise Coanda, descend la conduite PEHD Ø63, traverse la vanne principale, le té du manomètre et la dérivation, puis se partage entre l’injecteur à pointeau du haut (vanne rouge) et l’injecteur fixe latéral (vanne bleue). Chaque organe porte un repère (V-01, PI-01…) et le tableau donne pressions, débits, vitesse du jet et puissances calculés par le simulateur pour les sites A et B. Les ajouts V2 (ventouse, transmetteur, vanne à réducteur, déflecteur) apparaissent en violet.',
-    'P&ID-style schematic, not to scale: water leaves the Coanda intake, runs down the Ø63 HDPE penstock, through the main valve, the gauge tee and the bypass, then splits between the top spear injector (red valve) and the fixed side nozzle (blue valve). Every item carries a tag (V-01, PI-01…) and the table gives pressures, flows, jet velocity and powers computed by the simulator for sites A and B. The V2 additions (air valve, transmitter, gear-operated valve, deflector) are shown in purple.',
+    'Schéma de principe de type P&ID, sans échelle : l’eau part de la prise Coanda, descend la conduite PEHD Ø63, traverse la vanne principale, le té du manomètre et la dérivation, puis se partage entre l’injecteur à pointeau du haut (vanne rouge) et la lance latérale à inserts (vanne bleue). Chaque organe porte un repère (V-01, PI-01…) et le tableau donne pressions, débits, vitesse du jet et puissances calculés par le simulateur pour les sites A et B. Le déflecteur de sécurité DF-01 apparaît en violet.',
+    'P&ID-style schematic, not to scale: water leaves the Coanda intake, runs down the Ø63 HDPE penstock, through the main valve, the gauge tee and the bypass, then splits between the top spear injector (red valve) and the side insert lance (blue valve). Every item carries a tag (V-01, PI-01…) and the table gives pressures, flows, jet velocity and powers computed by the simulator for sites A and B. The DF-01 safety deflector is shown in purple.',
   ),
   scene: 'turbine',
   parts: [
@@ -466,11 +443,9 @@ export const hydraulicDiagram: DrawingSheet = {
     'valve-bypass',
     'valve-branch',
     'injector-top',
-    'injector-side',
     'air-valve',
   ],
-  render(ctx: DrawCtx): Drawing {
-    const v2 = ctx.version === 'v2';
+  render(): Drawing {
     const d = new Drawing();
     d.frame({
       title: l('Schéma hydraulique', 'Hydraulic diagram'),
@@ -484,8 +459,8 @@ export const hydraulicDiagram: DrawingSheet = {
     const p = d.paper();
     intake(p);
     penstock(p);
-    manifold(p, v2);
-    machine(p, v2);
+    manifold(p);
+    machine(p);
     valueTable(d, 14, 177);
     legend(p, 170, 177);
     makerBox(p, 16, 128, 122);
@@ -506,13 +481,13 @@ export const hydraulicDiagram: DrawingSheet = {
         l(' à +', ' to +'),
         nf(a8.surgeBar, 1),
         l(
-          ` bar à la pression statique. V2 : vanne à réducteur, fermeture en ${CLOSE_S} s au moins.`,
-          ` bar to the static pressure. V2: gear-operated valve, at least ${CLOSE_S} s to close.`,
+          ` bar à la pression statique. Vanne à réducteur : fermeture en ${CLOSE_S} s au moins.`,
+          ` bar to the static pressure. Gear-operated valve: at least ${CLOSE_S} s to close.`,
         ),
       ),
       l(
-        'Mise en eau : vannes d’injecteur fermées, V-02 ouverte pour chasser l’air et le sable, puis fermer V-02 et ouvrir V-01 progressivement ; purger l’air au point haut du col de cygne (AV-01 en V2).',
-        'Filling: injector valves closed, V-02 open to flush air and sand, then close V-02 and open V-01 gradually; bleed the air at the gooseneck high point (AV-01 in V2).',
+        'Mise en eau : vannes d’injecteur fermées, V-02 ouverte pour chasser l’air et le sable, puis fermer V-02 et ouvrir V-01 progressivement ; purger l’air au point haut du col de cygne (AV-01).',
+        'Filling: injector valves closed, V-02 open to flush air and sand, then close V-02 and open V-01 gradually; bleed the air at the gooseneck high point (AV-01).',
       ),
       cat(
         l('Conduite PN10 pour ', 'PN10 penstock for '),

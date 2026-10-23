@@ -67,7 +67,7 @@ function bearing(z: number): Shape[] {
   ];
 }
 
-function shapes(v2: boolean): Shape[] {
+function shapes(): Shape[] {
   const s: Shape[] = [];
   const add = (pts: Pt[], st: Stroke, mirror = true) => s.push({ pts, st, mirror });
   const [r0, r1] = SHAFT.rear;
@@ -104,39 +104,26 @@ function shapes(v2: boolean): Shape[] {
     sec('steel'),
     false,
   );
-  // bearing housing: V1 printed block (square flange 120) / V2 turned cartridge (Ø124 flange)
+  // bearing housing: turned aluminium cartridge (Ø124 flange)
   const end = ZB2 - 9;
   add(
-    v2
-      ? [
-          [PD, 23.5],
-          [PD, 62],
-          [PD - 12, 62],
-          [PD - 14, 36],
-          [end, 34],
-          [end, 21],
-          [end + 2, 21],
-          [end + 2, 23.5],
-        ]
-      : [
-          [PD, 24],
-          [PD, 60],
-          [PD - 16, 60],
-          [PD - 16, 34],
-          [end, 34],
-          [end, 21],
-          [end + 2, 21],
-          [end + 2, 23.5],
-          [PD - 5, 23.5],
-          [PD - 5, 24],
-        ],
-    sec(v2 ? 'alu' : 'plastic'),
+    [
+      [PD, 23.5],
+      [PD, 62],
+      [PD - 12, 62],
+      [PD - 14, 36],
+      [end, 34],
+      [end, 21],
+      [end + 2, 21],
+      [end + 2, 23.5],
+    ],
+    sec('alu'),
   );
   add(rect(PD - 4.8, PD - 3.2, 23.5, 25.5), solid(W.thin)); // internal circlip DIN 472 Ø47
   add(rect(ZB2 + 7, ZB1 - 7, 10, 14), sec('steel', W.thin)); // spacer between inner rings
   for (const z of [ZB1, ZB2, ZB3]) s.push(...bearing(z));
   // seal carrier + lip seal 20 × 35 × 7 (main lip and garter spring on the water side, +z)
-  add(rect(PW, PW + 9, 17.5, 30), sec(v2 ? 'alu' : 'plastic'));
+  add(rect(PW, PW + 9, 17.5, 30), sec('alu'));
   add(
     shift(
       [
@@ -153,35 +140,33 @@ function shapes(v2: boolean): Shape[] {
     sec('rubber', W.thin),
   );
   add(circle([SEAL_Z + 1.2, 12.8], 0.7, 10), solid(W.thin));
-  if (v2) {
-    add(
-      shift(
-        [
-          [19, 10.2],
-          [19, 14],
-          [16.5, 14],
-          [14.2, 19],
-          [14, 18.4],
-          [15.6, 13],
-          [16, 10.2],
-        ],
-        PW - 5,
-      ),
-      sec('rubber', W.thin),
-    ); // V-ring
-    const gz = PD - 60; // grease nipple (drivetrain.ts)
-    add(
+  add(
+    shift(
       [
-        [gz - 4, 35.2],
-        [gz + 4, 35.2],
-        [gz + 3, 46],
-        [gz - 3, 46],
+        [19, 10.2],
+        [19, 14],
+        [16.5, 14],
+        [14.2, 19],
+        [14, 18.4],
+        [15.6, 13],
+        [16, 10.2],
       ],
-      solid(W.thin),
-      false,
-    );
-    add(circle([gz, 49], 3.2, 14), solid(W.thin), false);
-  }
+      PW - 5,
+    ),
+    sec('rubber', W.thin),
+  ); // V-ring
+  const gz = PD - 60; // grease nipple (drivetrain.ts)
+  add(
+    [
+      [gz - 4, 35.2],
+      [gz + 4, 35.2],
+      [gz + 3, 46],
+      [gz - 3, 46],
+    ],
+    solid(W.thin),
+    false,
+  );
+  add(circle([gz, 49], 3.2, 14), solid(W.thin), false);
   // generator: stator stack + coil end turns, rotor (hub, fan disc, bell, back iron, magnets)
   add(rect(S0, S1, STATOR.rBore, STATOR.rTip), sec('steel'));
   add(rect(S0 - 6.2, S0, 43.2, 51.4), sec('copper', W.thin));
@@ -193,7 +178,7 @@ function shapes(v2: boolean): Shape[] {
   add(rect(B0 + 6, B1, BELL.rIron, 65), sec('steel', W.thin));
   add(rect(S0 - 1, S1 + 1, BELL.rMag[0], BELL.rMag[1]), { w: W.thin, fill: '#c9ced6' });
   add(rect(B0 - 9, B0 - 3, 15, 21), solid(W.thin), false); // set screw
-  if (v2) add(rect(-106, -94, 82, 112), { w: W.thin, fill: COLORS.paper }, false); // Hall sensor (generator.ts)
+  add(rect(-106, -94, 82, 112), { w: W.thin, fill: COLORS.paper }, false); // Hall sensor (generator.ts)
   // runner: hub disc, clamp ring, steel flange, taper bush, washer, M4 bolts, bucket (top only)
   const hz = M.hubT / 2;
   const [g0, g1] = RUNNER.ring;
@@ -324,41 +309,21 @@ export const shaftLine: DrawingSheet = {
   group: 'turbine',
   title: l('Ligne d’arbre — coupe A–A', 'Shaft line — section A–A'),
   description: l(
-    'Coupe par l’axe de l’arbre à l’échelle 1:2 : roue Pelton côté eau, cloison étanche avec joint à lèvre, palier à deux roulements, générateur à rotor extérieur et troisième roulement dans le flasque arrière. Les cotes axiales donnent la position de chaque roulement et du plan de roue ; les repères a à g renvoient au tableau des ajustements. En V1 le palier est imprimé, en V2 c’est une cartouche alu avec graisseur et V-ring.',
-    'Section through the shaft axis at 1:2: Pelton runner on the water side, watertight partition with lip seal, two-bearing housing, outer-rotor generator and third bearing in the rear panel. Axial dimensions give the position of each bearing and of the wheel plane; tags a to g refer to the fits table. On V1 the housing is printed, on V2 it is an aluminium cartridge with grease nipple and V-ring.',
+    'Coupe par l’axe de l’arbre à l’échelle 1:2 : roue Pelton côté eau, cloison étanche avec joint à lèvre, palier à deux roulements, générateur à rotor extérieur et troisième roulement dans le flasque arrière. Les cotes axiales donnent la position de chaque roulement et du plan de roue ; les repères a à g renvoient au tableau des ajustements. Le palier est une cartouche alu avec graisseur et V-ring.',
+    'Section through the shaft axis at 1:2: Pelton runner on the water side, watertight partition with lip seal, two-bearing housing, outer-rotor generator and third bearing in the rear panel. Axial dimensions give the position of each bearing and of the wheel plane; tags a to g refer to the fits table. The bearing housing is an aluminium cartridge with grease nipple and V-ring.',
   ),
   scene: 'turbine',
-  parts: [
-    'shaft',
-    'bearing-1',
-    'bearing-2',
-    'bearing-3',
-    'seal',
-    'bearing-block',
-    'bearing-cartridge',
-    'wheel-lock',
-    'rotor',
-    'stator',
-  ],
-  render(ctx) {
-    const v2 = ctx.version === 'v2';
+  parts: ['shaft', 'bearing-1', 'bearing-2', 'bearing-3', 'seal', 'bearing-cartridge', 'wheel-lock', 'rotor', 'stator'],
+  render() {
     const d = new Drawing();
     d.frame({
       title: l('Ligne d’arbre — coupe A–A', 'Shaft line — section A–A'),
-      subtitle: v2
-        ? l(
-            'V2 industrialisée : cartouche alu 6082, graisseur, V-ring',
-            'V2 industrialised: 6082 alu cartridge, grease nipple, V-ring',
-          )
-        : l(
-            'V1 prototype : palier imprimé PETG-CF (4 × M6 sur la cloison)',
-            'V1 prototype: printed PETG-CF housing (4 × M6 on the partition)',
-          ),
+      subtitle: l('Cartouche alu 6082, graisseur, V-ring', '6082 alu cartridge, grease nipple, V-ring'),
       number: 'PL-T02',
       scale: '1:2 · 2:1',
     });
     const p = d.paper();
-    const list = shapes(v2);
+    const list = shapes();
 
     // ---- main section 1:2
     const v = d.view(120, 98, 0.5);
@@ -420,7 +385,7 @@ export const shaftLine: DrawingSheet = {
     b([-70, 13], 92, 26, '8');
     b([-45, 34.5], 104, 34, '7');
     b([ZB1, 22], 112, 17, '2');
-    if (v2) b([PD - 60, 47], 98, 50, '17');
+    b([PD - 60, 47], 98, 50, '17');
     b([M.zPart, 120], 130, 22, '9');
     b([PW + 5, 28], 138, 52, '6');
     b([SEAL_Z + 2, 16], 145, 68, '5');
@@ -442,13 +407,12 @@ export const shaftLine: DrawingSheet = {
     });
     de.leader([SEAL_Z + 1.2, 12.8], 24, -6, l('ressort jarretière', 'garter spring'));
     de.leader([SEAL_Z - 2.6, 10.6], 36, 17, l('lèvre pare-poussière', 'dust lip'));
-    if (v2)
-      de.leader(
-        [PW + 11.5, 16.5],
-        14,
-        -18,
-        l('V-ring déflecteur (tourne avec l’arbre)', 'V-ring slinger (turns with the shaft)'),
-      );
+    de.leader(
+      [PW + 11.5, 16.5],
+      14,
+      -18,
+      l('V-ring déflecteur (tourne avec l’arbre)', 'V-ring slinger (turns with the shaft)'),
+    );
     p.text(de.map([box.x1 - 3, 30.5]), l('EAU →', 'WATER →'), {
       size: 2.2,
       weight: 'bold',
@@ -527,20 +491,8 @@ export const shaftLine: DrawingSheet = {
       ['3', l('Roulement 2', 'Bearing 2'), '6204-2RS C3', '1'],
       ['4', l('Roulement 3 (palier libre)', 'Bearing 3 (floating)'), '6204-2RS C3', '1'],
       ['5', l('Joint à lèvre 20 × 35 × 7, double lèvre', 'Lip seal 20 × 35 × 7, double lip'), 'NBR', '1'],
-      [
-        '6',
-        l('Porte-joint Ø60, vissé sur la cloison', 'Ø60 seal carrier, screwed on partition'),
-        v2 ? 'alu 6082' : 'PETG',
-        '1',
-      ],
-      v2
-        ? ['7', l('Cartouche Ø124, 6 × M5 sur Ø104', 'Ø124 cartridge, 6 × M5 on Ø104'), 'alu 6082-T6', '1']
-        : [
-            '7',
-            l('Palier imprimé, bride 120 × 120, 4 × M6', 'Printed housing, 120 × 120 flange, 4 × M6'),
-            'PETG-CF 100 %',
-            '1',
-          ],
+      ['6', l('Porte-joint Ø60, vissé sur la cloison', 'Ø60 seal carrier, screwed on partition'), 'alu 6082', '1'],
+      ['7', l('Cartouche Ø124, 6 × M5 sur Ø104', 'Ø124 cartridge, 6 × M5 on Ø104'), 'alu 6082-T6', '1'],
       [
         '8',
         l('Entretoise Ø20 / Ø28 entre bagues int.', 'Ø20 / Ø28 spacer between inner rings'),
@@ -578,14 +530,13 @@ export const shaftLine: DrawingSheet = {
       ],
       ['15', l('Flasque arrière ép. 6 + bossage Ø47', '6 mm rear panel + Ø47 boss'), l('imprimé', 'printed'), '1'],
       ['16', l('Chapeau de graisse Ø44', 'Ø44 grease cap'), l('inox', 'stainless'), '1'],
-    ];
-    if (v2)
-      rows.push([
+      [
         '17',
         l('Graisseur M6 + V-ring V-20A', 'M6 grease nipple + V-20A V-ring'),
         l('laiton / NBR', 'brass / NBR'),
         '1 + 1',
-      ]);
+      ],
+    ];
     const rh = 4.1;
     d.table(
       X,
@@ -614,9 +565,7 @@ export const shaftLine: DrawingSheet = {
         l('Logement roulements 1-2', 'Bearings 1-2 housing'),
         'Ø47 H7',
         '+25 / 0',
-        v2
-          ? l('alésé, bague fixe', 'bored, stationary ring')
-          : l('imprimé puis alésé + Loctite 641', 'printed, reamed + Loctite 641'),
+        l('alésé, bague fixe', 'bored, stationary ring'),
       ],
       [
         'c',
@@ -671,14 +620,7 @@ export const shaftLine: DrawingSheet = {
         l('à sec, sans graisse', 'dry, no grease'),
       ],
       [l('Écrou de roue', 'Runner nut'), 'M16 A4 nylstop', '40 N·m', l('sécurité axiale', 'axial safety')],
-      v2
-        ? [l('Cartouche → cloison', 'Cartridge → partition'), '6 × M5 A4', '4 N·m', 'Loctite 243']
-        : [
-            l('Palier → cloison PMMA', 'Housing → PMMA partition'),
-            '4 × M6 A4',
-            '3 N·m',
-            l('rondelles larges', 'wide washers'),
-          ],
+      [l('Cartouche → cloison', 'Cartridge → partition'), '6 × M5 A4', '4 N·m', 'Loctite 243'],
       [l('Bride → moyeu roue', 'Flange → runner hub'), '4 × M5 A4', '3 N·m', 'Loctite 243'],
       [l('Vis pointeau rotor', 'Rotor set screw'), 'M6 A4', '4 N·m', 'Loctite 243'],
     ];
@@ -702,15 +644,10 @@ export const shaftLine: DrawingSheet = {
         'Emmancher les roulements en appuyant uniquement sur la bague intérieure (tube Ø20/Ø28) ; jamais de coup sur la bague extérieure.',
         'Press the bearings on by the inner ring only (Ø20/Ø28 tube); never strike the outer ring.',
       ),
-      v2
-        ? l(
-            'Monter la cartouche à l’établi (roulements, entretoise, circlip, graisse hydrofuge) puis la visser d’un bloc sur la cloison.',
-            'Build the cartridge on the bench (bearings, spacer, circlip, waterproof grease) and bolt it to the partition as one unit.',
-          )
-        : l(
-            'Graisser le logement imprimé, monter 2, l’entretoise, 1 et le circlip, puis visser le palier sur la cloison.',
-            'Grease the printed housing, fit 2, the spacer, 1 and the circlip, then bolt the housing to the partition.',
-          ),
+      l(
+        'Monter la cartouche à l’établi (roulements, entretoise, circlip, graisse hydrofuge) puis la visser d’un bloc sur la cloison.',
+        'Build the cartridge on the bench (bearings, spacer, circlip, waterproof grease) and bolt it to the partition as one unit.',
+      ),
       l(
         'Joint : lèvre et ressort tournés vers l’eau, lèvre graissée, passer l’arbre avec une douille de protection sur la rainure.',
         'Seal: lip and spring facing the water, lip greased, slide the shaft through with a sleeve over the keyway.',

@@ -3,7 +3,7 @@ import { bucketEfficiency } from '../../sim/physics';
 import { bucketSpecFor } from '../../three/turbine/bucket';
 import { D, profile, R_TIP } from '../../three/turbine/dims';
 import { Z_BELL, Z_STATOR } from '../../three/turbine/generator';
-import { BEAMS_X, DEFLECTOR, DRAIN, SKID, VENT } from '../../three/turbine/housing';
+import { DEFLECTOR, DRAIN, SKID, VENT } from '../../three/turbine/housing';
 import { RISER_TOP, TOP_INLET_Y } from '../../three/turbine/hydraulics';
 import { COLORS, W, type Drawing, type Pt, type Stroke, type Text, type View } from '../svg';
 
@@ -28,7 +28,6 @@ export const insetProfile = (d: number, bottom = false): Pt[] => profile(d / 100
 
 export const BASE = { x0: M.x0 - 20, x1: M.x1 + 20, z0: M.zBack - 20, z1: M.zFront + 20 }; // housing.ts buildBase
 export const DRAIN_MM = { x0: mm(DRAIN.x0), x1: mm(DRAIN.x1), z0: mm(DRAIN.z0), z1: mm(DRAIN.z1) };
-export const BEAMS = BEAMS_X.map(mm);
 /** Rear-panel vents: round Ø and rectangular w × h. */
 export const VENTS = { d: 2 * mm(VENT.r), w: mm(VENT.rect[2] - VENT.rect[0]), h: mm(VENT.rect[3] - VENT.rect[1]) };
 /** Partition / window outline (profile inset by the cover sheet): width × height. */
@@ -104,7 +103,7 @@ export const rot = ([x, y]: Pt, a: number): Pt => [
   x * Math.sin(a) + y * Math.cos(a),
 ];
 
-// ---- injectors (hydraulics.ts) and V2 deflectors (housing.ts DEFLECTOR, hydraulics.ts linkage)
+// ---- injectors (hydraulics.ts) and deflectors (housing.ts DEFLECTOR, hydraulics.ts linkage)
 const bodyBot = M.roof + 10;
 export const SPEAR = {
   x: M.topJetX,
@@ -124,16 +123,13 @@ export const SIDE = {
   y: M.sideJetY,
   tip: M.sideNozzleX,
   flangeX: -416,
-  v1: { flangeR: 40, flangeL: 12, r0: 26, r1: 11, plate: 90, ring: [12, 6] as [number, number] },
-  v2: {
-    flangeR: 42,
-    flangeL: 14,
-    r0: 24,
-    r1: 14,
-    plate: 100,
-    ring: [16, 12] as [number, number],
-    collar: [48, -450, -430],
-  },
+  flangeR: 42,
+  flangeL: 14,
+  r0: 24,
+  r1: 14,
+  plate: 100,
+  ring: [16, 12] as [number, number],
+  collar: [48, -450, -430] as [number, number, number],
 };
 export const DEFLECTORS = DEFLECTOR.pivots.map((p, i) => ({
   pivot: pt(p[0], p[1]),

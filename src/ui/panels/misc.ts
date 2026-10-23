@@ -1,4 +1,3 @@
-import { UPGRADES } from '../../data/industrialization';
 import { LESSONS } from '../../data/lessons';
 import { PARTS } from '../../data/parts';
 import type { Lesson, PartCategory } from '../../data/types';
@@ -8,7 +7,7 @@ import type { SceneId } from '../../three/types';
 import { videoUrl, type AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
-// Lessons, parts catalogue, V1→V2 comparison and sources.
+// Lessons, parts catalogue and sources.
 
 // ---------------------------------------------------------------- lessons
 
@@ -229,7 +228,6 @@ export function renderPartsPanel(ctx: AppContext, root: HTMLElement): void {
           { class: `cat-row cat-row--${p.category}`, onclick: () => ctx.selectPart(p.id, { mode: 'explore' }) },
           h('i', {}),
           h('span', {}, h('b', {}, tr(p.name)), h('small', {}, tr(p.short))),
-          p.version ? h('span', { class: `chip chip--${p.version}` }, p.version.toUpperCase()) : null,
         ),
       ),
     );
@@ -271,43 +269,6 @@ export function renderPartsPanel(ctx: AppContext, root: HTMLElement): void {
     list,
   );
   fillList();
-}
-
-// ---------------------------------------------------------------- V1 → V2
-
-export function renderUpgradesPanel(ctx: AppContext, root: HTMLElement): void {
-  fill(
-    root,
-    h('div', { class: 'eyebrow eyebrow--accent' }, t('modeUpgrades')),
-    h('h2', { class: 'panel-title' }, t('upgradesTitle')),
-    h('p', { class: 'lead' }, t('upgradesIntro')),
-    h(
-      'div',
-      { class: 'upgrades' },
-      ...UPGRADES.map((u) =>
-        h(
-          'button',
-          {
-            class: `upgrade ${ctx.ui.upgrade === u.id ? 'is-active' : ''}`,
-            onclick: () => {
-              const on = ctx.ui.upgrade !== u.id;
-              ctx.store.set({ upgrade: on ? u.id : null });
-              if (on && u.parts?.length) requestAnimationFrame(() => ctx.stage.frameParts(u.parts!, 1.8));
-            },
-          },
-          h('b', { class: 'upgrade__area' }, tr(u.area)),
-          h(
-            'span',
-            { class: 'upgrade__cols' },
-            h('span', {}, h('em', {}, t('colV1')), rich(tr(u.v1))),
-            h('span', {}, h('em', { class: 'v2' }, t('colV2')), rich(tr(u.v2))),
-          ),
-          h('span', { class: 'upgrade__gain' }, h('em', {}, t('colBenefit')), rich(tr(u.benefit))),
-          h('span', { class: 'upgrade__gain' }, h('em', {}, t('colDiy')), rich(tr(u.diy))),
-        ),
-      ),
-    ),
-  );
 }
 
 // ---------------------------------------------------------------- sources

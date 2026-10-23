@@ -4,7 +4,7 @@ import { Stage } from './three/core';
 import { createIntakeScene } from './three/intake';
 import { createSiteScene } from './three/site';
 import { createTechRoomScene } from './three/techroom';
-import { createTurbineModel, createTurbineScene, inVersion } from './three/turbine';
+import { createTurbineModel, createTurbineScene } from './three/turbine';
 import type { ViewOpts } from './three/types';
 import { App } from './ui/app';
 import { DisplayController } from './ui/display';
@@ -47,12 +47,11 @@ const site = createSiteScene();
 const siteTurbine = createTurbineModel();
 site.attachTurbine(siteTurbine.root);
 const siteTurbinePart = site.registry.get('turbine');
-/** Show only the parts of the current machine version in the site instance. */
+/** Show the site's machine instance only while the 'turbine' part of the site is visible. */
 function syncSiteTurbine(): void {
   const shown = siteTurbinePart?.display !== 'hidden';
   for (const p of siteTurbine.registry.parts.values()) {
-    const on = shown && inVersion(p.id, engine.params.version);
-    for (const m of p.meshes) m.visible = on;
+    for (const m of p.meshes) m.visible = shown;
   }
 }
 const tech = createTechRoomScene();
@@ -66,7 +65,7 @@ stage.setActive(store.state.scene);
 // start on an overview of the whole device, sized to the actual viewport
 requestAnimationFrame(() => stage.frameAll(0.01));
 
-const display = new DisplayController(stage, engine, store);
+const display = new DisplayController(stage, store);
 // dev-only handle for debugging in the console (stripped from production builds)
 if (import.meta.env.DEV) Object.assign(window, { __lab: { stage, engine, store } });
 app = new App(appEl, viewport, stage, engine, store, display);

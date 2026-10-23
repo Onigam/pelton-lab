@@ -28,24 +28,8 @@ export interface PartInfo {
   video?: string[];
   /** Quantity in the assembly (default 1). */
   qty?: number;
-  /** Absent = present in both versions. 'v1' = prototype only, 'v2' = industrialised design only. */
-  version?: 'v1' | 'v2';
-  /** For v2 parts (or parts changed in v2): what changes versus the prototype and why. */
-  upgrade?: L;
-}
-
-/** V1 (prototype seen in the video) vs V2 (industrialisable, still DIY-friendly) comparison row. */
-export interface UpgradeRow {
-  id: string;
-  area: L;
-  v1: L;
-  v2: L;
-  /** Gain: reliability, assembly time, cost, safety… */
-  benefit: L;
-  /** How it stays buildable by a maker (tools, sourcing). */
-  diy: L;
-  /** Part ids to highlight in the 3D view. */
-  parts?: string[];
+  /** Short design note (1–3 sentences): why the part is designed this way. Shown in the "Design" tab. */
+  design?: L;
 }
 
 /** One step of an assembly or installation guide. `text` may use **bold** around part names. */
@@ -62,8 +46,6 @@ export interface GuideStep {
   torque?: string;
   /** e.g. "10 min" */
   duration?: string;
-  /** Industrialised variant of this step (shown as a "V2 pro" callout when V2 is selected). */
-  v2?: { text: L; parts?: string[] };
 }
 
 export type PresetId = 'siteA' | 'siteA8' | 'siteB';

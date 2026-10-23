@@ -296,12 +296,12 @@ const LESSONS_1: Lesson[] = [
         'Why 165° and not 180°? If the water went straight back, it would hit the back of the next bucket. The few missing degrees let it escape sideways, at a tiny cost.',
       ),
       l(
-        'En théorie, l’auget doit avancer à la **moitié de la vitesse du jet** ; en pratique, à cause des frottements, l’optimum se situe vers **u ≈ 0,46 à 0,5·v**. Avec v ≈ 37 m/s, u ≈ 17 m/s ; sur un diamètre primitif de 190 mm, N = 60 × 17 / (π × 0,19) ≈ **1 700 tr/min**, et jusqu’à 1 900 tr/min vers u/v = 0,5. La vidéo cite « 1 500 tr/min en moyenne, jusqu’à 2 000–2 500 » : même ordre de grandeur, notre roue reprenant les cotes du modèle commercial, qui peuvent différer de celles du prototype filmé.',
-        'In theory the bucket should move at **half the jet speed**; in practice, because of friction, the optimum is around **u ≈ 0.46–0.5·v**. With v ≈ 37 m/s, u ≈ 17 m/s; on a 190 mm pitch diameter, N = 60 × 17 / (π × 0.19) ≈ **1,700 rpm**, and up to 1,900 rpm towards u/v = 0.5. The video quotes “1,500 rpm on average, up to 2,000–2,500”: the same order of magnitude, since our runner follows the commercial model’s dimensions, which may differ from the filmed prototype’s.',
+        'En théorie, l’auget doit avancer à la **moitié de la vitesse du jet** ; en pratique, à cause des frottements, l’optimum se situe vers **u ≈ 0,46 à 0,5·v**. Avec v ≈ 37 m/s, u ≈ 17 m/s ; sur un diamètre primitif de 190 mm, N = 60 × 17 / (π × 0,19) ≈ **1 700 tr/min**, et jusqu’à 1 900 tr/min vers u/v = 0,5. La vidéo cite « 1 500 tr/min en moyenne, jusqu’à 2 000–2 500 » : même ordre de grandeur, notre roue reprenant les cotes du modèle commercial, qui peuvent différer de celles de la turbine filmée.',
+        'In theory the bucket should move at **half the jet speed**; in practice, because of friction, the optimum is around **u ≈ 0.46–0.5·v**. With v ≈ 37 m/s, u ≈ 17 m/s; on a 190 mm pitch diameter, N = 60 × 17 / (π × 0.19) ≈ **1,700 rpm**, and up to 1,900 rpm towards u/v = 0.5. The video quotes “1,500 rpm on average, up to 2,000–2,500”: the same order of magnitude, since our runner follows the commercial model’s dimensions, which may differ from the filmed turbine’s.',
       ),
       l(
-        'La taille compte : la largeur de l’auget vaut en gros **3 à 4 fois le diamètre du jet** (≈ 3,2 × d sur les grandes roues classiques). Trop petit, il déborde ; trop grand, il est lourd et brasse l’air humide. D’où les différentes tailles d’augets montrées par Sylvain : sur notre roue de 26 augets (pointes sur Ø244), le jeu L de 40 mm de large est centré vers un jet de Ø10 et accepte les buses Ø8 à Ø14 du constructeur ; le jeu S, plus petit, sert au jet de Ø6 du prototype.',
-        'Size matters: the bucket width is roughly **3 to 4 times the jet diameter** (≈ 3.2 × d on large classic runners). Too small and it spills; too large and it is heavy and churns the damp air. Hence the different bucket sizes Sylvain shows: on our 26-bucket runner (tips on Ø244), the 40 mm wide L set is centred on a Ø10 jet and accepts the maker’s Ø8 to Ø14 nozzles; the smaller S set serves the prototype’s Ø6 jet.',
+        'La taille compte : la largeur de l’auget vaut en gros **3 à 4 fois le diamètre du jet** (≈ 3,2 × d sur les grandes roues classiques). Trop petit, il déborde ; trop grand, il est lourd et brasse l’air humide. D’où les différentes tailles d’augets montrées par Sylvain : sur notre roue de 26 augets (pointes sur Ø244), le jeu L de 40 mm de large est centré vers un jet de Ø10 et accepte les buses Ø8 à Ø14 du constructeur ; le jeu S, plus petit, sert aux jets jusqu’à Ø6, comme celui du site A.',
+        'Size matters: the bucket width is roughly **3 to 4 times the jet diameter** (≈ 3.2 × d on large classic runners). Too small and it spills; too large and it is heavy and churns the damp air. Hence the different bucket sizes Sylvain shows: on our 26-bucket runner (tips on Ø244), the 40 mm wide L set is centred on a Ø10 jet and accepts the maker’s Ø8 to Ø14 nozzles; the smaller S set serves jets up to Ø6, like site A’s.',
       ),
     ],
     figures: [
@@ -336,8 +336,8 @@ const LESSONS_1: Lesson[] = [
         choices: [l('≈ Ø4 mm', '≈ Ø4 mm'), l('≈ Ø10 mm', '≈ Ø10 mm'), l('≈ Ø25 mm', '≈ Ø25 mm')],
         answer: 1,
         explain: l(
-          'Avec une largeur de 3 à 4 fois le jet : 40 / 4 = 10 mm (40 / 3,2 ≈ 12,5). D’où un jeu centré vers Ø10 qui couvre les buses Ø8 à Ø14 ; le jet de Ø6 du prototype demande le jeu S, plus petit.',
-          'With a width of 3 to 4 times the jet: 40 / 4 = 10 mm (40 / 3.2 ≈ 12.5). Hence a set centred on Ø10 that covers Ø8 to Ø14 nozzles; the prototype’s Ø6 jet needs the smaller S set.',
+          'Avec une largeur de 3 à 4 fois le jet : 40 / 4 = 10 mm (40 / 3,2 ≈ 12,5). D’où un jeu centré vers Ø10 qui couvre les buses Ø8 à Ø14 ; un jet de Ø6 demande le jeu S, plus petit.',
+          'With a width of 3 to 4 times the jet: 40 / 4 = 10 mm (40 / 3.2 ≈ 12.5). Hence a set centred on Ø10 that covers Ø8 to Ø14 nozzles; a Ø6 jet needs the smaller S set.',
         ),
       },
     ],
@@ -363,12 +363,12 @@ const LESSONS_2: Lesson[] = [
         'Power follows: with ~72 m net (the penstock loses a bit more at higher flow), hydraulic power reaches ~1.27 kW. With a runner carrying larger buckets, properly matched to the jet, Sylvain expects **~950 W**, almost double the current 499 W, an overall efficiency close to 75%. On the commercial model’s runner, the maker accepts nozzles up to **Ø14 mm**, provided the stream and the penstock can keep up.',
       ),
       l(
-        'Buse fixe ou **pointeau** ? La buse fixe n’a aucune pièce mobile mais son débit est figé ; l’injecteur à pointeau (l’« olive » italienne) fait varier la section annulaire en gardant un jet compact. Ce qu’il ne faut jamais faire : régler le débit avec une vanne à moitié fermée, qui détruit la chute au lieu de la transformer en vitesse.',
-        'Fixed nozzle or **spear valve**? A fixed nozzle has no moving part but its flow is set; the spear injector (the Italian “olive”) varies the annular area while keeping a compact jet. What must never be done: setting the flow with a half-closed valve, which destroys head instead of turning it into velocity.',
+        'Buse fixe ou **pointeau** ? La buse fixe n’a aucune pièce mobile mais son débit est figé (pour le changer, on change d’insert) ; l’injecteur à pointeau (l’« olive » italienne) fait varier la section annulaire en gardant un jet compact. Ce qu’il ne faut jamais faire : régler le débit avec une vanne à moitié fermée, qui détruit la chute au lieu de la transformer en vitesse.',
+        'Fixed nozzle or **spear valve**? A fixed nozzle has no moving part but its flow is set (to change it, you swap the insert); the spear injector (the Italian “olive”) varies the annular area while keeping a compact jet. What must never be done: setting the flow with a half-closed valve, which destroys head instead of turning it into velocity.',
       ),
       l(
-        'Enfin, la buse ne doit jamais demander plus que ce que le ruisseau donne : sinon la prise se vide et l’air entre dans la conduite. Sur le site B, c’est la raison d’être du second injecteur, fixe et petit, pour les débits d’été.',
-        'Finally, the nozzle must never draw more than the stream supplies: otherwise the intake empties and air enters the penstock. On site B that is why there is a second, small fixed injector for summer flows.',
+        'Enfin, la buse ne doit jamais demander plus que ce que le ruisseau donne : sinon la prise se vide et l’air entre dans la conduite. Sur le site B, c’est la raison d’être du second injecteur, à buse fixe et petite, pour les débits d’été.',
+        'Finally, the nozzle must never draw more than the stream supplies: otherwise the intake empties and air enters the penstock. On site B that is why there is a second injector with a small fixed nozzle for summer flows.',
       ),
     ],
     figures: [
@@ -767,12 +767,12 @@ const LESSONS_3: Lesson[] = [
         'The **Joukowsky** formula gives the surge: **Δp = ρ·a·Δv**. In flexible HDPE the wave travels at a ≈ 300–400 m/s. At 1.8 L/s (v ≈ 0.76 m/s), Δp ≈ 1000 × 350 × 0.76 ≈ **2.7 bar**, on top of the 7.4 bar static: more than **10 bar**, beyond the pipe’s PN10 rating.',
       ),
       l(
-        'La parade est simple : **fermer lentement**. Si la fermeture dure bien plus longtemps que l’aller-retour de l’onde (2L/a ≈ 2 s pour 350 m), la surpression devient négligeable. En pratique, on compte au moins 20 secondes pour une vanne quart de tour, ou l’on installe une **vanne à réducteur** qui rend la fermeture brutale impossible.',
-        'The cure is simple: **close slowly**. If closing takes much longer than the wave’s round trip (2L/a ≈ 2 s for 350 m), the surge becomes negligible. In practice, allow at least 20 seconds for a quarter-turn valve, or fit a **gear-operated valve** that makes a sudden closure impossible.',
+        'La parade est simple : **fermer lentement**. Si la fermeture dure bien plus longtemps que l’aller-retour de l’onde (2L/a ≈ 2 s pour 350 m), la surpression devient négligeable. En pratique, on compte au moins 20 secondes pour une vanne quart de tour, ou l’on installe une **vanne à réducteur** qui rend la fermeture brutale impossible, comme sur la vanne principale de notre turbine.',
+        'The cure is simple: **close slowly**. If closing takes much longer than the wave’s round trip (2L/a ≈ 2 s for 350 m), the surge becomes negligible. In practice, allow at least 20 seconds for a quarter-turn valve, or fit a **gear-operated valve** that makes a sudden closure impossible, as on our turbine’s main valve.',
       ),
       l(
-        'Les injecteurs à pointeau se ferment lentement par construction, et le **déflecteur** des Pelton industrielles coupe la puissance sans toucher au débit. L’air piégé est l’autre danger : une poche comprimée puis chassée provoque elle aussi des pics. Quand Sylvain évoque des raccords qui ont « pété » par excès de pression, ces surpressions sont les suspects habituels.',
-        'Spear injectors close slowly by design, and the **deflector** of industrial Pelton turbines cuts the power without touching the flow. Trapped air is the other danger: a pocket that is compressed then expelled also causes spikes. When Sylvain mentions fittings that “blew” from too much pressure, these surges are the usual suspects.',
+        'Les injecteurs à pointeau se ferment lentement par construction, et le **déflecteur**, protection classique des Pelton industrielles que porte aussi notre turbine, coupe la puissance sans toucher au débit. L’air piégé est l’autre danger : une poche comprimée puis chassée provoque elle aussi des pics. Quand Sylvain évoque des raccords qui ont « pété » par excès de pression, ces surpressions sont les suspects habituels.',
+        'Spear injectors close slowly by design, and the **deflector**, the classic protection of industrial Pelton turbines that ours also carries, cuts the power without touching the flow. Trapped air is the other danger: a pocket that is compressed then expelled also causes spikes. When Sylvain mentions fittings that “blew” from too much pressure, these surges are the usual suspects.',
       ),
     ],
     figures: [
@@ -892,15 +892,15 @@ const LESSONS_3: Lesson[] = [
   },
   {
     id: 'industrial',
-    title: l('Du prototype au produit', 'From prototype to product'),
+    title: l('Une turbine pensée pour durer', 'A turbine designed to last'),
     summary: l(
-      'Notre proposition V2 : industrialisable, mais toujours à la portée d’un maker.',
-      'Our V2 proposal: ready for small-series production, yet still within a maker’s reach.',
+      'Sécurité, entretien, fabrication : les choix qui rendent la turbine fiable et à la portée d’un maker.',
+      'Safety, servicing, manufacturing: the choices that make the turbine reliable and still within a maker’s reach.',
     ),
     body: [
       l(
-        'La turbine de la vidéo est un **prototype** qui fonctionne : Sylvain y fait ses essais chez un voisin accommodant. L’industrialiser ne veut pas dire tout usiner, mais rendre chaque exemplaire **reproductible**, **sûr** et **rapide à entretenir**. La V2 présentée ici est **notre proposition**, pas un produit Hydronome.',
-        'The turbine in the video is a working **prototype**: Sylvain tests on it at an obliging neighbour’s. Industrialising it does not mean machining everything, but making every unit **repeatable**, **safe** and **quick to service**. The V2 shown here is **our proposal**, not a Hydronome product.',
+        'Une turbine tourne nuit et jour, souvent sur un site isolé : il faut que chaque exemplaire soit **reproductible**, **sûr** et **rapide à entretenir**, sans pour autant tout usiner. Les choix présentés ici sont **notre conception**, inspirée de la turbine de la vidéo : ce n’est pas un produit Hydronome.',
+        'A turbine runs day and night, often on an isolated site: every unit has to be **repeatable**, **safe** and **quick to service**, without machining everything. The choices shown here are **our own design**, inspired by the turbine in the video: it is not a Hydronome product.',
       ),
       l(
         '**Sécurité d’abord** : un **déflecteur de jet** à ressort, retenu par une gâche électrique à manque de courant, bascule dans le jet en moins d’une demi-seconde si la charge disparaît. Le débit continue, donc pas de coup de bélier, et la roue ralentit. Une **ventouse** et une **vanne à réducteur** traitent l’air et les surpressions à la source.',

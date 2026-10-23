@@ -1,10 +1,10 @@
 import { tr } from '../../i18n';
 import { t } from '../../i18n/ui';
 import { partInfo, type AppContext } from '../context';
-import { guideFor, stepParts } from '../display';
+import { guideFor } from '../display';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
-// Step-by-step guide (sael.net style): counters, step card, V2 callout, transport and timeline.
+// Step-by-step guide (sael.net style): counters, step card, transport and timeline.
 
 export function renderGuidePanel(ctx: AppContext, root: HTMLElement): void {
   const ui = ctx.ui;
@@ -13,12 +13,11 @@ export function renderGuidePanel(ctx: AppContext, root: HTMLElement): void {
     fill(root);
     return;
   }
-  const version = ctx.engine.params.version;
   const n = guide.length;
   const i = Math.min(ui.step, n - 1);
   const step = guide[i];
-  const allParts = new Set(guide.flatMap((s) => stepParts(s, version)));
-  const installed = new Set(guide.slice(0, i + 1).flatMap((s) => stepParts(s, version)));
+  const allParts = new Set(guide.flatMap((s) => s.parts));
+  const installed = new Set(guide.slice(0, i + 1).flatMap((s) => s.parts));
   const go = (k: number) => ctx.store.set({ step: Math.max(0, Math.min(n - 1, k)), playing: false });
 
   const counters = h(
@@ -34,7 +33,7 @@ export function renderGuidePanel(ctx: AppContext, root: HTMLElement): void {
     ),
   );
 
-  const parts = stepParts(step, version);
+  const parts = step.parts;
   const card = h(
     'div',
     { class: 'step-card' },
@@ -67,14 +66,6 @@ export function renderGuidePanel(ctx: AppContext, root: HTMLElement): void {
       : null,
     step.tip
       ? h('div', { class: 'callout callout--tip' }, h('b', {}, t('tip')), h('span', {}, rich(tr(step.tip))))
-      : null,
-    step.v2
-      ? h(
-          'div',
-          { class: `callout callout--v2 ${version === 'v2' ? 'is-active' : ''}` },
-          h('b', {}, t('v2Callout')),
-          h('span', {}, rich(tr(step.v2.text))),
-        )
       : null,
   );
 

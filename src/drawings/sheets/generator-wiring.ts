@@ -30,7 +30,6 @@ const PATTERN = 'AabBCcaABbcC'; // standard 12N14P layout, uppercase = clockwise
 const PH_COL = [PHASE.U, PHASE.V, PHASE.W];
 const PH_NAME = ['U', 'V', 'W'];
 const phaseOf = (k: number) => 'ABC'.indexOf(PATTERN[k].toUpperCase());
-const V2C = COLORS.v2;
 const N_FILL = '#3a4656';
 const S_FILL = '#e4e7eb';
 const STEEL = '#d9dde3';
@@ -168,7 +167,7 @@ function developed(p: View): void {
 
 // ------------------------------------------------------------------ terminal block, bridge, cable
 
-function connection(p: View, v2: boolean): void {
+function connection(p: View): void {
   lab(p, [256, 15.6], l('RACCORDEMENT DES PHASES', 'PHASE CONNECTIONS'), { b: true, s: 2 });
   // terminal block X1
   p.rect([262, 18.5], [270, 33.5], { w: W.medium, fill: '#e9e3d6' });
@@ -238,16 +237,11 @@ function connection(p: View, v2: boolean): void {
     ],
     { w: W.medium, fill: '#4a5560', closed: true },
   );
-  connector(p, [372, 58], 0, v2 ? V2C : INK);
-  lab(p, [372, 53.2], v2 ? 'X2 IP68' : 'X2 MC4', { a: 'middle', c: v2 ? V2C : INK });
+  connector(p, [372, 58], 0);
+  lab(p, [372, 53.2], 'X2 IP68', { a: 'middle' });
   lab(p, [349.5, 72], l('presse-étoupe M20', 'M20 gland'), { a: 'middle' });
   lab(p, [404, 62.6], 'W1 2 × 6 mm²', { a: 'end', b: true });
-  lab(
-    p,
-    [404, 66.2],
-    v2 ? l('→ coffret contrôleur A1', '→ controller box A1') : l('→ coffret DC du local', '→ room DC box'),
-    { a: 'end' },
-  );
+  lab(p, [404, 66.2], l('→ coffret contrôleur A1', '→ controller box A1'), { a: 'end' });
   lab(
     p,
     [256, 66.5],
@@ -284,40 +278,24 @@ function connection(p: View, v2: boolean): void {
   lab(p, [x0 + 31, 24], '+', { b: true, c: COLORS.dcPos, s: 2.2 });
   lab(p, [x0 + 31, 42], '−', { b: true, s: 2.2 });
 
-  // V2 sensors to the controller box
-  if (v2) {
-    enclosure(
-      p,
-      [254, 76],
-      [405, 88.5],
-      l('V2 — CAPTEURS (câbles blindés, à l’écart des phases)', 'V2 — SENSORS (shielded, away from the phase leads)'),
-      V2C,
-      1.8,
-    );
-    sensor(p, [262, 84], 'n', V2C);
-    lab(p, [266, 84], l('B1 Hall : +5 V, 0 V, signal', 'B1 Hall: +5 V, 0 V, signal'), { c: V2C });
-    sensor(p, [322, 84], 'θ', V2C);
-    lab(p, [326, 84], l('B2 CTN 10 kΩ', 'B2 NTC 10 kΩ'), { c: V2C });
-    sigWire(
-      p,
-      [
-        [350, 84],
-        [390, 84],
-      ],
-      V2C,
-    );
-    tag(p, [390, 84], 'A1', 'right', V2C);
-  } else {
-    lab(
-      p,
-      [256, 82],
-      l(
-        'V1 : aucun capteur, surveillance à l’œil (manomètre, afficheur du régulateur).',
-        'V1: no sensors, monitored by eye (gauge, controller display).',
-      ),
-      { c: INK_2 },
-    );
-  }
+  // sensors to the controller box
+  enclosure(
+    p,
+    [254, 76],
+    [405, 88.5],
+    l('CAPTEURS (câbles blindés, à l’écart des phases)', 'SENSORS (shielded, away from the phase leads)'),
+    INK_2,
+    1.8,
+  );
+  sensor(p, [262, 84], 'n', COLORS.signal);
+  lab(p, [266, 84], l('B1 Hall : +5 V, 0 V, signal', 'B1 Hall: +5 V, 0 V, signal'), { c: COLORS.signal });
+  sensor(p, [322, 84], 'θ', COLORS.signal);
+  lab(p, [326, 84], l('B2 CTN 10 kΩ', 'B2 NTC 10 kΩ'), { c: COLORS.signal });
+  sigWire(p, [
+    [350, 84],
+    [390, 84],
+  ]);
+  tag(p, [390, 84], 'A1', 'right');
 }
 
 /** Inductor with three bumps between a and b. */
@@ -370,7 +348,7 @@ function starDelta(p: View): void {
 
 // ------------------------------------------------------------------ front view 1:2
 
-function frontView(d: Drawing, v2: boolean): void {
+function frontView(d: Drawing): void {
   const v = d.view(66, 176, 0.5);
   const pp = d.paper();
   const pol = (r: number, deg: number): Pt => [
@@ -421,15 +399,17 @@ function frontView(d: Drawing, v2: boolean): void {
   }
   v.dimDiameter([0, 0], 78, 28, { label: 'Ø156', size: 2 });
   v.dimDiameter([0, 0], 56.5, -32, { label: 'Ø113', size: 2 });
-  if (v2) {
-    const hp = v.map(pol(92, 105));
-    pp.rect([hp[0] - 2, hp[1] - 1.6], [hp[0] + 2, hp[1] + 1.6], { w: W.medium, color: V2C, fill: COLORS.paper });
-    lab(pp, [hp[0] - 3, hp[1]], 'B1 Hall', { a: 'end', c: V2C });
-    const tp = v.map(pol(47, 90 - 6.9));
-    dot(pp, tp, V2C, 0.8);
-    pp.polyline([tp, [tp[0] + 8, tp[1] - 26], [tp[0] + 11, tp[1] - 26]], { w: W.thin, color: V2C });
-    lab(pp, [tp[0] + 12, tp[1] - 26], l('B2 CTN', 'B2 NTC'), { c: V2C });
-  }
+  const hp = v.map(pol(92, 105));
+  pp.rect([hp[0] - 2, hp[1] - 1.6], [hp[0] + 2, hp[1] + 1.6], {
+    w: W.medium,
+    color: COLORS.signal,
+    fill: COLORS.paper,
+  });
+  lab(pp, [hp[0] - 3, hp[1]], 'B1 Hall', { a: 'end', c: COLORS.signal });
+  const tp = v.map(pol(47, 90 - 6.9));
+  dot(pp, tp, COLORS.signal, 0.8);
+  pp.polyline([tp, [tp[0] + 8, tp[1] - 26], [tp[0] + 11, tp[1] - 26]], { w: W.thin, color: COLORS.signal });
+  lab(pp, [tp[0] + 12, tp[1] - 26], l('B2 CTN', 'B2 NTC'), { c: COLORS.signal });
   v.caption([0, -100], l('VUE DE FACE DU STATOR ET DU ROTOR', 'STATOR AND ROTOR, FRONT VIEW'), '1:2');
 }
 
@@ -521,7 +501,7 @@ function figures(p: View): void {
 
 // ------------------------------------------------------------------ tests, safety, dimensions
 
-function tests(p: View, v2: boolean): number {
+function tests(p: View): number {
   const perRpm = (presetParams('siteA').ke * 2 * Math.PI) / 60;
   const u300 = (perRpm * 300) / 1.35; // AC line voltage at 300 rpm
   lab(p, [238, 124.6], l('ESSAIS DE RÉCEPTION DU GÉNÉRATEUR', 'GENERATOR ACCEPTANCE TESTS'), { b: true, s: 1.9 });
@@ -574,16 +554,15 @@ function tests(p: View, v2: boolean): number {
       ),
       l(`U ≈ ${fr(perRpm, 3)} V par tr/min − 1,6 V (site A).`, `U ≈ ${perRpm.toFixed(3)} V per rpm − 1.6 V (site A).`),
     ],
-  ];
-  if (v2)
-    rows.push([
-      l('Capteurs (V2)', 'Sensors (V2)'),
+    [
+      l('Capteurs', 'Sensors'),
       l(
         'CTN à l’ohmmètre ; Hall : faire passer l’aimant cible devant le capteur.',
         'NTC with an ohmmeter; Hall: pass the target magnet in front of the sensor.',
       ),
       l('≈ 10 kΩ à 25 °C ; 1 impulsion par tour.', '≈ 10 kΩ at 25 °C; 1 pulse per revolution.'),
-    ]);
+    ],
+  ];
   const h = grid(
     p,
     238,
@@ -690,26 +669,25 @@ export const generatorWiring: DrawingSheet = {
   ),
   scene: 'turbine',
   parts: ['stator', 'rotor', 'magnets', 'rectifier', 'terminal', 'cable', 'sensors'],
-  render(ctx) {
-    const v2 = ctx.version === 'v2';
+  render() {
     const d = new Drawing();
     d.frame({
       title: l('Câblage du générateur', 'Generator wiring'),
       subtitle: l(
-        `12 dents / 14 pôles, étoile, pont triphasé · ${v2 ? 'V2' : 'V1'} · Vue de face 1:2, schémas sans échelle`,
-        `12 teeth / 14 poles, star, 3-phase bridge · ${v2 ? 'V2' : 'V1'} · Front view 1:2, diagrams not to scale`,
+        '12 dents / 14 pôles, étoile, pont triphasé · Vue de face 1:2, schémas sans échelle',
+        '12 teeth / 14 poles, star, 3-phase bridge · Front view 1:2, diagrams not to scale',
       ),
       number: 'PL-E02',
       scale: '1:2',
     });
     const p = d.paper();
     developed(p);
-    connection(p, v2);
+    connection(p);
     starDelta(p);
-    frontView(d, v2);
+    frontView(d);
     emfChart(p);
     figures(p);
-    tests(p, v2);
+    tests(p);
     safety(p);
     mainDims(p);
     return d;

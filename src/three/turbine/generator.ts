@@ -189,7 +189,7 @@ export interface GeneratorParts {
   hallLed: THREE.MeshStandardMaterial;
 }
 
-/** `sensors` is the shared V2 sensor group (the hydraulics add the pressure transducer to it). */
+/** `sensors` is the shared sensor group (the hydraulics add the pressure transducer to it). */
 export function buildGenerator(
   machine: THREE.Object3D,
   spinner: THREE.Object3D,
@@ -269,7 +269,7 @@ export function buildGenerator(
   );
   machine.add(cable);
 
-  // --- V2 sensors: Hall RPM sensor facing the rotor, NTC on a coil (pressure transducer: see hydraulics)
+  // --- sensors: Hall RPM sensor facing the rotor, NTC on a coil (pressure transducer: see hydraulics)
   const hallBracket = new THREE.BoxGeometry(0.012, 0.05, 0.012);
   sensors.add(mesh(hallBracket, MAT.alu(), [0, D.axisY + 0.112, -0.1]));
   const hall = new THREE.CylinderGeometry(0.006, 0.006, 0.03, 16);

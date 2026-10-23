@@ -13,22 +13,8 @@ import { buildHydraulics } from './hydraulics';
 import { buildRunner } from './runner';
 import { MachineWater } from './water';
 
-export const V1_ONLY = new Set(['trestles', 'bearing-block', 'injector-side']);
-export const V2_ONLY = new Set([
-  'skid',
-  'bearing-cartridge',
-  'injector-quick',
-  'deflector',
-  'latches',
-  'sensors',
-  'controller-box',
-  'air-valve',
-]);
-
-/** Is this part present in the given machine version? */
-export function inVersion(id: string, version: 'v1' | 'v2'): boolean {
-  return version === 'v1' ? !V2_ONLY.has(id) : !V1_ONLY.has(id);
-}
+/** Handwheel turns of the gear-operated main valve between fully open and fully closed. */
+const MAIN_VALVE_TURNS = 20;
 
 const NOZZLE_COLORS: [number, number][] = [
   [4, 0x8a9099],
@@ -60,7 +46,6 @@ interface HotspotDef {
 const HOTSPOTS: HotspotDef[] = [
   { part: 'buckets', at: [0.1, D.axisY + 0.11, 0.15], fr: 'Roue Pelton', en: 'Pelton runner' },
   { part: 'injector-top', at: [D.topJetX, D.roof + 0.25, D.pipeZ], fr: 'Injecteur à pointeau', en: 'Spear injector' },
-  { part: 'injector-side', at: [-0.36, D.sideJetY - 0.045, 0.16], fr: 'Injecteur fixe', en: 'Fixed nozzle' },
   { part: 'injector-quick', at: [-0.36, D.sideJetY - 0.045, 0.16], fr: 'Injecteur à buses', en: 'Quick-change nozzle' },
   { part: 'valve-main', at: [-0.97, 0.39, D.pipeZ], fr: 'Vanne principale', en: 'Main valve' },
   { part: 'gauge', at: [-0.82, 0.54, 0.14], fr: 'Manomètre', en: 'Pressure gauge' },
@@ -71,7 +56,6 @@ const HOTSPOTS: HotspotDef[] = [
   { part: 'stator', at: [0.07, D.axisY + 0.05, -0.094], fr: 'Stator bobiné', en: 'Wound stator' },
   { part: 'rotor', at: [-0.05, D.axisY - 0.085, -0.115], fr: 'Rotor à aimants', en: 'Magnet rotor' },
   { part: 'magnets', at: [0.0, D.axisY + 0.06, -0.075], fr: 'Aimants N52', en: 'N52 magnets', minor: true },
-  { part: 'bearing-block', at: [0.04, D.axisY + 0.04, -0.03], fr: 'Palier', en: 'Bearing housing', minor: true },
   {
     part: 'bearing-cartridge',
     at: [0.04, D.axisY + 0.05, -0.03],
@@ -90,7 +74,6 @@ const HOTSPOTS: HotspotDef[] = [
   { part: 'terminal', at: [0.19, 0.05, -0.035], fr: 'Bornier', en: 'Terminal block', minor: true },
   { part: 'cable', at: [0.2, -0.2, -0.5], fr: 'Câble 6 mm²', en: '6 mm² cable', minor: true },
   { part: 'base', at: [0.27, 0.02, 0.21], fr: 'Embase', en: 'Base plate', minor: true },
-  { part: 'trestles', at: [0.49, 0.55, 0.5], fr: 'Tréteaux', en: 'Trestles', rootSpace: true },
   { part: 'skid', at: [0.33, 0.5, 0.26], fr: 'Châssis', en: 'Skid frame', rootSpace: true },
   { part: 'deflector', at: [-0.2, 0.31, 0.15], fr: 'Déflecteur', en: 'Jet deflector' },
   { part: 'latches', at: [D.x1 + 0.01, 0.05, 0.13], fr: 'Grenouillères', en: 'Toggle latches', minor: true },
@@ -144,7 +127,6 @@ export function createTurbineModel(): TurbineModel {
       'bearing-2',
       'bearing-3',
       'seal',
-      'bearing-block',
       'bearing-cartridge',
       'rotor',
       'rectifier',
@@ -181,7 +163,7 @@ export function createTurbineModel(): TurbineModel {
     let exploded = false;
     for (const p of registry.parts.values()) {
       if (p.factor > 0.001) exploded = true;
-      if ((p.display === 'wire' || p.display === 'hidden') && inVersion(p.id, s.version)) exploded = true;
+      if (p.display === 'wire' || p.display === 'hidden') exploded = true;
     }
     visAngle = (visAngle + Math.min(s.omega * dt * view.slowMo, PITCH * 0.3)) % (Math.PI * 2);
     spinner.rotation.z = exploded ? 0 : visAngle;
@@ -194,7 +176,7 @@ export function createTurbineModel(): TurbineModel {
     runner.setBucketSet(s.bucketSet);
 
     // valves & spear
-    hyd.mainLever.rotation.z = -(1 - s.mainValve) * (Math.PI / 2);
+    hyd.mainHandwheel.rotation.z = -(1 - s.mainValve) * Math.PI * 2 * MAIN_VALVE_TURNS;
     const top = s.nozzles.find((n) => n.id === 'top');
     const side = s.nozzles.find((n) => n.id === 'side');
     hyd.topLever.rotation.z = Math.PI / 2 - (1 - (top?.valve ?? 0)) * (Math.PI / 2);
@@ -207,13 +189,13 @@ export function createTurbineModel(): TurbineModel {
     const bar = THREE.MathUtils.clamp(s.pressureBar, 0, 10.5);
     hyd.gaugeNeedle.rotation.z = -(-225 + (bar / 10) * 270) * deg;
 
-    // V2 deflector blades
+    // deflector blades
     const e = s.deflector;
     hyd.setDeflector(e);
     // vertical bypass valve: lever across the pipe when closed, along it when open
     hyd.bypassLever.rotation.z = s.bypass * (Math.PI / 2);
 
-    // colour-coded nozzle insert (V2) follows the side nozzle diameter
+    // colour-coded nozzle insert follows the side nozzle diameter
     const d = side?.d ?? 6;
     const col = NOZZLE_COLORS.reduce((best, c) => (Math.abs(c[0] - d) < Math.abs(best[0] - d) ? c : best));
     hyd.insertRing.color.setHex(col[1]);
@@ -226,7 +208,7 @@ export function createTurbineModel(): TurbineModel {
     housing.boxLeds[1].emissiveIntensity = s.pDump > 10 ? 2 : 0.1;
     housing.boxLeds[2].emissiveIntensity = s.overspeed || s.bmsOpen ? (Math.sin(view.time * 10) > 0 ? 2.5 : 0.2) : 0.05;
 
-    water.update(s, dt, view.slowMo, s.version === 'v2' ? e : 0, view.time);
+    water.update(s, dt, view.slowMo, e, view.time);
     water.group.visible = !exploded;
 
     // hotspots follow their parts

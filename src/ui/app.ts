@@ -10,13 +10,7 @@ import { AppContext, partInfo } from './context';
 import type { DisplayController } from './display';
 import { fill, h, icon, ICONS, rich } from './dom';
 import { renderGuidePanel } from './panels/guide';
-import {
-  lessonsDone,
-  renderAboutPanel,
-  renderLessonsPanel,
-  renderPartsPanel,
-  renderUpgradesPanel,
-} from './panels/misc';
+import { lessonsDone, renderAboutPanel, renderLessonsPanel, renderPartsPanel } from './panels/misc';
 import { renderPartPanel } from './panels/part';
 import { renderPlansPanel } from './panels/plans';
 import { SimPanel } from './panels/sim';
@@ -35,7 +29,6 @@ const MODES: [Mode, UiKey, keyof typeof ICONS][] = [
   ['plans', 'modePlans', 'plans'],
   ['lessons', 'modeLessons', 'lessons'],
   ['parts', 'modeParts', 'parts'],
-  ['upgrades', 'modeUpgrades', 'upgrades'],
   ['about', 'modeAbout', 'about'],
 ];
 
@@ -106,8 +99,6 @@ export class App {
     stage.labelMode = store.state.labels;
     store.on((s, prev) => this.onState(s, prev));
     engine.onChange(() => {
-      // the drawings depend on the machine version
-      if (this.store.state.mode === 'plans') this.showDrawing(true);
       this.renderHeader();
       if (this.store.state.mode !== 'sim') this.renderPanel();
     });
@@ -141,7 +132,6 @@ export class App {
       'selected',
       'step',
       'lesson',
-      'upgrade',
       'isolate',
       'playing',
       'ghost',
@@ -178,7 +168,6 @@ export class App {
 
   private renderHeader(): void {
     const s = this.store.state;
-    const e = this.ctx.engine;
     const done = lessonsDone().size;
     fill(
       this.header,
@@ -207,20 +196,6 @@ export class App {
       h(
         'div',
         { class: 'topbar__right' },
-        h(
-          'div',
-          { class: 'segmented version-switch', title: `${t('v1Long')} / ${t('v2Long')}` },
-          ...(['v1', 'v2'] as const).map((v) =>
-            h(
-              'button',
-              {
-                class: `${e.params.version === v ? 'is-active' : ''} ${v}`,
-                onclick: () => (e.set({ version: v }), this.renderPanel()),
-              },
-              t(v),
-            ),
-          ),
-        ),
         h(
           'button',
           { class: 'progress', onclick: () => this.ctx.setMode('lessons') },
@@ -285,9 +260,6 @@ export class App {
       case 'parts':
         renderPartsPanel(this.ctx, body);
         break;
-      case 'upgrades':
-        renderUpgradesPanel(this.ctx, body);
-        break;
       case 'about':
         renderAboutPanel(this.ctx, body);
         break;
@@ -300,7 +272,7 @@ export class App {
   /** Render the current drawing (keepView: keep zoom/pan, e.g. after a language change). */
   private showDrawing(keepView: boolean): void {
     const sheet = SHEETS.find((x) => x.id === this.store.state.drawing) ?? SHEETS[0];
-    this.viewer.show(sheet, this.ctx.engine.params.version, keepView);
+    this.viewer.show(sheet, keepView);
   }
 
   // ------------------------------------------------------------ viewport toolbar

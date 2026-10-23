@@ -1,6 +1,6 @@
 // Parts catalogue: every selectable 3D object of the turbine, site and technical-room scenes.
 // Figures are kept consistent with the lessons and guides (site A: 76 m, 1.1 L/s, 499 W).
-// Anything tagged version 'v2' is OUR industrialisation proposal, not a Hydronome product.
+// The turbine design is OUR own (DIY-friendly, inspired by the machine in the video), not a Hydronome product.
 
 import type { L } from '../i18n';
 import type { PartInfo, Spec } from './types';
@@ -21,7 +21,7 @@ function sp(fr: string, en: string, value: string | L): Spec {
 }
 
 // ---------------------------------------------------------------------------
-// Turbine — housing and structure (shared V1/V2)
+// Turbine — housing and structure
 // ---------------------------------------------------------------------------
 
 const TURBINE_STRUCTURE: PartInfo[] = [
@@ -35,8 +35,8 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Bottom plate that carries the whole housing and drops the spent water into the tailrace.',
     ),
     description: l(
-      'Le socle est la référence de tout l’assemblage : la cloison, le palier principal, la vitre et le capot viennent s’y aligner. Sous la roue, une large lumière d’environ 300 × 140 mm laisse l’eau tomber directement : une Pelton travaille à l’air libre, l’eau doit quitter les augets sans jamais remonter vers la roue. Sur le prototype de la vidéo, il repose sur deux madriers à environ 1 m du sol, bien au-delà des 30 à 40 cm de chute libre minimum qu’indique Sylvain.',
-      'The base plate is the datum of the whole assembly: partition, main bearing housing, window and cover all line up on it. Under the runner, a wide opening of about 300 × 140 mm lets the water drop straight out: a Pelton works at atmospheric pressure, so the water must leave the buckets and never splash back onto the wheel. On the prototype in the video it sits on two wooden beams about 1 m above the ground, well above the 30–40 cm minimum free fall Sylvain mentions.',
+      'Le socle est la référence de tout l’assemblage : la cloison, la cartouche de palier, la vitre et le capot viennent s’y aligner. Sous la roue, une large lumière d’environ 300 × 140 mm laisse l’eau tomber directement : une Pelton travaille à l’air libre, l’eau doit quitter les augets sans jamais remonter vers la roue. Il est boulonné sur le skid, bien au-delà des 30 à 40 cm de chute libre minimum qu’indique Sylvain.',
+      'The base plate is the datum of the whole assembly: partition, bearing cartridge, window and cover all line up on it. Under the runner, a wide opening of about 300 × 140 mm lets the water drop straight out: a Pelton works at atmospheric pressure, so the water must leave the buckets and never splash back onto the wheel. It is bolted onto the skid, well above the 30–40 cm minimum free fall Sylvain mentions.',
     ),
     material: l('PMMA noir coulé 20 mm', 'Black cast PMMA, 20 mm'),
     specs: [
@@ -47,21 +47,21 @@ const TURBINE_STRUCTURE: PartInfo[] = [
         'Garde sous le socle',
         'Clearance below',
         l(
-          '≥ 30–40 cm (vidéo), turbine ≥ 50 cm du sol (constructeur), ≈ 0,9 m sur le prototype',
-          '≥ 30–40 cm (video), turbine ≥ 50 cm above ground (maker), ≈ 0.9 m on the prototype',
+          '≥ 30–40 cm (vidéo), turbine ≥ 50 cm du sol (constructeur)',
+          '≥ 30–40 cm (video), turbine ≥ 50 cm above ground (maker)',
         ),
       ),
-      sp('Fixation', 'Fastening', l('4 brides imprimées sur les madriers', '4 printed cleats onto the beams')),
+      sp(
+        'Fixation',
+        'Fastening',
+        l('4 vis inox sur les profilés du skid', '4 stainless screws into the skid extrusions'),
+      ),
     ],
     tip: l(
-      'Mettez le socle de niveau dans les deux sens avant de serrer quoi que ce soit : un socle vrillé se transmet au palier et à l’alignement des trois roulements.',
-      'Level the base in both directions before tightening anything: a twisted base is passed on to the bearing housing and to the alignment of the three bearings.',
+      'Mettez le socle de niveau dans les deux sens avant de serrer quoi que ce soit : un socle vrillé se transmet à la cartouche de palier et à l’alignement des trois roulements.',
+      'Level the base plate in both directions before tightening anything: a twisted base is passed on to the bearing cartridge and to the alignment of the three bearings.',
     ),
     video: ['00:12', '02:54', '03:00'],
-    upgrade: l(
-      'En V2, le socle devient un bac en aluminium 5083 de 3 mm découpé laser et plié, à languettes et encoches auto-positionnantes et écrous sertis PEM. Il se boulonne sur le châssis et intègre un entonnoir qui guide l’eau vers le canal de fuite.',
-      'In V2 the base becomes a laser-cut, folded 3 mm aluminium 5083 tray with self-locating tabs and slots and PEM self-clinching nuts. It bolts onto the skid and includes a funnel that guides the water into the tailrace.',
-    ),
   },
   {
     id: 'partition',
@@ -73,10 +73,10 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'PMMA wall that separates the wet chamber (runner) from the dry chamber (generator).',
     ),
     description: l(
-      'À plus de 35 m/s, le jet se pulvérise en brouillard dans toute la chambre de la roue. La cloison isole ce brouillard du générateur, de ses bobines et du redresseur : sans elle, l’humidité finirait par attaquer l’isolant des fils et les contacts. Comme le montre la vidéo, ce sont des plaques de plexiglas découpées sur mesure, assemblées puis jointées ; seul l’arbre la traverse, à travers le palier principal et son joint à lèvre. Placée à mi-profondeur, elle laisse 200 mm de chambre humide devant et 200 mm de compartiment générateur derrière, comme sur le modèle commercial.',
-      'At more than 35 m/s the jet turns into a fine mist that fills the runner chamber. The partition keeps this mist away from the generator, its coils and the rectifier: without it, moisture would eventually attack the wire insulation and the contacts. As shown in the video, it is made of custom-cut plexiglass plates, assembled and sealed; only the shaft goes through it, via the main bearing housing and its lip seal. Set at mid-depth, it leaves a 200 mm wet chamber in front and a 200 mm generator compartment behind, as on the commercial model.',
+      'À plus de 35 m/s, le jet se pulvérise en brouillard dans toute la chambre de la roue. La cloison isole ce brouillard du générateur, de ses bobines et du redresseur : sans elle, l’humidité finirait par attaquer l’isolant des fils et les contacts. Comme dans la vidéo, c’est du plexiglas découpé sur mesure ; seul l’arbre la traverse, à travers la cartouche de palier et son joint à lèvre. Placée à mi-profondeur, elle laisse 200 mm de chambre humide devant et 200 mm de compartiment générateur derrière, comme sur le modèle commercial.',
+      'At more than 35 m/s the jet turns into a fine mist that fills the runner chamber. The partition keeps this mist away from the generator, its coils and the rectifier: without it, moisture would eventually attack the wire insulation and the contacts. As in the video, it is custom-cut plexiglass; only the shaft goes through it, via the bearing cartridge and its lip seal. Set at mid-depth, it leaves a 200 mm wet chamber in front and a 200 mm generator compartment behind, as on the commercial model.',
     ),
-    material: l('PMMA coulé (GS) 10 mm, joints MS-polymère', 'Cast PMMA (GS) 10 mm, MS-polymer sealant'),
+    material: l('PMMA coulé (GS) 10 mm, joint EPDM', 'Cast PMMA (GS) 10 mm, EPDM gasket'),
     specs: [
       sp('Épaisseur', 'Thickness', '10 mm'),
       sp(
@@ -95,11 +95,15 @@ const TURBINE_STRUCTURE: PartInfo[] = [
           '200 mm wet chamber in front, 200 mm generator compartment behind',
         ),
       ),
-      sp('Étanchéité', 'Sealing', l('Cordon MS-polymère sur tout le pourtour', 'MS-polymer bead all around')),
+      sp(
+        'Étanchéité',
+        'Sealing',
+        l('Serrée sur un joint EPDM par quatre vis', 'Clamped on an EPDM gasket by four screws'),
+      ),
       sp(
         'Traversée',
         'Pass-through',
-        l('Palier principal + joint à lèvre 20 × 35 × 7', 'Main bearing housing + 20 × 35 × 7 lip seal'),
+        l('Cartouche de palier + joint double lèvre 20 × 35 × 7', 'Bearing cartridge + 20 × 35 × 7 double-lip seal'),
       ),
     ],
     maintenance: l(
@@ -111,9 +115,9 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Use cast PMMA (GS) rather than extruded (XT): it is far less prone to crazing with solvents and around holes. Drill with a zero-rake bit and a light feed.',
     ),
     video: ['05:10', '08:36'],
-    upgrade: l(
-      'En V2, la cloison est découpée en CNC avec des tenons qui s’emboîtent dans le socle et le capot, et elle est serrée sur un joint EPDM au lieu d’être collée : on peut la démonter sans rien casser.',
-      'In V2 the partition is CNC-cut with tabs that key into the base and cover, and it is clamped on an EPDM gasket instead of being glued: it can be removed without breaking anything.',
+    design: l(
+      'Serrée sur un joint EPDM par quatre vis, sans colle ni temps de séchage, elle se démonte sans rien casser.',
+      'Clamped on an EPDM gasket by four screws, with no glue or curing time, it can be removed without breaking anything.',
     ),
   },
   {
@@ -137,7 +141,14 @@ const TURBINE_STRUCTURE: PartInfo[] = [
         'Outline',
         l('En coin, 574 × 328 mm (toit plat puis pan incliné)', 'Wedge, 574 × 328 mm (flat roof then sloped roof)'),
       ),
-      sp('Fixation', 'Fastening', l('Vis inox A4 M5 + rondelles larges', 'A4 stainless M5 screws + large washers')),
+      sp(
+        'Fixation',
+        'Fastening',
+        l(
+          'Cadre aluminium sur écrous PEM, vis inox A4 M5 + rondelles larges',
+          'Aluminium frame on PEM nuts, A4 stainless M5 screws + large washers',
+        ),
+      ),
       sp('Dilatation', 'Thermal expansion', '≈ 0,07 mm/m/°C'),
     ],
     maintenance: l(
@@ -149,6 +160,10 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Drill the fixing holes 1 mm oversize: PMMA expands about seven times more than steel and cracks around an overtightened screw.',
     ),
     video: ['00:12', '02:12', '02:36'],
+    design: l(
+      'La vitre est pincée dans un cadre aluminium sur écrous PEM, avec un profilé EPDM captif plutôt qu’un joint collé : la façade se démonte et se remonte sans changer le joint ni risquer de fissure.',
+      'The window is clamped in an aluminium frame on PEM nuts, with a captive EPDM trim rather than a glued gasket: the front comes off and goes back on without replacing the gasket or risking a crack.',
+    ),
   },
   {
     id: 'gasket',
@@ -156,8 +171,8 @@ const TURBINE_STRUCTURE: PartInfo[] = [
     category: 'structure',
     name: l('Joint de carter', 'Housing gasket'),
     short: l(
-      'Cordon EPDM entre les plaques et le capot : garde l’eau dedans.',
-      'EPDM strip between the plates and the cover: keeps the water inside.',
+      'Profilé EPDM captif entre les plaques et le capot : garde l’eau dedans.',
+      'Captive EPDM trim between the plates and the cover: keeps the water inside.',
     ),
     description: l(
       'Les plaques de PMMA ne sont jamais parfaitement planes et le capot plié a ses tolérances : le joint rattrape ces écarts et absorbe les vibrations de la roue. L’EPDM est choisi parce qu’il résiste à l’eau, aux UV et à l’ozone pendant des années, là où un néoprène ou une mousse PU se dégradent. Il est comprimé d’environ un quart de son épaisseur : trop peu, ça fuit ; trop, il flue et ne revient plus.',
@@ -179,9 +194,9 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Put the strip joint at the top of the housing, never at the bottom: a poorly butted joint low down is a guaranteed leak.',
     ),
     video: ['05:10'],
-    upgrade: l(
-      'En V2, un profilé EPDM à bourrelet se clipse sur le chant du capot : il est captif, ne se décolle pas et se remonte sans colle à chaque ouverture par les grenouillères.',
-      'In V2 a bulb-type EPDM edge trim clips onto the cover edge: it is captive, never peels off and goes back on without glue every time the toggle latches are opened.',
+    design: l(
+      'Un profilé EPDM à bourrelet se clipse sur le chant : il est captif, ne se décolle pas et se remonte sans colle à chaque ouverture du capot par les grenouillères. Il se trouve au mètre en accastillage ou en quincaillerie industrielle.',
+      'A bulb-type EPDM edge trim clips onto the edge: it is captive, never peels off and goes back on without glue every time the toggle latches open the cover. It is sold by the metre by marine chandlers and industrial hardware suppliers.',
     ),
   },
   {
@@ -224,6 +239,10 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Point the air outlet down or sideways, never upwards: a grille facing the sky becomes a rain inlet.',
     ),
     video: ['02:18', '03:36'],
+    design: l(
+      'Le panneau se centre sur deux pions usinés : l’alignement des trois roulements est garanti par construction, sans aucun réglage.',
+      'The panel locates on two machined dowels: the alignment of the three bearings is guaranteed by design, with no adjustment at all.',
+    ),
   },
   {
     id: 'cover',
@@ -262,15 +281,15 @@ const TURBINE_STRUCTURE: PartInfo[] = [
       'Never screw stainless steel straight into wet aluminium: add a nylon washer or anti-seize grease, otherwise galvanic corrosion seizes the screws within one winter.',
     ),
     video: ['05:00', '08:30'],
-    upgrade: l(
-      'En V2, la tôle reçoit des languettes et encoches qui positionnent les plaques sans gabarit, des écrous sertis PEM à la place des vis à tôle et quatre grenouillères : le capot s’enlève sans outil pour l’entretien.',
-      'In V2 the sheet gets tabs and slots that locate the plates without a jig, PEM self-clinching nuts instead of self-tapping screws, and four toggle latches: the cover comes off without tools for maintenance.',
+    design: l(
+      'Des languettes et encoches positionnent les plaques sans gabarit, des écrous sertis PEM évitent de foirer un filetage dans l’aluminium et quatre grenouillères permettent de l’enlever sans outil pour l’entretien.',
+      'Tabs and slots locate the plates without a jig, PEM self-clinching nuts avoid stripped threads in the aluminium, and four toggle latches let it come off without tools for maintenance.',
     ),
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Turbine — rotating assembly (shared V1/V2)
+// Turbine — rotating assembly
 // ---------------------------------------------------------------------------
 
 const BEARING_SPECS: Spec[] = [
@@ -315,9 +334,9 @@ const TURBINE_ROTATING: PartInfo[] = [
       'When fitting it on the shaft, push on the inner ring only, with a tube of the right size. Never hammer on the outer ring: the balls dent the raceways and the bearing is finished.',
     ),
     video: ['04:05'],
-    upgrade: l(
-      'En V2, les roulements 1 et 2 sont prémontés dans une cartouche usinée avec joint double lèvre et graisseur : on remplace le tout d’un bloc en dix minutes.',
-      'In V2, bearings 1 and 2 are pre-assembled in a machined cartridge with a double lip seal and a grease nipple: the whole unit is swapped in ten minutes.',
+    design: l(
+      'Les roulements 1 et 2 sont prémontés et graissés dans la cartouche de palier : ils ne sont jamais manipulés sur place et se remplacent d’un bloc en dix minutes.',
+      'Bearings 1 and 2 are pre-assembled and greased in the bearing cartridge: they are never handled on site and are replaced as one unit in ten minutes.',
     ),
   },
   {
@@ -326,12 +345,12 @@ const TURBINE_ROTATING: PartInfo[] = [
     category: 'mechanical',
     name: l('Roulement 2 (côté générateur)', 'Bearing 2 (generator side)'),
     short: l(
-      'Second roulement du palier principal : avec le premier, il tient l’arbre bien droit.',
-      'Second bearing of the main housing: together with the first, it keeps the shaft straight.',
+      'Second roulement de la cartouche de palier : avec le premier, il tient l’arbre bien droit.',
+      'Second bearing of the bearing cartridge: together with the first, it keeps the shaft straight.',
     ),
     description: l(
-      'Deux roulements écartés dans le même palier forment un couple qui empêche l’arbre de basculer sous l’effort du jet. Plus l’écart est grand, plus la roue tourne droit et moins les augets battent. Le roulement 2 voit moins de charge que le premier, mais il est changé en même temps : on ne mélange pas un roulement neuf et un roulement usé sur le même arbre.',
-      'Two bearings spaced apart in the same housing form a couple that stops the shaft from tilting under the jet load. The wider the spacing, the truer the runner spins and the less the buckets wobble. Bearing 2 carries less load than the first one, but it is replaced at the same time: never mix a new and a worn bearing on the same shaft.',
+      'Deux roulements écartés dans la même cartouche forment un couple qui empêche l’arbre de basculer sous l’effort du jet. Plus l’écart est grand, plus la roue tourne droit et moins les augets battent. Le roulement 2 voit moins de charge que le premier, mais il est changé en même temps : on ne mélange pas un roulement neuf et un roulement usé sur le même arbre.',
+      'Two bearings spaced apart in the same cartridge form a couple that stops the shaft from tilting under the jet load. The wider the spacing, the truer the runner spins and the less the buckets wobble. Bearing 2 carries less load than the first one, but it is replaced at the same time: never mix a new and a worn bearing on the same shaft.',
     ),
     material: l('Acier à roulement 100Cr6, flasques NBR', '100Cr6 bearing steel, NBR shields'),
     specs: BEARING_SPECS,
@@ -341,10 +360,6 @@ const TURBINE_ROTATING: PartInfo[] = [
       'Fit a spacer between the two inner rings: the axial clamping force goes through it, not through the balls.',
     ),
     video: ['04:05'],
-    upgrade: l(
-      'En V2, il fait partie de la cartouche de palier interchangeable, prémontée et graissée à l’atelier.',
-      'In V2 it is part of the swappable bearing cartridge, pre-assembled and greased on the bench.',
-    ),
   },
   {
     id: 'bearing-3',
@@ -356,8 +371,8 @@ const TURBINE_ROTATING: PartInfo[] = [
       'Supports the end of the shaft behind the generator rotor.',
     ),
     description: l(
-      'Le rotor à aimants est lourd et l’attraction magnétique tire sur lui dès qu’il n’est pas parfaitement centré dans le stator. Le roulement 3, logé dans le panneau arrière, tient l’arbre de ce côté pour garder un entrefer régulier. Avec trois appuis, l’arbre est hyperstatique : l’alignement des trois roulements devient le point le plus délicat du montage.',
-      'The magnet rotor is heavy and magnetic attraction pulls on it as soon as it is not perfectly centred on the stator. Bearing 3, held in the rear panel, supports the shaft on that side to keep an even air gap. With three supports, the shaft is statically indeterminate: aligning the three bearings becomes the trickiest part of the build.',
+      'Le rotor à aimants est lourd et l’attraction magnétique tire sur lui dès qu’il n’est pas parfaitement centré dans le stator. Le roulement 3, logé dans le panneau arrière, tient l’arbre de ce côté pour garder un entrefer régulier. Avec trois appuis, l’arbre est hyperstatique : l’alignement des trois roulements est le point critique, d’où les pions de centrage du panneau arrière.',
+      'The magnet rotor is heavy and magnetic attraction pulls on it as soon as it is not perfectly centred on the stator. Bearing 3, held in the rear panel, supports the shaft on that side to keep an even air gap. With three supports, the shaft is statically indeterminate: aligning the three bearings is the critical point, hence the dowels that centre the rear panel.',
     ),
     material: l('Acier à roulement 100Cr6, flasques NBR', '100Cr6 bearing steel, NBR shields'),
     specs: BEARING_SPECS,
@@ -397,17 +412,17 @@ const TURBINE_ROTATING: PartInfo[] = [
       sp('Vitesse à 1 800 tr/min', 'Speed at 1,800 rpm', '≈ 1,9 m/s'),
     ],
     maintenance: l(
-      'À changer avec les roulements. Un arbre rayé à l’endroit de la lèvre doit être repoli ou remplacé, sinon le joint neuf fuira.',
-      'Replace with the bearings. A shaft scored where the lip runs must be polished or replaced, otherwise the new seal will leak.',
+      'À changer avec les roulements, c’est-à-dire avec la cartouche. Un arbre rayé à l’endroit de la lèvre doit être repoli ou remplacé, sinon le joint neuf fuira.',
+      'Replace with the bearings, that is, with the cartridge. A shaft scored where the lip runs must be polished or replaced, otherwise the new seal will leak.',
     ),
     tip: l(
       'Lèvre principale tournée vers l’eau, lèvre graissée avant d’enfiler l’arbre, et un chanfrein sur l’arbre pour ne pas la retourner au passage.',
       'Main lip facing the water, lip greased before the shaft goes in, and a chamfer on the shaft so the lip does not fold back on the way.',
     ),
     video: ['04:20'],
-    upgrade: l(
-      'En V2, un V-ring déflecteur et une chicane labyrinthe arrêtent l’essentiel de l’eau avant le joint, monté en double lèvre dans la cartouche graissable.',
-      'In V2 a V-ring slinger and a labyrinth stop most of the water before the seal, which is a double-lip type fitted in the greasable cartridge.',
+    design: l(
+      'Un V-ring déflecteur et une chicane labyrinthe arrêtent l’essentiel de l’eau avant la lèvre, qui travaille ainsi à l’abri, en double lèvre, dans la cartouche graissable.',
+      'A V-ring slinger and a labyrinth stop most of the water before the lip, which therefore works sheltered, as a double-lip type, inside the greasable cartridge.',
     ),
   },
   {
@@ -427,14 +442,7 @@ const TURBINE_ROTATING: PartInfo[] = [
     specs: [
       sp('Diamètre', 'Diameter', 'Ø 20 h6'),
       sp('Longueur', 'Length', '343 mm'),
-      sp(
-        'Hauteur d’axe',
-        'Axis height',
-        l(
-          '174 mm au-dessus du dessous du socle, ≈ 1,09 m du sol sur le support',
-          '174 mm above the base underside, ≈ 1.09 m above ground on the stand',
-        ),
-      ),
+      sp('Hauteur d’axe', 'Axis height', l('174 mm au-dessus du dessous du socle', '174 mm above the base underside')),
       sp('Couple à 499 W / 1 800 tr/min', 'Torque at 499 W / 1,800 rpm', '≈ 2,6 N·m'),
       sp('Bout côté roue', 'Runner end', l('Rainure de clavette 6 mm + filetage M16', '6 mm keyway + M16 thread')),
     ],
@@ -481,8 +489,8 @@ const TURBINE_ROTATING: PartInfo[] = [
       'The “spoons” that split the jet in two and turn it back.',
     ),
     description: l(
-      'L’arête centrale de chaque auget fend le jet en deux ; l’eau suit les deux coquilles incurvées, fait presque demi-tour (environ 165°) et sort sur les côtés. En inversant la vitesse de l’eau, l’auget récupère l’essentiel de son énergie cinétique, à condition de tourner à environ 0,46 à 0,5 fois la vitesse du jet. Comme le montre la vidéo, il existe plusieurs tailles, chacune assortie à des diamètres d’injecteur : dans notre modèle, le petit jeu S correspond au jet Ø6 du prototype, et le jeu L, centré vers Ø10, aux buses Ø8 à Ø14 du constructeur. Le prototype filmé a des augets imprimés ; le modèle commercial passe à 26 augets injectés en polymère renforcé.',
-      'The central splitter ridge of each bucket cuts the jet in two; the water follows the two curved cups, almost reverses (about 165°) and leaves sideways. By reversing the water’s velocity, the bucket recovers most of its kinetic energy, provided it moves at about 0.46–0.5 times the jet speed. As shown in the video, there are several sizes, each matched to a range of injector diameters: in our model the small S set suits the prototype’s Ø6 jet, and the L set, centred around Ø10, the maker’s Ø8 to Ø14 nozzles. The prototype in the video has printed buckets; the commercial model moves to 26 injection-moulded reinforced-polymer buckets.',
+      'L’arête centrale de chaque auget fend le jet en deux ; l’eau suit les deux coquilles incurvées, fait presque demi-tour (environ 165°) et sort sur les côtés. En inversant la vitesse de l’eau, l’auget récupère l’essentiel de son énergie cinétique, à condition de tourner à environ 0,46 à 0,5 fois la vitesse du jet. Comme le montre la vidéo, il existe plusieurs tailles, chacune assortie à des diamètres d’injecteur : dans notre modèle, le petit jeu S correspond aux jets jusqu’à Ø6, et le jeu L, centré vers Ø10, aux buses Ø8 à Ø14 du constructeur. Nos augets sont imprimés ; le modèle commercial utilise 26 augets injectés en polymère renforcé.',
+      'The central splitter ridge of each bucket cuts the jet in two; the water follows the two curved cups, almost reverses (about 165°) and leaves sideways. By reversing the water’s velocity, the bucket recovers most of its kinetic energy, provided it moves at about 0.46–0.5 times the jet speed. As shown in the video, there are several sizes, each matched to a range of injector diameters: in our model the small S set suits jets up to Ø6, and the L set, centred around Ø10, the maker’s Ø8 to Ø14 nozzles. Our buckets are printed; the commercial model uses 26 injection-moulded reinforced-polymer buckets.',
     ),
     material: l('PETG ou ASA imprimé', 'Printed PETG or ASA'),
     specs: [
@@ -505,7 +513,7 @@ const TURBINE_ROTATING: PartInfo[] = [
           '≈ 44 × 40 × 11 mm (radial length × width × depth)',
         ),
       ),
-      sp('Jeu S (jet Ø6, prototype)', 'S set (Ø6 jet, prototype)', '≈ 35 × 32 × 9 mm'),
+      sp('Jeu S (jusqu’à Ø6)', 'S set (up to Ø6)', '≈ 35 × 32 × 9 mm'),
       sp('Déviation du jet', 'Jet deflection', '≈ 165°'),
       sp('Vitesse optimale', 'Optimum speed', 'u ≈ 0,46–0,5 · v_jet'),
     ],
@@ -519,9 +527,9 @@ const TURBINE_ROTATING: PartInfo[] = [
     ),
     video: ['00:18', '09:24', '09:36', '09:50'],
     qty: 26,
-    upgrade: l(
-      'En V2, les augets sont vendus en kits appairés à chaque insert d’injecteur, pesés et numérotés, et montés avec un gabarit qui garantit l’angle et le rayon de chaque pièce.',
-      'In V2, buckets come in kits matched to each injector insert, weighed and numbered, and are fitted with a jig that guarantees the angle and radius of every piece.',
+    design: l(
+      'Les augets sont groupés en kits assortis à chaque insert d’injecteur, pesés et numérotés, puis montés avec un gabarit qui garantit l’angle et le rayon de chaque pièce : moins de vibrations, et un rendement identique d’une machine à l’autre. Une balance au 0,1 g et un gabarit imprimé suffisent.',
+      'The buckets come in kits matched to each injector insert, weighed and numbered, then fitted with a jig that guarantees the angle and radius of every piece: less vibration, and the same efficiency from one machine to the next. A 0.1 g scale and a printed jig are all you need.',
     ),
   },
   {
@@ -552,10 +560,6 @@ const TURBINE_ROTATING: PartInfo[] = [
       'Tighten in a star pattern in three passes (by hand, 1 N·m, then 2 N·m). Any tighter and you crush the PETG and the runner starts to wobble.',
     ),
     video: ['09:24'],
-    upgrade: l(
-      'En V2, la bague est découpée laser dans de l’inox 316L de 3 mm : elle ne flue plus et garde son serrage d’une année sur l’autre.',
-      'In V2 the ring is laser-cut from 3 mm 316L stainless steel: it no longer creeps and keeps its clamping force year after year.',
-    ),
   },
   {
     id: 'wheel-lock',
@@ -582,11 +586,15 @@ const TURBINE_ROTATING: PartInfo[] = [
       'Fit the taper clean and dry, with no grease or oil: lubricated, it over-tightens and can split the flange. To remove it, drive one screw into the extraction hole.',
     ),
     video: ['00:12', '02:36'],
+    design: l(
+      'La roue et son moyeu conique sont équilibrés ensemble à l’atelier et repérés par rapport à l’arbre : ils se remontent toujours dans la même position, sans réglage.',
+      'The runner and its taper bush are balanced together on the bench and marked relative to the shaft: they always go back in the same position, with no adjustment.',
+    ),
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Turbine — generator and electrical output (shared V1/V2)
+// Turbine — generator and electrical output
 // ---------------------------------------------------------------------------
 
 const TURBINE_ELECTRICAL: PartInfo[] = [
@@ -630,9 +638,9 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Varnish-impregnate the winding after assembly: the turns stop vibrating and moisture no longer reaches the copper.',
     ),
     video: ['04:25', '09:55', '10:00'],
-    upgrade: l(
-      'En V2, une sonde CTN est noyée dans le bobinage : le contrôleur voit la température réelle et peut ouvrir le déflecteur avant que le stator ne souffre.',
-      'In V2 an NTC probe is embedded in the winding: the controller sees the real temperature and can trip the deflector before the stator suffers.',
+    design: l(
+      'Une sonde CTN 10 kΩ est noyée dans le bobinage : le contrôleur voit la température réelle, donne l’alarme puis déclenche le déflecteur au-delà du seuil, et temporise la relance pour éviter les cycles arrêt-marche qui font chauffer le stator. C’est un composant à un euro et quelques lignes de firmware.',
+      'A 10 kΩ NTC probe is embedded in the winding: the controller sees the real temperature, raises an alarm then trips the deflector above the threshold, and delays the restart to avoid the stop-start cycles that overheat stators. It costs one euro plus a few lines of firmware.',
     ),
   },
   {
@@ -645,8 +653,8 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Printed bell that spins around the stator, with the magnets inside and a fan on its face.',
     ),
     description: l(
-      'Dans un générateur à rotor extérieur, c’est la cloche qui tourne autour du stator fixe : les aimants sont plus loin de l’axe, ce qui donne plus de couple et de tension pour un encombrement réduit. La cloche est imprimée en 3D, comme on le voit dans la vidéo, avec les aimants logés à l’intérieur ; dans notre reconstruction, une bague en acier roulé referme le circuit magnétique derrière eux. Sa face avant porte des ouïes en haricot qui brassent l’air et refroidissent le bobinage.',
-      'In an outer-rotor generator the bell spins around the fixed stator: the magnets sit further from the axis, which gives more torque and voltage in a compact package. The bell is 3D printed, as shown in the video, with the magnets housed inside; in our reconstruction a rolled steel ring closes the magnetic circuit behind them. Its front face carries kidney-shaped vents that stir the air and cool the winding.',
+      'Dans un générateur à rotor extérieur, c’est la cloche qui tourne autour du stator fixe : les aimants sont plus loin de l’axe, ce qui donne plus de couple et de tension pour un encombrement réduit. La cloche est imprimée en 3D, comme on le voit dans la vidéo, avec les aimants logés à l’intérieur ; dans notre conception, une bague en acier roulé referme le circuit magnétique derrière eux. Sa face avant porte des ouïes en haricot qui brassent l’air et refroidissent le bobinage.',
+      'In an outer-rotor generator the bell spins around the fixed stator: the magnets sit further from the axis, which gives more torque and voltage in a compact package. The bell is 3D printed, as shown in the video, with the magnets housed inside; in our design a rolled steel ring closes the magnetic circuit behind them. Its front face carries kidney-shaped vents that stir the air and cool the winding.',
     ),
     material: l('PETG-CF imprimé, culasse en acier doux', 'Printed PETG-CF, mild-steel back-iron ring'),
     specs: [
@@ -667,9 +675,9 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Balance the rotor on its own before mounting it with the runner: a shaft resting on two knife edges and a bit of modelling clay are enough to find the heavy spot.',
     ),
     video: ['00:00', '03:48', '08:48', '09:00'],
-    upgrade: l(
-      'En V2, la cloche reçoit un petit aimant cible pour le capteur à effet Hall et elle est équilibrée dynamiquement avec la roue.',
-      'In V2 the bell carries a small target magnet for the Hall-effect sensor and is dynamically balanced together with the runner.',
+    design: l(
+      'La cloche porte un petit aimant cible pour le capteur à effet Hall et elle est équilibrée dynamiquement avec la roue : moins de vibrations, donc des roulements qui durent.',
+      'The bell carries a small target magnet for the Hall-effect sensor and is dynamically balanced together with the runner: less vibration, so longer-lasting bearings.',
     ),
   },
   {
@@ -698,6 +706,10 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
     ),
     video: ['08:48', '09:55'],
     qty: 14,
+    design: l(
+      'En option, des aimants de nuance SH (N42SH, 150 °C), au même format que les N52, tolèrent mieux la chaleur du stator quand la turbine est souvent arrêtée et relancée.',
+      'Optionally, SH-grade magnets (N42SH, 150 °C) in the same size as the N52s better tolerate stator heat when the turbine is frequently stopped and restarted.',
+    ),
   },
   {
     id: 'rectifier',
@@ -729,9 +741,9 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Apply a thin layer of thermal paste and tighten the module to the specified torque: a poorly seated module runs twice as hot.',
     ),
     video: ['00:00', '03:48'],
-    upgrade: l(
-      'En V2, le pont est monté sur un dissipateur plus grand placé dans le flux d’air du rotor et raccordé par un faisceau précâblé à connecteurs détrompés ; le coffret contrôleur ajoute disjoncteur, parafoudre et relais de surtension en aval.',
-      'In V2 the bridge sits on a larger heatsink in the rotor’s airflow and is connected by a pre-made harness with keyed connectors; the controller box adds a breaker, a surge arrester and an overvoltage relay downstream.',
+    design: l(
+      'Le pont est monté sur un dissipateur plus grand, placé dans le flux d’air du rotor, et raccordé par un faisceau précâblé à connecteurs détrompés : impossible d’inverser une phase ou une polarité. Disjoncteur, parafoudre et relais de surtension se trouvent en aval, dans le coffret contrôleur.',
+      'The bridge sits on a larger heatsink in the rotor’s airflow and is connected by a pre-made harness with keyed connectors: a phase or polarity cannot be swapped. The breaker, surge arrester and overvoltage relay sit downstream, in the controller box.',
     ),
   },
   {
@@ -762,9 +774,9 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Crimp ferrules onto flexible cable: bare strands crushed under a screw eventually overheat.',
     ),
     video: ['03:48'],
-    upgrade: l(
-      'En V2, le bornier reste à l’abri dans la chambre sèche, mais le câble de sortie se termine par un connecteur IP68 débrochable : on déconnecte la turbine sans ouvrir le carter.',
-      'In V2 the terminal block stays sheltered in the dry chamber, but the output cable ends in a pluggable IP68 connector: the turbine can be disconnected without opening the housing.',
+    design: l(
+      'Le bornier reste à l’abri dans la chambre sèche, et le câble de sortie se termine par un connecteur IP68 débrochable : on déconnecte la turbine sans ouvrir le carter.',
+      'The terminal block stays sheltered in the dry chamber, and the output cable ends in a pluggable IP68 connector: the turbine can be disconnected without opening the housing.',
     ),
   },
   {
@@ -803,15 +815,15 @@ const TURBINE_ELECTRICAL: PartInfo[] = [
       'Count both the outgoing and the return conductor: R = ρ · 2L / S. It is the most common mistake in cable sizing.',
     ),
     video: ['03:48', '17:55', '18:05'],
-    upgrade: l(
-      'En V2, le câble arrive sur un connecteur IP68 et passe par le coffret contrôleur (disjoncteur, parafoudre) avant de partir vers le local.',
-      'In V2 the cable lands on an IP68 connector and goes through the controller box (breaker, surge arrester) before leaving for the technical room.',
+    design: l(
+      'Le câble se branche sur un connecteur IP68 et traverse le coffret contrôleur (disjoncteur, parafoudre) avant de partir vers le local technique : la protection se trouve au plus près de la machine.',
+      'The cable lands on an IP68 connector and goes through the controller box (breaker, surge arrester) before leaving for the technical room: protection sits right at the machine.',
     ),
   },
 ];
 
 // ---------------------------------------------------------------------------
-// Turbine — water path, from the penstock end to the injectors (shared V1/V2)
+// Turbine — water path, from the penstock end to the injectors
 // ---------------------------------------------------------------------------
 
 const TURBINE_HYDRAULIC: PartInfo[] = [
@@ -825,8 +837,8 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
       'Italian-made variable injector: a movable “olive” sets the flow without breaking up the jet.',
     ),
     description: l(
-      'L’injecteur transforme la pression en vitesse : à 74 m de chute nette, l’eau sort à environ 37 m/s. Dans un injecteur à pointeau, une pièce profilée, l’« olive » de la vidéo, avance ou recule dans la buse et fait varier la section annulaire de passage : le débit change, mais le jet reste compact et rapide. Sur le site B, c’est l’injecteur des gros débits d’hiver ; sur le site A, c’est l’injecteur unique, alimenté par le haut.',
-      'The injector turns pressure into velocity: at 74 m of net head the water leaves at about 37 m/s. In a spear-valve injector, a streamlined spear, the “olive” in the video, moves in or out of the nozzle and changes the annular flow area: the flow changes, but the jet stays compact and fast. On site B it is the injector for the large winter flows; on site A it is the only injector, fed from the top.',
+      'L’injecteur transforme la pression en vitesse : à 74 m de chute nette, l’eau sort à environ 37 m/s. Dans un injecteur à pointeau, une pièce profilée, l’« olive » de la vidéo, avance ou recule dans la buse et fait varier la section annulaire de passage : le débit change, mais le jet reste compact et rapide. Sur le site B, c’est l’injecteur des gros débits d’hiver ; sur le site A, qui n’a besoin que d’un petit jet, il reste fermé au profit de l’injecteur latéral.',
+      'The injector turns pressure into velocity: at 74 m of net head the water leaves at about 37 m/s. In a spear-valve injector, a streamlined spear, the “olive” in the video, moves in or out of the nozzle and changes the annular flow area: the flow changes, but the jet stays compact and fast. On site B it is the injector for the large winter flows; on site A, which only needs a small jet, it stays closed in favour of the side injector.',
     ),
     material: l('Corps métallique, pointeau et buse inox', 'Metal body, stainless spear and nozzle'),
     specs: [
@@ -867,9 +879,9 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
       'Always set the flow with the spear, never with a half-closed valve: the valve turns head into losses, the spear turns it into velocity.',
     ),
     video: ['07:30', '07:48', '08:00'],
-    upgrade: l(
-      'En V2, il garde son principe mais reçoit la même bride normalisée que l’injecteur à inserts : les deux injecteurs deviennent interchangeables sur la nourrice.',
-      'In V2 it keeps its principle but gets the same standard flange as the insert injector: both injectors become interchangeable on the manifold.',
+    design: l(
+      'Il reçoit la même bride normalisée, centrée par un pion, que l’injecteur latéral : les deux se permutent sur la nourrice et l’alignement du jet est garanti.',
+      'It takes the same standard flange, located by a dowel, as the side injector: the two can be swapped on the manifold and jet alignment is guaranteed.',
     ),
   },
   {
@@ -901,9 +913,9 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
       'Primer then gel-type pressure cement on both parts, push home in one stroke with a quarter turn: standard glue or an unprimed pipe is the number one cause of failed fittings.',
     ),
     video: ['02:12', '03:15', '03:30', '15:50'],
-    upgrade: l(
-      'En V2, une ventouse automatique est placée au point haut du col de cygne pour purger l’air, et chaque nourrice est éprouvée à 1,5 × PN avant de quitter l’atelier.',
-      'In V2 an automatic air-release valve sits at the high point of the gooseneck to purge air, and every manifold is pressure-tested at 1.5 × PN before leaving the workshop.',
+    design: l(
+      'Une ventouse automatique au point haut du col de cygne purge l’air en continu, et chaque nourrice est éprouvée à 1,5 × PN avant la mise en service, ce qui révèle un collage défectueux avant qu’il ne lâche. L’épreuve se fait avec une pompe d’épreuve manuelle d’une soixantaine d’euros et un manomètre de référence.',
+      'An automatic air-release valve at the high point of the gooseneck bleeds air continuously, and every manifold is pressure-tested at 1.5 × PN before commissioning, which exposes a faulty joint before it fails. The test needs only a hand-operated test pump costing about sixty euros and a reference gauge.',
     ),
   },
   {
@@ -916,8 +928,8 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
       'One valve per injector: you choose which one works depending on the stream flow.',
     ),
     description: l(
-      'Sur le site B, la turbine a deux injecteurs : la vanne rouge alimente l’injecteur variable du haut pour les gros débits d’hiver, la vanne bleue l’injecteur fixe du bas pour les très petits débits, comme en juin après la canicule. Ce sont des vannes de sectionnement : elles s’utilisent grandes ouvertes ou fermées, jamais entre les deux.',
-      'On site B the turbine has two injectors: the red valve feeds the variable top injector for large winter flows, the blue valve the fixed bottom injector for very low flows, as in June after the heatwave. These are isolation valves: they are used fully open or fully closed, never in between.',
+      'Sur le site B, la turbine a deux injecteurs : la vanne rouge alimente l’injecteur variable du haut pour les gros débits d’hiver, la vanne bleue l’injecteur latéral à buse interchangeable pour les très petits débits, comme en juin après la canicule. Ce sont des vannes de sectionnement : elles s’utilisent grandes ouvertes ou fermées, jamais entre les deux.',
+      'On site B the turbine has two injectors: the red valve feeds the variable top injector for large winter flows, the blue valve the side injector, with its quick-change nozzle, for very low flows, as in June after the heatwave. These are isolation valves: they are used fully open or fully closed, never in between.',
     ),
     material: l('PVC-U, joints EPDM', 'PVC-U, EPDM seals'),
     specs: [
@@ -927,7 +939,10 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
       sp(
         'Code couleur',
         'Colour code',
-        l('Rouge = haut (variable), bleu = côté (fixe)', 'Red = top (variable), blue = side (fixed)'),
+        l(
+          'Rouge = haut (variable), bleu = côté (buse interchangeable)',
+          'Red = top (variable), blue = side (quick-change nozzle)',
+        ),
       ),
     ],
     tip: l(
@@ -1007,14 +1022,14 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
     category: 'hydraulic',
     name: l('Vanne principale', 'Main valve'),
     short: l(
-      'Vanne quart de tour à poignée bleue qui coupe toute l’arrivée d’eau.',
-      'Quarter-turn valve with a blue handle that shuts off the whole water supply.',
+      'Vanne à volant et réducteur qui coupe toute l’arrivée d’eau, lentement.',
+      'Gear-operated handwheel valve that shuts off the whole water supply, slowly.',
     ),
     description: l(
-      'C’est la vanne de sectionnement de la turbine, juste après la conduite forcée. Une vanne quart de tour se ferme en une fraction de seconde : 350 m de colonne d’eau stoppés net produisent un coup de bélier de plusieurs bars, qui s’ajoute aux 7,4 bar statiques. Elle se manœuvre donc lentement, en comptant, et sert à isoler la turbine, pas à régler le débit.',
-      'This is the turbine isolation valve, right after the penstock. A quarter-turn valve closes in a fraction of a second: 350 m of water column stopped dead produces a water hammer of several bar on top of the 7.4 bar static pressure. It must therefore be operated slowly, counting, and is used to isolate the turbine, not to set the flow.',
+      'C’est la vanne de sectionnement de la turbine, juste après la conduite forcée. Stopper net 350 m de colonne d’eau produirait un coup de bélier de plusieurs bars, qui s’ajouterait aux 7,4 bar statiques : la vanne est donc à réducteur, avec un volant qu’il faut tourner une vingtaine de fois pour la fermer. Elle sert à isoler la turbine, pas à régler le débit.',
+      'This is the turbine isolation valve, right after the penstock. Stopping 350 m of water column dead would produce a water hammer of several bar on top of the 7.4 bar static pressure: the valve is therefore gear-operated, with a handwheel that takes about twenty turns to close. It is used to isolate the turbine, not to set the flow.',
     ),
-    material: l('PVC-U, sphère PVC, joints EPDM', 'PVC-U, PVC ball, EPDM seals'),
+    material: l('PVC-U, joints EPDM', 'PVC-U, EPDM seals'),
     specs: [
       sp(
         'Recommandation constructeur',
@@ -1024,19 +1039,24 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
           'Primary shut-off valve on the pipe, gauge between the primary and the injector valves',
         ),
       ),
-      sp('Type', 'Type', l('Vanne à boisseau sphérique double union', 'Double-union ball valve')),
+      sp(
+        'Type',
+        'Type',
+        l('Vanne papillon ou à boisseau sphérique, à réducteur', 'Gear-operated butterfly or ball valve'),
+      ),
       sp('Diamètre', 'Size', 'DN50'),
       sp('Pression nominale', 'Pressure rating', 'PN16'),
+      sp('Manœuvre', 'Operation', l('≈ 20 tours de volant', '≈ 20 handwheel turns')),
       sp('Temps de manœuvre conseillé', 'Recommended operating time', l('≥ 20 s', '≥ 20 s')),
     ],
     tip: l(
-      'Fermez en au moins 20 secondes, et ouvrez aussi lentement : à l’ouverture, l’air piégé comprimé puis chassé peut faire autant de dégâts qu’un coup de bélier.',
-      'Close over at least 20 seconds, and open just as slowly: on opening, trapped air that is compressed then expelled can do as much damage as water hammer.',
+      'Manœuvrez en comptant, au moins 20 secondes, à la fermeture comme à l’ouverture : à l’ouverture, l’air piégé comprimé puis chassé peut faire autant de dégâts qu’un coup de bélier.',
+      'Operate it by counting, taking at least 20 seconds both closing and opening: on opening, trapped air that is compressed then expelled can do as much damage as water hammer.',
     ),
     video: ['02:24', '02:30'],
-    upgrade: l(
-      'En V2, une vanne à réducteur (volant et vis sans fin) remplace le quart de tour : il faut une vingtaine de tours pour la fermer, le coup de bélier devient physiquement impossible.',
-      'In V2 a gear-operated valve (handwheel and worm gear) replaces the quarter-turn: it takes about twenty turns to close, making a hard water hammer physically impossible.',
+    design: l(
+      'Le réducteur à volant et vis sans fin rend physiquement impossible une fermeture brutale, même par mégarde. Une vanne DN50 à réducteur se trouve dans le commerce.',
+      'The handwheel and worm-gear reducer make a sudden closure physically impossible, even by accident. A DN50 gear-operated valve is available off the shelf.',
     ),
   },
   {
@@ -1068,125 +1088,10 @@ const TURBINE_HYDRAULIC: PartInfo[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Turbine — V1 prototype only (as seen in the video)
+// Turbine — frame, bearing cartridge, side injector, safety and monitoring
 // ---------------------------------------------------------------------------
 
-const TURBINE_V1: PartInfo[] = [
-  {
-    id: 'trestles',
-    scene: 'turbine',
-    category: 'structure',
-    name: l('Tréteaux et madriers', 'Trestles and beams'),
-    short: l(
-      'Deux tréteaux rouges et deux madriers : la turbine est perchée à 1 m au-dessus du canal.',
-      'Two red trestles and two wooden beams: the turbine sits 1 m above the channel.',
-    ),
-    description: l(
-      'Sur le site d’essai, la turbine repose sur deux madriers posés sur des tréteaux métalliques rouges, de petites brides bleues imprimées l’empêchant de glisser. C’est simple et réglable, et cela laisse environ 0,9 m de chute libre sous le socle, l’axe de la roue se trouvant vers 1,1 m du sol : bien plus que les 30 à 40 cm minimum de la vidéo et les 50 cm demandés par le constructeur. Le bois mouillé en permanence travaille et pourrit, et rien n’amortit les vibrations : c’est une installation de prototype.',
-      'On the test site the turbine rests on two wooden beams laid on red steel trestles, with small blue printed cleats stopping it from sliding. It is simple and adjustable, and leaves about 0.9 m of free fall under the base, with the runner axis about 1.1 m above the ground: far more than the 30–40 cm minimum given in the video and the 50 cm the maker asks for. Permanently wet timber moves and rots, and nothing damps the vibration: this is a prototype set-up.',
-    ),
-    material: l(
-      'Tréteaux acier peint, madriers sapin, brides PETG',
-      'Painted steel trestles, softwood beams, PETG cleats',
-    ),
-    specs: [
-      sp(
-        'Recommandation constructeur',
-        'Maker recommendation',
-        l(
-          'Turbine à 50 cm du sol minimum pour l’évacuation de l’eau ; 22 kg',
-          'Turbine at least 50 cm above ground for the water to escape; 22 kg',
-        ),
-      ),
-      sp('Hauteur du socle', 'Base height', l('≈ 0,92 m au-dessus du sol', '≈ 0.92 m above ground')),
-      sp('Axe de la roue', 'Runner axis', l('≈ 1,09 m au-dessus du sol', '≈ 1.09 m above ground')),
-      sp('Madriers', 'Beams', '2 × 75 × 150 mm'),
-      sp('Chute libre sous la turbine', 'Free fall under the turbine', '≈ 0,9 m'),
-    ],
-    tip: l(
-      'Calez les tréteaux sur des dalles et vérifiez le niveau après les premières semaines : le sol détrempé par le canal de fuite s’affaisse.',
-      'Set the trestles on paving slabs and recheck the level after the first weeks: ground soaked by the tailrace settles.',
-    ),
-    video: ['00:00', '02:54', '03:36'],
-    version: 'v1',
-  },
-  {
-    id: 'bearing-block',
-    scene: 'turbine',
-    category: 'mechanical',
-    name: l('Palier principal imprimé', 'Printed main bearing housing'),
-    short: l(
-      'Bloc imprimé qui traverse la cloison et porte les roulements 1 et 2 et le joint à lèvre.',
-      'Printed block through the partition that holds bearings 1 and 2 and the lip seal.',
-    ),
-    description: l(
-      'Le palier principal est la pièce qui tient tout l’effort du jet : il loge les deux roulements écartés et, côté humide, le joint à lèvre. L’imprimer en 3D permet de l’adapter à chaque modèle de turbine et de le refaire soi-même, comme le souligne Sylvain pour toutes ses pièces. Sa limite est le fluage : sous la charge et la chaleur des roulements, le plastique se déforme lentement et l’ajustement peut prendre du jeu.',
-      'The main bearing housing takes the whole jet load: it holds the two spaced bearings and, on the wet side, the lip seal. 3D printing it means it can be adapted to every turbine model and remade by the builder, as Sylvain points out for all his parts. Its limit is creep: under load and bearing heat, plastic slowly deforms and the fit can loosen.',
-    ),
-    material: l('PETG ou PA-CF imprimé, 100 % de remplissage', 'Printed PETG or PA-CF, 100% infill'),
-    specs: [
-      sp('Roulements', 'Bearings', '2 × 6204-2RS'),
-      sp('Joint', 'Seal', '20 × 35 × 7'),
-      sp('Entraxe des roulements', 'Bearing spacing', '≈ 93 mm'),
-      sp(
-        'Fixation',
-        'Fastening',
-        l('Bride 120 × 120, 4 vis M6 à travers la cloison', '120 × 120 flange, 4 × M6 screws through the partition'),
-      ),
-    ],
-    maintenance: l(
-      'Au changement de roulements, vérifiez que le neuf ne rentre pas « tout seul » : un logement élargi doit être réimprimé.',
-      'When replacing the bearings, check that the new one does not slide in by itself: a worn seat must be reprinted.',
-    ),
-    tip: l(
-      'Imprimez les logements 0,1 à 0,2 mm sous la cote puis alésez : un roulement doit entrer serré, à la presse, jamais au marteau.',
-      'Print the seats 0.1–0.2 mm undersize then ream them: a bearing must go in tight, with a press, never with a hammer.',
-    ),
-    video: ['04:05'],
-    version: 'v1',
-  },
-  {
-    id: 'injector-side',
-    scene: 'turbine',
-    category: 'hydraulic',
-    name: l('Injecteur fixe imprimé', 'Printed fixed injector'),
-    short: l(
-      'Buse imprimée en 3D de diamètre fixe (6 ou 8 mm), pour les petits débits.',
-      '3D-printed nozzle of fixed diameter (6 or 8 mm), for low flows.',
-    ),
-    description: l(
-      'Un injecteur fixe n’a pas de pièce mobile : sa buse calibrée donne un débit qui ne dépend que de la chute. Sylvain les imprime lui-même, et ils sont « relativement solides ». Sur le site B, c’est cet injecteur qui garde une petite production quand le ruisseau tombe sous 1 L/s, en mode dégradé. Pour changer de débit, on change de buse, et de jeu d’augets assorti.',
-      'A fixed injector has no moving part: its calibrated nozzle gives a flow that depends only on the head. Sylvain prints them himself, and they are “quite sturdy”. On site B this is the injector that keeps a small output going when the stream drops below 1 L/s, in degraded mode. To change the flow you change the nozzle, and the matching bucket set.',
-    ),
-    material: l('PETG ou ASA imprimé', 'Printed PETG or ASA'),
-    specs: [
-      sp('Buse', 'Nozzle', 'Ø 6 / Ø 8 mm'),
-      sp(
-        'Implantation',
-        'Layout',
-        l(
-          'Jet horizontal à travers la paroi haute, 95 mm sous l’axe, tangent au primitif Ø190',
-          'Horizontal jet through the tall wall, 95 mm below the axis, tangent to the Ø190 pitch circle',
-        ),
-      ),
-      sp('Débit à 74 m (Ø 6)', 'Flow at 74 m (Ø 6)', '≈ 1,1 L/s'),
-      sp('Débit à 72 m (Ø 8)', 'Flow at 72 m (Ø 8)', '≈ 1,8 L/s'),
-      sp('Pression max', 'Max pressure', '10 bar'),
-    ],
-    tip: l(
-      'Imprimez la buse debout, sortie vers le haut, et finissez l’orifice au foret à la main : la qualité du bord de sortie fait la qualité du jet.',
-      'Print the nozzle upright, outlet facing up, and finish the orifice with a hand-held drill bit: the quality of the outlet edge makes the quality of the jet.',
-    ),
-    video: ['08:10', '08:18', '16:00'],
-    version: 'v1',
-  },
-];
-
-// ---------------------------------------------------------------------------
-// Turbine — V2 only: our "industrialisable but still DIY" proposal
-// ---------------------------------------------------------------------------
-
-const TURBINE_V2: PartInfo[] = [
+const TURBINE_FRAME_AND_SAFETY: PartInfo[] = [
   {
     id: 'skid',
     scene: 'turbine',
@@ -1197,8 +1102,8 @@ const TURBINE_V2: PartInfo[] = [
       'Bolted aluminium-extrusion frame on levelling feet and rubber mounts.',
     ),
     description: l(
-      'Le skid remplace les tréteaux et les madriers par un cadre rigide qui arrive monté et réglé de l’atelier. Les pieds réglables rattrapent un sol en pente, les silentblocs coupent la transmission des vibrations, et un entonnoir intégré guide l’eau vers le canal de fuite. Il garantit par construction les 40 cm de chute libre sous la roue.',
-      'The skid replaces the trestles and beams with a rigid frame that leaves the workshop assembled and adjusted. Levelling feet cope with sloping ground, rubber mounts stop vibration being transmitted, and a built-in funnel guides the water into the tailrace. By design, it guarantees the 40 cm of free fall under the runner.',
+      'Le skid est un cadre rigide qui arrive monté et réglé de l’atelier. Les pieds réglables rattrapent un sol en pente, les silentblocs coupent la transmission des vibrations, et un entonnoir intégré guide l’eau vers le canal de fuite. Il garantit par construction les 40 cm de chute libre sous la roue.',
+      'The skid is a rigid frame that leaves the workshop assembled and adjusted. Levelling feet cope with sloping ground, rubber mounts stop vibration being transmitted, and a built-in funnel guides the water into the tailrace. By design, it guarantees the 40 cm of free fall under the runner.',
     ),
     material: l(
       'Profilés aluminium 40 × 40 rainure 8 (ou acier galvanisé)',
@@ -1224,10 +1129,9 @@ const TURBINE_V2: PartInfo[] = [
       'Anchor the skid with two ground screws or stakes: a runaway turbine vibrates enough to walk.',
     ),
     video: ['02:40'],
-    version: 'v2',
-    upgrade: l(
-      'Remplace les tréteaux et madriers du prototype : montage reproductible, plus de bois qui pourrit, vibrations amorties et levage sécurisé.',
-      'Replaces the prototype’s trestles and beams: repeatable installation, no more rotting timber, damped vibration and safe lifting.',
+    design: l(
+      'Un cadre boulonné donne une installation reproductible, sans bois qui pourrit, et un levage sécurisé par les anneaux. Les profilés rainurés se vendent à la coupe et se montent avec des équerres et des écrous marteau : une clé Allen suffit (variante soudée en acier galvanisé possible).',
+      'A bolted frame gives a repeatable installation with no rotting timber, and safe lifting through the eyes. The slotted extrusions are sold cut to length and assembled with brackets and T-nuts: a hex key is all you need (a welded galvanised-steel variant is possible).',
     ),
   },
   {
@@ -1267,24 +1171,23 @@ const TURBINE_V2: PartInfo[] = [
       'Always keep a spare cartridge ready on site: it turns a breakdown into a routine visit.',
     ),
     video: ['04:05'],
-    version: 'v2',
-    upgrade: l(
-      'Remplace le palier imprimé : plus de fluage du plastique, étanchéité à trois barrières, et un changement de roulements qui passe de plusieurs heures à dix minutes.',
-      'Replaces the printed housing: no more plastic creep, three-barrier sealing, and a bearing change that drops from hours to ten minutes.',
+    design: l(
+      'L’aluminium tourné ne flue pas sous la charge et la chaleur des roulements, et trois barrières (V-ring, labyrinthe, joint double lèvre) arrêtent l’eau. C’est une pièce simple, réalisable sur un petit tour d’établi ou commandée en usinage en ligne d’après un plan ; roulements et joints restent standard.',
+      'Turned aluminium does not creep under bearing load and heat, and three barriers (V-ring, labyrinth, double-lip seal) stop the water. It is a simple part, made on a bench lathe or ordered from an online machining service from a drawing; bearings and seals stay standard.',
     ),
   },
   {
     id: 'injector-quick',
     scene: 'turbine',
     category: 'hydraulic',
-    name: l('Injecteur à inserts rapides', 'Quick-change insert injector'),
+    name: l('Injecteur latéral à buse interchangeable', 'Side injector with quick-change nozzle'),
     short: l(
-      'Corps d’injecteur fixe à baïonnette : on change la buse (Ø4 à Ø14) en quelques secondes.',
-      'Fixed-injector body with a bayonet: the nozzle (Ø4 to Ø14) is swapped in seconds.',
+      'Injecteur latéral sans pièce mobile : la buse (Ø4 à Ø14) se change à la baïonnette en quelques secondes.',
+      'Side injector with no moving part: the nozzle (Ø4 to Ø14) is swapped on a bayonet in seconds.',
     ),
     description: l(
-      'Au lieu d’imprimer un injecteur complet par diamètre, on garde un corps unique sur bride normalisée et on change seulement l’insert de buse, verrouillé par baïonnette et étanché par un joint torique. Chaque insert porte une couleur et correspond à un kit d’augets assorti (jeu S jusqu’à Ø6, jeu L de Ø8 à Ø14, le maximum annoncé par le constructeur), ce qui évite les erreurs de montage. On adapte ainsi la turbine aux saisons : petite buse en été, grande en hiver.',
-      'Instead of printing a complete injector for each diameter, a single body on a standard flange is kept and only the nozzle insert changes, locked by a bayonet and sealed by an O-ring. Each insert is colour-coded and matches a bucket kit (S set up to Ø6, L set from Ø8 to Ø14, the maker’s stated maximum), which prevents assembly mistakes. The turbine is thus adapted to the seasons: small nozzle in summer, large one in winter.',
+      'L’injecteur latéral est un corps unique sur bride normalisée dont seul l’insert de buse change, verrouillé par baïonnette et étanché par un joint torique. Chaque insert porte une couleur et correspond à un kit d’augets assorti (jeu S jusqu’à Ø6, jeu L de Ø8 à Ø14, le maximum annoncé par le constructeur), ce qui évite les erreurs de montage. On adapte ainsi la turbine aux saisons : petite buse en été, grande en hiver.',
+      'The side injector is a single body on a standard flange where only the nozzle insert changes, locked by a bayonet and sealed by an O-ring. Each insert is colour-coded and matches a bucket kit (S set up to Ø6, L set from Ø8 to Ø14, the maker’s stated maximum), which prevents assembly mistakes. The turbine is thus adapted to the seasons: small nozzle in summer, large one in winter.',
     ),
     material: l(
       'Corps aluminium ou inox, inserts POM-C ou laiton, joint EPDM',
@@ -1296,8 +1199,8 @@ const TURBINE_V2: PartInfo[] = [
         'Implantation',
         'Layout',
         l(
-          'Jet horizontal, 95 mm sous l’axe (position de l’injecteur latéral)',
-          'Horizontal jet, 95 mm below the axis (side injector position)',
+          'Jet horizontal à travers la paroi haute, 95 mm sous l’axe, tangent au primitif Ø190',
+          'Horizontal jet through the tall wall, 95 mm below the axis, tangent to the Ø190 pitch circle',
         ),
       ),
       sp('Verrouillage', 'Locking', l('Baïonnette quart de tour + joint torique', 'Quarter-turn bayonet + O-ring')),
@@ -1309,10 +1212,9 @@ const TURBINE_V2: PartInfo[] = [
       'Never change an insert under pressure: close the branch valve and check on the gauge that the branch is drained.',
     ),
     video: ['08:10', '09:30'],
-    version: 'v2',
-    upgrade: l(
-      'Remplace l’injecteur fixe imprimé : un seul corps pour toutes les saisons, des inserts usinés à l’orifice précis, et un kit d’augets assorti à chaque buse.',
-      'Replaces the printed fixed injector: one body for every season, machined inserts with a precise orifice, and a bucket kit matched to each nozzle.',
+    design: l(
+      'Un seul corps sert toute l’année : seul l’insert, usiné à l’orifice précis, change. Les inserts se tournent en POM ou en laiton sur un petit tour, ou s’impriment puis s’alèsent au foret ; le code couleur est une bague imprimée.',
+      'A single body serves all year round: only the insert, machined to a precise orifice, changes. The inserts are turned from POM or brass on a small lathe, or printed then reamed with a drill bit; the colour code is a printed ring.',
     ),
   },
   {
@@ -1354,10 +1256,9 @@ const TURBINE_V2: PartInfo[] = [
       'Test the deflector at every visit by deliberately removing the load: a safety device that is never tried is one that does not work.',
     ),
     video: ['19:05', '19:20'],
-    version: 'v2',
-    upgrade: l(
-      'Nouveau en V2 : le prototype dépend entièrement du délesteur pour ne pas s’emballer. Le déflecteur ajoute une sécurité mécanique, à manque de courant, réalisable avec une gâche de porte à 15 €.',
-      'New in V2: the prototype relies entirely on the dump load to avoid running away. The deflector adds a mechanical, fail-safe protection, buildable with a 15 € door-lock solenoid.',
+    design: l(
+      'Cette sécurité mécanique, à manque de courant, empêche l’emballement même si le délesteur lâche, et sans coup de bélier puisque l’eau continue de couler. Elle reste à la portée d’un maker : une gâche électrique 12 V d’une quinzaine d’euros et un relais suffisent pour la commande.',
+      'This mechanical, fail-safe protection prevents runaway even if the dump load fails, and without water hammer since the water keeps flowing. It stays within a maker’s reach: a 12 V latch solenoid costing about fifteen euros and a relay are enough for the control.',
     ),
   },
   {
@@ -1370,8 +1271,8 @@ const TURBINE_V2: PartInfo[] = [
       'Four stainless lever latches: the cover opens without tools.',
     ),
     description: l(
-      'Sur le prototype, ouvrir le capot veut dire dévisser une rangée de vis dans l’aluminium, avec le risque de foirer un filetage à chaque fois. Les grenouillères serrent le capot sur son joint captif avec un effort constant et réglable. L’entretien courant devient plus rapide, donc il est fait plus souvent.',
-      'On the prototype, opening the cover means undoing a row of screws in aluminium, with the risk of stripping a thread every time. Toggle latches pull the cover onto its captive gasket with a constant, adjustable force. Routine maintenance becomes faster, so it gets done more often.',
+      'Quatre grenouillères inox serrent le capot sur son joint captif avec un effort constant et réglable. Il n’y a aucune vis à défaire dans l’aluminium, donc aucun filetage à abîmer à chaque ouverture.',
+      'Four stainless toggle latches pull the cover onto its captive gasket with a constant, adjustable force. There is no screw to undo in the aluminium, so no thread to strip each time the cover is opened.',
     ),
     material: l('Inox 304, rivets inox', '304 stainless, stainless rivets'),
     specs: [
@@ -1385,10 +1286,9 @@ const TURBINE_V2: PartInfo[] = [
       'Adjust the threaded hook of each latch to compress the gasket by about a quarter, then lock it with threadlocker: too tight and it crushes the trim the first time it is closed.',
     ),
     qty: 4,
-    version: 'v2',
-    upgrade: l(
-      'Remplace les vis du capot : ouverture sans outil, serrage du joint toujours identique, plus de filetages abîmés dans l’aluminium.',
-      'Replaces the cover screws: tool-free opening, always the same gasket compression, no more stripped threads in the aluminium.',
+    design: l(
+      'Le capot s’ouvre en dix secondes sans outil, avec une compression du joint toujours identique : l’entretien est donc fait plus souvent. Les grenouillères inox se trouvent en accastillage ou en quincaillerie industrielle.',
+      'The cover opens in ten seconds without tools, with always the same gasket compression, so maintenance gets done more often. Stainless toggle latches are available from marine chandlers or industrial hardware suppliers.',
     ),
   },
   {
@@ -1401,8 +1301,8 @@ const TURBINE_V2: PartInfo[] = [
       'Inlet pressure, rotational speed and stator temperature, measured continuously.',
     ),
     description: l(
-      'Le prototype se surveille à l’œil : manomètre, afficheur du régulateur, oreille contre le carter. Trois capteurs bon marché suffisent à tout savoir à distance : la pression trahit une grille bouchée ou de l’air, la vitesse une survitesse ou un roulement qui freine, la température un stator qui souffre. Ce sont aussi les entrées de la sécurité du déflecteur.',
-      'The prototype is monitored by eye: pressure gauge, controller display, ear against the housing. Three cheap sensors are enough to know everything remotely: pressure reveals a clogged screen or air, speed reveals overspeed or a dragging bearing, temperature a suffering stator. They are also the inputs of the deflector safety.',
+      'Manomètre, afficheur du régulateur et oreille contre le carter ne se consultent que sur place. Trois capteurs bon marché suffisent à tout savoir à distance : la pression trahit une grille bouchée ou de l’air, la vitesse une survitesse ou un roulement qui freine, la température un stator qui souffre. Ce sont aussi les entrées de la sécurité du déflecteur.',
+      'The pressure gauge, the controller display and an ear against the housing can only be used on site. Three cheap sensors are enough to know everything remotely: pressure reveals a clogged screen or air, speed reveals overspeed or a dragging bearing, temperature a suffering stator. They are also the inputs of the deflector safety.',
     ),
     material: l('Capteurs industriels standard', 'Standard industrial sensors'),
     specs: [
@@ -1419,10 +1319,9 @@ const TURBINE_V2: PartInfo[] = [
       'Use shielded cable for the sensors, routed apart from the power cable: at over 200 Hz, the rectified three-phase output disturbs analogue readings.',
     ),
     video: ['05:55', '06:00'],
-    version: 'v2',
-    upgrade: l(
-      'Nouveau en V2 : ce que Sylvain lit sur place (499 W, 53,02 V, 9,4 A) devient un historique consultable à distance, avec des alarmes.',
-      'New in V2: what Sylvain reads on site (499 W, 53.02 V, 9.4 A) becomes a remotely accessible history, with alarms.',
+    design: l(
+      'Ce que l’on lit sur place, comme les 499 W, 53,02 V et 9,4 A du site A, devient un historique consultable à distance, avec des alarmes, ce qui ouvre la voie à une maintenance prédictive. Un ESP32 à 10 €, une soixantaine d’euros de capteurs et un firmware libre type ESPHome suffisent.',
+      'What is read on site, like the 499 W, 53.02 V and 9.4 A of site A, becomes a remotely accessible history with alarms, which opens the way to predictive maintenance. A 10 € ESP32, about sixty euros of sensors and open-source firmware such as ESPHome are enough.',
     ),
   },
   {
@@ -1435,8 +1334,8 @@ const TURBINE_V2: PartInfo[] = [
       'IP65 box on the skid: DC protection, overvoltage relay and telemetry.',
     ),
     description: l(
-      'Les protections et l’électronique de surveillance quittent le local pour se ranger sur rail DIN dans un coffret étanche fixé au skid, au pied de la turbine. Le relais de surtension surveille la tension de sortie : si elle grimpe parce que la charge a disparu, il coupe la gâche et le déflecteur tombe. Un ESP32 publie pression, vitesse, température et puissance en MQTT ou vers le GX Victron.',
-      'Protection and monitoring electronics move out to a DIN rail in a sealed box fixed to the skid, right at the turbine. The overvoltage relay watches the output voltage: if it rises because the load has gone, it cuts the latch and the deflector drops. An ESP32 publishes pressure, speed, temperature and power over MQTT or to the Victron GX.',
+      'Les protections et l’électronique de surveillance sont rangées sur rail DIN dans un coffret étanche fixé au skid, au pied de la turbine. Le relais de surtension surveille la tension de sortie : si elle grimpe parce que la charge a disparu, il coupe la gâche et le déflecteur tombe. Un ESP32 publie pression, vitesse, température et puissance en MQTT ou vers le GX Victron.',
+      'Protection and monitoring electronics sit on a DIN rail in a sealed box fixed to the skid, right at the turbine. The overvoltage relay watches the output voltage: if it rises because the load has gone, it cuts the latch and the deflector drops. An ESP32 publishes pressure, speed, temperature and power over MQTT or to the Victron GX.',
     ),
     material: l('Coffret polycarbonate IP65, rail DIN', 'IP65 polycarbonate enclosure, DIN rail'),
     specs: [
@@ -1459,10 +1358,9 @@ const TURBINE_V2: PartInfo[] = [
       'Mount the box on the downstream side of the housing and drill a small drain hole at the lowest point: condensation must be able to escape.',
     ),
     video: ['19:00'],
-    version: 'v2',
-    upgrade: l(
-      'Nouveau en V2 : rapproche de la turbine les protections du « boîtier de sécurité » de la vidéo et y ajoute la commande du déflecteur et la télémesure.',
-      'New in V2: brings the protection of the “safety box” seen in the video next to the turbine, and adds the deflector control and telemetry.',
+    design: l(
+      'Les protections sont au plus près de la machine : la turbine se débranche sans outil par un connecteur IP68 détrompé, qui rend l’inversion de polarité impossible, et le câblage reste simple sur rail DIN. Coffret, appareillage modulaire et connecteurs circulaires IP68 à visser s’achètent dans le commerce.',
+      'Protection sits right at the machine: the turbine unplugs without tools through a keyed IP68 connector that makes reversed polarity impossible, and the wiring stays simple on a DIN rail. The enclosure, modular devices and screw-on IP68 circular connectors are off-the-shelf.',
     ),
   },
   {
@@ -1494,10 +1392,9 @@ const TURBINE_V2: PartInfo[] = [
       'Fit a small isolating valve under the air valve: it can then be cleaned without stopping the turbine.',
     ),
     video: ['14:05'],
-    version: 'v2',
-    upgrade: l(
-      'Nouvelle en V2, associée à la vanne principale à réducteur : l’air et les coups de bélier, deux causes de casse de raccords, sont traités à la source.',
-      'New in V2, together with the gear-operated main valve: air and water hammer, two causes of burst fittings, are dealt with at the source.',
+    design: l(
+      'Associée à la vanne principale à réducteur, elle traite à la source l’air et les coups de bélier, deux causes classiques de casse de raccords. Une ventouse d’irrigation 1/2" d’une vingtaine d’euros suffit.',
+      'Together with the gear-operated main valve, it deals at the source with air and water hammer, two classic causes of burst fittings. A 1/2" irrigation air valve for about twenty euros is enough.',
     ),
   },
 ];
@@ -2398,9 +2295,9 @@ const INTAKE_PARTS: PartInfo[] = [
       sp('Hauteur', 'Height', l('Au-dessus du niveau maxi du bac', 'Above the trough’s top level')),
       sp('Diamètre', 'Diameter', 'Ø32'),
     ],
-    upgrade: l(
-      'En V2, une ventouse automatique sur le col de cygne de la turbine complète l’évent de la prise d’eau.',
-      'In V2 an automatic air valve on the turbine gooseneck complements the intake vent.',
+    design: l(
+      'L’évent traite l’air à la prise ; une ventouse automatique sur le col de cygne de la turbine complète le dispositif au point haut de la machine.',
+      'The vent deals with air at the intake; an automatic air valve on the turbine gooseneck completes the arrangement at the machine’s high point.',
     ),
   },
   {
@@ -2433,8 +2330,7 @@ export const PARTS: PartInfo[] = [
   ...TURBINE_ROTATING,
   ...TURBINE_ELECTRICAL,
   ...TURBINE_HYDRAULIC,
-  ...TURBINE_V1,
-  ...TURBINE_V2,
+  ...TURBINE_FRAME_AND_SAFETY,
   ...SITE_PARTS,
   ...INTAKE_PARTS,
   ...TECHROOM_PARTS,

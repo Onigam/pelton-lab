@@ -156,10 +156,6 @@ a {
   color: var(--paper);
 }
 
-.version-switch button.v2.is-active {
-  background: var(--violet);
-}
-
 .segmented--tiny button {
   padding: 3px 8px;
   font-family: var(--mono);
@@ -545,16 +541,6 @@ a {
   border-color: color-mix(in srgb, var(--leaf) 40%, transparent);
 }
 
-.chip--v1 {
-  color: var(--ink-2);
-}
-
-.chip--v2 {
-  color: var(--violet);
-  border-color: color-mix(in srgb, var(--violet) 45%, transparent);
-  background: var(--violet-soft);
-}
-
 /* tabs wrap instead of scrolling (no scrollbar over the labels) and stay at the top while
    reading a long sheet */
 .tabs {
@@ -655,19 +641,11 @@ a {
   margin-top: 2px;
 }
 
-.callout--v2 {
+.callout--design {
   flex-direction: column;
   gap: 4px;
   background: var(--violet-soft);
   border-color: color-mix(in srgb, var(--violet) 30%, transparent);
-}
-
-.callout--v2 b {
-  color: var(--violet);
-}
-
-.callout--v2.is-active {
-  box-shadow: inset 3px 0 0 var(--violet);
 }
 
 .actions {
@@ -1245,7 +1223,7 @@ a {
   color: var(--ink-2);
 }
 
-/* ------------------------------------------------------------- catalogue & upgrades */
+/* ------------------------------------------------------------- catalogue */
 
 .search {
   width: 100%;
@@ -1331,59 +1309,6 @@ a {
 .cat-row small {
   color: var(--ink-3);
   font-size: 12px;
-}
-
-.upgrades {
-  display: grid;
-  gap: 8px;
-}
-
-.upgrade {
-  display: grid;
-  gap: 6px;
-  padding: 10px 12px;
-  border: 1px solid var(--line-2);
-  border-radius: var(--radius);
-  background: var(--card);
-  text-align: left;
-  font-size: 13px;
-}
-
-.upgrade:hover {
-  border-color: var(--violet);
-}
-
-.upgrade.is-active {
-  border-color: var(--violet);
-  box-shadow: inset 3px 0 0 var(--violet);
-}
-
-.upgrade__area {
-  font-size: 14px;
-}
-
-.upgrade__cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.upgrade em {
-  display: block;
-  font-style: normal;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.upgrade em.v2 {
-  color: var(--violet);
-}
-
-.upgrade__gain {
-  color: var(--ink-2);
 }
 
 .chapters,

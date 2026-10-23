@@ -38,7 +38,7 @@ export class AppContext {
       (this.ui.mode === 'assembly' && scene !== 'turbine') || (this.ui.mode === 'install' && scene !== 'site')
         ? 'explore'
         : this.ui.mode;
-    this.store.set({ scene, mode, selected: null, isolate: false, explode: 0, upgrade: null });
+    this.store.set({ scene, mode, selected: null, isolate: false, explode: 0 });
   }
 
   setMode(mode: Mode): void {
@@ -47,11 +47,6 @@ export class AppContext {
       Object.assign(patch, { scene: 'turbine', step: 0, explode: 0, isolate: false, selected: null });
     if (mode === 'install')
       Object.assign(patch, { scene: 'site', step: 0, explode: 0, isolate: false, selected: null });
-    if (mode === 'upgrades') {
-      Object.assign(patch, { scene: 'turbine', isolate: false, selected: null });
-      if (this.engine.params.version !== 'v2') this.engine.set({ version: 'v2' });
-    }
-    if (mode !== 'upgrades') patch.upgrade = null;
     this.store.set(patch);
   }
 
@@ -60,13 +55,10 @@ export class AppContext {
     if (id) {
       const info = partInfo(id);
       if (info && info.scene !== this.ui.scene) this.store.set({ scene: info.scene });
-      if (info?.version && info.version !== this.engine.params.version && info.scene === 'turbine') {
-        this.engine.set({ version: info.version });
-      }
     }
     this.store.set({ selected: id, ...(opts.mode ? { mode: opts.mode } : {}) });
     if (id && opts.frame !== false) {
-      // wait a frame so a scene switch / version change is applied before measuring
+      // wait a frame so a scene switch is applied before measuring
       requestAnimationFrame(() => this.stage.frameParts([id], this.ui.scene === 'site' ? 1.8 : 2.4));
     }
   }

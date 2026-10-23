@@ -132,7 +132,7 @@ export function bucketGeometry(spec: BucketSpec, hubR: number, hubT: number): TH
 
 /**
  * Bucket sets of the 26-bucket runner (tips on Ø244): L is sized for the maker's nozzles up to
- * Ø14 (matched around Ø10), S is the smaller prototype set matched to a Ø6 jet.
+ * Ø14 (matched around Ø10), S is the smaller set matched to a Ø6 jet.
  */
 export function bucketSpecFor(set: 'S' | 'L', rPitch: number): BucketSpec {
   const k = set === 'L' ? 1 : 0.8;

@@ -322,21 +322,16 @@ export class SimPanel {
       ),
       section(
         'machine',
-        h(
-          'div',
-          { class: 'field field--row' },
-          toggle(t('mainValve'), p.mainOpen, (v) =>
-            this.set({ mainOpen: v, valveCloseTime: p.version === 'v2' ? 20 : 1 }),
-          ),
-          // the V2 gear-operated valve physically cannot be slammed shut
-          h(
-            'button',
-            {
-              class: 'btn btn--small btn--danger',
-              onclick: () => this.set({ mainOpen: false, valveCloseTime: p.version === 'v2' ? 20 : 0.25 }),
-            },
-            t('slamShut'),
-          ),
+        toggle(t('mainValve'), p.mainOpen, (v) => this.set({ mainOpen: v })),
+        // the gear-operated valve takes about 20 s; shorten it to see what a sudden closure does
+        slider(
+          'valveClose',
+          p.valveCloseTime,
+          0.2,
+          30,
+          0.2,
+          (v) => `${v.toFixed(1)} s`,
+          (v) => this.set({ valveCloseTime: v }, false),
         ),
         toggle(t('bypassValve'), p.bypassOpen, (v) => this.set({ bypassOpen: v })),
         toggle(t('topInjector'), p.top.enabled && p.top.open, (v) => this.nozzle('top', { enabled: true, open: v })),

@@ -91,7 +91,6 @@ export const ICONS = {
   print: 'M7 9V4h10v5|M5 9h14v7H5z|M8 14h8v6H8z',
   lessons: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z|M4 19V5|M9 7h6',
   parts: 'M4 6h16|M4 12h16|M4 18h10',
-  upgrades: 'M4 20h16|M6 20V10l4 3V9l4 3V7l4 3v10',
   about: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z|M12 11v6|M12 7.5v.01',
   prev: 'M15 6l-6 6 6 6',
   next: 'M9 6l6 6-6 6',

@@ -20,7 +20,6 @@ export interface SimParams {
   preset: PresetId | 'custom';
   /** Which stream hydrology to use (site A forest / site B hamlet). */
   siteProfile: 'A' | 'B';
-  version: 'v1' | 'v2';
   // site
   headGross: number;
   pipeLength: number;
@@ -35,7 +34,7 @@ export interface SimParams {
   mainOpen: boolean;
   /** Bypass / drain valve open (purge air, flush sediment). */
   bypassOpen: boolean;
-  /** Seconds to close the main valve (V1 quarter-turn ≈ 1 s, V2 gear valve ≈ 20 s). */
+  /** Seconds to close the main valve (gear-operated valve ≈ 20 s; a quarter-turn valve would be ≈ 1 s). */
   valveCloseTime: number;
   top: NozzleParams; // variable spear injector
   side: NozzleParams; // fixed nozzle
@@ -64,7 +63,6 @@ export interface SimParams {
 const base: SimParams = {
   preset: 'siteA',
   siteProfile: 'A',
-  version: 'v2',
   headGross: 76,
   pipeLength: 350,
   pipeDiam: 55,
@@ -74,7 +72,7 @@ const base: SimParams = {
   screenClog: 0,
   mainOpen: true,
   bypassOpen: false,
-  valveCloseTime: 20, // V2 gear-operated valve (V1 quarter-turn: 1 s)
+  valveCloseTime: 20, // gear-operated valve
   top: { enabled: false, d: 12, opening: 0.6, open: false },
   side: { enabled: true, d: 6, opening: 1, open: true },
   bucketSet: 'S',
@@ -164,7 +162,5 @@ export function scenarioParams(id: ScenarioId, cur: SimParams): SimParams {
       Object.assign(p, presetParams('siteB'), { season: 'summer' as Season, startHour: 8, timeScale: 600 });
       break;
   }
-  p.version = cur.version;
-  if (p.version === 'v2') p.valveCloseTime = 20;
   return p;
 }

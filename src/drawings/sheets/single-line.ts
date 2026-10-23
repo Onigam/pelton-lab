@@ -38,7 +38,6 @@ import {
 
 const Y = 36; // main turbine line
 const BUS = { x0: 150, x1: 396, y0: 107.5, y1: 110.5 };
-const V2C = COLORS.v2;
 const fr = (v: number, d: number) => v.toFixed(d).replace('.', ',');
 const both = (f: (n: (v: number, d: number) => string) => string): L =>
   l(
@@ -70,7 +69,7 @@ function variantMark(p: View, at: Pt, letter: string): void {
 
 // ------------------------------------------------------------------ turbine side
 
-function turbineSide(p: View, v2: boolean): void {
+function turbineSide(p: View): void {
   enclosure(p, [14, 17], [58, 68], l('TURBINE', 'TURBINE'));
   phaseWire(p, [
     [28, Y],
@@ -82,54 +81,31 @@ function turbineSide(p: View, v2: boolean): void {
   ]); // turbine -> DC box -> TriStar (symbols mask it)
   generator(p, [23, Y], 5);
   converter(p, [40.5, Y], 10, '~', '=');
-  connector(p, [52, Y], 0, v2 ? V2C : INK);
+  connector(p, [52, Y], 0);
   lab(p, [16, 46.5], l('G1 alternateur PMA 3~', 'G1 PM alternator 3~'));
   lab(p, [16, 50], l('U1 pont 3~ 90 A / 1 600 V', 'U1 3~ bridge 90 A / 1,600 V'));
-  lab(
-    p,
-    [16, 53.5],
-    v2 ? l('X2 connecteur IP68 détrompé', 'X2 keyed IP68 connector') : l('X2 connecteurs MC4', 'X2 MC4 connectors'),
-    { c: v2 ? V2C : INK },
-  );
+  lab(p, [16, 53.5], l('X2 connecteur IP68 détrompé', 'X2 keyed IP68 connector'));
   lab(p, [16, 57], l('50–57 V · 10 A (18 A à 950 W)', '50–57 V · 10 A (18 A at 950 W)'), { c: INK_2 });
   earth(p, [52.5, 59.5], true);
   lab(p, [31, 31.5], 'U V W', { a: 'middle', c: INK_2 });
 
-  if (!v2) {
-    para(
-      p,
-      64,
-      44,
-      l(
-        'V1 (prototype) : aucune protection côté turbine, la sécurité repose entièrement sur le délesteur.',
-        'V1 (prototype): no protection at the turbine, safety relies entirely on the dump load.',
-      ),
-      56,
-      { size: 1.8, color: INK_2, italic: true },
-    );
-    return;
-  }
-  // V2 controller box on the skid
-  enclosure(p, [62, 17], [124, 102], l('A1 COFFRET CONTRÔLEUR V2 · IP65', 'A1 V2 CONTROLLER BOX · IP65'), V2C, 1.8);
-  contact(p, [70, Y], 0, 'breaker', V2C);
-  lab(p, [70, 30], 'Q1 2P 32 A', { a: 'middle', c: V2C });
-  spd(p, [79, Y], V2C);
-  lab(p, [81.8, 41.7], 'F1 SPD', { c: V2C });
-  p.line([95, Y], [95, 48.2], { w: W.thin, color: V2C });
-  dot(p, [95, Y], V2C, 0.8);
-  coil(p, [95, 50], 'U>', V2C);
-  lab(p, [99.5, 50], l('K1 66 V', 'K1 66 V'), { c: V2C });
-  sigWire(
-    p,
-    [
-      [95, 51.8],
-      [95, 61.2],
-    ],
-    V2C,
-  );
-  coil(p, [95, 63], '', V2C);
-  lab(p, [99.5, 61.4], l('Y1 gâche 12 V', 'Y1 12 V latch'), { c: V2C });
-  lab(p, [99.5, 64.9], l('→ déflecteur', '→ deflector'), { c: V2C });
+  // controller box on the skid
+  enclosure(p, [62, 17], [124, 102], l('A1 COFFRET CONTRÔLEUR · IP65', 'A1 CONTROLLER BOX · IP65'), INK_2, 1.8);
+  contact(p, [70, Y], 0, 'breaker');
+  lab(p, [70, 30], 'Q1 2P 32 A', { a: 'middle' });
+  spd(p, [79, Y]);
+  lab(p, [81.8, 41.7], 'F1 SPD');
+  p.line([95, Y], [95, 48.2], { w: W.thin });
+  dot(p, [95, Y], INK, 0.8);
+  coil(p, [95, 50], 'U>');
+  lab(p, [99.5, 50], l('K1 66 V', 'K1 66 V'));
+  sigWire(p, [
+    [95, 51.8],
+    [95, 61.2],
+  ]);
+  coil(p, [95, 63], '');
+  lab(p, [99.5, 61.4], l('Y1 gâche 12 V', 'Y1 12 V latch'));
+  lab(p, [99.5, 64.9], l('→ déflecteur', '→ deflector'));
   // sensors -> ESP32 -> GX
   const sens: [number, string, number][] = [
     [70, 'n', 78],
@@ -137,31 +113,23 @@ function turbineSide(p: View, v2: boolean): void {
     [86, 'p', 86],
   ];
   for (const [x, letter, y] of sens) {
-    sigWire(
-      p,
-      [
-        [x, 89.6],
-        [x, y],
-        [100, y],
-      ],
-      V2C,
-    );
-    sensor(p, [x, 92], letter, V2C);
+    sigWire(p, [
+      [x, 89.6],
+      [x, y],
+      [100, y],
+    ]);
+    sensor(p, [x, 92], letter, COLORS.signal);
   }
-  p.rect([100, 75], [114, 89], { w: W.medium, color: V2C, fill: COLORS.paper });
-  lab(p, [107, 79.5], 'A2', { a: 'middle', c: V2C, b: true });
-  lab(p, [107, 84], 'ESP32', { a: 'middle', c: V2C });
-  sigWire(
-    p,
-    [
-      [114, 82],
-      [115.5, 82],
-    ],
-    V2C,
-  );
-  tag(p, [115.5, 82], 'S1', 'right', V2C);
-  lab(p, [66, 97.6], l('B1 Hall · B2 CTN · B3 4–20 mA', 'B1 Hall · B2 NTC · B3 4–20 mA'), { c: V2C });
-  lab(p, [107, 92], 'MQTT · VE.Can', { a: 'middle', c: V2C });
+  p.rect([100, 75], [114, 89], { w: W.medium, fill: COLORS.paper });
+  lab(p, [107, 79.5], 'A2', { a: 'middle', b: true });
+  lab(p, [107, 84], 'ESP32', { a: 'middle' });
+  sigWire(p, [
+    [114, 82],
+    [115.5, 82],
+  ]);
+  tag(p, [115.5, 82], 'S1', 'right');
+  lab(p, [66, 97.6], l('B1 Hall · B2 CTN · B3 4–20 mA', 'B1 Hall · B2 NTC · B3 4–20 mA'), { c: COLORS.signal });
+  lab(p, [107, 92], 'MQTT · VE.Can', { a: 'middle', c: COLORS.signal });
 }
 
 // ------------------------------------------------------------------ cable, DC box, controller
@@ -416,7 +384,7 @@ function diversion(p: View): void {
   lab(p, [242, 163], l('(option)', '(option)'), { c: INK_2 });
 }
 
-function inverterAndAc(p: View, v2: boolean): void {
+function inverterAndAc(p: View): void {
   dcWire(p, [
     [290, BUS.y1],
     [290, 126],
@@ -439,17 +407,7 @@ function inverterAndAc(p: View, v2: boolean): void {
   p.rect([283, 145], [297, 159], { w: W.medium, fill: COLORS.paper });
   lab(p, [290, 152], 'GX', { a: 'middle', b: true, s: 2.2 });
   lab(p, [281, 152], l('A3 GX → VRM', 'A3 GX → VRM'), { a: 'end' });
-  const tags: [string, string][] = v2
-    ? [
-        ['S1', V2C],
-        ['S2', COLORS.signal],
-        ['S3', COLORS.signal],
-      ]
-    : [
-        ['S2', COLORS.signal],
-        ['S3', COLORS.signal],
-      ];
-  tags.forEach(([t, c], i) => tag(p, [305, 148 + i * 4], t, 'left', c));
+  ['S1', 'S2', 'S3'].forEach((t, i) => tag(p, [305, 148 + i * 4], t, 'left'));
   lab(p, [305.5, 130.6], '3G6');
 
   enclosure(p, [314, 117], [405, 196], l('TABLEAU AC 230 V (TT)', 'AC BOARD 230 V (TT)'));
@@ -540,8 +498,8 @@ function gridTieInset(p: View): void {
     15,
     242,
     l(
-      'Données constructeur Hydronome (site officiel) : le réseau absorbe toute la production et joue le rôle de délesteur. Attention : sur coupure réseau, l’onduleur se découple et la turbine part à vide → déflecteur (V2) ou délestage local indispensable. Raccordement à déclarer au gestionnaire de réseau.',
-      'Hydronome maker data (official site): the grid absorbs all the output and acts as the dump load. Beware: on a grid outage the inverter disconnects and the turbine runs unloaded → a deflector (V2) or a local dump load is essential. The connection must be declared to the grid operator.',
+      'Données constructeur Hydronome (site officiel) : le réseau absorbe toute la production et joue le rôle de délesteur. Attention : sur coupure réseau, l’onduleur se découple et la turbine part à vide → déflecteur ou délestage local indispensable. Raccordement à déclarer au gestionnaire de réseau.',
+      'Hydronome maker data (official site): the grid absorbs all the output and acts as the dump load. Beware: on a grid outage the inverter disconnects and the turbine runs unloaded → a deflector or a local dump load is essential. The connection must be declared to the grid operator.',
     ),
     90,
     { size: 1.9, lineH: 3 },
@@ -556,8 +514,8 @@ function notes(p: View): void {
       'Fuses as close to the battery as possible: it supplies the short-circuit current (several kA). Cable current rating ≥ fuse rating.',
     ),
     l(
-      'Jamais de turbine à vide : à l’emballement (≈ 2 × la vitesse), la tension double (≈ 140 V pour le bobinage 48 V). Seuil de K1 (V2) : 66 V, au-dessus des ≈ 61 V vus côté turbine derrière un TriStar à 57 V et loin des ≈ 140 V d’emballement.',
-      'Never run the turbine unloaded: at runaway (≈ 2 × speed) the voltage doubles (≈ 140 V for the 48 V winding). K1 threshold (V2): 66 V, above the ≈ 61 V seen at the turbine behind a TriStar at 57 V and far below the ≈ 140 V at runaway.',
+      'Jamais de turbine à vide : à l’emballement (≈ 2 × la vitesse), la tension double (≈ 140 V pour le bobinage 48 V). Seuil de K1 : 66 V, au-dessus des ≈ 61 V vus côté turbine derrière un TriStar à 57 V et loin des ≈ 140 V d’emballement.',
+      'Never run the turbine unloaded: at runaway (≈ 2 × speed) the voltage doubles (≈ 140 V for the 48 V winding). K1 threshold: 66 V, above the ≈ 61 V seen at the turbine behind a TriStar at 57 V and far below the ≈ 140 V at runaway.',
     ),
     l(
       'Schéma TT : le MultiPlus-II relie N et PE en mode onduleur ; toutes les masses (châssis, cadres PV, coffrets) vont à la barrette de terre. DC− mis à la terre en un seul point.',
@@ -678,8 +636,8 @@ export const singleLine: DrawingSheet = {
   group: 'electrical',
   title: l('Schéma unifilaire de l’installation', 'Installation single-line diagram'),
   description: l(
-    'Schéma unifilaire de toute la chaîne : turbine et son pont redresseur, câble, coffret de protection DC, régulateur hydro (site A) ou liaison directe (site B), jeu de barres 48 V, champ PV, batteries, délesteur, onduleur et tableau AC. Chaque liaison porte sa section et chaque protection son calibre ; les couleurs suivent les conducteurs (DC + rouge / − noir, AC marron / bleu / vert-jaune). Le tableau en bas à droite montre pourquoi on monte la tension ou la section sur les longues liaisons. En V2, le coffret contrôleur (violet) ajoute disjoncteur, parafoudre, relais de surtension et télémesure côté turbine.',
-    'Single-line diagram of the whole chain: turbine and its rectifier, cable, DC protection box, hydro controller (site A) or direct link (site B), 48 V busbar, PV array, batteries, dump load, inverter and AC board. Every link shows its cable size and every protection its rating; colours follow the conductors (DC + red / − black, AC brown / blue / green-yellow). The table at the bottom right shows why long runs need a higher voltage or a bigger cable. In V2 the controller box (purple) adds a breaker, surge arrester, overvoltage relay and telemetry at the turbine.',
+    'Schéma unifilaire de toute la chaîne : turbine et son pont redresseur, câble, coffret de protection DC, régulateur hydro (site A) ou liaison directe (site B), jeu de barres 48 V, champ PV, batteries, délesteur, onduleur et tableau AC. Chaque liaison porte sa section et chaque protection son calibre ; les couleurs suivent les conducteurs (DC + rouge / − noir, AC marron / bleu / vert-jaune). Le tableau en bas à droite montre pourquoi on monte la tension ou la section sur les longues liaisons. Côté turbine, le coffret contrôleur IP65 regroupe disjoncteur, parafoudre, relais de surtension et télémesure (capteurs et liaisons de données en violet).',
+    'Single-line diagram of the whole chain: turbine and its rectifier, cable, DC protection box, hydro controller (site A) or direct link (site B), 48 V busbar, PV array, batteries, dump load, inverter and AC board. Every link shows its cable size and every protection its rating; colours follow the conductors (DC + red / − black, AC brown / blue / green-yellow). The table at the bottom right shows why long runs need a higher voltage or a bigger cable. At the turbine, the IP65 controller box holds the breaker, surge arrester, overvoltage relay and telemetry (sensors and data links in purple).',
   ),
   scene: 'techroom',
   parts: [
@@ -695,27 +653,23 @@ export const singleLine: DrawingSheet = {
     'gx-display',
     'wiring',
   ],
-  render(ctx) {
-    const v2 = ctx.version === 'v2';
+  render() {
     const d = new Drawing();
     d.frame({
       title: l('Schéma unifilaire de l’installation', 'Installation single-line diagram'),
-      subtitle: l(
-        `Hydro + PV, bus 48 V DC · ${v2 ? 'V2 industrialisée' : 'V1 prototype'} · Sans échelle`,
-        `Hydro + PV, 48 V DC bus · ${v2 ? 'V2 industrialised' : 'V1 prototype'} · Not to scale`,
-      ),
+      subtitle: l('Hydro + PV, bus 48 V DC · Sans échelle', 'Hydro + PV, 48 V DC bus · Not to scale'),
       number: 'PL-E01',
       scale: tr(l('SO', 'NTS')),
     });
     const p = d.paper();
-    turbineSide(p, v2);
+    turbineSide(p);
     cableAndProtection(p);
     variantsNote(p);
     pvChain(p);
     busbar(p);
     batteryBank(p);
     diversion(p);
-    inverterAndAc(p, v2);
+    inverterAndAc(p);
     iecLegend(p, 12, 104);
     gridTieInset(p);
     notes(p);

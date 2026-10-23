@@ -476,12 +476,12 @@ export function grid(
 
 // ---------------------------------------------------------------- legend
 
-/** Legend of the symbols and wire colours of this module: a 134 × 95 mm box at (x, y). */
+/** Legend of the symbols and wire colours of this module: a 134 × 89 mm box at (x, y). */
 export function iecLegend(p: View, x: number, y: number): void {
   const g = p.group([x, y]); // local frame: box origin
   const txt = (at: Pt, t: Text, bold = false) =>
     g.text(at, t, { size: bold ? 1.9 : 1.8, baseline: 'middle', weight: bold ? 'bold' : 'normal', halo: true });
-  g.rect([0, 0], [134, 95], { w: W.thin, fill: PAPER_FILL });
+  g.rect([0, 0], [134, 89], { w: W.thin, fill: PAPER_FILL });
   txt([2, 3.5], l('LÉGENDE (IEC 60617)', 'LEGEND (IEC 60617)'), true);
   const row = (i: number) => 9.5 + i * 7.3;
   const c1: [(y: number) => void, L][] = [
@@ -583,10 +583,6 @@ export function iecLegend(p: View, x: number, y: number): void {
           { dash: true },
         ),
       l('Variante ou option (tireté)', 'Variant or option (dashed)'),
-    ],
-    [
-      (y) => g.roundRect([68, y - 2], [80, y + 2], 1, { w: W.thin, color: COLORS.v2, dash: [2.4, 1.1] }),
-      l('Équipement de la V2 (violet)', 'V2 equipment (purple)'),
     ],
     [(y) => dot(g, [74, y], INK, 0.9), l('Jonction (raccordement)', 'Junction (connection)')],
   ];

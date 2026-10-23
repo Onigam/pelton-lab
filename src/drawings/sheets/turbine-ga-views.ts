@@ -1,19 +1,5 @@
 import { COLORS, W, type Pt, type Stroke, type View } from '../svg';
-import {
-  BASE,
-  BEAMS,
-  CX,
-  DRAIN_MM,
-  M,
-  PIPE,
-  pipe,
-  pipeBreak,
-  PROFILE,
-  R_TIP_MM,
-  SIDE,
-  SKID_MM,
-  SPEAR,
-} from './turbine-geom';
+import { BASE, CX, DRAIN_MM, M, PIPE, pipe, pipeBreak, PROFILE, R_TIP_MM, SIDE, SKID_MM, SPEAR } from './turbine-geom';
 
 // PL-T01, second part: top view (1:5) and installation elevation (1:20) with the bypass
 // branch. Geometry from the 3D model through turbine-geom.ts (mm).
@@ -24,7 +10,7 @@ const thin = (fill = PAPER): Stroke => ({ w: W.thin, fill });
 const med = (fill = PAPER): Stroke => ({ w: W.medium, fill });
 
 /** Top view (first-angle: below the front view, window side at the bottom). Model (x, −z). */
-export function topView(v: View, v2: boolean): void {
+export function topView(v: View): void {
   const P = (x: number, z: number): Pt => [x, -z];
   const z = M.pipeZ;
   v.rect(P(BASE.x0, BASE.z0), P(BASE.x1, BASE.z1), med());
@@ -34,13 +20,15 @@ export function topView(v: View, v2: boolean): void {
   v.rect(P(189, M.zBack - 13), P(211, M.zBack + 5), med());
   v.rect(P(194.5, M.zBack - 30), P(205.5, M.zBack - 13), med('#3a3f46'));
   // side injector flange / bayonet collar and wall plate (partly under the gooseneck)
-  const s = v2 ? SIDE.v2 : SIDE.v1;
-  if (v2) v.rect(P(SIDE.v2.collar[1], z - 48), P(SIDE.v2.collar[2], z + 48), med());
-  v.rect(P(SIDE.flangeX - s.flangeL / 2, z - s.flangeR), P(SIDE.flangeX + s.flangeL / 2, z + s.flangeR), med());
-  v.rect(P(M.x0 - 8, z - s.plate / 2), P(M.x0, z + s.plate / 2), med());
-  if (v2)
-    for (const wx of [M.x0 - 6, M.x1 + 6])
-      for (const zz of [-130, 130]) v.rect(P(wx - 3, zz - 15), P(wx + 3, zz + 15), thin());
+  v.rect(P(SIDE.collar[1], z - 48), P(SIDE.collar[2], z + 48), med());
+  v.rect(
+    P(SIDE.flangeX - SIDE.flangeL / 2, z - SIDE.flangeR),
+    P(SIDE.flangeX + SIDE.flangeL / 2, z + SIDE.flangeR),
+    med(),
+  );
+  v.rect(P(M.x0 - 8, z - SIDE.plate / 2), P(M.x0, z + SIDE.plate / 2), med());
+  for (const wx of [M.x0 - 6, M.x1 + 6])
+    for (const zz of [-130, 130]) v.rect(P(wx - 3, zz - 15), P(wx + 3, zz + 15), thin());
   // gooseneck seen from above (all pipes at z = pipeZ) and the spear injector on its roof flange
   const inl = SPEAR.inlet;
   pipe(v, [P(-490, z), P(inl.x - inl.len / 2, z)], PIPE.r50);
@@ -72,7 +60,7 @@ export function topView(v: View, v2: boolean): void {
 }
 
 /** Installation elevation 1:20: ground, stand, housing, manifold with bypass. Y from the ground. */
-export function installation(v: View, v2: boolean): void {
+export function installation(v: View): void {
   const Y = (y: number) => y + M.baseY;
   v.rect([-1400, -45], [580, 0], { w: 0, hatch: 'earth' });
   v.rect([-260, -210], [260, 0], { w: 0, fill: PAPER });
@@ -89,49 +77,39 @@ export function installation(v: View, v2: boolean): void {
   );
   v.rect([-258, -208], [258, -130], { w: W.thin, color: COLORS.water, fill: COLORS.waterFill });
   const dx = (DRAIN_MM.x0 + DRAIN_MM.x1) / 2;
-  if (v2) {
-    // aluminium skid (housing.ts buildSkid) + controller box
-    const top = SKID_MM.top;
-    const [xa, xb] = SKID_MM.xs;
-    const half = (xb - xa) / 2 + 40;
-    for (const x of [xa, xb]) {
-      v.rect([x - 20, 60], [x + 20, top], med());
-      v.rect([x - 6, 5], [x + 6, 60], thin());
-      v.rect([x - 40, 0], [x + 40, 12], thin('#555'));
-      v.rect([x - 18, top + 20], [x + 18, top + 30], thin('#555'));
-      v.circle([x, top + 35], 18, { w: W.thin });
-    }
-    v.rect([CX - half, top - 20], [CX + half, top + 20], med());
-    v.rect([CX - half, 230], [CX + half, 270], med());
-    v.polyline(
-      [
-        [xa + 20, 270],
-        [xa + 20, 294],
-        [xb - 20, top - 20],
-        [xb - 20, top - 44],
-      ],
-      { closed: true, ...thin() },
-    );
-    v.polyline(
-      [
-        [dx - 155.6, top - 20],
-        [dx + 155.6, top - 20],
-        [dx + 56.6, top - 200],
-        [dx - 56.6, top - 200],
-      ],
-      { closed: true, ...thin() },
-    );
-    v.roundRect([xb + 30, 430], [xb + 230, 690], 12, med('#e6e8ea'));
-    v.rect([xb - 20, 460], [xb + 40, 660], thin());
-  } else {
-    // folding trestles + two 75 × 150 beams (housing.ts buildTrestles)
-    const top = M.baseY - 150;
-    for (const s of [-1, 1]) v.rect([CX + s * 360 - 17.5, 0], [CX + s * 360 + 17.5, top - 20], med('#f1d4d1'));
-    v.rect([CX - 450, top - 40], [CX + 450, top], med('#f1d4d1'));
-    v.rect([CX - 375, 287.5], [CX + 375, 312.5], thin('#f1d4d1'));
-    for (const bx of BEAMS)
-      v.rect([bx - 37.5, top], [bx + 37.5, M.baseY], { w: W.medium, hatch: 'wood', fill: '#efe2cf' });
+  // aluminium skid (housing.ts buildSkid) + controller box
+  const top = SKID_MM.top;
+  const [xa, xb] = SKID_MM.xs;
+  const half = (xb - xa) / 2 + 40;
+  for (const x of [xa, xb]) {
+    v.rect([x - 20, 60], [x + 20, top], med());
+    v.rect([x - 6, 5], [x + 6, 60], thin());
+    v.rect([x - 40, 0], [x + 40, 12], thin('#555'));
+    v.rect([x - 18, top + 20], [x + 18, top + 30], thin('#555'));
+    v.circle([x, top + 35], 18, { w: W.thin });
   }
+  v.rect([CX - half, top - 20], [CX + half, top + 20], med());
+  v.rect([CX - half, 230], [CX + half, 270], med());
+  v.polyline(
+    [
+      [xa + 20, 270],
+      [xa + 20, 294],
+      [xb - 20, top - 20],
+      [xb - 20, top - 44],
+    ],
+    { closed: true, ...thin() },
+  );
+  v.polyline(
+    [
+      [dx - 155.6, top - 20],
+      [dx + 155.6, top - 20],
+      [dx + 56.6, top - 200],
+      [dx - 56.6, top - 200],
+    ],
+    { closed: true, ...thin() },
+  );
+  v.roundRect([xb + 30, 430], [xb + 230, 690], 12, med('#e6e8ea'));
+  v.rect([xb - 20, 460], [xb + 40, 660], thin());
   // machine: base funnel, base, housing, runner, injectors
   v.polyline(
     [
@@ -154,7 +132,7 @@ export function installation(v: View, v2: boolean): void {
   v.rect([x - SPEAR.bodyR, Y(SPEAR.bodyBot)], [x + SPEAR.bodyR, Y(SPEAR.bodyTop)], thin());
   v.line([x, Y(SPEAR.bodyTop)], [x, Y(wh.y)], { w: W.thin });
   v.rect([x - wh.r - wh.tube, Y(wh.y - wh.tube)], [x + wh.r + wh.tube, Y(wh.y + wh.tube)], thin('#f3d5d2'));
-  const sideL = v2 ? SIDE.v2.collar[1] : SIDE.flangeX - SIDE.v1.flangeL / 2;
+  const sideL = SIDE.collar[1];
   v.rect([sideL, Y(SIDE.y - 40)], [M.x0, Y(SIDE.y + 40)], thin());
   // manifold: HDPE Ø63 + compression coupling, main valve, gauge tee, bypass, reducer, cross
   const r63 = PIPE.r63;
@@ -223,11 +201,9 @@ export function installation(v: View, v2: boolean): void {
   const tv = PIPE.topValveY;
   v.rect([tx - 27, Y(tv - 58)], [tx + 27, Y(tv + 58)], thin('#e03131'));
   v.rect([PIPE.sideValveX - 58, Y(SIDE.y - 41)], [PIPE.sideValveX + 58, Y(SIDE.y + 41)], thin('#2b6cd1'));
-  if (v2) {
-    const [ax0, ay0] = PIPE.airValve;
-    v.rect([ax0 - 12, Y(ay0)], [ax0 + 12, Y(ay0 + 20)], thin());
-    v.rect([ax0 - 24, Y(ay0 + 20)], [ax0 + 24, Y(ay0 + 86)], thin('#e9d8a6'));
-  }
+  const [ax0, ay0] = PIPE.airValve;
+  v.rect([ax0 - 12, Y(ay0)], [ax0 + 12, Y(ay0 + 20)], thin());
+  v.rect([ax0 - 24, Y(ay0 + 20)], [ax0 + 24, Y(ay0 + 86)], thin('#e9d8a6'));
   pipeBreak(v, -1400, Y(M.inletY), r63);
   v.center([-250, Y(AX)], [250, Y(AX)]);
 }

@@ -6,7 +6,7 @@ import { canvasTexture, group, mesh } from '../util';
 import { D, profile, profileShape } from './dims';
 
 /**
- * V2 fail-safe jet deflector, one blade per jet on a shaft crossing the partition and the
+ * fail-safe jet deflector, one blade per jet on a shaft crossing the partition and the
  * rear panel. Angles in degrees (0 = +X, counter-clockwise seen from the front):
  * - top blade: hangs down when latched, swings up to +15° so the jet slides off towards the
  *   wall instead of reaching the buckets;
@@ -34,10 +34,7 @@ export const DEFLECTOR_PIVOTS = DEFLECTOR.pivots;
 /** Rear-panel vents (with washable air filters on the commercial model). */
 export const VENT = { round: [0.13, 0.13] as [number, number], r: 0.04, rect: [0.19, 0.05, 0.26, 0.11] };
 
-/** Wooden beams (V1) on both sides of the drain. */
-export const BEAMS_X = [-0.15 - 0.04, D.x1 - 0.057];
-
-/** V2 aluminium skid: leg positions. */
+/** Aluminium skid: leg positions. */
 export const SKID = { xs: [D.x0 + 0.03, D.x1 - 0.03], zs: [-0.24, 0.24] };
 
 /** Drain opening in the base, under the runner (wet chamber only). */
@@ -46,8 +43,8 @@ export const DRAIN = { x0: -0.15, x1: 0.15, z0: 0.03, z1: 0.17 };
 const CX = (D.x0 + D.x1) / 2;
 
 // Enclosure and support: base plate with drain, PMMA partition and window, EPDM gaskets,
-// vented rear panel, folded marine-aluminium cover; V1 trestles + beams, V2 aluminium
-// skid, toggle latches and the IP65 controller box.
+// vented rear panel, folded marine-aluminium cover, aluminium skid, toggle latches and the
+// IP65 controller box.
 
 export interface Housing {
   /** Meshes cut by the "housing" clipping plane in cutaway mode. */
@@ -114,7 +111,7 @@ function buildPartition(): THREE.Mesh {
   const hole = new THREE.Path();
   hole.absarc(0, D.axisY, 0.025, 0, Math.PI * 2, true);
   s.holes.push(hole);
-  // passages for the V2 deflector shafts (harmless on V1)
+  // passages for the deflector shafts
   for (const [x, y] of DEFLECTOR_PIVOTS) {
     const h = new THREE.Path();
     h.absarc(x, y, 0.007, 0, Math.PI * 2, true);
@@ -278,38 +275,6 @@ function buildCover(): THREE.Group {
   return g;
 }
 
-function buildTrestles(): THREE.Group {
-  const g = group('trestles');
-  const red = MAT.redPaint();
-  const top = D.baseY - 0.15;
-  for (const z of [-0.5, 0.5]) {
-    // top bar + 4 splayed legs (folding trestle)
-    g.add(mesh(new THREE.BoxGeometry(0.9, 0.04, 0.05), red, [CX, top - 0.02, z]));
-    for (const x of [CX - 0.36, CX + 0.36]) {
-      for (const s of [-1, 1]) {
-        const leg = new THREE.BoxGeometry(0.035, top, 0.035);
-        const l = mesh(leg, red, [x, top / 2 - 0.02, z + s * 0.1]);
-        l.rotation.x = s * 0.24;
-        g.add(l);
-      }
-    }
-    g.add(mesh(new THREE.BoxGeometry(0.75, 0.025, 0.02), red, [CX, 0.3, z + 0.07]));
-  }
-  // two wooden beams (madriers 75 × 150) across the trestles, under the base plate
-  const wood = MAT.wood();
-  // beams clear of the drain opening so the water falls freely between them
-  for (const x of BEAMS_X) {
-    g.add(mesh(new THREE.BoxGeometry(0.075, 0.15, 1.5), wood, [x, D.baseY - 0.075, 0]));
-  }
-  // lag screws holding the base
-  for (const x of BEAMS_X) {
-    for (const z of [-0.15, 0.15]) {
-      g.add(mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.006, 6), MAT.zinc(), [x, D.baseY + D.baseT + 0.003, z]));
-    }
-  }
-  return g;
-}
-
 function buildSkid(): THREE.Group {
   const g = group('skid');
   const alu = MAT.alu();
@@ -423,10 +388,9 @@ export function buildHousing(root: THREE.Object3D, machine: THREE.Object3D, reg:
   const latches = buildLatches();
   machine.add(base, partition, win, gaskets, rear, cover, latches);
 
-  const trestles = buildTrestles();
   const skid = buildSkid();
   const box = buildControllerBox();
-  root.add(trestles, skid, box.g);
+  root.add(skid, box.g);
 
   reg.add('base', base, new THREE.Vector3(0, 0, 0));
   reg.add('partition', partition, new THREE.Vector3(0, 0, 0.02));
@@ -438,7 +402,6 @@ export function buildHousing(root: THREE.Object3D, machine: THREE.Object3D, reg:
   reg.add('rear-panel', rear, new THREE.Vector3(0, 0, -0.72));
   reg.add('cover', cover, new THREE.Vector3(0, 0.58, 0));
   reg.add('latches', latches, new THREE.Vector3(0, 0.3, 0));
-  reg.add('trestles', trestles, new THREE.Vector3(0, 0, 0));
   reg.add('skid', skid, new THREE.Vector3(0, 0, 0));
   reg.add('controller-box', box.g, new THREE.Vector3(0.3, 0, 0));
 

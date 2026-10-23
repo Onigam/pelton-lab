@@ -21,7 +21,6 @@ const S = {
   modePlans: ['Plans', 'Drawings'],
   modeLessons: ['Leçons', 'Lessons'],
   modeParts: ['Pièces', 'Parts'],
-  modeUpgrades: ['Version pro', 'Pro version'],
   modeAbout: ['Sources', 'Sources'],
 
   // toolbar
@@ -51,11 +50,6 @@ const S = {
   ],
   assemble: ['Assembler', 'Assemble'],
   disassemble: ['Désassembler', 'Disassemble'],
-  version: ['Version', 'Version'],
-  v1: ['V1 prototype', 'V1 prototype'],
-  v2: ['V2 pro', 'V2 pro'],
-  v1Long: ['V1 — prototype de la vidéo', 'V1 — prototype from the video'],
-  v2Long: ['V2 — industrialisable, toujours DIY', 'V2 — industrialisable, still DIY'],
 
   // drawings
   plansTitle: ['Plans de conception', 'Design drawings'],
@@ -64,8 +58,8 @@ const S = {
     'Ten A3 sheets generated from the 3D model dimensions: general arrangements, sections, hydraulic and electrical diagrams, bill of materials. They are examples with indicative dimensions, alongside the maker data published by Hydronome.',
   ],
   plansHelp: [
-    'Molette ou pincer : zoomer · glisser : déplacer · double-clic : ajuster. Le bouton V1 / V2 en haut change la variante dessinée.',
-    'Wheel or pinch: zoom · drag: pan · double-click: fit. The V1 / V2 toggle at the top switches the drawn variant.',
+    'Molette ou pincer : zoomer · glisser : déplacer · double-clic : ajuster.',
+    'Wheel or pinch: zoom · drag: pan · double-click: fit.',
   ],
   groupTurbine: ['Turbine', 'Turbine'],
   groupHydraulic: ['Hydraulique', 'Hydraulics'],
@@ -89,7 +83,8 @@ const S = {
   overview: ['Aperçu', 'Overview'],
   specs: ['Caractéristiques', 'Specs'],
   maintenance: ['Entretien', 'Maintenance'],
-  upgrade: ['Version pro', 'Pro version'],
+  design: ['Conception', 'Design'],
+  valveClose: ['Fermeture de la vanne principale', 'Main valve closing time'],
   material: ['Matériau', 'Material'],
   quantity: ['Quantité', 'Quantity'],
   isolate: ['Isoler', 'Isolate'],
@@ -100,8 +95,6 @@ const S = {
   close: ['Fermer', 'Close'],
   noSelection: ['Cliquez une pièce ou une étiquette pour l’étudier.', 'Click a part or a label to study it.'],
   partsInScene: ['Pièces de cette vue', 'Parts in this view'],
-  onlyV1: ['V1 seulement', 'V1 only'],
-  onlyV2: ['V2 seulement', 'V2 only'],
   dimensions: ['Encombrement', 'Envelope'],
 
   // guide
@@ -119,7 +112,6 @@ const S = {
   autoFrame: ['Cadrage auto', 'Auto framing'],
   theBuild: ['Le montage', 'The build'],
   theInstall: ['L’installation', 'The installation'],
-  v2Callout: ['Version pro (V2)', 'Pro version (V2)'],
   assemblyTitle: ['Guide de montage', 'Assembly guide'],
   installTitle: ['Guide d’installation', 'Installation guide'],
 
@@ -150,14 +142,13 @@ const S = {
   mainValve: ['Vanne principale', 'Main valve'],
   open: ['Ouverte', 'Open'],
   closed: ['Fermée', 'Closed'],
-  slamShut: ['Fermer d’un coup', 'Slam shut'],
   bypassValve: ['Vanne de dérivation (purge)', 'Bypass valve (purge)'],
   topInjector: ['Injecteur à pointeau (haut)', 'Spear injector (top)'],
   sideInjector: ['Injecteur fixe (côté)', 'Fixed nozzle (side)'],
   spear: ['Ouverture pointeau', 'Spear opening'],
   nozzle: ['Buse', 'Nozzle'],
   buckets: ['Augets', 'Buckets'],
-  bucketsS: ['S (jet Ø6, prototype)', 'S (Ø6 jet, prototype)'],
+  bucketsS: ['S (jet Ø6)', 'S (Ø6 jet)'],
   bucketsL: ['L (jets Ø8–14)', 'L (Ø8–14 jets)'],
   wear: ['Roulements usés', 'Worn bearings'],
   ctrlMode: ['Régulation', 'Regulation'],
@@ -290,17 +281,6 @@ const S = {
   catElectrical: ['Électrique', 'Electrical'],
   catStructure: ['Structure', 'Structure'],
   catSite: ['Site', 'Site'],
-
-  // upgrades
-  upgradesTitle: ['De prototype à produit', 'From prototype to product'],
-  upgradesIntro: [
-    'Notre proposition de V2 : plus fiable, plus rapide à monter et à entretenir, plus sûre — sans quitter l’atelier du maker. Cliquez une ligne pour voir les pièces concernées.',
-    'Our V2 proposal: more reliable, faster to build and maintain, safer — without leaving the maker’s workshop. Click a row to see the parts involved.',
-  ],
-  colV1: ['V1 prototype', 'V1 prototype'],
-  colV2: ['V2 proposée', 'V2 proposal'],
-  colBenefit: ['Gain', 'Benefit'],
-  colDiy: ['Reste DIY', 'Stays DIY'],
 
   // about
   aboutTitle: ['Sources & crédits', 'Sources & credits'],

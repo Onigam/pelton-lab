@@ -108,7 +108,6 @@ function emptyState(): SimState {
     etaTurbine: 0,
     overspeed: false,
     bucketSet: 'S',
-    version: 'v2',
     deflector: 0,
     emf: 0,
     vTurbine: 0,
@@ -227,16 +226,13 @@ export class SimEngine {
   }
 
   applyPreset(id: PresetId): void {
-    const version = this.params.version;
     this.params = presetParams(id);
-    this.params.version = version;
-    if (version === 'v2') this.params.valveCloseTime = 20;
     this.reset();
   }
 
-  /** V2: trip the jet deflector as a fault would; it re-arms by itself a few seconds later. */
+  /** Trip the jet deflector as a fault would; it re-arms by itself a few seconds later. */
   testDeflector(): void {
-    if (this.params.version === 'v2') this.deflectTimer = 8;
+    this.deflectTimer = 8;
   }
 
   applyScenario(id: ScenarioId): void {
@@ -248,7 +244,6 @@ export class SimEngine {
   /** Change params live (no reset). */
   set(patch: Partial<SimParams>): void {
     Object.assign(this.params, patch);
-    if (patch.version) this.params.valveCloseTime = patch.version === 'v2' ? 20 : 1;
     this.syncStatic();
     this.emit();
   }
@@ -264,7 +259,6 @@ export class SimEngine {
     s.running = p.running;
     s.screenClog = p.screenClog;
     s.bucketSet = p.bucketSet;
-    s.version = p.version;
     s.ctrlMode = p.ctrlMode;
     s.vSet = p.ctrlMode === 'mppt' ? this.mppt.v : p.vSet;
     s.dumpEnabled = p.dumpEnabled;
@@ -286,7 +280,7 @@ export class SimEngine {
     const dSide = p.side.d;
     const vf = (pos: number) => Math.pow(Math.max(0, pos), 1.5);
     const top = p.top.enabled ? nozzleArea(dTop, 0.95) * vf(this.topPos) : 0;
-    const side = p.side.enabled ? nozzleArea(dSide, p.version === 'v2' ? 0.97 : 0.96) * vf(this.sidePos) : 0;
+    const side = p.side.enabled ? nozzleArea(dSide, 0.97) * vf(this.sidePos) : 0;
     return { top, side, dTop, dSide };
   }
 
@@ -372,7 +366,7 @@ export class SimEngine {
     // matchedBuckets: assume a runner designed for this jet (sizing curves), else the mounted set
     const etaB = matchedBuckets ? bucketEfficiency(10, 'L') : bucketEfficiency(dJet, p.bucketSet);
     const tHyd = jetTorque(q, vJet, u, R_PITCH, etaB);
-    const pShaft = Math.max(0, (tHyd - frictionTorque(omega, p.bearingWear, p.version === 'v2')) * omega);
+    const pShaft = Math.max(0, (tHyd - frictionTorque(omega, p.bearingWear)) * omega);
     // generator + cable + controller
     const k = this.kHV();
     const e = p.ke * k * omega;
@@ -400,7 +394,7 @@ export class SimEngine {
   /** Steady flow (L/s) through a single nozzle of diameter dMm on the current penstock. */
   nozzleFlow(dMm: number): number {
     const p = this.params;
-    const an = nozzleArea(dMm, p.version === 'v2' ? 0.97 : 0.96);
+    const an = nozzleArea(dMm, 0.97);
     const d = p.pipeDiam / 1000;
     const ap = (Math.PI * d * d) / 4;
     let lo = 0;
@@ -454,7 +448,7 @@ export class SimEngine {
       for (const n of s.nozzles) {
         if (n.q > 0) t += jetTorque(n.q / 1000, v, w * R_PITCH, R_PITCH, bucketEfficiency(n.d, s.bucketSet));
       }
-      t -= frictionTorque(w, this.params.bearingWear, this.params.version === 'v2');
+      t -= frictionTorque(w, this.params.bearingWear);
       out.push([(w * 60) / (2 * Math.PI), Math.max(0, t * w)]);
     }
     return out;
@@ -480,7 +474,7 @@ export class SimEngine {
         }
         const { i, e } = this.current(w, s.vBatt, vs);
         const te = w > 0.5 ? (e * i + K_IRON * w * w) / w : 0;
-        const net = th - te - frictionTorque(w, this.params.bearingWear, this.params.version === 'v2');
+        const net = th - te - frictionTorque(w, this.params.bearingWear);
         if (net > 0) lo = w;
         else hi = w;
       }
@@ -575,7 +569,7 @@ export class SimEngine {
     if (this.buffer <= 0) {
       this.buffer = 0;
       // the pipe drains faster than the intake fills: air is sucked in, the head collapses
-      this.airTimer = p.version === 'v2' ? 6 : 25;
+      this.airTimer = 6;
       this.airFactor = Math.max(0.15, this.airFactor - 1.5 * h * ((q1 - captured) / Math.max(q1, 1e-4)));
     } else if (this.buffer > 0.02 * INTAKE_VOLUME) {
       this.airTimer = Math.max(0, this.airTimer - h);
@@ -585,7 +579,7 @@ export class SimEngine {
     // --- runner mechanics
     const omega = this.omega;
     const u = omega * R_PITCH;
-    const jetOn = 1 - (p.version === 'v2' ? s.deflector : 0);
+    const jetOn = 1 - s.deflector;
     const qTop = an > 0 ? (q1 * noz.top) / an : 0;
     const qSide = an > 0 ? (q1 * noz.side) / an : 0;
     const tHyd =
@@ -597,7 +591,7 @@ export class SimEngine {
     const el = this.current(omega, s.vBatt, vCtrl);
     const pIron = K_IRON * omega * omega;
     const tEl = omega > 0.5 ? (el.e * el.i + pIron) / omega : 0;
-    const tFr = frictionTorque(omega, p.bearingWear, p.version === 'v2');
+    const tFr = frictionTorque(omega, p.bearingWear);
     this.omega = Math.max(0, omega + (h * (tHyd - tEl - tFr)) / INERTIA);
     s.angle = (s.angle + this.omega * h * p.slowMo) % (Math.PI * 2000);
 
@@ -616,16 +610,14 @@ export class SimEngine {
       this.mppt.v = p.vSet;
     }
 
-    // --- V2 deflector: trips on load loss / overspeed, resets 20 s after
-    if (p.version === 'v2') {
+    // --- jet deflector: trips on load loss / overspeed, resets 20 s after
+    {
       const rpm = (this.omega * 60) / (2 * Math.PI);
       const trip = s.bmsOpen || (rpm > 1.3 * this.rpmOptimal() && this.rpmOptimal() > 50);
       if (trip) this.deflectTimer = 20;
       else this.deflectTimer = Math.max(0, this.deflectTimer - h);
       const target = this.deflectTimer > 0 ? 1 : 0;
       s.deflector = Math.min(1, Math.max(0, s.deflector + (target ? 3 : -0.5) * h));
-    } else {
-      s.deflector = 0;
     }
 
     // --- publish

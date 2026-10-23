@@ -38,10 +38,10 @@ design drawings. The app is bilingual (English / French) and works on mobile.
   - 26-bucket Pelton runner (double cup, central splitter, notch) and stainless shaft;
   - 6204-2RS bearings (balls visible in section) and lip seal;
   - outer-rotor PM generator (laminated 12-tooth wound stator, 14 N52 magnets) and rectifier;
-  - spear and fixed injectors, gooseneck manifold, valves, bypass valve and a live pressure gauge.
+  - spear injector and quick-change side injector, gooseneck manifold, valves, bypass valve and a live pressure gauge.
 
-  Water jets and spray are particles. On the V2, the fail-safe **jet deflectors** are driven by a real linkage behind
-  the rear panel: levers, link rod, tension spring and 12 V latch.
+  Water jets and spray are particles. The fail-safe **jet deflectors** are driven by a real linkage behind the rear
+  panel: levers, link rod, tension spring and 12 V latch.
 
 - **Power room**: 48 V LiFePO4 bank, inverter/charger, solar MPPT, fixed-voltage hydro controller, dump load with
   glowing resistors, DC/AC protections, live monitoring display, wiring.
@@ -49,17 +49,17 @@ design drawings. The app is bilingual (English / French) and works on mobile.
 ### Modes
 
 - **Explore**: overview of the whole device, then click a part or a label to open its sheet (overview, specs,
-  maintenance, pro version, timestamped link to the video). **Isolate** it (or double-click), **frame** it, progressive
+  maintenance, design notes, timestamped link to the video). **Isolate** it (or double-click), **frame** it, progressive
   **exploded view**, **x-ray**, **section view** (housing, bearings and injectors cut open) and animated flows. The side
   panel can be hidden for a full-width 3D view, widened by dragging its edge, or switched to a full-width reading mode.
 - **Assembly**: 19 step-by-step stages. Parts fly into place one by one over a wireframe ghost of the finished machine,
-  with tools, tightening torques, warnings and the **V2 pro** variant of each step.
+  with tools, tightening torques and warnings.
 - **Installation**: 10 steps on site, from measuring head and flow to commissioning.
 - **Simulation**: real-time physics model covering:
   - the penstock (Darcy–Weisbach) and **water hammer** (rigid water column + Joukowsky);
   - injectors, Pelton torque, generator and cable;
   - control: fixed voltage, classic MPPT or battery-direct;
-  - batteries, PV, household loads, **dump load** and the V2 deflector.
+  - batteries, PV, household loads, **dump load** and the jet deflector.
 
   It comes with 8 scenarios: dry intake, clogged screen, water hammer, hunting MPPT, failed dump load (runaway), 400 m
   cable (48 V vs 200 V), winter night and dry summer. Charts show 60 s dynamics, the runner power curve, 24 h power, state
@@ -85,12 +85,6 @@ design drawings. The app is bilingual (English / French) and works on mobile.
 
 - **Lessons**: 14 short lessons with key figures, formulas, a quiz and a matching scenario.
 - **Parts**: filterable catalogue of every part (turbine, site, power room).
-- **Pro version**: **V1 prototype ↔ V2 industrialisable-yet-DIY**. The V2 adds:
-  - an extruded-profile skid and a bearing cartridge;
-  - quick-change nozzles and a matched bucket set;
-  - a **safety jet deflector** (with a “test the trip” button);
-  - toggle latches, sensors and telemetry, an IP65 box;
-  - an air-release valve and a slow-closing valve.
 
 The simulation reproduces the figures from the video: site A (76 m head, Ø55 pipe, 350 m, 6 mm nozzle) ≈ 1.05 L/s and
 ≈ 500 W at ≈ 1 700 rpm; 8 mm nozzle ≈ 1.8 L/s; site B (21 m) ≈ 250 W in winter and ≈ 100 W at 0.75 L/s.
@@ -111,7 +105,7 @@ production on Vercel, and `.github/workflows/deploy.yml` publishes the GitHub Pa
   section planes). `src/three/turbine/dims.ts` is the single source of truth for the turbine geometry.
 - `src/sim/`: physics engine, presets and scenarios.
 - `src/drawings/`: SVG drawing kit and the 10 sheets, built from the same dimensions as the 3D model.
-- `src/data/`: bilingual content (parts, assembly and installation guides, lessons, pro version).
+- `src/data/`: bilingual content (parts, assembly and installation guides, lessons).
 - `src/ui/`: application shell, panels and drawing viewer. UI strings live in `src/i18n/ui.ts`.
 
 ## Regulations
@@ -161,9 +155,9 @@ et on consulte les plans de conception. L'interface est bilingue (français / an
   - roue Pelton à 26 augets (double cuillère, arête centrale, échancrure) et arbre inox ;
   - roulements 6204-2RS (billes visibles en coupe) et joint à lèvre ;
   - génératrice à rotor extérieur (stator feuilleté 12 dents bobiné, 14 aimants N52) et redresseur ;
-  - injecteurs à pointeau et à buse fixe, col de cygne, vannes, vanne de dérivation et manomètre animé.
+  - injecteur à pointeau et injecteur latéral à buses interchangeables, col de cygne, vannes, vanne de dérivation et manomètre animé.
 
-  Les jets et les gerbes d'eau sont en particules. En V2, les **déflecteurs de jet** de sécurité sont actionnés par une
+  Les jets et les gerbes d'eau sont en particules. Les **déflecteurs de jet** de sécurité sont actionnés par une
   vraie tringlerie derrière le flasque arrière : leviers, biellette, ressort de traction et gâche 12 V.
 
 - **Local technique** : batteries LiFePO4 48 V, onduleur-chargeur, régulateur solaire MPPT, régulateur hydro à tension
@@ -172,18 +166,18 @@ et on consulte les plans de conception. L'interface est bilingue (français / an
 #### Modes
 
 - **Explorer** : vue d'ensemble de tout le dispositif, puis clic sur une pièce ou une étiquette pour ouvrir sa fiche
-  (aperçu, caractéristiques, entretien, version pro, lien horodaté vers la vidéo). On peut **isoler** (ou double-clic),
+  (aperçu, caractéristiques, entretien, notes de conception, lien horodaté vers la vidéo). On peut **isoler** (ou double-clic),
   **centrer**, **éclater** progressivement, passer en **transparence**, en **coupe** (carter, roulements et injecteurs
   ouverts) et afficher les flux animés. Le panneau latéral se masque pour une 3D pleine largeur, s'élargit en glissant
   son bord ou passe en mode lecture pleine largeur.
 - **Montage** : guide pas à pas en 19 étapes. Les pièces arrivent en place une à une sur le fantôme filaire de la
-  machine finie, avec outils, couples de serrage, mises en garde et la variante **V2 pro** de chaque étape.
+  machine finie, avec outils, couples de serrage et mises en garde.
 - **Installation** : 10 étapes sur le site, du relevé de chute et de débit à la mise en service.
 - **Simulation** : modèle physique temps réel qui couvre :
   - la conduite (Darcy–Weisbach) et le **coup de bélier** (colonne d'eau + Joukowsky) ;
   - les injecteurs, le couple Pelton, la génératrice et le câble ;
   - la régulation : tension fixe, MPPT classique ou direct batterie ;
-  - les batteries, le solaire, la consommation, le **délestage** et le déflecteur V2.
+  - les batteries, le solaire, la consommation, le **délestage** et le déflecteur de jet.
 
   Huit scénarios : prise d'eau à sec, grille colmatée, coup de bélier, MPPT qui pompe, délesteur en panne (emballement),
   câble de 400 m (48 V contre 200 V), nuit d'hiver et été à sec. Les graphiques montrent la dynamique sur 60 s, la courbe
@@ -211,12 +205,6 @@ et on consulte les plans de conception. L'interface est bilingue (français / an
 
 - **Leçons** : 14 leçons courtes avec chiffres clés, formules, quiz et scénario associé.
 - **Pièces** : catalogue filtrable de toutes les pièces (turbine, site, local technique).
-- **Version pro** : comparatif **V1 prototype ↔ V2 industrialisable mais toujours DIY**. La V2 ajoute :
-  - un châssis en profilés et une cartouche de palier ;
-  - des buses interchangeables et un jeu d'augets adapté ;
-  - un **déflecteur de jet de sécurité** (avec un bouton « tester le déclenchement ») ;
-  - des grenouillères, des capteurs et de la télémétrie, un coffret IP65 ;
-  - une ventouse et une vanne à fermeture lente.
 
 La simulation reproduit les chiffres du reportage : site A (76 m de chute, conduite Ø55 de 350 m, buse de 6 mm)
 ≈ 1,05 L/s et ≈ 500 W à ≈ 1 700 tr/min ; buse de 8 mm ≈ 1,8 L/s ; site B (21 m) ≈ 250 W en hiver et ≈ 100 W à
@@ -238,7 +226,7 @@ déployé en production sur Vercel, et `.github/workflows/deploy.yml` publie le 
   coupe). `src/three/turbine/dims.ts` est la source unique des cotes de la turbine.
 - `src/sim/` : moteur physique, préréglages et scénarios.
 - `src/drawings/` : kit de dessin SVG et les 10 planches, construites à partir des mêmes cotes que le modèle 3D.
-- `src/data/` : contenus bilingues (pièces, guides de montage et d'installation, leçons, version pro).
+- `src/data/` : contenus bilingues (pièces, guides de montage et d'installation, leçons).
 - `src/ui/` : interface, panneaux et visionneuse de plans. Les textes de l'interface sont dans `src/i18n/ui.ts`.
 
 ### Réglementation

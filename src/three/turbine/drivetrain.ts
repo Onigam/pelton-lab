@@ -4,8 +4,8 @@ import type { PartRegistry } from '../registry';
 import { group, mesh } from '../util';
 import { D } from './dims';
 
-// Shaft line: stainless shaft, three 6204-2RS bearings, lip seal, and either the printed
-// bearing housing (V1 prototype) or the machined bearing cartridge (V2).
+// Shaft line: stainless shaft, three 6204-2RS bearings, lip seal and the machined bearing
+// cartridge.
 
 /** Lathe a closed (r, z) profile around the Z axis. */
 function lathe(points: [number, number][], material: THREE.Material, segments = 48): THREE.Mesh {
@@ -159,52 +159,7 @@ export function buildBearings(machine: THREE.Object3D, reg: PartRegistry): void 
   const b3 = bearing6204();
   b3.position.set(0, y, zB3);
 
-  // --- V1: printed bearing housing (PETG-CF): square flange bolted on the partition + long tube
-  const block = group('bearing-block');
-  {
-    const flange = new THREE.Shape();
-    const s = 0.06;
-    flange.moveTo(-s, -s);
-    flange.lineTo(s, -s);
-    flange.lineTo(s, s);
-    flange.lineTo(-s, s);
-    flange.lineTo(-s, -s);
-    const hole = new THREE.Path();
-    hole.absarc(0, 0, 0.024, 0, Math.PI * 2, true);
-    flange.holes.push(hole);
-    const geo = new THREE.ExtrudeGeometry(flange, {
-      depth: 0.012,
-      bevelEnabled: true,
-      bevelSize: 0.002,
-      bevelThickness: 0.002,
-      bevelSegments: 2,
-    });
-    block.add(mesh(geo, MAT.printBlack(), [0, y, zPartDry - 0.014]));
-    // tube with stiffening ribs
-    block.add(ring(0.0235, 0.034, zB2 - 0.009, zPartDry - 0.012, MAT.printBlack(), 40));
-    for (let i = 0; i < 4; i++) {
-      const rib = new THREE.BoxGeometry(0.004, 0.026, 0.07);
-      const r = mesh(rib, MAT.printBlack());
-      const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
-      r.position.set(Math.cos(a) * 0.045, y + Math.sin(a) * 0.045, zPartDry - 0.05);
-      r.rotation.z = a + Math.PI / 2;
-      block.add(r);
-    }
-    // 4 M6 bolts through the partition
-    const bolt = new THREE.CylinderGeometry(0.005, 0.005, 0.005, 6);
-    bolt.rotateX(Math.PI / 2);
-    for (const [bx, by] of [
-      [-0.045, -0.045],
-      [0.045, -0.045],
-      [0.045, 0.045],
-      [-0.045, 0.045],
-    ]) {
-      block.add(mesh(bolt, MAT.inox(), [bx, y + by, zPartDry - 0.019]));
-    }
-  }
-  machine.add(block);
-
-  // --- V2: machined aluminium cartridge with round flange, grease nipple and V-ring slinger
+  // machined aluminium cartridge with round flange, grease nipple and V-ring slinger
   const cart = group('bearing-cartridge');
   {
     cart.add(
@@ -244,11 +199,9 @@ export function buildBearings(machine: THREE.Object3D, reg: PartRegistry): void 
   machine.add(cart);
 
   // the lathe helpers are centred on the axis at y = 0: shift them up
-  for (const g of [block, cart]) {
-    g.children.forEach((c) => {
-      if ((c as THREE.Mesh).geometry instanceof THREE.LatheGeometry && c.position.y === 0) c.position.y = y;
-    });
-  }
+  cart.children.forEach((c) => {
+    if ((c as THREE.Mesh).geometry instanceof THREE.LatheGeometry && c.position.y === 0) c.position.y = y;
+  });
 
   machine.add(b1, b2, b3);
 
@@ -261,6 +214,5 @@ export function buildBearings(machine: THREE.Object3D, reg: PartRegistry): void 
   reg.add('bearing-2', b2, new THREE.Vector3(0, 0.0, -0.3));
   reg.add('bearing-3', b3, new THREE.Vector3(0, 0, -0.3));
   reg.add('seal', seal, new THREE.Vector3(0, 0, 0.2));
-  reg.add('bearing-block', block, new THREE.Vector3(0, -0.0, -0.42));
   reg.add('bearing-cartridge', cart, new THREE.Vector3(0, 0, -0.42));
 }

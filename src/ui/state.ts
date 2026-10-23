@@ -3,7 +3,7 @@ import type { SceneId } from '../three/types';
 // UI state shared by every panel. A tiny observable store; the 3D display logic and
 // the panels read from it, controls write to it.
 
-export type Mode = 'explore' | 'assembly' | 'install' | 'sim' | 'plans' | 'lessons' | 'parts' | 'upgrades' | 'about';
+export type Mode = 'explore' | 'assembly' | 'install' | 'sim' | 'plans' | 'lessons' | 'parts' | 'about';
 
 export interface UiState {
   scene: SceneId;
@@ -21,7 +21,6 @@ export interface UiState {
   ghost: boolean;
   autoFrame: boolean;
   lesson: string | null;
-  upgrade: string | null;
   /** Mobile: bottom sheet expanded. */
   sheet: boolean;
   /** Desktop: side panel shown (hide it to give the whole width to the 3D view). */
@@ -63,7 +62,6 @@ export const store = new Store({
   ghost: true,
   autoFrame: true,
   lesson: null,
-  upgrade: null,
   sheet: false,
   panelOpen: true,
   drawing: null,

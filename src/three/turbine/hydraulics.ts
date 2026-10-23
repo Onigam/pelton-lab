@@ -7,7 +7,7 @@ import { DEFLECTOR } from './housing';
 
 // Water side of the machine: HDPE inlet + compression fitting, main ball valve, gauge tee,
 // manifold (gooseneck to the top spear injector, lower branch to the side nozzle),
-// branch valves, injectors, and the V2 extras (quick-change nozzle, jet deflector, air valve).
+// branch valves, injectors with a quick-change side nozzle, jet deflector, air-release valve and sensors.
 
 const R63 = 0.0315;
 const R50 = 0.025;
@@ -18,7 +18,7 @@ export const RISER_TOP = 0.6;
 export const TOP_INLET_Y = D.roof + 0.1;
 
 export interface Hydraulics {
-  mainLever: THREE.Object3D;
+  mainHandwheel: THREE.Object3D;
   bypassLever: THREE.Object3D;
   topLever: THREE.Object3D;
   sideLever: THREE.Object3D;
@@ -28,7 +28,6 @@ export interface Hydraulics {
   /** Put the deflector linkage at e (0 latched .. 1 tripped). */
   setDeflector: (e: number) => void;
   insertRing: THREE.MeshStandardMaterial;
-  sideInsertRing: THREE.MeshStandardMaterial;
   transducerLed: THREE.MeshStandardMaterial;
   /** Meshes cut by the "pipe" clipping plane in cutaway mode. */
   pipeCut: THREE.Object3D[];
@@ -49,6 +48,7 @@ function ballValve(
   lever: THREE.Material,
   axis: 'x' | 'y',
   bodyMat = MAT.pvcGrey(),
+  gear = false,
 ): { g: THREE.Group; pivot: THREE.Group } {
   const g = group('ball-valve');
   const cyl = axis === 'x' ? cylX : cylY;
@@ -67,9 +67,26 @@ function ballValve(
   const stem = new THREE.CylinderGeometry(0.008, 0.008, 0.02, 12);
   stem.rotateX(Math.PI / 2);
   pivot.add(mesh(stem, MAT.pvcDark(), [0, 0, -0.008]));
-  const handle = new THREE.BoxGeometry(0.15, 0.022, 0.012);
-  handle.translate(0.06, 0, 0.006);
-  pivot.add(mesh(handle, lever));
+  if (gear) {
+    // gear-operated: a fixed reducer housing on the stem and a handwheel that turns with it
+    g.add(mesh(new THREE.BoxGeometry(0.07, 0.07, 0.05), MAT.pvcDark(), [0, 0, 0.07]));
+    pivot.add(
+      mesh(new THREE.CylinderGeometry(0.007, 0.007, 0.034, 12).rotateX(Math.PI / 2), MAT.inox(), [0, 0, 0.045]),
+    );
+    const wheel = group('handwheel', [0, 0, 0.065]);
+    wheel.add(mesh(new THREE.TorusGeometry(0.055, 0.006, 8, 32), lever));
+    wheel.add(mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.014, 16).rotateX(Math.PI / 2), lever));
+    for (let i = 0; i < 4; i++) {
+      const spoke = mesh(new THREE.BoxGeometry(0.11, 0.008, 0.008), lever);
+      spoke.rotation.z = (i * Math.PI) / 4;
+      wheel.add(spoke);
+    }
+    pivot.add(wheel);
+  } else {
+    const handle = new THREE.BoxGeometry(0.15, 0.022, 0.012);
+    handle.translate(0.06, 0, 0.006);
+    pivot.add(mesh(handle, lever));
+  }
   if (axis === 'y') pivot.rotation.z = Math.PI / 2;
   g.add(pivot);
   return { g, pivot };
@@ -297,8 +314,8 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   }
   machine.add(pen);
 
-  // --- main ball valve (blue lever)
-  const main = ballValve(MAT.pvcBlue(), 'x');
+  // --- main valve: gear-operated, about 20 handwheel turns from open to closed
+  const main = ballValve(MAT.pvcBlue(), 'x', MAT.pvcGrey(), true);
   main.g.position.set(-0.97, Y, Z);
   machine.add(main.g);
   pipeCut.push(main.g);
@@ -456,28 +473,12 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   machine.add(injTop);
   pipeCut.push(injTop);
 
-  // --- V1 side injector: 3D-printed fixed nozzle (dark grey) bolted on the left wall
-  const injSide = group('injector-side');
-  const grey3d = MAT.printGrey();
-  injSide.add(cylX(0.04, 0.012, grey3d, -0.416, D.sideJetY, Z, 40));
-  // body from the flange (x = -0.41) to the nozzle tip, narrowing towards the runner
-  const bodyLen = D.sideNozzleX + 0.41;
-  const sideCone = new THREE.CylinderGeometry(0.011, 0.026, bodyLen, 40);
-  sideCone.rotateZ(-Math.PI / 2);
-  injSide.add(mesh(sideCone, grey3d, [(-0.41 + D.sideNozzleX) / 2, D.sideJetY, Z]));
-  injSide.add(mesh(new THREE.BoxGeometry(0.008, 0.09, 0.09), grey3d, [D.x0 - 0.004, D.sideJetY, Z]));
-  const sideInsertRing = new THREE.MeshStandardMaterial({ color: 0x6b7178, roughness: 0.5 });
-  injSide.add(cylX(0.012, 0.006, sideInsertRing, D.sideNozzleX - 0.003, D.sideJetY, Z, 24));
-  for (let i = 0; i < 4; i++) {
-    const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
-    injSide.add(cylX(0.004, 0.008, MAT.inox(), -0.426, D.sideJetY + Math.cos(a) * 0.03, Z + Math.sin(a) * 0.03, 6));
-  }
-  machine.add(injSide);
-
-  // --- V2 side injector: aluminium lance with bayonet quick-change nozzle inserts (colour coded)
+  // --- side injector: aluminium lance with bayonet quick-change nozzle inserts (colour coded)
   const injQuick = group('injector-quick');
   const alu = MAT.alu();
   injQuick.add(cylX(0.042, 0.014, alu, -0.416, D.sideJetY, Z, 40));
+  // body from the flange (x = -0.41) to the nozzle tip, narrowing towards the runner
+  const bodyLen = D.sideNozzleX + 0.41;
   const lance = new THREE.CylinderGeometry(0.014, 0.024, bodyLen, 40);
   lance.rotateZ(-Math.PI / 2);
   injQuick.add(mesh(lance, alu, [(-0.41 + D.sideNozzleX) / 2, D.sideJetY, Z]));
@@ -491,14 +492,14 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   injQuick.add(mesh(new THREE.BoxGeometry(0.008, 0.1, 0.1), alu, [D.x0 - 0.004, D.sideJetY, Z]));
   machine.add(injQuick);
 
-  // --- V2 jet deflectors (fail-safe): two blades on shafts; outside the rear panel, a lever
+  // --- jet deflectors (fail-safe): two blades on shafts; outside the rear panel, a lever
   // on each shaft, a link rod, a tension spring pulling towards "tripped" and a solenoid
   // latch holding the linkage while it is powered
   const defl = group('deflector');
   const setDeflector = buildDeflector(defl);
   machine.add(defl);
 
-  // --- V2 automatic air-release valve on the high point of the gooseneck
+  // --- automatic air-release valve on the high point of the gooseneck
   const air = group('air-valve', [-0.46, RISER_TOP + R50, Z]);
   air.add(cylY(0.012, 0.02, MAT.brass(), 0, 0.01, 0, 6));
   air.add(cylY(0.022, 0.05, MAT.brass(), 0, 0.045, 0, 32));
@@ -506,7 +507,7 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   air.add(cylY(0.003, 0.012, MAT.inox(), 0, 0.087, 0, 8));
   machine.add(air);
 
-  // --- V2 pressure transducer (4–20 mA) on the gauge tee, facing the back
+  // --- pressure transducer (4–20 mA) on the gauge tee, facing the back
   const tx = group('pressure-transducer', [-0.82, Y, Z - 0.05]);
   const txBody = new THREE.CylinderGeometry(0.011, 0.011, 0.05, 24);
   txBody.rotateX(Math.PI / 2);
@@ -525,13 +526,12 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
   reg.add('valve-branch', valves, new THREE.Vector3(-0.32, 0.36, 0.16));
   reg.add('gauge', gauge, new THREE.Vector3(-0.3, 0.62, 0));
   reg.add('injector-top', injTop, new THREE.Vector3(0, 0.78, 0));
-  reg.add('injector-side', injSide, new THREE.Vector3(-0.42, 0, 0));
   reg.add('injector-quick', injQuick, new THREE.Vector3(-0.42, 0, 0));
   reg.add('deflector', defl, new THREE.Vector3(0, 0.12, 0.45));
   reg.add('air-valve', air, new THREE.Vector3(-0.3, 0.7, 0));
 
   return {
-    mainLever: main.pivot,
+    mainHandwheel: main.pivot,
     bypassLever: bp.pivot,
     topLever: top.pivot,
     sideLever: side.pivot,
@@ -540,7 +540,6 @@ export function buildHydraulics(machine: THREE.Object3D, sensors: THREE.Group, r
     gaugeNeedle,
     setDeflector,
     insertRing,
-    sideInsertRing,
     transducerLed,
     pipeCut,
   };

@@ -4,14 +4,13 @@ import type { PartInfo } from '../../data/types';
 import { tr } from '../../i18n';
 import { t, type UiKey } from '../../i18n/ui';
 import { sheetsForPart } from '../../drawings';
-import { inVersion } from '../../three/turbine';
 import type { SceneId } from '../../three/types';
 import { partInfo, videoUrl, type AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
 // Explore mode: part sheet (Learn-Arduino-like tabs) or scene overview when nothing is selected.
 
-type Tab = 'overview' | 'specs' | 'maintenance' | 'upgrade';
+type Tab = 'overview' | 'specs' | 'maintenance' | 'design';
 
 /** Site parts that have their own detailed 3D view. */
 const DETAIL_VIEW: Record<string, { scene: SceneId; label: UiKey }> = {
@@ -48,8 +47,8 @@ const SCENE_TEXT = {
   turbine: {
     title: { fr: 'La micro-turbine Pelton', en: 'The Pelton micro-turbine' },
     text: {
-      fr: 'Une chambre **humide** où le jet frappe les augets de la roue, une **cloison étanche** en PMMA, et une chambre **sèche** où la génératrice à aimants produit le courant. Carter (574 × 328 × 402 mm) et roue (26 augets, Ø244) reprennent les cotes publiées par le constructeur. Basculez V1 / V2 pour comparer le prototype de la vidéo à notre version industrialisable.',
-      en: 'A **wet** chamber where the jet hits the runner buckets, a PMMA **watertight partition**, and a **dry** chamber where the magnet generator makes the current. Housing (574 × 328 × 402 mm) and runner (26 buckets, Ø244) follow the maker’s published dimensions. Toggle V1 / V2 to compare the prototype from the video with our industrialisable version.',
+      fr: 'Une chambre **humide** où le jet frappe les augets de la roue, une **cloison étanche** en PMMA, et une chambre **sèche** où la génératrice à aimants produit le courant. Carter (574 × 328 × 402 mm) et roue (26 augets, Ø244) reprennent les cotes publiées par le constructeur.',
+      en: 'A **wet** chamber where the jet hits the runner buckets, a PMMA **watertight partition**, and a **dry** chamber where the magnet generator makes the current. Housing (574 × 328 × 402 mm) and runner (26 buckets, Ø244) follow the maker’s published dimensions.',
     },
   },
   techroom: {
@@ -66,8 +65,6 @@ function chips(info: PartInfo): HTMLElement {
     'div',
     { class: 'chips' },
     h('span', { class: `chip chip--${info.category}` }, t(CAT_KEY[info.category])),
-    info.version === 'v1' ? h('span', { class: 'chip chip--v1' }, t('onlyV1')) : null,
-    info.version === 'v2' ? h('span', { class: 'chip chip--v2' }, t('onlyV2')) : null,
     info.qty && info.qty > 1 ? h('span', { class: 'chip' }, `× ${info.qty}`) : null,
   );
 }
@@ -106,12 +103,12 @@ function tabBody(ctx: AppContext, info: PartInfo): HTMLElement {
     }
     case 'maintenance':
       return h('div', { class: 'tab-body' }, h('p', {}, info.maintenance ? rich(tr(info.maintenance)) : '—'));
-    case 'upgrade':
+    case 'design':
       return h(
         'div',
         { class: 'tab-body' },
-        info.upgrade
-          ? h('div', { class: 'callout callout--v2' }, h('span', {}, rich(tr(info.upgrade))))
+        info.design
+          ? h('div', { class: 'callout callout--design' }, h('span', {}, rich(tr(info.design))))
           : h('p', {}, '—'),
       );
   }
@@ -129,7 +126,7 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
     ['specs', 'specs'],
     ['maintenance', 'maintenance'],
   ];
-  if (info.upgrade) tabs.push(['upgrade', 'upgrade']);
+  if (info.design) tabs.push(['design', 'design']);
   if (!tabs.some(([k]) => k === tab)) tab = 'overview';
 
   const rerender = () => renderPartPanel(ctx, root);
@@ -183,7 +180,7 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
         ctx.ui.isolate ? t('showAll') : t('isolate'),
       ),
       h('button', { class: 'btn', onclick: () => ctx.stage.frameParts([id], 1.5) }, icon(ICONS.focus, 16), t('focus')),
-      id === 'deflector' && ctx.engine.params.version === 'v2'
+      id === 'deflector'
         ? h(
             'button',
             {
@@ -232,9 +229,8 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
 
 function renderOverview(ctx: AppContext, root: HTMLElement): void {
   const scene = ctx.ui.scene;
-  const version = ctx.engine.params.version;
   const txt = SCENE_TEXT[scene];
-  const parts = PARTS.filter((p) => p.scene === scene && (scene !== 'turbine' || inVersion(p.id, version)));
+  const parts = PARTS.filter((p) => p.scene === scene);
   fill(
     root,
     h('h2', { class: 'panel-title' }, tr(txt.title)),
