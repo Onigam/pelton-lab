@@ -101,12 +101,18 @@ production on Vercel, and `.github/workflows/deploy.yml` publishes the GitHub Pa
 
 ## Project layout
 
-- `src/three/`: 3D worlds (`site`, `intake`, `turbine`, `techroom`), materials and the stage (camera, outline,
-  section planes). `src/three/turbine/dims.ts` is the single source of truth for the turbine geometry.
-- `src/sim/`: physics engine, presets and scenarios.
-- `src/drawings/`: SVG drawing kit and the 10 sheets, built from the same dimensions as the 3D model.
-- `src/data/`: bilingual content (parts, assembly and installation guides, lessons).
-- `src/ui/`: application shell, panels and drawing viewer. UI strings live in `src/i18n/ui.ts`.
+Pelton Lab is a **lab** built on the shared shell [`@onigam/lab-kit`](https://github.com/Onigam/lab-kit) (3D stage, application
+frame, panels, SVG drawing kit, FR/EN strings), pinned in `package.json` to a release tag. This repository holds what is
+specific to the Pelton turbine:
+
+- `src/lab.ts`: the lab definition handed to the kit (simulation, 3D worlds, content, bottom-strip values, hooks);
+  `src/main.ts` mounts it.
+- `src/three/`: the 3D worlds (`site`, `intake`, `turbine`, `techroom`). `src/three/turbine/dims.ts` is the single
+  source of truth for the turbine geometry.
+- `src/sim/`: simulation engine, presets and scenarios; `src/panels/sim.ts` is the simulation side panel.
+- `src/drawings/`: the 10 sheets, built from the same dimensions as the 3D model.
+- `src/data/`: bilingual content (parts, assembly and installation guides, lessons). Lab-specific UI strings live in
+  `src/i18n/ui.ts`.
 
 ## Regulations
 
@@ -222,12 +228,18 @@ déployé en production sur Vercel, et `.github/workflows/deploy.yml` publie le 
 
 ### Organisation du code
 
-- `src/three/` : mondes 3D (`site`, `intake`, `turbine`, `techroom`), matériaux et scène (caméra, contour, plans de
-  coupe). `src/three/turbine/dims.ts` est la source unique des cotes de la turbine.
-- `src/sim/` : moteur physique, préréglages et scénarios.
-- `src/drawings/` : kit de dessin SVG et les 10 planches, construites à partir des mêmes cotes que le modèle 3D.
-- `src/data/` : contenus bilingues (pièces, guides de montage et d'installation, leçons).
-- `src/ui/` : interface, panneaux et visionneuse de plans. Les textes de l'interface sont dans `src/i18n/ui.ts`.
+Pelton Lab est un **lab** construit sur le socle commun [`@onigam/lab-kit`](https://github.com/Onigam/lab-kit) (scène 3D,
+cadre de l'application, panneaux, kit de dessin SVG, textes FR/EN), épinglé dans `package.json` sur un tag de version. Ce
+dépôt contient ce qui est propre à la turbine Pelton :
+
+- `src/lab.ts` : la définition du lab remise au kit (simulation, mondes 3D, contenu, valeurs du bandeau, hooks) ;
+  `src/main.ts` la monte.
+- `src/three/` : les mondes 3D (`site`, `intake`, `turbine`, `techroom`). `src/three/turbine/dims.ts` est la source
+  unique des cotes de la turbine.
+- `src/sim/` : moteur de simulation, préréglages et scénarios ; `src/panels/sim.ts` est le panneau de simulation.
+- `src/drawings/` : les 10 planches, construites à partir des mêmes cotes que le modèle 3D.
+- `src/data/` : contenus bilingues (pièces, guides de montage et d'installation, leçons). Les textes d'interface propres
+  au lab sont dans `src/i18n/ui.ts`.
 
 ### Réglementation
 

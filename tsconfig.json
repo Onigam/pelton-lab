@@ -11,10 +11,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["vite/client"],
-    "paths": {
-      "@onigam/lab-kit/*": ["./src/kit/*"]
-    }
+    "types": ["vite/client"]
   },
   "include": ["src"]
 }
