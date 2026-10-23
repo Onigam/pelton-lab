@@ -23,7 +23,3 @@ export const SHEETS: DrawingSheet[] = [
   generatorWiring,
   bomTorques,
 ];
-
-export function sheetsForPart(id: string): DrawingSheet[] {
-  return SHEETS.filter((s) => s.parts?.includes(id));
-}

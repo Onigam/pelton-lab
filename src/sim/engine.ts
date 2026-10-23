@@ -1,4 +1,3 @@
-import type { PresetId, ScenarioId } from '@onigam/lab-kit/content';
 import {
   ballValveK,
   bucketEfficiency,
@@ -14,7 +13,7 @@ import {
   WAVE_SPEED_HDPE,
 } from './physics';
 import { presetParams, scenarioParams, STREAM, type SimParams } from './presets';
-import type { AlarmKey, NozzleState, Season, SimState } from './types';
+import type { AlarmKey, NozzleState, PresetId, ScenarioId, Season, SimState } from './types';
 
 // Real-time simulation of the whole chain: stream -> Coanda intake -> penstock (rigid
 // water column with water hammer) -> nozzles -> Pelton runner -> PM generator ->

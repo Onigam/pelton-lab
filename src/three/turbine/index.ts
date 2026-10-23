@@ -303,7 +303,7 @@ function testTray(): THREE.Group {
   return g;
 }
 
-export interface TurbineScene extends SceneModule {
+export interface TurbineScene extends SceneModule<SimState> {
   model: TurbineModel;
 }
 

@@ -3,6 +3,17 @@
 
 export type Season = 'winter' | 'spring' | 'summer' | 'autumn';
 
+export type PresetId = 'siteA' | 'siteA8' | 'siteB';
+export type ScenarioId =
+  | 'dryIntake'
+  | 'dumpFailure'
+  | 'mpptHunting'
+  | 'waterHammer'
+  | 'longCable'
+  | 'winterNight'
+  | 'summerDry'
+  | 'cloggedScreen';
+
 /** How the turbine output is regulated (see lesson "constant speed"). */
 export type CtrlMode =
   | 'fixed' // TriStar MPPT 45 in constant-input-voltage mode: fixed voltage => fixed speed

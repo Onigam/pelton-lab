@@ -144,6 +144,28 @@ function hatchDefs(defs: SVGDefsElement): void {
 }
 
 /** One A3 drawing sheet. */
+/** Lab-wide texts of the title block (project name, disclaimer, default drawing date). */
+export interface DrawingProject {
+  project: Text;
+  disclaimer: Text;
+  /** Default date shown in the title block, e.g. '2026-10-22'. */
+  date: string;
+}
+
+let project: DrawingProject = {
+  project: { fr: 'LAB', en: 'LAB' },
+  disclaimer: {
+    fr: 'Exemple pédagogique — cotes indicatives, à vérifier avant fabrication',
+    en: 'Educational example — indicative dimensions, check before manufacturing',
+  },
+  date: new Date().toISOString().slice(0, 10),
+};
+
+/** Set the title-block texts used by every sheet of this lab. */
+export function configureDrawings(p: Partial<DrawingProject>): void {
+  project = { ...project, ...p };
+}
+
 export class Drawing {
   readonly svg: SVGSVGElement;
   /** Layers: content under annotations. */
@@ -212,19 +234,8 @@ export class Drawing {
     for (const cx of [x0 + 52, x0 + 92, x0 + 128]) p.line([cx, y0 + 24], [cx, y0 + bh], { w: W.thin });
     p.text([x0 + 3, y0 + 3.5], tb.title, { size: 5, weight: 'bold', baseline: 'top' });
     if (tb.subtitle) p.text([x0 + 3, y0 + 10.2], tb.subtitle, { size: 2.3, color: INK_2, baseline: 'top' });
-    p.text(
-      [x0 + 3, y0 + 16.5],
-      { fr: 'PELTON LAB — micro-turbine hydroélectrique', en: 'PELTON LAB — micro-hydro turbine' },
-      { size: 2.4, weight: 'bold', baseline: 'top' },
-    );
-    p.text(
-      [x0 + 3, y0 + 20.4],
-      {
-        fr: 'Exemple pédagogique — cotes indicatives, à vérifier avant fabrication',
-        en: 'Educational example — indicative dimensions, check before manufacturing',
-      },
-      { size: 2, color: COLORS.red, baseline: 'top' },
-    );
+    p.text([x0 + 3, y0 + 16.5], project.project, { size: 2.4, weight: 'bold', baseline: 'top' });
+    p.text([x0 + 3, y0 + 20.4], project.disclaimer, { size: 2, color: COLORS.red, baseline: 'top' });
     const cell = (x: number, label: Text, value: Text) => {
       p.text([x + 2, y0 + 26.5], label, { size: 1.8, color: INK_2, baseline: 'top' });
       p.text([x + 2, y0 + 31], value, { size: 3, weight: 'bold', baseline: 'top', mono: true });
@@ -232,7 +243,7 @@ export class Drawing {
     cell(x0, { fr: 'N° de plan', en: 'Drawing no.' }, tb.number);
     cell(x0 + 52, { fr: 'Échelle', en: 'Scale' }, tb.scale);
     cell(x0 + 92, { fr: 'Format · Rév.', en: 'Size · Rev.' }, `A3 · ${tb.rev ?? 'A'}`);
-    cell(x0 + 128, { fr: 'Date', en: 'Date' }, tb.date ?? '2026-10-22');
+    cell(x0 + 128, { fr: 'Date', en: 'Date' }, tb.date ?? project.date);
     // projection symbol (first angle, European)
     const sx = x0 - 22;
     const sy = y0 + bh - 12;

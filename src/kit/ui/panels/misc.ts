@@ -1,54 +1,33 @@
-import { LESSONS } from '../../../data/lessons';
-import { PARTS } from '../../../data/parts';
 import type { Lesson, PartCategory } from '../../content/types';
-import { tr } from '../../i18n';
-import { t, type UiKey } from '../../../i18n/ui';
-import type { SceneId } from '../../three/types';
-import { videoUrl, type AppContext } from '../context';
+import { t, tr, type CommonKey } from '../../i18n';
+import type { AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
-// Lessons, parts catalogue and sources.
+// Lessons, parts catalogue and the sources panel shell.
 
 // ---------------------------------------------------------------- lessons
-
-const DONE_KEY = 'pelton-lab:lessons-done';
-
-export function lessonsDone(): Set<string> {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(DONE_KEY) ?? '[]') as string[]);
-  } catch {
-    return new Set();
-  }
-}
-
-function markDone(id: string): void {
-  const done = lessonsDone();
-  done.add(id);
-  try {
-    localStorage.setItem(DONE_KEY, JSON.stringify([...done]));
-  } catch {
-    /* storage unavailable: progress is just not remembered */
-  }
-}
 
 /** Apply a lesson's focus: scene, preset/scenario, selected part. */
 export function openLesson(ctx: AppContext, lesson: Lesson, runScenario: boolean): void {
   const f = lesson.focus;
-  if (f.preset) ctx.engine.applyPreset(f.preset);
-  if (runScenario && f.scenario) ctx.engine.applyScenario(f.scenario);
+  if (f.preset) ctx.sim.applyPreset?.(f.preset);
+  if (runScenario && f.scenario) ctx.sim.applyScenario?.(f.scenario);
   ctx.store.set({ scene: f.scene, lesson: lesson.id, mode: 'lessons', explode: 0, isolate: false });
   if (f.part) ctx.selectPart(f.part, { mode: 'lessons' });
   else ctx.store.set({ selected: null });
 }
 
 export function renderLessonsPanel(ctx: AppContext, root: HTMLElement, onProgress: () => void): void {
-  const done = lessonsDone();
+  const lessons = ctx.def.lessons;
+  if (!lessons) return;
+  const LESSONS = lessons.items;
+  const done = ctx.lessonsDone();
   const lesson = LESSONS.find((x) => x.id === ctx.ui.lesson);
   if (!lesson) {
     fill(
       root,
       h('div', { class: 'eyebrow eyebrow--accent' }, t('lessonsTitle')),
-      h('p', { class: 'lead' }, t('lessonsIntro')),
+      h('p', { class: 'lead' }, tr(lessons.intro)),
       h(
         'ol',
         { class: 'lesson-list' },
@@ -93,7 +72,7 @@ export function renderLessonsPanel(ctx: AppContext, root: HTMLElement, onProgres
                 btn.dataset.counted = '1';
                 correct++;
                 if (correct >= (lesson.quiz?.length ?? 0)) {
-                  markDone(lesson.id);
+                  ctx.markLessonDone(lesson.id);
                   onProgress();
                 }
               }
@@ -162,7 +141,7 @@ export function renderLessonsPanel(ctx: AppContext, root: HTMLElement, onProgres
       lesson.video
         ? h(
             'a',
-            { class: 'btn btn--ghost', href: videoUrl(lesson.video), target: '_blank', rel: 'noopener noreferrer' },
+            { class: 'btn btn--ghost', href: ctx.videoUrl(lesson.video), target: '_blank', rel: 'noopener noreferrer' },
             icon(ICONS.video, 16),
             `${t('inVideo')} ${lesson.video}`,
           )
@@ -186,7 +165,7 @@ export function renderLessonsPanel(ctx: AppContext, root: HTMLElement, onProgres
             'button',
             {
               class: 'btn',
-              onclick: () => (markDone(lesson.id), onProgress(), openLesson(ctx, LESSONS[idx + 1], false)),
+              onclick: () => (ctx.markLessonDone(lesson.id), onProgress(), openLesson(ctx, LESSONS[idx + 1], false)),
             },
             t('next'),
             icon(ICONS.next, 16),
@@ -199,10 +178,10 @@ export function renderLessonsPanel(ctx: AppContext, root: HTMLElement, onProgres
 // ---------------------------------------------------------------- parts catalogue
 
 let query = '';
-let sceneFilter: SceneId | 'all' = 'all';
+let sceneFilter = 'all';
 let catFilter: PartCategory | 'all' = 'all';
 
-const CATS: [PartCategory, UiKey][] = [
+const CATS: [PartCategory, CommonKey][] = [
   ['hydraulic', 'catHydraulic'],
   ['mechanical', 'catMechanical'],
   ['electrical', 'catElectrical'],
@@ -214,7 +193,7 @@ export function renderPartsPanel(ctx: AppContext, root: HTMLElement): void {
   const list = h('div', { class: 'catalogue' });
   const fillList = () => {
     const q = query.trim().toLowerCase();
-    const items = PARTS.filter(
+    const items = ctx.def.parts.filter(
       (p) =>
         (sceneFilter === 'all' || p.scene === sceneFilter) &&
         (catFilter === 'all' || p.category === catFilter) &&
@@ -255,10 +234,7 @@ export function renderPartsPanel(ctx: AppContext, root: HTMLElement): void {
       'div',
       { class: 'filters' },
       filterChip(t('all'), sceneFilter === 'all', () => (sceneFilter = 'all')),
-      filterChip(t('sceneSite'), sceneFilter === 'site', () => (sceneFilter = 'site')),
-      filterChip(t('sceneIntake'), sceneFilter === 'intake', () => (sceneFilter = 'intake')),
-      filterChip(t('sceneTurbine'), sceneFilter === 'turbine', () => (sceneFilter = 'turbine')),
-      filterChip(t('sceneTech'), sceneFilter === 'techroom', () => (sceneFilter = 'techroom')),
+      ...ctx.def.scenes.map((sc) => filterChip(tr(sc.label), sceneFilter === sc.id, () => (sceneFilter = sc.id))),
     ),
     h(
       'div',
@@ -273,91 +249,12 @@ export function renderPartsPanel(ctx: AppContext, root: HTMLElement): void {
 
 // ---------------------------------------------------------------- sources
 
-const CHAPTERS: [string, string, string][] = [
-  [
-    '00:00',
-    'Introduction : produire de l’électricité avec un filet d’eau',
-    'Intro: making power from a trickle of water',
-  ],
-  ['01:18', 'Conduite forcée, pression, hauteur de chute', 'Penstock, pressure, head'],
-  ['04:05', 'Maintenance : coût et durée de vie des roulements', 'Maintenance: bearing cost and life'],
-  ['05:07', 'Fabrication : aluminium marin et impression 3D', 'Build: marine aluminium and 3D printing'],
-  ['07:38', 'L’injecteur et la gestion du débit', 'The injector and flow control'],
-  ['10:24', 'Optimiser et doubler le rendement', 'Optimising and doubling the output'],
-  ['11:48', 'Installation mixte solaire + hydro', 'Hybrid solar + hydro installation'],
-  ['15:09', 'Prix d’une installation complète', 'Cost of a complete installation'],
-  ['16:46', 'Raccordement direct aux batteries', 'Direct battery connection'],
-  ['20:00', 'Contacter Hydronome', 'Contacting Hydronome'],
-];
-
-export function renderAboutPanel(_ctx: AppContext, root: HTMLElement): void {
-  const fr = document.documentElement.lang !== 'en';
-  const link = (href: string, label: string) => h('a', { href, target: '_blank', rel: 'noopener noreferrer' }, label);
+/** The "Sources" panel: the kit adds the title, the lab supplies the content. */
+export function renderAboutPanel(ctx: AppContext, root: HTMLElement): void {
   fill(
     root,
     h('div', { class: 'eyebrow eyebrow--accent' }, t('modeAbout')),
     h('h2', { class: 'panel-title' }, t('aboutTitle')),
-    h('div', { class: 'callout callout--tip' }, h('span', {}, t('disclaimer'))),
-    h('div', { class: 'callout callout--warn' }, icon(ICONS.warn, 16), h('span', {}, t('legal'))),
-    h(
-      'p',
-      {},
-      fr ? 'Source principale : ' : 'Main source: ',
-      link(
-        'https://www.youtube.com/watch?v=0MixMbSYJ0g',
-        '« Son invention permet d’être autonome en électricité avec un simple ruisseau ! »',
-      ),
-      fr
-        ? ' — L’ArchiPelle, avec Sylvain (Hydronome, Ariège).'
-        : ' — L’ArchiPelle, with Sylvain (Hydronome, Ariège, France).',
-    ),
-    h('h3', { class: 'section-title' }, t('chapters')),
-    h(
-      'ul',
-      { class: 'chapters' },
-      ...CHAPTERS.map(([ts, f, e]) => h('li', {}, link(videoUrl(ts), ts), ' ', fr ? f : e)),
-    ),
-    h(
-      'ul',
-      { class: 'links' },
-      h(
-        'li',
-        {},
-        link('http://www.hydronome.fr', 'hydronome.fr'),
-        fr ? ' — le constructeur des turbines' : ' — the turbine maker',
-      ),
-      h(
-        'li',
-        {},
-        link(
-          'https://www.hydronome.fr/index.php/turbines-pelton/',
-          fr ? 'Fiche turbine Pelton Hydronome' : 'Hydronome Pelton turbine page',
-        ),
-        fr
-          ? ' — 5 kW nominal, chute 15–130 m, 1–40 L/s, roue 26 augets Ø244 mm, plans cotés et schémas de principe officiels'
-          : ' — 5 kW rated, 15–130 m head, 1–40 L/s, 26-bucket Ø244 mm runner, official dimensioned drawings and wiring principles',
-      ),
-      h(
-        'li',
-        {},
-        link('http://www.larchipelle.fr', 'larchipelle.fr'),
-        fr ? ' — la chaîne du reportage' : ' — the channel behind the report',
-      ),
-      h(
-        'li',
-        {},
-        link('https://hydroturbine.info/potentiel-energetique-dune-chute-deau/', 'hydroturbine.info'),
-        fr ? ' — calculer le potentiel d’une chute' : ' — estimating the potential of a fall',
-      ),
-      h(
-        'li',
-        {},
-        link('https://learn-arduino-red.vercel.app', 'Learn Arduino'),
-        ' · ',
-        link('https://sael.net/', 'sael.net'),
-        fr ? ' — inspirations pour l’interface' : ' — interface inspirations',
-      ),
-    ),
-    h('p', { class: 'hint' }, 'Three.js · TypeScript · Vite — MIT'),
+    ...ctx.def.about(ctx),
   );
 }

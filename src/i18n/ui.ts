@@ -1,121 +1,26 @@
-import { getLang } from '@onigam/lab-kit/i18n';
+import { registerStrings, tx, type CommonKey } from '@onigam/lab-kit/i18n';
 
-// Interface strings. Content (parts, guides, lessons) lives in src/data.
+// Pelton Lab's own interface strings. The ones shared by every lab live in the kit.
 
-const S = {
+const LAB = {
   appTitle: ['PELTON LAB', 'PELTON LAB'],
   tagline: ['Explorer · Comprendre · Construire', 'Explore · Understand · Build'],
   subtitle: ['Micro-turbine hydroélectrique en 3D', 'Micro-hydro turbine in 3D'],
-
-  // scenes
   sceneSite: ['Site', 'Site'],
   sceneIntake: ['Prise d’eau', 'Intake'],
   sceneTurbine: ['Turbine', 'Turbine'],
   sceneTech: ['Local technique', 'Power room'],
-
-  // modes (left rail)
-  modeExplore: ['Explorer', 'Explore'],
-  modeAssembly: ['Montage', 'Assembly'],
-  modeInstall: ['Installation', 'Installation'],
-  modeSim: ['Simulation', 'Simulation'],
-  modePlans: ['Plans', 'Drawings'],
-  modeLessons: ['Leçons', 'Lessons'],
-  modeParts: ['Pièces', 'Parts'],
-  modeAbout: ['Sources', 'Sources'],
-
-  // toolbar
-  explode: ['Éclaté', 'Explode'],
-  xray: ['Transparence', 'X-ray'],
-  cutaway: ['Coupe', 'Section'],
-  flows: ['Flux', 'Flows'],
-  labels: ['Étiquettes', 'Labels'],
-  labelsMain: ['Principales', 'Main'],
-  labelsAll: ['Toutes', 'All'],
-  labelsNone: ['Aucune', 'None'],
-  slowMo: ['Ralenti', 'Slow-mo'],
-  resetView: ['Recentrer', 'Reset view'],
-  overviewBtn: ['Vue d’ensemble', 'Overview'],
-  hidePanel: ['Masquer le panneau (3D plein écran)', 'Hide the panel (full-width 3D)'],
-  showPanel: ['Afficher le panneau', 'Show the panel'],
-  panelWide: ['Lire en pleine largeur', 'Read at full width'],
   testTrip: ['Tester le déclenchement', 'Test the trip'],
-  panelNarrow: ['Revenir à la vue 3D', 'Back to the 3D view'],
-  panelResize: [
-    'Glisser pour élargir le panneau, double-clic pour la largeur par défaut',
-    'Drag to widen the panel, double-click for the default width',
-  ],
-  overviewHint: [
-    'Voir tout le dispositif (double-clic sur une pièce : l’isoler ; double-clic dans le vide : tout revoir)',
-    'See the whole device (double-click a part: isolate it; double-click empty space: see everything)',
-  ],
-  assemble: ['Assembler', 'Assemble'],
-  disassemble: ['Désassembler', 'Disassemble'],
-
-  // drawings
-  plansTitle: ['Plans de conception', 'Design drawings'],
   plansIntro: [
     'Dix planches A3 générées à partir des cotes du modèle 3D : ensembles, coupes, schémas hydraulique et électrique, nomenclature. Ce sont des exemples à cotes indicatives, avec en regard les données constructeur publiées par Hydronome.',
     'Ten A3 sheets generated from the 3D model dimensions: general arrangements, sections, hydraulic and electrical diagrams, bill of materials. They are examples with indicative dimensions, alongside the maker data published by Hydronome.',
-  ],
-  plansHelp: [
-    'Molette ou pincer : zoomer · glisser : déplacer · double-clic : ajuster.',
-    'Wheel or pinch: zoom · drag: pan · double-click: fit.',
   ],
   groupTurbine: ['Turbine', 'Turbine'],
   groupHydraulic: ['Hydraulique', 'Hydraulics'],
   groupElectrical: ['Électricité', 'Electrical'],
   groupAssembly: ['Montage', 'Assembly'],
-  fitSheet: ['Ajuster', 'Fit'],
-  zoomIn: ['Zoomer', 'Zoom in'],
-  zoomOut: ['Dézoomer', 'Zoom out'],
-  downloadSvg: ['Télécharger SVG', 'Download SVG'],
-  printA3: ['Imprimer A3', 'Print A3'],
-  seeIn3d: ['Voir en 3D', 'See in 3D'],
-  drawingsOfPart: ['Plans', 'Drawings'],
-  lineTypes: ['Types de traits', 'Line types'],
-  lineThick: ['Trait fort : contours vus', 'Thick: visible outlines'],
-  lineThin: ['Trait fin : cotes, hachures', 'Thin: dimensions, hatching'],
-  lineCenter: ['Trait mixte : axes', 'Dash-dot: centre lines'],
-  lineHidden: ['Tirets : contours cachés / variante', 'Dashed: hidden outlines / variant'],
   makerSource: ['Données constructeur : hydronome.fr', 'Maker data: hydronome.fr'],
-
-  // part panel
-  overview: ['Aperçu', 'Overview'],
-  specs: ['Caractéristiques', 'Specs'],
-  maintenance: ['Entretien', 'Maintenance'],
-  design: ['Conception', 'Design'],
   valveClose: ['Fermeture de la vanne principale', 'Main valve closing time'],
-  material: ['Matériau', 'Material'],
-  quantity: ['Quantité', 'Quantity'],
-  isolate: ['Isoler', 'Isolate'],
-  showAll: ['Tout afficher', 'Show all'],
-  focus: ['Centrer', 'Focus'],
-  inVideo: ['Dans la vidéo', 'In the video'],
-  tip: ['Astuce', 'Tip'],
-  close: ['Fermer', 'Close'],
-  noSelection: ['Cliquez une pièce ou une étiquette pour l’étudier.', 'Click a part or a label to study it.'],
-  partsInScene: ['Pièces de cette vue', 'Parts in this view'],
-  dimensions: ['Encombrement', 'Envelope'],
-
-  // guide
-  step: ['Étape', 'Step'],
-  partsIn: ['Pièces montées', 'Parts in'],
-  tools: ['Outils', 'Tools'],
-  torque: ['Couple', 'Torque'],
-  duration: ['Durée', 'Time'],
-  warning: ['Attention', 'Warning'],
-  prev: ['Précédent', 'Previous'],
-  next: ['Suivant', 'Next'],
-  play: ['Lecture', 'Play'],
-  pause: ['Pause', 'Pause'],
-  ghost: ['Fantôme', 'Ghost'],
-  autoFrame: ['Cadrage auto', 'Auto framing'],
-  theBuild: ['Le montage', 'The build'],
-  theInstall: ['L’installation', 'The installation'],
-  assemblyTitle: ['Guide de montage', 'Assembly guide'],
-  installTitle: ['Guide d’installation', 'Installation guide'],
-
-  // sim
   simTitle: ['Simulation', 'Simulation'],
   preset: ['Préréglage', 'Preset'],
   presetA: ['Site A — forêt, 76 m', 'Site A — forest, 76 m'],
@@ -170,11 +75,9 @@ const S = {
   loadEco: ['Sobre', 'Frugal'],
   loadChalet: ['Chalet', 'Cottage'],
   loadFamily: ['Famille', 'Family'],
-  speed: ['Vitesse du temps', 'Time speed'],
   reset: ['Réinitialiser', 'Reset'],
   running: ['En marche', 'Running'],
   paused: ['En pause', 'Paused'],
-  realTime: ['temps réel', 'real time'],
   liveFlow: ['Débit', 'Flow'],
   liveHead: ['Chute nette', 'Net head'],
   livePressure: ['Pression', 'Pressure'],
@@ -240,8 +143,6 @@ const S = {
   jetSide: ['côté', 'side'],
   table: ['Tableau', 'Table'],
   hydro: ['Hydro', 'Hydro'],
-
-  // alarms
   alarm_air: ['Air dans la conduite : la prise d’eau est à sec', 'Air in the penstock: the intake ran dry'],
   alarm_noOverflow: [
     'Plus de trop-plein à la prise : risque d’entrée d’air',
@@ -256,34 +157,10 @@ const S = {
   alarm_bearing: ['Roulements usés : pertes et vibrations', 'Worn bearings: losses and vibration'],
   alarm_lowSoc: ['Batterie < 20 %', 'Battery < 20 %'],
   alarm_hunting: ['La vitesse « pompe » : MPPT inadapté', 'Speed hunting: unsuitable MPPT'],
-  allGood: ['Tout fonctionne', 'All good'],
-
-  // lessons
-  lessonsTitle: ['Leçons', 'Lessons'],
   lessonsIntro: [
     'Quatorze leçons courtes, chacune liée à la 3D et à un scénario de simulation.',
     'Fourteen short lessons, each tied to the 3D view and to a simulation scenario.',
   ],
-  runScenario: ['Lancer le scénario', 'Run the scenario'],
-  showIn3d: ['Voir en 3D', 'Show in 3D'],
-  quiz: ['Quiz', 'Quiz'],
-  correct: ['Exact !', 'Correct!'],
-  wrong: ['Pas tout à fait.', 'Not quite.'],
-  back: ['Retour', 'Back'],
-  done: ['terminée', 'done'],
-
-  // parts catalogue
-  partsTitle: ['Catalogue des pièces', 'Parts catalogue'],
-  search: ['Rechercher…', 'Search…'],
-  all: ['Toutes', 'All'],
-  catHydraulic: ['Hydraulique', 'Hydraulic'],
-  catMechanical: ['Mécanique', 'Mechanical'],
-  catElectrical: ['Électrique', 'Electrical'],
-  catStructure: ['Structure', 'Structure'],
-  catSite: ['Site', 'Site'],
-
-  // about
-  aboutTitle: ['Sources & crédits', 'Sources & credits'],
   disclaimer: [
     'Reconstitution pédagogique indépendante, réalisée à partir d’un reportage public. Ce n’est pas un plan officiel ni un produit Hydronome ; dimensions et valeurs internes sont des estimations.',
     'Independent educational reconstruction based on a public video report. It is not an official drawing nor a Hydronome product; dimensions and internal values are estimates.',
@@ -293,23 +170,17 @@ const S = {
     'In France, installing a micro-turbine or diverting water from a stream is regulated (water rights, ecological continuity). Check with the DDT and the OFB before any project.',
   ],
   chapters: ['Chapitres de la vidéo', 'Video chapters'],
-  controlsHelp: [
-    'Glisser : tourner · clic droit / deux doigts : déplacer · molette / pincer : zoomer · clic : sélectionner',
-    'Drag: orbit · right-click / two fingers: pan · wheel / pinch: zoom · click: select',
-  ],
   goTurbine: ['Entrer dans la turbine', 'Open the turbine'],
   goTech: ['Entrer dans le local', 'Open the power room'],
   goIntake: ['Voir la prise d’eau', 'Open the intake'],
-  menu: ['Menu', 'Menu'],
 } as const satisfies Record<string, readonly [string, string]>;
 
-export type UiKey = keyof typeof S;
+registerStrings(LAB);
 
-/** Label/value separator with the right typography (French puts a space before ':'). */
-export function colon(): string {
-  return getLang() === 'fr' ? ' : ' : ': ';
-}
+export type UiKey = keyof typeof LAB | CommonKey;
+
+export { colon } from '@onigam/lab-kit/i18n';
 
 export function t(key: UiKey): string {
-  return S[key][getLang() === 'fr' ? 0 : 1];
+  return tx(key);
 }

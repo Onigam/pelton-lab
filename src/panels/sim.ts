@@ -1,11 +1,23 @@
-import type { PresetId, ScenarioId } from '@onigam/lab-kit/content';
+import {
+  CurveChart,
+  fill,
+  h,
+  icon,
+  ICONS,
+  LineChart,
+  SERIES_COLORS,
+  section as kitSection,
+  select as kitSelect,
+  slider as kitSlider,
+  toggle as kitToggle,
+  type AppContext,
+  type SeriesDef,
+} from '@onigam/lab-kit/ui';
 import { colon, t, type UiKey } from '../i18n/ui';
-import type { NozzleParams, SimParams } from '../sim/presets';
+import type { SimEngine } from '../sim/engine';
 import { G, RHO } from '../sim/physics';
-import type { CtrlMode, Season } from '../sim/types';
-import { CurveChart, LineChart, SERIES_COLORS, type SeriesDef } from '@onigam/lab-kit/ui';
-import type { AppContext } from '@onigam/lab-kit/ui';
-import { fill, h, icon, ICONS } from '@onigam/lab-kit/ui';
+import type { NozzleParams, SimParams } from '../sim/presets';
+import type { CtrlMode, PresetId, ScenarioId, Season } from '../sim/types';
 
 // Simulation mode: presets & scenarios, grouped controls, live readouts, charts and
 // the "where does the energy go" breakdown.
@@ -45,7 +57,7 @@ export class SimPanel {
   private lastSlow = 0;
   private lastCharts = 0;
 
-  constructor(private ctx: AppContext) {
+  constructor(private ctx: AppContext<SimEngine>) {
     const secs = (v: number) => `${Math.round(v)} s`;
     this.dynCharts = [
       new LineChart({
@@ -68,7 +80,7 @@ export class SimPanel {
       }),
     ];
     const hours = (v: number) => {
-      const hh = ((ctx.engine.params.startHour * 3600 + v) / 3600) % 24;
+      const hh = ((ctx.sim.params.startHour * 3600 + v) / 3600) % 24;
       return `${String(Math.floor(hh)).padStart(2, '0')}:${String(Math.floor((hh % 1) * 60)).padStart(2, '0')}`;
     };
     this.energyChart = new LineChart({
@@ -100,7 +112,7 @@ export class SimPanel {
       })).concat([
         {
           key: 'current',
-          label: () => `${t('current')} (${ctx.engine.params.pipeDiam} mm)`,
+          label: () => `${t('current')} (${ctx.sim.params.pipeDiam} mm)`,
           color: SERIES_COLORS.dump,
           dash: true,
         },
@@ -108,7 +120,7 @@ export class SimPanel {
       yFmt: (v) => `${Math.round(v)} W`,
       xFmt: (v) => `${v.toFixed(1)} L/s`,
       markers: () => {
-        const e = ctx.engine;
+        const e = ctx.sim;
         const out: { x: number; y?: number; label: string; color?: string }[] = [
           { x: e.availableFlow(), label: `${t('availableFlow')} ${e.availableFlow().toFixed(1)} L/s` },
         ];
@@ -122,19 +134,19 @@ export class SimPanel {
 
   /** Apply a change live. Sliders pass rerender=false so the dragged input survives. */
   private set(patch: Partial<SimParams>, rerender = true): void {
-    this.ctx.engine.set({ ...patch, preset: 'custom' });
+    this.ctx.sim.set({ ...patch, preset: 'custom' });
     if (rerender) this.render();
     else this.tick(1, true);
   }
 
   private nozzle(which: 'top' | 'side', patch: Partial<NozzleParams>, rerender = true): void {
-    const p = this.ctx.engine.params;
+    const p = this.ctx.sim.params;
     this.set({ [which]: { ...p[which], ...patch } } as Partial<SimParams>, rerender);
   }
 
   /** Generator constant giving the battery voltage at the optimal runner speed. */
   private matchKe(): number {
-    const e = this.ctx.engine;
+    const e = this.ctx.sim;
     const v = e.state.vJet > 1 ? e.state.vJet : 0.98 * Math.sqrt(2 * G * e.params.headGross * 0.95);
     const omega = (0.47 * v) / 0.115;
     const k = e.params.transportHV ? 4 : 1;
@@ -143,7 +155,7 @@ export class SimPanel {
   }
 
   render(): void {
-    const e = this.ctx.engine;
+    const e = this.ctx.sim;
     const p = e.params;
     const lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
 
@@ -174,56 +186,11 @@ export class SimPanel {
       step: number,
       fmt: (v: number) => string,
       on: (v: number) => void,
-    ) => {
-      const out = h('output', {}, fmt(value));
-      return h(
-        'label',
-        { class: 'field' },
-        h('span', { class: 'field__label' }, t(key), out),
-        h('input', {
-          type: 'range',
-          min,
-          max,
-          step,
-          value,
-          oninput: (ev: Event) => {
-            const v = Number((ev.target as HTMLInputElement).value);
-            out.textContent = fmt(v);
-            on(v);
-          },
-        }),
-      );
-    };
+    ) => kitSlider(t(key), value, min, max, step, fmt, on);
     const select = <T extends string | number>(key: UiKey, value: T, options: [T, string][], on: (v: T) => void) =>
-      h(
-        'label',
-        { class: 'field' },
-        h('span', { class: 'field__label' }, t(key)),
-        h(
-          'select',
-          {
-            onchange: (ev: Event) => {
-              const raw = (ev.target as HTMLSelectElement).value;
-              on((typeof value === 'number' ? Number(raw) : raw) as T);
-            },
-          },
-          ...options.map(([v, label]) => h('option', { value: String(v), selected: v === value }, label)),
-        ),
-      );
-    const toggle = (label: string, checked: boolean, on: (v: boolean) => void) =>
-      h(
-        'label',
-        { class: 'toggle' },
-        h('input', { type: 'checkbox', checked, onchange: (ev: Event) => on((ev.target as HTMLInputElement).checked) }),
-        label,
-      );
-    const section = (key: UiKey, ...children: (HTMLElement | null)[]) =>
-      h(
-        'details',
-        { class: 'sim-section', open: true },
-        h('summary', {}, t(key)),
-        h('div', { class: 'sim-grid' }, ...children),
-      );
+      kitSelect(t(key), value, options, on);
+    const toggle = kitToggle;
+    const section = (key: UiKey, ...children: (HTMLElement | null)[]) => kitSection(t(key), ...children);
 
     const seasons: [Season, string][] = (['winter', 'spring', 'summer', 'autumn'] as Season[]).map((s) => [s, t(s)]);
     const natural = p.streamOverride === null;
@@ -500,7 +467,7 @@ export class SimPanel {
   }
 
   private renderReadouts(): void {
-    const s = this.ctx.engine.state;
+    const s = this.ctx.sim.state;
     const cell = (label: string, value: string, unit = '') =>
       h('div', { class: 'readout' }, h('span', {}, label), h('b', {}, value, unit ? h('small', {}, ` ${unit}`) : null));
     const eff = s.pHyd > 1 ? (s.pToBus / (RHO * G * (s.qPipe / 1000) * s.headGross)) * 100 : 0;
@@ -526,7 +493,7 @@ export class SimPanel {
   }
 
   private renderLosses(): void {
-    const s = this.ctx.engine.state;
+    const s = this.ctx.sim.state;
     const q = s.qPipe / 1000;
     const gross = RHO * G * q * s.headGross;
     if (gross < 5) {
@@ -575,7 +542,7 @@ export class SimPanel {
   }
 
   private renderSizing(): void {
-    const e = this.ctx.engine;
+    const e = this.ctx.sim;
     const p = e.params;
     const avail = e.availableFlow();
     fill(
@@ -645,12 +612,12 @@ export class SimPanel {
 
   /** Clicking a sizing row puts that nozzle on the side injector, live. */
   private applyNozzle(d: number): void {
-    const p = this.ctx.engine.params;
+    const p = this.ctx.sim.params;
     this.set({ side: { ...p.side, enabled: true, open: true, d }, bucketSet: d >= 7 ? 'L' : 'S' });
   }
 
   private renderCharts(): void {
-    const e = this.ctx.engine;
+    const e = this.ctx.sim;
     this.renderSizing();
     const dyn = e.dyn;
     if (dyn.length) {

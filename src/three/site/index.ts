@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { l } from '@onigam/lab-kit/i18n';
-import type { Season } from '../../sim/types';
+import type { Season, SimState } from '../../sim/types';
 import { PartRegistry } from '@onigam/lab-kit/three';
 import type { Hotspot, SceneModule } from '@onigam/lab-kit/three';
 import { SEASON_LOOK } from './common';
@@ -19,7 +19,7 @@ import { createVegetation } from './vegetation';
 // the HDPE penstock, the turbine anchor, the tailrace, the house with its PV roof and the
 // technical room. World: X east, Y up, Z south, metres; the turbine stands at the origin.
 
-export interface SiteScene extends SceneModule {
+export interface SiteScene extends SceneModule<SimState> {
   /** Empty object where the turbine model goes (origin = ground under the housing, +Z = window side). */
   turbineAnchor: THREE.Object3D;
   /** Add the turbine model under the anchor and register its meshes as part 'turbine' (pick / ghost). */

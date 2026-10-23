@@ -1,9 +1,9 @@
 import type * as THREE from 'three';
 import type { L } from '../i18n';
-import type { SimState } from '../../sim/types';
 import type { PartRegistry } from './registry';
 
-export type SceneId = 'site' | 'intake' | 'turbine' | 'techroom';
+/** Scene ids are chosen by each lab (for example 'site', 'device', 'power-room'). */
+export type SceneId = string;
 
 /** A clickable label anchored in 3D (Learn-Arduino style dot + caption). */
 export interface Hotspot {
@@ -35,8 +35,8 @@ export interface CameraPose {
   target: THREE.Vector3;
 }
 
-/** A self-contained 3D world (site, turbine workshop, technical room). */
-export interface SceneModule {
+/** A self-contained 3D world (landscape, device workshop, technical room…); `S` is the lab's simulation state. */
+export interface SceneModule<S = unknown> {
   id: SceneId;
   scene: THREE.Scene;
   registry: PartRegistry;
@@ -45,5 +45,5 @@ export interface SceneModule {
   /** Camera distance limits for the orbit controls. */
   minDistance: number;
   maxDistance: number;
-  update(state: SimState, dt: number, view: ViewOpts): void;
+  update(state: S, dt: number, view: ViewOpts): void;
 }

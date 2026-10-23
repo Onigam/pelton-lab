@@ -1,63 +1,22 @@
 import * as THREE from 'three';
-import { PARTS } from '../../../data/parts';
 import type { PartInfo } from '../../content/types';
-import { tr } from '../../i18n';
-import { t, type UiKey } from '../../../i18n/ui';
-import { sheetsForPart } from '../../../drawings';
-import type { SceneId } from '../../three/types';
-import { partInfo, videoUrl, type AppContext } from '../context';
+import { sheetsForPart } from '../../drawings/types';
+import { t, tr, type CommonKey } from '../../i18n';
+import type { AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
 // Explore mode: part sheet (Learn-Arduino-like tabs) or scene overview when nothing is selected.
 
 type Tab = 'overview' | 'specs' | 'maintenance' | 'design';
 
-/** Site parts that have their own detailed 3D view. */
-const DETAIL_VIEW: Record<string, { scene: SceneId; label: UiKey }> = {
-  coanda: { scene: 'intake', label: 'goIntake' },
-  weir: { scene: 'intake', label: 'goIntake' },
-  turbine: { scene: 'turbine', label: 'goTurbine' },
-  techroom: { scene: 'techroom', label: 'goTech' },
-};
 let tab: Tab = 'overview';
 
-const CAT_KEY: Record<PartInfo['category'], UiKey> = {
+const CAT_KEY: Record<PartInfo['category'], CommonKey> = {
   hydraulic: 'catHydraulic',
   mechanical: 'catMechanical',
   electrical: 'catElectrical',
   structure: 'catStructure',
   site: 'catSite',
-};
-
-const SCENE_TEXT = {
-  site: {
-    title: { fr: 'Le site : de la source au watt', en: 'The site: from the spring to the watt' },
-    text: {
-      fr: 'Un petit ruisseau de montagne, une **prise d’eau Coanda** qui filtre à 1 mm, une **conduite forcée** qui transforme le dénivelé en pression, la **turbine** au bord de l’eau et le **local technique** où l’énergie est stockée. La hauteur de chute du préréglage déplace la prise d’eau le long du ruisseau.',
-      en: 'A small mountain stream, a **Coanda intake** filtering at 1 mm, a **penstock** turning the drop into pressure, the **turbine** by the water and the **power room** where energy is stored. The head of the selected preset moves the intake along the stream.',
-    },
-  },
-  intake: {
-    title: { fr: 'La prise d’eau Coanda', en: 'The Coanda intake' },
-    text: {
-      fr: 'Le seuil crée une petite **retenue** ; l’eau dévale la **plaque d’accélération** puis la **grille en fil profilé** : chaque fil découpe une fine lame qui tombe dans le **bac de collecte**, pendant que feuilles et surplus glissent vers le **trop-plein**. Le bac alimente la **conduite forcée** par une crépine immergée. Activez **Flux** pour suivre l’eau et **Coupe** pour voir l’intérieur du bac.',
-      en: 'The weir holds a small **pond**; water runs down the **acceleration plate** then over the **wedge-wire screen**: each wire slices off a thin sheet that drops into the **collection trough**, while leaves and surplus slide to the **overflow**. The trough feeds the **penstock** through a submerged strainer. Turn on **Flows** to follow the water and **Section** to see inside the trough.',
-    },
-  },
-  turbine: {
-    title: { fr: 'La micro-turbine Pelton', en: 'The Pelton micro-turbine' },
-    text: {
-      fr: 'Une chambre **humide** où le jet frappe les augets de la roue, une **cloison étanche** en PMMA, et une chambre **sèche** où la génératrice à aimants produit le courant. Carter (574 × 328 × 402 mm) et roue (26 augets, Ø244) reprennent les cotes publiées par le constructeur.',
-      en: 'A **wet** chamber where the jet hits the runner buckets, a PMMA **watertight partition**, and a **dry** chamber where the magnet generator makes the current. Housing (574 × 328 × 402 mm) and runner (26 buckets, Ø244) follow the maker’s published dimensions.',
-    },
-  },
-  techroom: {
-    title: { fr: 'Le local technique', en: 'The power room' },
-    text: {
-      fr: 'Le bus 48 V relie la turbine, les **batteries LiFePO4**, le **régulateur solaire**, l’**onduleur-chargeur** et le **délesteur** qui brûle le surplus dans des résistances : une turbine ne doit jamais tourner à vide.',
-      en: 'The 48 V bus links the turbine, the **LiFePO4 batteries**, the **solar charger**, the **inverter/charger** and the **dump load** that burns the surplus in resistors: a turbine must never run unloaded.',
-    },
-  },
 };
 
 function chips(info: PartInfo): HTMLElement {
@@ -116,12 +75,12 @@ function tabBody(ctx: AppContext, info: PartInfo): HTMLElement {
 
 export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
   const id = ctx.ui.selected;
-  const info = id ? partInfo(id) : undefined;
+  const info = id ? ctx.partInfo(id) : undefined;
   if (!id || !info) {
     renderOverview(ctx, root);
     return;
   }
-  const tabs: [Tab, UiKey][] = [
+  const tabs: [Tab, CommonKey][] = [
     ['overview', 'overview'],
     ['specs', 'specs'],
     ['maintenance', 'maintenance'],
@@ -129,6 +88,7 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
   if (info.design) tabs.push(['design', 'design']);
   if (!tabs.some(([k]) => k === tab)) tab = 'overview';
 
+  const link = ctx.def.partLinks?.[id];
   const rerender = () => renderPartPanel(ctx, root);
   fill(
     root,
@@ -180,22 +140,8 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
         ctx.ui.isolate ? t('showAll') : t('isolate'),
       ),
       h('button', { class: 'btn', onclick: () => ctx.stage.frameParts([id], 1.5) }, icon(ICONS.focus, 16), t('focus')),
-      id === 'deflector'
-        ? h(
-            'button',
-            {
-              class: 'btn btn--primary',
-              onclick: () => {
-                // look at the blades through the window, then trip once the camera is there
-                ctx.stage.frameParts([id], 1.7, new THREE.Vector3(-0.25, 0.12, 1));
-                setTimeout(() => ctx.engine.testDeflector(), 900);
-              },
-            },
-            icon(ICONS.bolt, 16),
-            t('testTrip'),
-          )
-        : null,
-      ...sheetsForPart(id).map((sheet) =>
+      ...(ctx.def.partActions?.(ctx, info) ?? []),
+      ...sheetsForPart(ctx.def.plans?.sheets ?? [], id).map((sheet) =>
         h(
           'button',
           {
@@ -206,19 +152,15 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
           `${sheet.number} · ${tr(sheet.title)}`,
         ),
       ),
-      DETAIL_VIEW[id] && ctx.ui.scene === 'site'
-        ? h(
-            'button',
-            { class: 'btn btn--primary', onclick: () => ctx.gotoScene(DETAIL_VIEW[id].scene) },
-            t(DETAIL_VIEW[id].label),
-          )
+      link && link.scene !== ctx.ui.scene
+        ? h('button', { class: 'btn btn--primary', onclick: () => ctx.gotoScene(link.scene) }, tr(link.label))
         : null,
       ...(info.video ?? [])
         .slice(0, 2)
         .map((ts) =>
           h(
             'a',
-            { class: 'btn btn--ghost', href: videoUrl(ts), target: '_blank', rel: 'noopener noreferrer' },
+            { class: 'btn btn--ghost', href: ctx.videoUrl(ts), target: '_blank', rel: 'noopener noreferrer' },
             icon(ICONS.video, 16),
             `${t('inVideo')} ${ts}`,
           ),
@@ -229,19 +171,23 @@ export function renderPartPanel(ctx: AppContext, root: HTMLElement): void {
 
 function renderOverview(ctx: AppContext, root: HTMLElement): void {
   const scene = ctx.ui.scene;
-  const txt = SCENE_TEXT[scene];
-  const parts = PARTS.filter((p) => p.scene === scene);
+  const overview = ctx.sceneDef(scene)?.overview;
+  const parts = ctx.def.parts.filter((p) => p.scene === scene);
   fill(
     root,
-    h('h2', { class: 'panel-title' }, tr(txt.title)),
-    h('p', { class: 'lead' }, rich(tr(txt.text))),
-    scene === 'site'
+    overview ? h('h2', { class: 'panel-title' }, tr(overview.title)) : null,
+    overview ? h('p', { class: 'lead' }, rich(tr(overview.text))) : null,
+    overview?.actions?.length
       ? h(
           'div',
           { class: 'actions' },
-          h('button', { class: 'btn btn--primary', onclick: () => ctx.gotoScene('turbine') }, t('goTurbine')),
-          h('button', { class: 'btn', onclick: () => ctx.gotoScene('intake') }, t('goIntake')),
-          h('button', { class: 'btn', onclick: () => ctx.gotoScene('techroom') }, t('goTech')),
+          ...overview.actions.map((a) =>
+            h(
+              'button',
+              { class: a.primary ? 'btn btn--primary' : 'btn', onclick: () => ctx.gotoScene(a.scene) },
+              tr(a.label),
+            ),
+          ),
         )
       : null,
     h('h3', { class: 'section-title' }, t('partsInScene'), h('span', { class: 'count' }, String(parts.length))),

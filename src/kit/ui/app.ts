@@ -1,27 +1,21 @@
-import { LESSONS } from '../../data/lessons';
-import { SHEETS } from '../../drawings';
-import { getLang, onLangChange, setLang, tr } from '../i18n';
-import { colon, t, type UiKey } from '../../i18n/ui';
-import type { SimEngine } from '../../sim/engine';
-import type { Season } from '../../sim/types';
-import type { Stage } from '../three/core';
-import type { SceneId } from '../three/types';
-import { AppContext, partInfo } from './context';
+import { getLang, onLangChange, setLang, t, tr, colon, type CommonKey } from '../i18n';
+import type { Stage } from '../three';
+import { AppContext } from './context';
 import type { DisplayController } from './display';
 import { fill, h, icon, ICONS, rich } from './dom';
+import type { LabDefinition, LabSim, PanelController } from './lab';
+import { panelEdge } from './panel-size';
 import { renderGuidePanel } from './panels/guide';
-import { lessonsDone, renderAboutPanel, renderLessonsPanel, renderPartsPanel } from './panels/misc';
+import { renderAboutPanel, renderLessonsPanel, renderPartsPanel } from './panels/misc';
 import { renderPartPanel } from './panels/part';
 import { renderPlansPanel } from './panels/plans';
-import { SimPanel } from '../../panels/sim';
-import { panelEdge } from './panel-size';
-import { DrawingViewer } from './viewer';
 import type { Mode, Store, UiState } from './state';
+import { DrawingViewer } from './viewer';
 
 // Application shell: header, mode rail, contextual right panel, viewport toolbar and
 // the live measurement strip. Wires the store to the 3D stage and the simulation.
 
-const MODES: [Mode, UiKey, keyof typeof ICONS][] = [
+const MODES: [Mode, CommonKey, keyof typeof ICONS][] = [
   ['explore', 'modeExplore', 'explore'],
   ['assembly', 'modeAssembly', 'assembly'],
   ['install', 'modeInstall', 'install'],
@@ -32,13 +26,6 @@ const MODES: [Mode, UiKey, keyof typeof ICONS][] = [
   ['about', 'modeAbout', 'about'],
 ];
 
-const SCENES: [SceneId, UiKey][] = [
-  ['site', 'sceneSite'],
-  ['intake', 'sceneIntake'],
-  ['turbine', 'sceneTurbine'],
-  ['techroom', 'sceneTech'],
-];
-
 const SPEEDS = [1, 60, 600, 3600];
 const SLOWMO: [number, string][] = [
   [1, '×1'],
@@ -47,8 +34,8 @@ const SLOWMO: [number, string][] = [
   [0.02, '×1/50'],
 ];
 
-export class App {
-  readonly ctx: AppContext;
+export class App<S extends LabSim = any> {
+  readonly ctx: AppContext<S>;
   private header = h('header', { class: 'topbar' });
   private rail = h('nav', { class: 'rail' });
   private panel = h('aside', { class: 'panel' });
@@ -61,25 +48,25 @@ export class App {
   private peek = h('div', { class: 'peek' });
   private panelToggle = h('button', { class: 'panel-toggle' });
   private viewer: DrawingViewer;
-  private simPanel: SimPanel;
+  private simPanel: PanelController | null;
   private lastStrip = 0;
   private lastAlarmKey = '';
   /** Worlds already framed once (the first visit starts on an overview). */
   private visited = new Set<string>();
 
   constructor(
+    private def: LabDefinition<S>,
     host: HTMLElement,
     viewport: HTMLElement,
     stage: Stage,
-    engine: SimEngine,
     private store: Store,
     private display: DisplayController,
   ) {
-    this.ctx = new AppContext(stage, engine, store);
+    this.ctx = new AppContext(def, stage, store);
     this.visited.add(store.state.scene);
-    this.simPanel = new SimPanel(this.ctx);
+    this.simPanel = def.simPanel?.(this.ctx) ?? null;
     this.panel.append(
-      panelEdge(),
+      panelEdge(def.id),
       h('button', {
         class: 'panel__grip',
         'aria-label': t('menu'),
@@ -88,7 +75,7 @@ export class App {
       this.panelBody,
     );
     this.viewer = new DrawingViewer(
-      () => SHEETS,
+      () => def.plans?.sheets ?? [],
       (id) => store.set({ drawing: id }),
     );
     viewport.append(this.toolbar, this.peek, this.panelToggle, this.viewer.el);
@@ -98,7 +85,7 @@ export class App {
 
     stage.labelMode = store.state.labels;
     store.on((s, prev) => this.onState(s, prev));
-    engine.onChange(() => {
+    def.sim.onChange(() => {
       this.renderHeader();
       if (this.store.state.mode !== 'sim') this.renderPanel();
     });
@@ -149,13 +136,14 @@ export class App {
   }
 
   private applyCutaway(): void {
-    const tm = this.ctx.stage.get('turbine') as unknown as { model?: { setCutaway(on: boolean): void } } | undefined;
-    tm?.model?.setCutaway(this.store.state.cutaway && this.store.state.scene === 'turbine');
+    const s = this.store.state;
+    this.def.onCutaway?.(s.cutaway, s.scene);
   }
 
   renderAll(): void {
     document.documentElement.lang = getLang();
     if (this.store.state.mode === 'plans') this.showDrawing(true);
+    document.title = this.def.brand.title;
     this.renderHeader();
     this.renderRail();
     this.renderPanel();
@@ -168,19 +156,20 @@ export class App {
 
   private renderHeader(): void {
     const s = this.store.state;
-    const done = lessonsDone().size;
+    const lessons = this.def.lessons?.items ?? [];
+    const done = this.ctx.lessonsDone().size;
     fill(
       this.header,
       h(
         'div',
         { class: 'brand' },
-        h('img', { src: './favicon.svg', alt: '', width: 34, height: 34 }),
-        h('div', {}, h('h1', {}, t('appTitle')), h('p', {}, t('tagline'))),
+        h('img', { src: this.def.brand.icon, alt: '', width: 34, height: 34 }),
+        h('div', {}, h('h1', {}, this.def.brand.title), h('p', {}, tr(this.def.brand.tagline))),
       ),
       h(
         'div',
         { class: 'segmented scene-switch', role: 'tablist', 'aria-label': 'Scene' },
-        ...SCENES.map(([id, key]) =>
+        ...this.def.scenes.map(({ id, label }) =>
           h(
             'button',
             {
@@ -189,21 +178,23 @@ export class App {
               'aria-selected': s.scene === id ? 'true' : 'false',
               onclick: () => this.ctx.gotoScene(id),
             },
-            t(key),
+            tr(label),
           ),
         ),
       ),
       h(
         'div',
         { class: 'topbar__right' },
-        h(
-          'button',
-          { class: 'progress', onclick: () => this.ctx.setMode('lessons') },
-          icon(ICONS.lessons, 16),
-          h('span', {}, t('modeLessons')),
-          h('b', {}, `${done}/${LESSONS.length}`),
-          h('i', { style: `--p:${(done / LESSONS.length) * 100}%` }),
-        ),
+        lessons.length
+          ? h(
+              'button',
+              { class: 'progress', onclick: () => this.ctx.setMode('lessons') },
+              icon(ICONS.lessons, 16),
+              h('span', {}, t('modeLessons')),
+              h('b', {}, `${done}/${lessons.length}`),
+              h('i', { style: `--p:${(done / lessons.length) * 100}%` }),
+            )
+          : null,
         h(
           'div',
           { class: 'segmented lang-switch' },
@@ -215,11 +206,27 @@ export class App {
     );
   }
 
+  /** Modes with content in this lab (a mode without content is hidden, never reinvented). */
+  private availableModes(): typeof MODES {
+    const d = this.def;
+    const has: Record<Mode, boolean> = {
+      explore: true,
+      assembly: !!d.guides?.assembly,
+      install: !!d.guides?.install,
+      sim: !!d.simPanel,
+      plans: !!d.plans?.sheets.length,
+      lessons: !!d.lessons?.items.length,
+      parts: true,
+      about: true,
+    };
+    return MODES.filter(([mode]) => has[mode]);
+  }
+
   private renderRail(): void {
     const s = this.store.state;
     fill(
       this.rail,
-      ...MODES.map(([mode, key, ic]) =>
+      ...this.availableModes().map(([mode, key, ic]) =>
         h(
           'button',
           {
@@ -251,8 +258,10 @@ export class App {
         renderGuidePanel(this.ctx, body);
         break;
       case 'sim':
-        fill(body, this.simPanel.el);
-        this.simPanel.render();
+        if (this.simPanel) {
+          fill(body, this.simPanel.el);
+          this.simPanel.render();
+        }
         break;
       case 'lessons':
         renderLessonsPanel(this.ctx, body, () => this.renderHeader());
@@ -271,15 +280,17 @@ export class App {
 
   /** Render the current drawing (keepView: keep zoom/pan, e.g. after a language change). */
   private showDrawing(keepView: boolean): void {
-    const sheet = SHEETS.find((x) => x.id === this.store.state.drawing) ?? SHEETS[0];
-    this.viewer.show(sheet, keepView);
+    const sheets = this.def.plans?.sheets ?? [];
+    const sheet = sheets.find((x) => x.id === this.store.state.drawing) ?? sheets[0];
+    if (sheet) this.viewer.show(sheet, keepView);
   }
 
   // ------------------------------------------------------------ viewport toolbar
 
   private renderToolbar(): void {
     const s = this.store.state;
-    const e = this.ctx.engine;
+    const e = this.ctx.sim;
+    const scene = this.ctx.sceneDef(s.scene);
     const guide = s.mode === 'assembly' || s.mode === 'install';
     const btn = (label: string, on: boolean, click: () => void, extra = '') =>
       h(
@@ -288,7 +299,7 @@ export class App {
         label,
       );
     const nextLabels = { main: 'all', all: 'none', none: 'main' } as const;
-    const labelKey: Record<UiState['labels'], UiKey> = { main: 'labelsMain', all: 'labelsAll', none: 'labelsNone' };
+    const labelKey: Record<UiState['labels'], CommonKey> = { main: 'labelsMain', all: 'labelsAll', none: 'labelsNone' };
     const slow = SLOWMO.find(([v]) => v === e.params.slowMo) ?? SLOWMO[0];
     const sel = s.selected;
     fill(
@@ -337,13 +348,15 @@ export class App {
             else this.ctx.stage.frameAll();
           }),
       // in the landscape, X-ray only makes sense around a selected part
-      guide || (s.scene === 'site' && !sel) ? null : btn(t('xray'), s.xray, () => this.store.set({ xray: !s.xray })),
-      s.scene !== 'site' ? btn(t('cutaway'), s.cutaway, () => this.store.set({ cutaway: !s.cutaway })) : null,
+      guide || (scene?.xrayNeedsSelection && !sel)
+        ? null
+        : btn(t('xray'), s.xray, () => this.store.set({ xray: !s.xray })),
+      scene?.cutaway !== false ? btn(t('cutaway'), s.cutaway, () => this.store.set({ cutaway: !s.cutaway })) : null,
       btn(t('flows'), s.schematic, () => this.store.set({ schematic: !s.schematic })),
       btn(`${t('labels')}${colon()}${t(labelKey[s.labels])}`, s.labels !== 'none', () =>
         this.store.set({ labels: nextLabels[s.labels] }),
       ),
-      s.scene !== 'techroom'
+      scene?.slowMo !== false
         ? btn(`${t('slowMo')} ${slow[1]}`, e.params.slowMo < 1, () => {
             const i = SLOWMO.findIndex(([v]) => v === e.params.slowMo);
             e.set({ slowMo: SLOWMO[(i + 1) % SLOWMO.length][0] });
@@ -358,7 +371,7 @@ export class App {
     fill(this.panelToggle, icon(s.panelOpen ? ICONS.next : ICONS.prev, 16));
     this.panelToggle.setAttribute('aria-label', s.panelOpen ? t('hidePanel') : t('showPanel'));
     this.panelToggle.title = s.panelOpen ? t('hidePanel') : t('showPanel');
-    const info = s.selected ? partInfo(s.selected) : undefined;
+    const info = s.selected ? this.ctx.partInfo(s.selected) : undefined;
     // in explore mode the panel already shows the sheet, unless it is collapsed
     const show = !!info && (s.mode !== 'explore' || !s.panelOpen) && s.mode !== 'parts';
     this.peek.classList.toggle('is-visible', show);
@@ -406,24 +419,24 @@ export class App {
   // ------------------------------------------------------------ live strip
 
   private renderStrip(): void {
-    const st = this.ctx.engine.state;
-    const p = this.ctx.engine.params;
-    const v = (label: string, value: string, unit: string, cls = '') =>
-      h('div', { class: `live ${cls}` }, h('span', {}, label), h('b', {}, value, h('small', {}, ` ${unit}`)));
+    const sim = this.ctx.sim;
+    const p = sim.params;
+    const strip = this.def.strip;
+    const speeds = strip.speeds ?? SPEEDS;
     fill(
       this.stripValues,
-      v(t('liveFlow'), st.qPipe.toFixed(2), 'L/s', 'live--water'),
-      v(t('livePressure'), st.pressureBar.toFixed(1), 'bar', 'live--water'),
-      v(t('liveRpm'), String(Math.round(st.rpm)), 'tr/min'),
-      v(t('liveElec'), String(Math.round(st.pToBus)), 'W', 'live--hydro'),
-      v(t('liveSoc'), String(Math.round(st.soc * 100)), '%'),
-      v(t('livePv'), String(Math.round(st.pPv)), 'W', 'live--pv'),
-      v(t('liveLoad'), String(Math.round(st.pLoad)), 'W', 'live--load'),
-      v(t('liveDump'), String(Math.round(st.pDump)), 'W', 'live--dump'),
+      ...strip
+        .values(sim)
+        .map((v) =>
+          h(
+            'div',
+            { class: `live ${v.cls ?? ''}` },
+            h('span', {}, v.label),
+            h('b', {}, v.value, h('small', {}, ` ${v.unit}`)),
+          ),
+        ),
     );
-    const hh = Math.floor(st.hour);
-    const mm = Math.floor((st.hour % 1) * 60);
-    const seasonKey = st.season as Season;
+    const clock = strip.clock(sim);
     fill(
       this.stripClock,
       h(
@@ -431,25 +444,20 @@ export class App {
         {
           class: 'icon-btn',
           'aria-label': p.running ? t('pause') : t('play'),
-          onclick: () => this.ctx.engine.set({ running: !p.running }),
+          onclick: () => sim.set({ running: !p.running }),
         },
         icon(p.running ? ICONS.pause : ICONS.play, 16),
       ),
-      h(
-        'div',
-        { class: 'clock' },
-        h('b', {}, `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`),
-        h('small', {}, `${t(seasonKey)} · J${st.day + 1}`),
-      ),
+      h('div', { class: 'clock' }, h('b', {}, clock.time), h('small', {}, clock.sub)),
       h(
         'div',
         { class: 'segmented segmented--tiny', 'aria-label': t('speed') },
-        ...SPEEDS.map((sp) =>
+        ...speeds.map((sp) =>
           h(
             'button',
             {
               class: p.timeScale === sp ? 'is-active' : '',
-              onclick: () => this.ctx.engine.set({ timeScale: sp }),
+              onclick: () => sim.set({ timeScale: sp }),
               title: sp === 1 ? t('realTime') : '',
             },
             sp === 1 ? '×1' : `×${sp}`,
@@ -457,20 +465,15 @@ export class App {
         ),
       ),
     );
-    const key = st.alarms.join(',');
+    const alarms = strip.alarms(sim);
+    const key = alarms.map((a) => a.label).join('|');
     if (key !== this.lastAlarmKey) {
       this.lastAlarmKey = key;
-      const severe = new Set(['air', 'overspeed', 'bmsOpen', 'overpressure', 'surge']);
       fill(
         this.stripAlarms,
-        ...(st.alarms.length
-          ? st.alarms.map((a) =>
-              h(
-                'span',
-                { class: `alarm ${severe.has(a) ? 'alarm--severe' : ''}` },
-                icon(ICONS.warn, 14),
-                t(`alarm_${a}` as UiKey),
-              ),
+        ...(alarms.length
+          ? alarms.map((a) =>
+              h('span', { class: `alarm ${a.severe ? 'alarm--severe' : ''}` }, icon(ICONS.warn, 14), a.label),
             )
           : [h('span', { class: 'alarm alarm--ok' }, icon(ICONS.ok, 14), t('allGood'))]),
       );
@@ -484,7 +487,7 @@ export class App {
       this.lastStrip = 0;
       this.renderStrip();
     }
-    if (this.store.state.mode === 'sim') this.simPanel.tick(dt);
+    if (this.store.state.mode === 'sim') this.simPanel?.tick(dt);
     this.display.update(dt);
   }
 }

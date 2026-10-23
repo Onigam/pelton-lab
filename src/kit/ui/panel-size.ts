@@ -1,28 +1,26 @@
-import { onLangChange } from '../i18n';
-import { t } from '../../i18n/ui';
+import { onLangChange, t } from '../i18n';
 import { fill, h, icon, ICONS } from './dom';
 
 // Desktop side panel sizing: drag its left edge to widen it next to the 3D view (double-click
 // resets), or switch to a full-width reading mode. The width is remembered in this browser only.
 
-const KEY = 'pelton-lab.panelWidth';
 const MIN = 300;
 /** Part of the 3D view kept while dragging (the CSS clamps the same way on window resize). */
 const VIEW_MIN = 320;
 
-function load(): number | null {
+function load(key: string): number | null {
   try {
-    const w = Number(localStorage.getItem(KEY));
+    const w = Number(localStorage.getItem(key));
     return w >= MIN ? w : null;
   } catch {
     return null;
   }
 }
 
-function save(w: number | null): void {
+function save(key: string, w: number | null): void {
   try {
-    if (w === null) localStorage.removeItem(KEY);
-    else localStorage.setItem(KEY, String(Math.round(w)));
+    if (w === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, String(Math.round(w)));
   } catch {
     // storage unavailable (private window, blocked site data): the width just isn't kept
   }
@@ -35,7 +33,8 @@ function apply(w: number | null): void {
 }
 
 /** Left edge of the side panel: resize handle + "reading mode" button. */
-export function panelEdge(): HTMLElement {
+export function panelEdge(labId: string): HTMLElement {
+  const key = `${labId}.panelWidth`;
   const wideBtn = h('button', { class: 'panel__wide', type: 'button' });
   const edge = h('div', { class: 'panel__edge' }, wideBtn);
   const wide = () => document.body.classList.contains('panel-wide');
@@ -51,7 +50,7 @@ export function panelEdge(): HTMLElement {
     render();
   };
 
-  apply(load());
+  apply(load(key));
   render();
   onLangChange(render);
 
@@ -59,7 +58,7 @@ export function panelEdge(): HTMLElement {
   edge.addEventListener('dblclick', (e) => {
     if (e.target !== edge) return;
     apply(null);
-    save(null);
+    save(key, null);
   });
   edge.addEventListener('pointerdown', (e) => {
     if (e.target !== edge || e.button !== 0) return;
@@ -77,7 +76,7 @@ export function panelEdge(): HTMLElement {
     const up = () => {
       edge.removeEventListener('pointermove', move);
       document.body.classList.remove('panel-resizing');
-      if (w !== null) save(w);
+      if (w !== null) save(key, w);
     };
     edge.addEventListener('pointermove', move);
     edge.addEventListener('pointerup', up, { once: true });

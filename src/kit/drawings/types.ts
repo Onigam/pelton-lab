@@ -2,7 +2,8 @@ import type { L } from '../i18n';
 import type { SceneId } from '../three/types';
 import type { Drawing } from './svg';
 
-export type SheetGroup = 'turbine' | 'hydraulic' | 'electrical' | 'assembly';
+/** Drawing trades are chosen by each lab (for example 'device', 'hydraulic', 'electrical', 'assembly'). */
+export type SheetGroup = string;
 
 /** One A3 drawing of the "Plans" mode. */
 export interface DrawingSheet {
@@ -17,4 +18,9 @@ export interface DrawingSheet {
   scene?: SceneId;
   parts?: string[];
   render(): Drawing;
+}
+
+/** Sheets that show a given part ("see the drawings of this part"). */
+export function sheetsForPart(sheets: DrawingSheet[], id: string): DrawingSheet[] {
+  return sheets.filter((s) => s.parts?.includes(id));
 }

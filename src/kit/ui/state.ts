@@ -1,12 +1,10 @@
-import type { SceneId } from '../three/types';
-
 // UI state shared by every panel. A tiny observable store; the 3D display logic and
 // the panels read from it, controls write to it.
 
 export type Mode = 'explore' | 'assembly' | 'install' | 'sim' | 'plans' | 'lessons' | 'parts' | 'about';
 
 export interface UiState {
-  scene: SceneId;
+  scene: string;
   mode: Mode;
   selected: string | null;
   isolate: boolean;
@@ -47,22 +45,25 @@ export class Store {
   }
 }
 
-export const store = new Store({
-  scene: 'site',
-  mode: 'explore',
-  selected: null,
-  isolate: false,
-  xray: false,
-  explode: 0,
-  cutaway: false,
-  schematic: false,
-  labels: 'main',
-  step: 0,
-  playing: false,
-  ghost: true,
-  autoFrame: true,
-  lesson: null,
-  sheet: false,
-  panelOpen: true,
-  drawing: null,
-});
+/** A fresh store with the lab's starting world. */
+export function createStore(scene: string): Store {
+  return new Store({
+    scene,
+    mode: 'explore',
+    selected: null,
+    isolate: false,
+    xray: false,
+    explode: 0,
+    cutaway: false,
+    schematic: false,
+    labels: 'main',
+    step: 0,
+    playing: false,
+    ghost: true,
+    autoFrame: true,
+    lesson: null,
+    sheet: false,
+    panelOpen: true,
+    drawing: null,
+  });
+}

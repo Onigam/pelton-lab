@@ -48,17 +48,6 @@ export interface GuideStep {
   duration?: string;
 }
 
-export type PresetId = 'siteA' | 'siteA8' | 'siteB';
-export type ScenarioId =
-  | 'dryIntake'
-  | 'dumpFailure'
-  | 'mpptHunting'
-  | 'waterHammer'
-  | 'longCable'
-  | 'winterNight'
-  | 'summerDry'
-  | 'cloggedScreen';
-
 export interface QuizItem {
   q: L;
   choices: L[];
@@ -79,7 +68,7 @@ export interface Lesson {
   /** Formula shown in a monospace box, e.g. "P = ρ · g · Q · H · η". */
   formula?: string;
   /** What the 3D view focuses on when the lesson opens. */
-  focus: { scene: SceneId; part?: string; preset?: PresetId; scenario?: ScenarioId };
+  focus: { scene: SceneId; part?: string; preset?: string; scenario?: string };
   /** Timestamp in the source video. */
   video?: string;
   quiz?: QuizItem[];

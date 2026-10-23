@@ -1,6 +1,5 @@
-import { tr } from '../../i18n';
-import { t } from '../../../i18n/ui';
-import { partInfo, type AppContext } from '../context';
+import { t, tr } from '../../i18n';
+import type { AppContext } from '../context';
 import { guideFor } from '../display';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
@@ -8,7 +7,7 @@ import { fill, h, icon, ICONS, rich } from '../dom';
 
 export function renderGuidePanel(ctx: AppContext, root: HTMLElement): void {
   const ui = ctx.ui;
-  const guide = guideFor(ui.mode, ui.scene);
+  const guide = guideFor(ctx.def, ui.mode, ui.scene);
   if (!guide) {
     fill(root);
     return;
@@ -47,7 +46,7 @@ export function renderGuidePanel(ctx: AppContext, root: HTMLElement): void {
             h(
               'button',
               { class: 'part-chip', onclick: () => ctx.stage.frameParts([id], 2.4) },
-              tr(partInfo(id)?.name ?? { fr: id, en: id }),
+              tr(ctx.partInfo(id)?.name ?? { fr: id, en: id }),
             ),
           ),
         )

@@ -1,5 +1,4 @@
-import type { PresetId, ScenarioId } from '@onigam/lab-kit/content';
-import type { CtrlMode, Season } from './types';
+import type { CtrlMode, PresetId, ScenarioId, Season } from './types';
 
 // User-adjustable inputs of the simulation. Presets reproduce the two installations of
 // the video; scenarios are small tweaks used by the lessons.

@@ -1,32 +1,21 @@
 import * as THREE from 'three';
-import { ASSEMBLY } from '../../data/assembly';
-import { INSTALL } from '../../data/install';
 import type { GuideStep } from '../content/types';
 import type { Stage } from '../three/core';
 import type { PartDisplay } from '../three/registry';
 import { damp, ease } from '../three/util';
-import type { SceneId } from '../three/types';
+import type { AnyLab } from './lab';
 import type { Store } from './state';
 
 // Decides, every frame, how each part of the active scene is shown: solid, ghost,
 // wire or hidden, and how far it is exploded. Handles the animated guide steps.
 
-/** Parts made transparent by X-ray when nothing is selected, per world. */
-const XRAY_SHELL: Partial<Record<SceneId, (id: string) => boolean>> = {
-  // turbine: the housing, to see the runner, shaft line and generator
-  turbine: (id) => ['cover', 'rear-panel', 'window', 'partition', 'gasket', 'latches'].includes(id),
-  // intake: frame, trough, weir and sand trap walls, to see the water going through the screen
-  intake: (id) => ['in-frame', 'in-box', 'in-weir', 'in-sandtrap'].includes(id),
-  // power room: every device except the cabling, to read the wiring
-  techroom: (id) => id !== 'wiring' && id !== 'busbar',
-};
 const STEP_ANIM = 1.4;
 const AUTOPLAY = 6;
 
-export function guideFor(mode: string, scene: string): GuideStep[] | null {
-  if (mode === 'assembly' && scene === 'turbine') return ASSEMBLY;
-  if (mode === 'install' && scene === 'site') return INSTALL;
-  return null;
+/** Steps of the guide playing in this mode and world, if any. */
+export function guideFor(def: AnyLab, mode: string, scene: string): GuideStep[] | null {
+  const g = mode === 'assembly' ? def.guides?.assembly : mode === 'install' ? def.guides?.install : undefined;
+  return g && g.scene === scene ? g.steps : null;
 }
 
 export class DisplayController {
@@ -36,6 +25,7 @@ export class DisplayController {
   private time = 0;
 
   constructor(
+    private def: AnyLab,
     private stage: Stage,
     private store: Store,
   ) {}
@@ -45,7 +35,7 @@ export class DisplayController {
     const ui = this.store.state;
     const mod = this.stage.active;
     const reg = mod.registry;
-    const guide = guideFor(ui.mode, mod.id);
+    const guide = guideFor(this.def, ui.mode, mod.id);
     let changed = false;
     const show = (id: string, d: PartDisplay) => {
       const before = reg.get(id)?.display;
@@ -97,12 +87,13 @@ export class DisplayController {
         this.stage.refreshOutline();
       }
       this.explode = damp(this.explode, ui.explode, 6, dt);
+      const xrayShell = this.def.scenes.find((sc) => sc.id === mod.id)?.xrayShell;
       for (const id of reg.ids()) {
         reg.setFactor(id, this.explode);
         let d: PartDisplay = 'solid';
         if (ui.isolate && ui.selected) d = id === ui.selected ? 'solid' : 'hidden';
         else if (ui.xray && ui.selected) d = id === ui.selected ? 'solid' : 'ghost';
-        else if (ui.xray && XRAY_SHELL[mod.id]?.(id)) d = 'ghost';
+        else if (ui.xray && xrayShell?.(id)) d = 'ghost';
         show(id, d);
       }
     }
@@ -127,7 +118,10 @@ export class DisplayController {
     for (const id of ids) box.union(reg.bounds(id));
     ids.forEach((id, i) => reg.setFactor(id, saved[i]));
     // keep some context around small parts (a nut should not fill the screen)
-    const site = this.stage.active.id === 'site';
-    this.stage.frameBox(box, site ? 1.6 : 1.5, 1.1, undefined, site ? 8 : 0.24);
+    const frame = this.def.scenes.find((sc) => sc.id === this.stage.active.id)?.stepFrame ?? {
+      padding: 1.5,
+      minRadius: 0.24,
+    };
+    this.stage.frameBox(box, frame.padding, 1.1, undefined, frame.minRadius);
   }
 }

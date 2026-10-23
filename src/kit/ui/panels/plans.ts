@@ -1,19 +1,9 @@
-import { SHEETS } from '../../../drawings';
-import type { SheetGroup } from '../../drawings/types';
-import { tr } from '../../i18n';
-import { t, type UiKey } from '../../../i18n/ui';
+import { t, tr, type CommonKey } from '../../i18n';
 import type { AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';
 
 // "Plans" mode side panel: sheet list grouped by trade, description of the current sheet,
 // links back to the 3D parts, and a line-type legend.
-
-const GROUPS: [SheetGroup, UiKey][] = [
-  ['turbine', 'groupTurbine'],
-  ['hydraulic', 'groupHydraulic'],
-  ['electrical', 'groupElectrical'],
-  ['assembly', 'groupAssembly'],
-];
 
 /** Small SVG sample of a line type for the legend. */
 function lineSample(dash: string, width: number): SVGSVGElement {
@@ -33,6 +23,9 @@ function lineSample(dash: string, width: number): SVGSVGElement {
 }
 
 export function renderPlansPanel(ctx: AppContext, root: HTMLElement): void {
+  const plans = ctx.def.plans;
+  if (!plans) return;
+  const SHEETS = plans.sheets;
   const current = SHEETS.find((s) => s.id === ctx.ui.drawing) ?? SHEETS[0];
   const legendItems = (
     [
@@ -40,21 +33,21 @@ export function renderPlansPanel(ctx: AppContext, root: HTMLElement): void {
       ['', 0.9, 'lineThin'],
       ['10 3 2 3', 0.9, 'lineCenter'],
       ['5 3', 0.9, 'lineHidden'],
-    ] as [string, number, UiKey][]
+    ] as [string, number, CommonKey][]
   ).map(([dash, w, key]) => h('li', {}, lineSample(dash, w), t(key)));
 
   fill(
     root,
     h('div', { class: 'eyebrow eyebrow--accent' }, t('modePlans')),
     h('h2', { class: 'panel-title' }, t('plansTitle')),
-    h('p', { class: 'lead' }, t('plansIntro')),
-    ...GROUPS.map(([g, key]) => {
+    h('p', { class: 'lead' }, tr(plans.intro)),
+    ...plans.groups.map(({ id: g, label }) => {
       const items = SHEETS.filter((s) => s.group === g);
       if (!items.length) return null;
       return h(
         'div',
         { class: 'sheet-group' },
-        h('h3', { class: 'section-title' }, t(key)),
+        h('h3', { class: 'section-title' }, tr(label)),
         ...items.map((s) =>
           h(
             'button',
@@ -96,14 +89,6 @@ export function renderPlansPanel(ctx: AppContext, root: HTMLElement): void {
     h('p', { class: 'hint' }, t('plansHelp')),
     h('h3', { class: 'section-title' }, t('lineTypes')),
     h('ul', { class: 'line-legend' }, ...legendItems),
-    h(
-      'p',
-      { class: 'hint' },
-      h(
-        'a',
-        { href: 'https://www.hydronome.fr/index.php/turbines-pelton/', target: '_blank', rel: 'noopener noreferrer' },
-        t('makerSource'),
-      ),
-    ),
+    plans.footer?.() ?? null,
   );
 }

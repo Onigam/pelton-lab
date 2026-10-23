@@ -50,7 +50,7 @@ function lights(scene: THREE.Scene) {
   scene.add(batten);
 }
 
-export function createTechRoomScene(): SceneModule {
+export function createTechRoomScene(): SceneModule<SimState> {
   const scene = new THREE.Scene();
   scene.name = 'techroom';
   scene.background = new THREE.Color(0xece6da);

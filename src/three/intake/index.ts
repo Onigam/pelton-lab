@@ -40,7 +40,7 @@ interface Cut {
   base: number;
 }
 
-export function createIntakeScene(): SceneModule {
+export function createIntakeScene(): SceneModule<SimState> {
   const scene = new THREE.Scene();
   scene.name = 'intake';
   scene.background = new THREE.Color(0xefe6d3);
