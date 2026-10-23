@@ -1,5 +1,5 @@
 import { onLangChange } from '../i18n';
-import { t } from '../i18n/ui';
+import { t } from '../../i18n/ui';
 import { fill, h, icon, ICONS } from './dom';
 
 // Desktop side panel sizing: drag its left edge to widen it next to the 3D view (double-click

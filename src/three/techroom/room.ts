@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { glass } from '../materials';
-import { group, mesh } from '../util';
+import { glass } from '@onigam/lab-kit/three';
+import { group, mesh } from '@onigam/lab-kit/three';
 import { bake, box, cyl, planarUv, type Palette, screws, type V3 } from './common';
 import { BENCH, OSB, OSB_Z, ROOM, TRUNKING, WINDOW } from './layout';
 import { blockTexture, floorTexture, osbTexture, renderTexture, skyTexture, woodTexture } from './textures';

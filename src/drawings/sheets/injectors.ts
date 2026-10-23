@@ -1,8 +1,8 @@
-import { l, tr, type L } from '../../i18n';
+import { l, tr, type L } from '@onigam/lab-kit/i18n';
 import { bucketEfficiency } from '../../sim/physics';
 import { presetParams } from '../../sim/presets';
-import { COLORS, Drawing, W, type Pt, type Stroke, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { COLORS, Drawing, W, type Pt, type Stroke, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import {
   clipPoly,
   DEFLECTORS,

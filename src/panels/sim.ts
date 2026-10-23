@@ -1,11 +1,11 @@
-import type { PresetId, ScenarioId } from '../../data/types';
-import { colon, t, type UiKey } from '../../i18n/ui';
-import type { NozzleParams, SimParams } from '../../sim/presets';
-import { G, RHO } from '../../sim/physics';
-import type { CtrlMode, Season } from '../../sim/types';
-import { CurveChart, LineChart, SERIES_COLORS, type SeriesDef } from '../charts';
-import type { AppContext } from '../context';
-import { fill, h, icon, ICONS } from '../dom';
+import type { PresetId, ScenarioId } from '@onigam/lab-kit/content';
+import { colon, t, type UiKey } from '../i18n/ui';
+import type { NozzleParams, SimParams } from '../sim/presets';
+import { G, RHO } from '../sim/physics';
+import type { CtrlMode, Season } from '../sim/types';
+import { CurveChart, LineChart, SERIES_COLORS, type SeriesDef } from '@onigam/lab-kit/ui';
+import type { AppContext } from '@onigam/lab-kit/ui';
+import { fill, h, icon, ICONS } from '@onigam/lab-kit/ui';
 
 // Simulation mode: presets & scenarios, grouped controls, live readouts, charts and
 // the "where does the energy go" breakdown.

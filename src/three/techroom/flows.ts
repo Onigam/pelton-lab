@@ -3,7 +3,7 @@ import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import type { SimState } from '../../sim/types';
-import { roundedPath } from '../util';
+import { roundedPath } from '@onigam/lab-kit/three';
 import { FLOW_COLORS } from './displays';
 import { at, BATT, battModuleY, POS, SIZE } from './layout';
 import type { Routes } from './wiring';

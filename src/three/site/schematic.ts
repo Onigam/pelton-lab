@@ -3,7 +3,7 @@ import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import type { SimState } from '../../sim/types';
-import type { ViewOpts } from '../types';
+import type { ViewOpts } from '@onigam/lab-kit/three';
 import { noShadow } from './common';
 
 // Schematic overlay: fat dashed lines whose dashes travel with the flows

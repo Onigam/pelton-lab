@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import type { ViewOpts } from '../types';
-import { clamp } from '../util';
+import type { ViewOpts } from '@onigam/lab-kit/three';
+import { clamp } from '@onigam/lab-kit/three';
 import { noShadow } from './common';
 import {
   BLOCK,

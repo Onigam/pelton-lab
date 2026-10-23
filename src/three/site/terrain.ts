@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type { Season } from '../../sim/types';
-import { canvasTexture, rng } from '../util';
+import { canvasTexture, rng } from '@onigam/lab-kit/three';
 import { SEASON_LOOK, fbm, hex, smooth, vnoise, writeColor } from './common';
 import { BOUNDS, nearestStream } from './layout';
 import { cabinPadWeight, farHeight, heightAt, meadowMask, pathMask, turbinePadWeight } from './ground';

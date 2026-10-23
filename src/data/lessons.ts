@@ -2,9 +2,9 @@
 // Worked examples use the same figures as the parts catalogue and the simulator:
 // site A = 76 m gross, ~74 m net, 1.1 L/s, 499 W; site B = 21 m, 4.5 kWp, ~10 kWh.
 
-import type { L } from '../i18n';
-import type { Lesson, Spec } from './types';
-import { l } from '../i18n';
+import type { L } from '@onigam/lab-kit/i18n';
+import type { Lesson, Spec } from '@onigam/lab-kit/content';
+import { l } from '@onigam/lab-kit/i18n';
 
 /** French-written number -> English form (7,4 -> 7.4 ; 1 500 -> 1,500 ; 62 % -> 62%). */
 function num(fr: string): L | string {

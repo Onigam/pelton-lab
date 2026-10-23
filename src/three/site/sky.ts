@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import type { Season } from '../../sim/types';
-import { canvasTexture, clamp, lerp } from '../util';
+import { canvasTexture, clamp, lerp } from '@onigam/lab-kit/three';
 import { DEG, smooth } from './common';
 
 // Sky dome (Preetham + clouds, with stars injected at night), sun / moon light with a

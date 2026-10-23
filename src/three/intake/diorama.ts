@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
-import { canvasTexture, rng } from '../util';
+import { canvasTexture, rng } from '@onigam/lab-kit/three';
 import { boulderGeometry, compose, noShadow, tmp } from './common';
 import {
   BLOCK,

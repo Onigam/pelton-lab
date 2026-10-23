@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { MAT } from '../materials';
-import type { PartRegistry } from '../registry';
-import { group, mesh } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import type { PartRegistry } from '@onigam/lab-kit/three';
+import { group, mesh } from '@onigam/lab-kit/three';
 import { bucketGeometry, bucketSpecFor } from './bucket';
 import { D, SPIN } from './dims';
 

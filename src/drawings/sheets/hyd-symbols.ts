@@ -1,7 +1,7 @@
-import { tr, type L } from '../../i18n';
+import { tr, type L } from '@onigam/lab-kit/i18n';
 import { SimEngine, type SizingPoint } from '../../sim/engine';
 import { G, RHO, WAVE_SPEED_HDPE } from '../../sim/physics';
-import { COLORS, INK, INK_2, W, type Drawing, type Pt, type Text, type View } from '../svg';
+import { COLORS, INK, INK_2, W, type Drawing, type Pt, type Text, type View } from '@onigam/lab-kit/drawings';
 
 // Shared helpers for the hydraulic sheets (PL-H01..H03): P&ID symbols drawn in paper space
 // (ISO 10628 / ISA S5.1 style), a few annotations the kit lacks (angle and arc dimensions,

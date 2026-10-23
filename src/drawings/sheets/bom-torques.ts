@@ -4,9 +4,9 @@
 // values for A4-70 stainless fasteners, reduced on PMMA and printed parts.
 import { ASSEMBLY } from '../../data/assembly';
 import { PARTS } from '../../data/parts';
-import { l, tr, type L } from '../../i18n';
-import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { l, tr, type L } from '@onigam/lab-kit/i18n';
+import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import { estW, fit, grid, HEAD_FILL, para, wrap, type Cell } from './elec-symbols';
 import { BASE, M, PLATE, SHAFT, VENTS } from './turbine-geom';
 import { presetParams } from '../../sim/presets';

@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { PARTS } from '../../data/parts';
-import type { PartInfo } from '../../data/types';
+import { PARTS } from '../../../data/parts';
+import type { PartInfo } from '../../content/types';
 import { tr } from '../../i18n';
-import { t, type UiKey } from '../../i18n/ui';
-import { sheetsForPart } from '../../drawings';
+import { t, type UiKey } from '../../../i18n/ui';
+import { sheetsForPart } from '../../../drawings';
 import type { SceneId } from '../../three/types';
 import { partInfo, videoUrl, type AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';

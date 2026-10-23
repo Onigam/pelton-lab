@@ -1,4 +1,4 @@
-import { getLang } from '.';
+import { getLang } from '@onigam/lab-kit/i18n';
 
 // Interface strings. Content (parts, guides, lessons) lives in src/data.
 

@@ -2,8 +2,8 @@
 // assembly sheets. Everything is drawn in a paper-space view (mm, Y down). Inline symbols
 // are defined along the local +X axis, centred on the insertion point, 8 mm long, and mask
 // the wire bundle under them, so wires are drawn first and symbols on top.
-import { l, tr, type L } from '../../i18n';
-import { COLORS, INK, INK_2, W, type Pt, type Stroke, type Text, type View } from '../svg';
+import { l, tr, type L } from '@onigam/lab-kit/i18n';
+import { COLORS, INK, INK_2, W, type Pt, type Stroke, type Text, type View } from '@onigam/lab-kit/drawings';
 
 /** Yellow stripe of the green-yellow protective conductor. */
 export const PE_YELLOW = '#e2bf1a';

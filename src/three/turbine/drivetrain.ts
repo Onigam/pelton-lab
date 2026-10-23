@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { MAT } from '../materials';
-import type { PartRegistry } from '../registry';
-import { group, mesh } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import type { PartRegistry } from '@onigam/lab-kit/three';
+import { group, mesh } from '@onigam/lab-kit/three';
 import { D } from './dims';
 
 // Shaft line: stainless shaft, three 6204-2RS bearings, lip seal and the machined bearing

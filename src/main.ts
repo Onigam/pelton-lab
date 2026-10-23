@@ -1,14 +1,14 @@
-import './styles.css';
+import '@onigam/lab-kit/styles.css';
 import { SimEngine } from './sim/engine';
-import { Stage } from './three/core';
+import { Stage } from '@onigam/lab-kit/three';
 import { createIntakeScene } from './three/intake';
 import { createSiteScene } from './three/site';
 import { createTechRoomScene } from './three/techroom';
 import { createTurbineModel, createTurbineScene } from './three/turbine';
-import type { ViewOpts } from './three/types';
-import { App } from './ui/app';
-import { DisplayController } from './ui/display';
-import { store } from './ui/state';
+import type { ViewOpts } from '@onigam/lab-kit/three';
+import { App } from '@onigam/lab-kit/ui';
+import { DisplayController } from '@onigam/lab-kit/ui';
+import { store } from '@onigam/lab-kit/ui';
 
 // Boot: one simulation engine, three 3D worlds sharing one renderer, and the UI shell.
 

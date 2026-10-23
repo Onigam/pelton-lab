@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { MAT } from '../materials';
-import { mesh } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { mesh } from '@onigam/lab-kit/three';
 import { DEG, boxUV, noShadow } from './common';
 import { CABIN_Y } from './ground';
 import { ANNEX, CABIN } from './layout';

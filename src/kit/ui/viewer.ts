@@ -1,6 +1,6 @@
 import type { DrawingSheet } from '../drawings/types';
 import { tr } from '../i18n';
-import { t } from '../i18n/ui';
+import { t } from '../../i18n/ui';
 import { h, icon, ICONS } from './dom';
 
 // Full-viewport viewer for the A3 drawings: fit to screen, wheel/pinch zoom around the

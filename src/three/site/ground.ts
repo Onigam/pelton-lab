@@ -1,4 +1,4 @@
-import { lerp } from '../util';
+import { lerp } from '@onigam/lab-kit/three';
 import { fbm, smooth, vnoise } from './common';
 import {
   BOUNDS,

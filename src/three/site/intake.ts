@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import { MAT } from '../materials';
-import { canvasTexture, clamp, lerp, mesh, pipeAlong, rng } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { canvasTexture, clamp, lerp, mesh, pipeAlong, rng } from '@onigam/lab-kit/three';
 import { DEG, hex, noShadow, smooth } from './common';
 import { bedAt, streamFrame } from './layout';
 import { waterSheet, type WaterUniforms } from './water';

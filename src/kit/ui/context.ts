@@ -1,6 +1,6 @@
-import { PARTS } from '../data/parts';
-import type { PartInfo } from '../data/types';
-import type { SimEngine } from '../sim/engine';
+import { PARTS } from '../../data/parts';
+import type { PartInfo } from '../content/types';
+import type { SimEngine } from '../../sim/engine';
 import type { Stage } from '../three/core';
 import type { SceneId } from '../three/types';
 import type { Mode, Store } from './state';

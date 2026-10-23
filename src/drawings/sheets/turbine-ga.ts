@@ -1,7 +1,7 @@
-import { l, tr } from '../../i18n';
+import { l, tr } from '@onigam/lab-kit/i18n';
 import { presetParams } from '../../sim/presets';
-import { COLORS, Drawing, W, type Pt, type Stroke, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { COLORS, Drawing, W, type Pt, type Stroke, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import { hydro, nf } from './hyd-symbols';
 import { installation, topView } from './turbine-ga-views';
 import {

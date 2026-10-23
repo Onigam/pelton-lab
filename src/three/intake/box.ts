@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { MAT } from '../materials';
-import { mesh, pipeAlong, rng, roundedPath } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { mesh, pipeAlong, rng, roundedPath } from '@onigam/lab-kit/three';
 import { bake, extrudeZ, stripSolid } from './common';
 import {
   BOX,

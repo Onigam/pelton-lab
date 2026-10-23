@@ -1,8 +1,8 @@
 // Turbine assembly guide: 19 steps. The `id` and `parts` of every step drive the 3D build
 // animation: every part id must exist in parts.ts and be installed after the part it sits on.
 
-import type { GuideStep } from './types';
-import { l } from '../i18n';
+import type { GuideStep } from '@onigam/lab-kit/content';
+import { l } from '@onigam/lab-kit/i18n';
 
 const ASSEMBLY_1: GuideStep[] = [
   {

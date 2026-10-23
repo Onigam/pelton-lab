@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import { clamp, rng } from '../util';
+import { clamp, rng } from '@onigam/lab-kit/three';
 import { fbm, hex, noShadow, vnoise } from './common';
 import { BOUNDS, CHANNEL_DEPTH, S_MAX, S_MIN, bedAt, streamFrame } from './layout';
 import type { Terrain } from './terrain';

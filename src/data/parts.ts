@@ -2,9 +2,9 @@
 // Figures are kept consistent with the lessons and guides (site A: 76 m, 1.1 L/s, 499 W).
 // The turbine design is OUR own (DIY-friendly, inspired by the machine in the video), not a Hydronome product.
 
-import type { L } from '../i18n';
-import type { PartInfo, Spec } from './types';
-import { l } from '../i18n';
+import type { L } from '@onigam/lab-kit/i18n';
+import type { PartInfo, Spec } from '@onigam/lab-kit/content';
+import { l } from '@onigam/lab-kit/i18n';
 
 /** Numeric value written the French way: derive the English form (7,4 -> 7.4 ; 1 500 -> 1,500 ; 3 % -> 3%). */
 function num(fr: string): L | string {

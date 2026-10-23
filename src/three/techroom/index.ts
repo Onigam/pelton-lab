@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import { PartRegistry } from '../registry';
-import type { Hotspot, SceneModule, ViewOpts } from '../types';
+import { PartRegistry } from '@onigam/lab-kit/three';
+import type { Hotspot, SceneModule, ViewOpts } from '@onigam/lab-kit/three';
 import { buildBattery } from './battery';
 import { createPalette, type Device } from './common';
 import { buildDiversion, buildHydroCtrl } from './controllers';

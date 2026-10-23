@@ -8,7 +8,7 @@ import { runner } from './sheets/runner';
 import { shaftLine } from './sheets/shaft-line';
 import { singleLine } from './sheets/single-line';
 import { turbineGa } from './sheets/turbine-ga';
-import type { DrawingSheet } from './types';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 
 /** Every drawing of the "Plans" mode, in reading order. */
 export const SHEETS: DrawingSheet[] = [

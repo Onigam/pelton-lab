@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import type { L } from '../../i18n';
+import type { L } from '@onigam/lab-kit/i18n';
 import type { SimState } from '../../sim/types';
-import { MAT, pmma } from '../materials';
-import type { PartRegistry } from '../registry';
-import type { ViewOpts } from '../types';
-import { canvasTexture, mesh } from '../util';
+import { MAT, pmma } from '@onigam/lab-kit/three';
+import type { PartRegistry } from '@onigam/lab-kit/three';
+import type { ViewOpts } from '@onigam/lab-kit/three';
+import { canvasTexture, mesh } from '@onigam/lab-kit/three';
 
 // Shared building blocks of the technical room: palette, primitive helpers working on
 // shared unit geometries, small hardware (glands, screws, LEDs, stickers) and `bake()`,

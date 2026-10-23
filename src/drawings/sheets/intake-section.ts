@@ -1,5 +1,5 @@
 import type * as THREE from 'three';
-import { l } from '../../i18n';
+import { l } from '@onigam/lab-kit/i18n';
 import {
   BAR,
   BAR_COUNT,
@@ -31,8 +31,8 @@ import {
   profileAt,
   profileY,
 } from '../../three/intake/dims';
-import { COLORS, Drawing, INK, INK_2, View, W, type Pt, type Text } from '../svg';
-import type { DrawingSheet } from '../types';
+import { COLORS, Drawing, INK, INK_2, View, W, type Pt, type Text } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import {
   arcDim,
   arrowLine,

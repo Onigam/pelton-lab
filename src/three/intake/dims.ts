@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { clamp, lerp } from '../util';
+import { clamp, lerp } from '@onigam/lab-kit/three';
 
 // Geometry of the Coanda intake diorama (metres, Y up, flow along +X, z = 0 on the
 // screen centre line, +Z = near bank, towards the home camera). The hydraulic profile is a

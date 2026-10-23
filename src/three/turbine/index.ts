@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import { l } from '../../i18n';
+import { l } from '@onigam/lab-kit/i18n';
 import type { SimState } from '../../sim/types';
-import { MAT } from '../materials';
-import { PartRegistry } from '../registry';
-import type { Hotspot, SceneModule, ViewOpts } from '../types';
-import { canvasTexture, group, mesh } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { PartRegistry } from '@onigam/lab-kit/three';
+import type { Hotspot, SceneModule, ViewOpts } from '@onigam/lab-kit/three';
+import { canvasTexture, group, mesh } from '@onigam/lab-kit/three';
 import { D } from './dims';
 import { buildBearings, buildDrivetrain } from './drivetrain';
 import { buildGenerator } from './generator';

@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
-import { getLang } from '../../i18n';
+import { getLang } from '@onigam/lab-kit/i18n';
 import type { SimState } from '../../sim/types';
-import type { ViewOpts } from '../types';
-import { canvasTexture, clamp } from '../util';
+import type { ViewOpts } from '@onigam/lab-kit/three';
+import { canvasTexture, clamp } from '@onigam/lab-kit/three';
 import { profileAt, sOfK } from './dims';
 
 // "Magnifier" shown with the schematic overlay: a ×20 cross-section of a few wedge wires,

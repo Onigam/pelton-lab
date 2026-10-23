@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import type { ViewOpts } from '../types';
-import { clamp, rng } from '../util';
+import type { ViewOpts } from '@onigam/lab-kit/three';
+import { clamp, rng } from '@onigam/lab-kit/three';
 import { noShadow } from './common';
 import { bedY, BLOCK, channelZ, HALF_W, pondY, profile, profileAt, S_END, sOfK } from './dims';
 import { LAND_Y, nappePoints } from './water';

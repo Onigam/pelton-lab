@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import { MAT } from '../materials';
-import { pipeAlong, rng } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { pipeAlong, rng } from '@onigam/lab-kit/three';
 import { hex, noShadow, smooth } from './common';
 import { ANNEX, TURBINE, WALL } from './layout';
 import type { Terrain } from './terrain';

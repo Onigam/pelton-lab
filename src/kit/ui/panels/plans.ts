@@ -1,7 +1,7 @@
-import { SHEETS } from '../../drawings';
+import { SHEETS } from '../../../drawings';
 import type { SheetGroup } from '../../drawings/types';
 import { tr } from '../../i18n';
-import { t, type UiKey } from '../../i18n/ui';
+import { t, type UiKey } from '../../../i18n/ui';
 import type { AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';
 

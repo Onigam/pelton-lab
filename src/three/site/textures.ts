@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { canvasTexture, rng } from '../util';
+import { canvasTexture, rng } from '@onigam/lab-kit/three';
 
 // Procedural canvas textures for the buildings (1 UV unit = 1 tile, see boxUV()).
 

@@ -1,4 +1,4 @@
-import type { PresetId, ScenarioId } from '../data/types';
+import type { PresetId, ScenarioId } from '@onigam/lab-kit/content';
 import type { CtrlMode, Season } from './types';
 
 // User-adjustable inputs of the simulation. Presets reproduce the two installations of

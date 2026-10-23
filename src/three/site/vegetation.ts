@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries, mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type { Season } from '../../sim/types';
-import { canvasTexture, rng } from '../util';
+import { canvasTexture, rng } from '@onigam/lab-kit/three';
 import { SEASON_LOOK, hex, smooth, vnoise } from './common';
 import { cabinPadWeight, meadowMask, pathMask, turbinePadWeight } from './ground';
 import { BOUNDS, HOME, nearestStream, streamFrame } from './layout';

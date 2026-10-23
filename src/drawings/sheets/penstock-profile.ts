@@ -1,8 +1,8 @@
-import { l } from '../../i18n';
+import { l } from '@onigam/lab-kit/i18n';
 import { G, RHO } from '../../sim/physics';
 import { bedAt } from '../../three/site/layout';
-import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import { airValve, arrowLine, cat, flowArrow, hydro, levelMark, nf, notes, para } from './hyd-symbols';
 
 // PL-H02 — longitudinal profile of the site A penstock (distorted scales), hydraulic grade

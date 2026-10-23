@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { l, type L, tr } from '../../i18n';
+import { l, type L, tr } from '@onigam/lab-kit/i18n';
 import type { AlarmKey, SimState } from '../../sim/types';
-import { canvasTexture, group } from '../util';
+import { canvasTexture, group } from '@onigam/lab-kit/three';
 import { anchor, bake, box, cyl, type Device, font, MONO, type Palette, plane, rbox, throttle } from './common';
 import { POS, SIZE } from './layout';
 

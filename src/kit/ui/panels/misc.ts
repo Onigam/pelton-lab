@@ -1,8 +1,8 @@
-import { LESSONS } from '../../data/lessons';
-import { PARTS } from '../../data/parts';
-import type { Lesson, PartCategory } from '../../data/types';
+import { LESSONS } from '../../../data/lessons';
+import { PARTS } from '../../../data/parts';
+import type { Lesson, PartCategory } from '../../content/types';
 import { tr } from '../../i18n';
-import { t, type UiKey } from '../../i18n/ui';
+import { t, type UiKey } from '../../../i18n/ui';
 import type { SceneId } from '../../three/types';
 import { videoUrl, type AppContext } from '../context';
 import { fill, h, icon, ICONS, rich } from '../dom';

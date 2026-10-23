@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
-import { emissive, MAT, pmma } from '../materials';
-import type { PartRegistry } from '../registry';
-import { canvasTexture, group, mesh } from '../util';
+import { emissive, MAT, pmma } from '@onigam/lab-kit/three';
+import type { PartRegistry } from '@onigam/lab-kit/three';
+import { canvasTexture, group, mesh } from '@onigam/lab-kit/three';
 import { D, profile, profileShape } from './dims';
 
 /**

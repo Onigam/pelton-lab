@@ -1,4 +1,4 @@
-import { COLORS, W, type Pt, type Stroke, type View } from '../svg';
+import { COLORS, W, type Pt, type Stroke, type View } from '@onigam/lab-kit/drawings';
 import { BASE, CX, DRAIN_MM, M, PIPE, pipe, pipeBreak, PROFILE, R_TIP_MM, SIDE, SKID_MM, SPEAR } from './turbine-geom';
 
 // PL-T01, second part: top view (1:5) and installation elevation (1:20) with the bypass

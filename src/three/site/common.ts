@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type { Season } from '../../sim/types';
-import { clamp } from '../util';
+import { clamp } from '@onigam/lab-kit/three';
 
 // Small shared helpers for the site scene: noise, smoothstep, seasonal palette.
 

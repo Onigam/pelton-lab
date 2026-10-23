@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { l } from '../../i18n';
+import { l } from '@onigam/lab-kit/i18n';
 import type { Season } from '../../sim/types';
-import { PartRegistry } from '../registry';
-import type { Hotspot, SceneModule } from '../types';
+import { PartRegistry } from '@onigam/lab-kit/three';
+import type { Hotspot, SceneModule } from '@onigam/lab-kit/three';
 import { SEASON_LOOK } from './common';
 import { buildCableRun, buildTailrace, buildWall } from './bank';
 import { createCabin } from './cabin';

@@ -1,6 +1,6 @@
-import { l, tr, type L } from '../../i18n';
-import { COLORS, Drawing, W, type Pt, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { l, tr, type L } from '@onigam/lab-kit/i18n';
+import { COLORS, Drawing, W, type Pt, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import { hydro, nf } from './hyd-symbols';
 import { M, matchedJet, note, rot, RUNNER, silhouette, spec, tipR, type Spec } from './turbine-geom';
 

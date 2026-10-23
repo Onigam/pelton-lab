@@ -1,8 +1,8 @@
 // Site installation guide: from the survey to the first night of production.
 // Part ids refer to the site scene.
 
-import type { GuideStep } from './types';
-import { l } from '../i18n';
+import type { GuideStep } from '@onigam/lab-kit/content';
+import { l } from '@onigam/lab-kit/i18n';
 
 export const INSTALL: GuideStep[] = [
   {

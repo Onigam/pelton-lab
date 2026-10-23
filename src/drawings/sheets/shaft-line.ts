@@ -1,6 +1,15 @@
-import { l } from '../../i18n';
-import { COLORS, Drawing, W, type HatchKind, type Pt, type Stroke, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { l } from '@onigam/lab-kit/i18n';
+import {
+  COLORS,
+  Drawing,
+  W,
+  type HatchKind,
+  type Pt,
+  type Stroke,
+  type Text,
+  type View,
+} from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import { BELL, clipPoly, M, note, RUNNER, SHAFT, spec, STATOR, type Box } from './turbine-geom';
 
 // PL-T02 — shaft line, axial section A–A at 1:2 (z along the sheet, radius up).

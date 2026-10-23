@@ -1,11 +1,11 @@
-import { tr } from '../../i18n';
+import { tr } from '@onigam/lab-kit/i18n';
 import { bucketEfficiency } from '../../sim/physics';
 import { bucketSpecFor } from '../../three/turbine/bucket';
 import { D, profile, R_TIP } from '../../three/turbine/dims';
 import { Z_BELL, Z_STATOR } from '../../three/turbine/generator';
 import { DEFLECTOR, DRAIN, SKID, VENT } from '../../three/turbine/housing';
 import { RISER_TOP, TOP_INLET_Y } from '../../three/turbine/hydraulics';
-import { COLORS, W, type Drawing, type Pt, type Stroke, type Text, type View } from '../svg';
+import { COLORS, W, type Drawing, type Pt, type Stroke, type Text, type View } from '@onigam/lab-kit/drawings';
 
 // Turbine geometry for the mechanical sheets PL-T01..T04, read from the 3D model modules
 // (src/three/turbine) and converted to millimetres, plus the few drawing helpers they share.

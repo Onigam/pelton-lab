@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
-import { l, onLangChange, tr, type L } from '../../i18n';
+import { l, onLangChange, tr, type L } from '@onigam/lab-kit/i18n';
 import type { SimState } from '../../sim/types';
-import type { ViewOpts } from '../types';
-import { canvasTexture, clamp, roundedPath } from '../util';
+import type { ViewOpts } from '@onigam/lab-kit/three';
+import { canvasTexture, clamp, roundedPath } from '@onigam/lab-kit/three';
 import { BLOCK, bedY, channelZ, DRAIN, OUTLET, PIPE_PTS, pondY, profileAt, S_END, smoothstep, sOfK } from './dims';
 import { nappePoints } from './water';
 

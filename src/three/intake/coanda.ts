@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { MAT } from '../materials';
-import { mesh } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { mesh } from '@onigam/lab-kit/three';
 import { bake, profileSheet, stripSolid } from './common';
 import {
   BAR,

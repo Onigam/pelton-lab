@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { MAT } from '../materials';
-import { mesh, rng } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { mesh, rng } from '@onigam/lab-kit/three';
 import { bake, clipBand, compose, extrudeZ, polyShape } from './common';
 import { BED_Y, CREST, FRAME, HALF_W, profileY, STEEL_T } from './dims';
 import { woodTexture } from './textures';

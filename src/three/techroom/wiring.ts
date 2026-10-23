@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { l } from '../../i18n';
-import { group, mesh, roundedPath } from '../util';
+import { l } from '@onigam/lab-kit/i18n';
+import { group, mesh, roundedPath } from '@onigam/lab-kit/three';
 import { anchor, bake, type Device, type Palette } from './common';
 import { batteryCanPort, batteryPort, PORT as P, ROOM } from './layout';
 

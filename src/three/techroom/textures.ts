@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { rng } from '../util';
+import { rng } from '@onigam/lab-kit/three';
 import { tiledTexture } from './common';
 
 // Procedural canvas textures of the room surfaces. Each tile is seamless enough for

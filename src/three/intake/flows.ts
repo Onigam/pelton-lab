@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import type { ViewOpts } from '../types';
-import { clamp, rng, roundedPath } from '../util';
+import type { ViewOpts } from '@onigam/lab-kit/three';
+import { clamp, rng, roundedPath } from '@onigam/lab-kit/three';
 import { noShadow } from './common';
 import { BOX, HALF_W, OUTLET, PIPE_PTS, PIPE_R, profile, profileAt, S_END, smoothstep, sOfK } from './dims';
 import { bubbleSprite, dropSprite, streakTexture } from './textures';

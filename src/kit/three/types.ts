@@ -1,6 +1,6 @@
 import type * as THREE from 'three';
 import type { L } from '../i18n';
-import type { SimState } from '../sim/types';
+import type { SimState } from '../../sim/types';
 import type { PartRegistry } from './registry';
 
 export type SceneId = 'site' | 'intake' | 'turbine' | 'techroom';

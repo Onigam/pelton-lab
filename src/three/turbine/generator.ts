@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { emissive, MAT } from '../materials';
-import type { PartRegistry } from '../registry';
-import { group, mesh, pipeAlong } from '../util';
+import { emissive, MAT } from '@onigam/lab-kit/three';
+import type { PartRegistry } from '@onigam/lab-kit/three';
+import { group, mesh, pipeAlong } from '@onigam/lab-kit/three';
 import { D } from './dims';
 
 // Outer-rotor permanent-magnet generator in the dry chamber:

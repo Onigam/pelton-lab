@@ -2,10 +2,10 @@
 // connection, phase leads to the terminal block and the 6-diode bridge on its heatsink,
 // front view of the stator at 1:2, EMF versus speed and the acceptance tests.
 // Geometry follows src/three/turbine/generator.ts, numbers follow sim/presets.ts + engine.ts.
-import { l, tr, type L } from '../../i18n';
+import { l, tr, type L } from '@onigam/lab-kit/i18n';
 import { presetParams } from '../../sim/presets';
-import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import {
   arrowHead,
   connector,

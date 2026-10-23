@@ -1,5 +1,5 @@
 import { tr } from '../../i18n';
-import { t } from '../../i18n/ui';
+import { t } from '../../../i18n/ui';
 import { partInfo, type AppContext } from '../context';
 import { guideFor } from '../display';
 import { fill, h, icon, ICONS, rich } from '../dom';

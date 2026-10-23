@@ -1,8 +1,8 @@
-import { l, type L } from '../../i18n';
+import { l, type L } from '@onigam/lab-kit/i18n';
 import { WAVE_SPEED_HDPE } from '../../sim/physics';
 import { presetParams } from '../../sim/presets';
-import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import {
   airValve,
   ballValve,

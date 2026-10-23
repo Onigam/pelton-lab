@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { l } from '../../i18n';
-import { canvasTexture, clamp, damp, group, mesh, rng } from '../util';
+import { l } from '@onigam/lab-kit/i18n';
+import { canvasTexture, clamp, damp, group, mesh, rng } from '@onigam/lab-kit/three';
 import {
   anchor,
   bake,

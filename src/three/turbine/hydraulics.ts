@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { emissive, glass, MAT } from '../materials';
-import type { PartRegistry } from '../registry';
-import { canvasTexture, group, mesh, pipeAlong } from '../util';
+import { emissive, glass, MAT } from '@onigam/lab-kit/three';
+import type { PartRegistry } from '@onigam/lab-kit/three';
+import { canvasTexture, group, mesh, pipeAlong } from '@onigam/lab-kit/three';
 import { D } from './dims';
 import { DEFLECTOR } from './housing';
 

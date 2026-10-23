@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type { SimState } from '../../sim/types';
-import { canvasTexture } from '../util';
+import { canvasTexture } from '@onigam/lab-kit/three';
 import { D } from './dims';
 import { DRAIN } from './housing';
 

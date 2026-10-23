@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { ASSEMBLY } from '../data/assembly';
-import { INSTALL } from '../data/install';
-import type { GuideStep } from '../data/types';
+import { ASSEMBLY } from '../../data/assembly';
+import { INSTALL } from '../../data/install';
+import type { GuideStep } from '../content/types';
 import type { Stage } from '../three/core';
 import type { PartDisplay } from '../three/registry';
 import { damp, ease } from '../three/util';

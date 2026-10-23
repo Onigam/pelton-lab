@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { MAT } from '../materials';
-import { rng } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { rng } from '@onigam/lab-kit/three';
 import { boulderGeometry, compose, slabGeometry, tmp, type V3 } from './common';
 import { BED_Y, BOX, CREST, FRAME, pondY, terrainH } from './dims';
 

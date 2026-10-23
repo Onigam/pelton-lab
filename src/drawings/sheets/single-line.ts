@@ -2,11 +2,11 @@
 // controller variants, 48 V busbar, PV, battery bank, diversion load, inverter and AC board.
 // Ratings follow the currents of the project model (≈ 10 A turbine, 100 A PV charger,
 // 3 kVA inverter); cable sections are labelled on every link.
-import { l, tr, type L } from '../../i18n';
+import { l, tr, type L } from '@onigam/lab-kit/i18n';
 import { cableResistance } from '../../sim/physics';
 import { presetParams } from '../../sim/presets';
-import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '../svg';
-import type { DrawingSheet } from '../types';
+import { COLORS, Drawing, INK, INK_2, W, type Pt, type Text, type View } from '@onigam/lab-kit/drawings';
+import type { DrawingSheet } from '@onigam/lab-kit/drawings';
 import { hydro, nf } from './hyd-symbols';
 import {
   acWire,

@@ -1,9 +1,9 @@
-import { LESSONS } from '../data/lessons';
-import { SHEETS } from '../drawings';
+import { LESSONS } from '../../data/lessons';
+import { SHEETS } from '../../drawings';
 import { getLang, onLangChange, setLang, tr } from '../i18n';
-import { colon, t, type UiKey } from '../i18n/ui';
-import type { SimEngine } from '../sim/engine';
-import type { Season } from '../sim/types';
+import { colon, t, type UiKey } from '../../i18n/ui';
+import type { SimEngine } from '../../sim/engine';
+import type { Season } from '../../sim/types';
 import type { Stage } from '../three/core';
 import type { SceneId } from '../three/types';
 import { AppContext, partInfo } from './context';
@@ -13,9 +13,9 @@ import { renderGuidePanel } from './panels/guide';
 import { lessonsDone, renderAboutPanel, renderLessonsPanel, renderPartsPanel } from './panels/misc';
 import { renderPartPanel } from './panels/part';
 import { renderPlansPanel } from './panels/plans';
-import { SimPanel } from './panels/sim';
+import { SimPanel } from '../../panels/sim';
 import { panelEdge } from './panel-size';
-import { DrawingViewer } from './drawings';
+import { DrawingViewer } from './viewer';
 import type { Mode, Store, UiState } from './state';
 
 // Application shell: header, mode rail, contextual right panel, viewport toolbar and

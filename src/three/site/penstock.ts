@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { MAT } from '../materials';
-import { canvasTexture } from '../util';
+import { MAT } from '@onigam/lab-kit/three';
+import { canvasTexture } from '@onigam/lab-kit/three';
 import { smooth } from './common';
 import { TURBINE, bedAt, streamFrame } from './layout';
 import type { Terrain } from './terrain';

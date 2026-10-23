@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { mesh } from '../util';
+import { mesh } from '@onigam/lab-kit/three';
 import { profile, vnoise } from './dims';
 
 // Shared helpers of the intake diorama: geometry builders for sheet-metal parts that follow
