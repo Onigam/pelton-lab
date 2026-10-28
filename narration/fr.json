@@ -1,0 +1,519 @@
+{
+  "lang": "fr",
+  "voiceLabel": {
+    "fr": "Voix de synthèse",
+    "en": "Synthetic voice"
+  },
+  "settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.8,
+    "style": 0.35,
+    "speed": 0.95
+  },
+  "segments": [
+    {
+      "id": "intro",
+      "scope": "intro",
+      "title": "Présentation du site",
+      "scene": "site",
+      "text": "[[home]] Imaginez un ruisseau de montagne, si mince qu’on l’enjamberait. Il murmure, il ne fait pas de vagues… et pourtant, il cache un trésor. [[frame:stream]] Suivons une petite goutte d’eau. Elle se laisse porter, arrive à une retenue de pierres, [[frame:coanda]] puis glisse sur une grille d’inox, qui garde les feuilles et laisse passer l’eau claire. [[frame:penstock]] La voici dans un long tuyau qui plonge dans la pente. Plus elle descend, plus elle pèse : la chute devient pression. Soixante-seize mètres de dénivelé, et environ sept virgule quatre bars à l’arrivée ! [[frame:turbine]] Au bout du chemin, la turbine : le cœur de l’histoire. [[scene:turbine]] Entrons-y. Un injecteur resserre l’eau en un jet de six millimètres, qui file à environ trente-sept mètres par seconde. [[frame:buckets]] Il frappe la roue Pelton : vingt-six petites cuillères, qui fendent le jet en deux et le renvoient en arrière. À chaque coup, la goutte laisse son énergie, et la roue tourne, nuit et jour. [[frame:stator,rotor]] Derrière la cloison étanche, [[xray:on]] des aimants défilent devant des bobines de cuivre : le courant électrique naît ! [[xray:off]] [[scene:techroom]] Le courant file maintenant vers le local technique, [[frame:battery]] où des batteries le mettent en réserve, [[frame:inverter]] et où un onduleur le transforme en courant de maison. [[scene:site]] Et de retour sur le site, regardez bien la maison : [[frame:cabin]] la lumière s’allume. Voilà toute l’histoire : une goutte, une pente, une roue… et une ampoule qui sourit. [[home]] Pour commencer, quelques repères. Il y a quatre vues : le site, la prise d’eau, la turbine et le local technique. Cliquez sur une pièce : sa fiche s’ouvre, et vous pouvez écouter son histoire. Le curseur Éclaté écarte les pièces, Transparence et Coupe montrent l’intérieur, Flux suit le chemin de l’eau. [[mode:assembly]] Le guide de montage assemble la turbine pièce par pièce. [[mode:install]] Le guide d’installation vous mène de la mesure de la chute à la mise en service. [[mode:sim]] La simulation vous laisse changer la chute, le débit, la saison, et voir ce qui arrive. [[mode:lessons]] Quatorze leçons, avec des quiz, expliquent la physique. [[mode:explore]] Une dernière chose : ce laboratoire est une reconstitution pédagogique, inspirée d’un reportage public. [[scene:site]] Ce n’est ni un plan officiel, ni un produit du constructeur. [[select:none]] À vous de jouer !"
+    },
+    {
+      "id": "scene-site",
+      "scope": "scene:site",
+      "title": "Le site : de la source au watt",
+      "scene": "site",
+      "text": "[[home]] Bienvenue ! [[flows:on]] [[frame:stream]] Un petit ruisseau de montagne, et surtout de la pente. [[frame:coanda]] Tout en haut, la prise d’eau Coanda filtre l’eau à un millimètre. [[frame:penstock]] Une conduite forcée la reçoit, et transforme le dénivelé en pression. [[frame:turbine]] Au bord de l’eau, la turbine fait le travail, puis rend toute l’eau au ruisseau. [[frame:techroom]] Le courant file ensuite vers le local technique, où l’énergie est stockée. [[flows:off]] [[home]] Le site A, en forêt, offre soixante-seize mètres de chute ; le site B, un hameau, vingt et un mètres, avec des panneaux solaires. Une précaution : en France, prélever l’eau d’un ruisseau est réglementé, comme pour les moulins. Renseignez-vous avant tout projet."
+    },
+    {
+      "id": "scene-intake",
+      "scope": "scene:intake",
+      "title": "La prise d’eau Coanda",
+      "scene": "intake",
+      "text": "[[home]] Voici la porte d’entrée de toute l’installation. [[frame:in-weir]] Le seuil de pierres crée une petite retenue. [[frame:in-ramp]] L’eau dévale une plaque d’accélération, [[frame:in-screen]] puis une grille de fils d’inox profilés : chaque fil découpe une fine lame d’eau, qui tombe dans le bac de collecte, [[frame:in-overflow]] pendant que feuilles et surplus glissent vers le trop-plein. [[frame:in-outlet]] Le bac alimente ensuite la conduite forcée, par une crépine immergée. [[home]] [[flows:on]] Regardez l’eau suivre son chemin… [[cutaway:on]] et la coupe nous montre l’intérieur du bac. [[cutaway:off]] [[flows:off]] Une seule règle d’or : toujours un petit débordement. S’il disparaît, le bac se vide, et l’air entre dans la conduite."
+    },
+    {
+      "id": "scene-turbine",
+      "scope": "scene:turbine",
+      "title": "La micro-turbine Pelton",
+      "scene": "turbine",
+      "text": "[[home]] Entrons dans la machine, et suivons le chemin de l’eau. [[frame:window,buckets]] À l’avant, la chambre humide : c’est ici que le jet frappe les augets de la roue. [[frame:partition]] Une cloison étanche en acrylique la sépare de la chambre sèche, [[frame:stator,rotor]] [[xray:on]] où la génératrice à aimants produit le courant, sans balais ni courroie. [[xray:off]] [[home]] [[explode:0.6]] Écartons un peu les pièces, pour voir comment tout s’emboîte… [[explode:0]] Le carter mesure cinq cent soixante-quatorze sur trois cent vingt-huit sur quatre cent deux millimètres, et la roue compte vingt-six augets pour deux cent quarante-quatre millimètres de diamètre : cotes publiées par le constructeur. Mais cette turbine est notre propre conception, inspirée de celle de la vidéo : ce n’est pas un produit du constructeur."
+    },
+    {
+      "id": "scene-techroom",
+      "scope": "scene:techroom",
+      "title": "Le local technique",
+      "scene": "techroom",
+      "text": "[[home]] Le local technique : le centre de commande. [[frame:busbar]] Un bus à quarante-huit volts relie tout le monde. [[frame:battery]] Les batteries au lithium fer phosphate gardent l’énergie. [[frame:mppt-pv]] Le régulateur solaire les charge depuis les panneaux. [[frame:inverter]] L’onduleur-chargeur fabrique le deux cent trente volts de la maison. [[frame:diversion,dump-load]] Et le délesteur brûle le surplus dans des résistances. [[home]] [[flows:on]] Pourquoi ce délesteur ? Parce qu’une turbine ne doit jamais tourner à vide. Sans charge, plus rien ne freine la roue : elle s’emballe, et sa tension double. [[flows:off]]"
+    },
+    {
+      "id": "part-stream",
+      "scope": "part:stream",
+      "title": "Ruisseau",
+      "scene": "site",
+      "text": "Un ruisseau qu’on enjamberait, et pourtant c’est lui qui fait tout. La Pelton ne réclame pas un gros débit, mais de la hauteur. Sur le site B, il coule de décembre à mai, puis le lit sèche l’été. Mesurez donc son débit en fin d’été, pas au printemps !"
+    },
+    {
+      "id": "part-weir",
+      "scope": "part:weir",
+      "title": "Petite retenue",
+      "scene": "site",
+      "text": "Quelques pierres, quelques planches, et voilà une retenue. Elle calme l’eau devant la prise, et le surplus doit toujours déborder par-dessus : jamais d’air dans la conduite. Un seuil est un ouvrage réglementé : consultez d’abord la direction départementale des territoires."
+    },
+    {
+      "id": "part-coanda",
+      "scope": "part:coanda",
+      "title": "Prise d’eau Coanda",
+      "scene": "site",
+      "text": "[[flows:on]] Voici l’astuce la plus élégante du ruisseau. L’eau glisse sur une grille d’inox légèrement incurvée, et par l’effet Coanda, elle s’y colle. Chaque fil en détache une lame fine, qui tombe dans la boîte, pendant que feuilles et graviers passent par-dessus. Filtrage : environ un millimètre. Entretien : d’après la vidéo, un coup de brosse par trimestre, même grille couverte de débris. [[flows:off]]"
+    },
+    {
+      "id": "part-penstock",
+      "scope": "part:penstock",
+      "title": "Conduite forcée",
+      "scene": "site",
+      "text": "Elle descend la pente, silencieuse, et garde toute la chute sous forme de pression. Dix mètres de dénivelé, un bar : soixante-seize mètres, environ sept virgule quatre bars ! Sur le site A, un tube de polyéthylène de trois cent cinquante mètres. Le constructeur le reconnaît : plus gros aurait mieux valu, le frottement coûte environ deux mètres de chute. Pas de bosse sur le tracé : une bulle d’air s’y piégerait."
+    },
+    {
+      "id": "part-turbine",
+      "scope": "part:turbine",
+      "title": "Turbine Pelton",
+      "scene": "site",
+      "text": "Le cœur de l’affaire ! La turbine change la pression en jet, le jet en rotation, et la rotation en électricité, sans multiplicateur. Sur le site A, un seul injecteur de six millimètres donne quatre cent quatre-vingt-dix-neuf watts sous soixante-seize mètres. Elle tourne jour et nuit, à vitesse constante, toujours en charge. Trente à quarante centimètres de chute libre dessous, sinon la roue barbote !"
+    },
+    {
+      "id": "part-tailrace",
+      "scope": "part:tailrace",
+      "title": "Canal de fuite",
+      "scene": "site",
+      "text": "Une Pelton ne consomme pas l’eau : elle lui prend son énergie, et la rend intacte au ruisseau. Le canal évacue tout le débit, avec trente à quarante centimètres de chute libre sous le socle. Par le chemin le plus court : entre la prise et le rejet, le ruisseau manque d’eau."
+    },
+    {
+      "id": "part-cable-run",
+      "scope": "part:cable-run",
+      "title": "Liaison électrique enterrée",
+      "scene": "site",
+      "text": "Le courant doit voyager, et le câble en garde un peu pour lui. L’astuce du constructeur : monter la tension plutôt que le cuivre. Cinq cents watts sur deux cents mètres de six millimètres carrés : en cinquante volts, environ cent dix-sept watts perdus ; en deux cents volts, sept seulement !"
+    },
+    {
+      "id": "part-cabin",
+      "scope": "part:cabin",
+      "title": "Habitation",
+      "scene": "site",
+      "text": "Voici pour qui tout cela existe : la maison d’un hameau de montagne, loin du réseau. L’hiver, le soleil passe vite derrière les crêtes, et la turbine prend le relais, jour et nuit. L’été, le ruisseau est à sec : les panneaux assurent seuls."
+    },
+    {
+      "id": "part-pv",
+      "scope": "part:pv",
+      "title": "Champ photovoltaïque",
+      "scene": "site",
+      "text": "Quand le ruisseau s’endort, le soleil prend la relève. Sur le site B, quatre mille cinq cents watts crête de panneaux chargent les batteries. Beaucoup d’eau et peu de soleil l’hiver, l’inverse l’été : les deux sources se complètent presque parfaitement."
+    },
+    {
+      "id": "part-techroom",
+      "scope": "part:techroom",
+      "title": "Local technique",
+      "scene": "site",
+      "text": "Toute l’énergie converge ici. Turbine et panneaux chargent un bus à quarante-huit volts, les batteries lissent les écarts, l’onduleur fournit le deux cent trente volts de la maison. Les résistances de délestage veillent : même batteries pleines, la turbine reste en charge."
+    },
+    {
+      "id": "part-in-weir",
+      "scope": "part:in-weir",
+      "title": "Seuil en pierres sèches",
+      "scene": "intake",
+      "text": "Un petit mur de pierres plates posées à sec, sans une once de béton. Il relève le ruisseau d’environ trente à cinquante centimètres : l’eau arrive calme et régulière sur la grille. En France, un seuil relève de la police de l’eau : déclarez-le avant de le construire."
+    },
+    {
+      "id": "part-in-frame",
+      "scope": "part:in-frame",
+      "title": "Caisson et cadre bois",
+      "scene": "intake",
+      "text": "Ici, du bois : un cadre de mélèze ou de douglas, assemblé avec des équerres galvanisées. Il tient la grille à la bonne inclinaison et protège le bac des chocs. Facile à remplacer, il dure dix à quinze ans. Bien calé contre le seuil : l’eau ne doit pas contourner la grille."
+    },
+    {
+      "id": "part-in-ramp",
+      "scope": "part:in-ramp",
+      "title": "Plaque d’accélération",
+      "scene": "intake",
+      "text": "Avant la grille, une plaque d’inox courbe, longue d’une quinzaine de centimètres. L’eau s’y accélère, à environ un mètre cinquante ou deux mètres cinquante par seconde, et s’amincit en lame régulière. Cette vitesse est le secret : c’est elle qui rend la grille efficace."
+    },
+    {
+      "id": "part-in-screen",
+      "scope": "part:in-screen",
+      "title": "Grille Coanda en fil profilé",
+      "scene": "intake",
+      "text": "[[flows:on]] La grille Coanda, de près. Des fils d’inox triangulaires, pointe en bas, séparés d’un millimètre. Chaque fil est incliné de quelques degrés : son arête tranche une fine couche d’eau, qui plonge dans la fente. Feuilles et graviers, trop gros, restent dans la lame rapide et s’en vont jusqu’au bout : la grille se nettoie toute seule ! Ne la retournez jamais. [[flows:off]]"
+    },
+    {
+      "id": "part-in-box",
+      "scope": "part:in-box",
+      "title": "Bac de collecte",
+      "scene": "intake",
+      "text": "[[cutaway:on]] Sous la grille, un bac recueille l’eau filtrée : environ quarante à soixante litres, qui amortissent les caprices du débit. Tant que le ruisseau donne plus que la turbine ne boit, il reste plein. Sinon, le niveau baisse, la sortie se découvre… et l’air entre. [[cutaway:off]]"
+    },
+    {
+      "id": "part-in-overflow",
+      "scope": "part:in-overflow",
+      "title": "Trop-plein et glissière à débris",
+      "scene": "intake",
+      "text": "Le bout de la grille, par où repartent le surplus et les feuilles. Insistons : il faut toujours voir un léger débordement ! Un bout de grille sec, c’est une turbine qui prélève tout, un bac qui va se vider, de l’air qui va entrer."
+    },
+    {
+      "id": "part-in-sandtrap",
+      "scope": "part:in-sandtrap",
+      "title": "Dessableur et vanne de purge",
+      "scene": "intake",
+      "text": "Le sable plus fin qu’un millimètre traverse la grille. Dans le bac, l’eau ralentit, et il se dépose dans une fosse que vide une vanne de purge. Pourquoi ? Un jet à trente-sept mètres par seconde chargé de sable use vite l’injecteur et les augets. Purgez après chaque crue."
+    },
+    {
+      "id": "part-in-outlet",
+      "scope": "part:in-outlet",
+      "title": "Crépine et départ de conduite",
+      "scene": "intake",
+      "text": "L’eau quitte le bac par une crépine percée de petits trous, dernier filet contre une feuille égarée. La sortie doit rester bien immergée : trop près de la surface, un tourbillon aspire de l’air. Puis la conduite descend sans interruption, sans point haut : ce serait un piège à air."
+    },
+    {
+      "id": "part-in-vent",
+      "scope": "part:in-vent",
+      "title": "Évent (reniflard)",
+      "scene": "intake",
+      "text": "Un simple tube vertical, et pourtant il rend trois services. Au remplissage, il laisse sortir l’air. En marche, il évacue les bulles. Et si la conduite se vide brutalement, il casse le vide : elle ne s’écrase pas, et se réamorce plus facilement."
+    },
+    {
+      "id": "part-in-brush",
+      "scope": "part:in-brush",
+      "title": "Brosse de nettoyage",
+      "scene": "intake",
+      "text": "Dans la vidéo, le propriétaire a laissé une brosse près de la grille : le plus modeste des outils, et peut-être le plus précieux. Un coup de brosse environ une fois par trimestre, pour décoller feuilles et biofilm. Brossez dans le sens du courant, jamais en travers des fils."
+    },
+    {
+      "id": "part-base",
+      "scope": "part:base",
+      "title": "Socle",
+      "scene": "turbine",
+      "text": "Tout commence par le socle, la plaque de fond qui sert de référence : cloison, vitre et capot viennent s’aligner sur lui. Sous la roue, une large ouverture laisse tomber l’eau turbinée, car une Pelton travaille à l’air libre. Mettez-le de niveau avant de serrer le reste."
+    },
+    {
+      "id": "part-partition",
+      "scope": "part:partition",
+      "title": "Cloison étanche",
+      "scene": "turbine",
+      "text": "Un mur d’acrylique, entre deux mondes. Devant, la chambre humide, où le jet se pulvérise en brouillard à plus de trente-cinq mètres par seconde. Derrière, la chambre sèche et son générateur. Seul l’arbre traverse. Serrée sur un joint par quatre vis, sans colle, elle se démonte sans rien casser."
+    },
+    {
+      "id": "part-window",
+      "scope": "part:window",
+      "title": "Vitre avant",
+      "scene": "turbine",
+      "text": "Une fenêtre sur la tempête ! La vitre ferme la chambre humide, mais laisse voir la roue, le jet et le brouillard. Un jet qui s’ouvre en gerbe, ou qui tape à côté de l’arête, se voit tout de suite. Dans la vidéo, on se tient à une longueur de bras sans recevoir une goutte."
+    },
+    {
+      "id": "part-gasket",
+      "scope": "part:gasket",
+      "title": "Joint de carter",
+      "scene": "turbine",
+      "text": "Un simple cordon de caoutchouc, mais sans lui, l’eau s’invite partout. Les plaques ne sont jamais parfaitement planes : le joint rattrape les écarts et absorbe les vibrations. Comprimé d’un quart environ : trop peu, ça fuit ; trop, il ne revient plus."
+    },
+    {
+      "id": "part-rear-panel",
+      "scope": "part:rear-panel",
+      "title": "Panneau arrière ventilé",
+      "scene": "turbine",
+      "text": "À l’arrière, un panneau noir ferme la chambre sèche. Il porte le troisième roulement, et ses grilles laissent le rotor aspirer l’air frais : le générateur chauffe en permanence. Deux pions le centrent : l’alignement des roulements est garanti sans réglage."
+    },
+    {
+      "id": "part-cover",
+      "scope": "part:cover",
+      "title": "Capot aluminium",
+      "scene": "turbine",
+      "text": "Un manteau d’aluminium marin, épais de deux millimètres seulement : le capot. Découpé au laser puis plié en coin par une entreprise toulousaine, il fait ruisseler l’eau loin des injecteurs. Quatre grenouillères l’ôtent sans outil."
+    },
+    {
+      "id": "part-bearing-1",
+      "scope": "part:bearing-1",
+      "title": "Roulement 1 (côté roue)",
+      "scene": "turbine",
+      "text": "Premier roulement, côté roue. Le jet pousse la roue d’un seul côté, et lui encaisse l’essentiel de l’effort. Un modèle courant, une dizaine d’euros. Tout près de l’eau, il s’use le premier : trois à cinq ans, selon la vidéo."
+    },
+    {
+      "id": "part-bearing-2",
+      "scope": "part:bearing-2",
+      "title": "Roulement 2 (côté générateur)",
+      "scene": "turbine",
+      "text": "Deux roulements valent mieux qu’un. Écartés dans la même cartouche, ils forment un couple qui empêche l’arbre de basculer : plus l’écart est grand, plus la roue tourne droit. On change les trois ensemble : jamais un neuf avec un usé sur le même arbre."
+    },
+    {
+      "id": "part-bearing-3",
+      "scope": "part:bearing-3",
+      "title": "Roulement 3 (panneau arrière)",
+      "scene": "turbine",
+      "text": "Un troisième roulement tient le bout de l’arbre, derrière le rotor. Les aimants attirent celui-ci dès qu’il n’est pas centré : cet appui garde l’entrefer régulier. Serrez le panneau en dernier, en tournant l’arbre à la main : s’il durcit, le roulement n’est pas dans l’axe."
+    },
+    {
+      "id": "part-seal",
+      "scope": "part:seal",
+      "title": "Joint à lèvre",
+      "scene": "turbine",
+      "text": "Une petite lèvre de caoutchouc qui frotte jour et nuit sur l’acier poli. Son métier : empêcher le brouillard de la chambre humide de suivre l’arbre jusqu’aux roulements. Avec eux, c’est la pièce d’usure numéro un : on change les joints à chaque entretien."
+    },
+    {
+      "id": "part-shaft",
+      "scope": "part:shaft",
+      "title": "Arbre inox Ø20",
+      "scene": "turbine",
+      "text": "L’arbre en inox, vingt millimètres de diamètre, relie la roue au rotor à travers la cloison. Entraînement direct, sans courroie ni multiplicateur. Le couple est faible, mais l’arbre doit rester raide : cinq centièmes de millimètre de faux-rond font déjà battre la roue."
+    },
+    {
+      "id": "part-wheel-hub",
+      "scope": "part:wheel-hub",
+      "title": "Moyeu de roue",
+      "scene": "turbine",
+      "text": "Au centre de la roue, un disque imprimé en trois D : le moyeu. Il porte les vingt-six augets en couronne, chacun au bon angle et au bon rayon, sur un diamètre de cent quatre-vingt-dix millimètres, ce qui fixe la vitesse de rotation pour une chute donnée."
+    },
+    {
+      "id": "part-buckets",
+      "scope": "part:buckets",
+      "title": "Augets Pelton",
+      "scene": "turbine",
+      "text": "[[flows:on]] Les augets, ces petites cuillères. L’arête centrale fend le jet en deux, et chaque moitié fait presque demi-tour, cent soixante-cinq degrés environ, avant de ressortir sur le côté. L’auget lui prend ainsi presque toute son énergie, à condition d’avancer à peu près à la moitié de la vitesse du jet. [[explode:0.7]] Il en existe plusieurs tailles, assorties aux injecteurs. [[explode:0]] Appariez-les à un demi-gramme près : une roue déséquilibrée use les roulements. [[flows:off]]"
+    },
+    {
+      "id": "part-wheel-ring",
+      "scope": "part:wheel-ring",
+      "title": "Bague de serrage",
+      "scene": "turbine",
+      "text": "Cette bague pince le pied des vingt-six augets contre le moyeu : chaque auget est pris en sandwich, et l’effort se répartit sur toute la couronne, au lieu de reposer sur une seule vis. Serrez en étoile, deux newtons-mètres, pas plus : le plastique flue sous charge."
+    },
+    {
+      "id": "part-wheel-lock",
+      "scope": "part:wheel-lock",
+      "title": "Moyeu conique et écrou",
+      "scene": "turbine",
+      "text": "Comment fixer la roue à l’arbre sans jeu, et la retirer sans arrache-moyeu ? Avec un moyeu conique. Deux vis l’enfoncent dans une bride d’acier, le cône se referme sur l’arbre et centre la roue. Montez-le propre et sec : graissé, il se serre trop et peut fendre la bride."
+    },
+    {
+      "id": "part-stator",
+      "scope": "part:stator",
+      "title": "Stator bobiné",
+      "scene": "turbine",
+      "text": "[[xray:on]] Voici la naissance du courant. Le stator est une étoile fixe de douze dents bobinées en cuivre. Quand les aimants défilent devant elles, le flux varie, et une tension apparaît, proportionnelle à la vitesse. Le constructeur fabrique ses générateurs : ses anciens moteurs chauffaient jusqu’à la destruction quand la turbine s’arrêtait et repartait. Ici, une sonde à un euro, noyée dans le bobinage, veille sur la température. [[xray:off]]"
+    },
+    {
+      "id": "part-rotor",
+      "scope": "part:rotor",
+      "title": "Rotor extérieur à aimants",
+      "scene": "turbine",
+      "text": "Une cloche qui tourne autour du stator : voilà le rotor. Ses aimants, plus loin de l’axe, donnent plus de couple et de tension. Imprimée en trois D, comme dans la vidéo, elle porte des ouïes en haricot qui brassent l’air. Entrefer d’environ un millimètre : c’est mince !"
+    },
+    {
+      "id": "part-magnets",
+      "scope": "part:magnets",
+      "title": "Aimants néodyme N52",
+      "scene": "turbine",
+      "text": "Quatorze aimants au néodyme : pas de balais, le champ est là, gratuit. Posés en alternance nord et sud, ils inversent le flux à chaque passage. Fragiles à la chaleur, environ quatre-vingts degrés au maximum, et assez puissants pour écraser des doigts ! Un seul aimant inversé, et une phase s’effondre."
+    },
+    {
+      "id": "part-rectifier",
+      "scope": "part:rectifier",
+      "title": "Pont redresseur triphasé",
+      "scene": "turbine",
+      "text": "Le générateur donne de l’alternatif en trois phases, les batteries veulent du continu. Entre les deux, six diodes, qui laissent passer à chaque instant la phase la plus haute et la plus basse. Le prix à payer : environ deux volts de chute, soit près de dix-neuf watts de chaleur en pleine production. D’où ce dissipateur."
+    },
+    {
+      "id": "part-terminal",
+      "scope": "part:terminal",
+      "title": "Bornier et presse-étoupe",
+      "scene": "turbine",
+      "text": "Ici, tout se raccorde : trois phases, deux pôles continus, et un presse-étoupe qui protège les bornes de l’eau et des vibrations. C’est là qu’on branche le multimètre, comme dans la vidéo. Jamais de doigts sur les bornes quand la roue tourne : le générateur produit dès qu’il tourne."
+    },
+    {
+      "id": "part-cable",
+      "scope": "part:cable",
+      "title": "Câble de sortie 6 mm²",
+      "scene": "turbine",
+      "text": "Par ce câble, le courant quitte la turbine pour le local technique, entre cinquante et cinquante-quatre volts : à cinq cents watts, environ neuf virgule quatre ampères. Sur le site A, la vidéo compte environ trente-cinq watts perdus dans les câbles et un peu dans le régulateur."
+    },
+    {
+      "id": "part-injector-top",
+      "scope": "part:injector-top",
+      "title": "Injecteur à pointeau (haut)",
+      "scene": "turbine",
+      "text": "[[flows:on]] L’injecteur transforme la pression en vitesse : à soixante-quatorze mètres de chute nette, l’eau sort à environ trente-sept mètres par seconde. Ici, une pièce profilée, l’olive de la vidéo, avance ou recule dans la buse : le débit change, le jet reste compact. Fabriqué en Italie. Un principe de base : réglez le débit avec le pointeau, jamais avec une vanne à moitié fermée. La vanne gaspille la chute, le pointeau la change en vitesse. [[flows:off]]"
+    },
+    {
+      "id": "part-manifold",
+      "scope": "part:manifold",
+      "title": "Nourrice en col de cygne",
+      "scene": "turbine",
+      "text": "On l’appelle la nourrice : une tuyauterie en col de cygne qui distribue l’eau aux injecteurs. Ses coudes doivent être larges et peu nombreux : chaque détour coûte un peu de chute. Les premiers échecs du constructeur ? Des raccords qui pétaient, par excès de pression ou mauvaise colle."
+    },
+    {
+      "id": "part-valve-branch",
+      "scope": "part:valve-branch",
+      "title": "Vannes de branche (rouge et bleue)",
+      "scene": "turbine",
+      "text": "Une vanne rouge, une bleue : une par injecteur. Sur le site B, la rouge alimente l’injecteur du haut pour les gros débits d’hiver, la bleue l’injecteur latéral pour les tout petits débits, comme en juin après la canicule. Grandes ouvertes ou fermées, jamais entre les deux."
+    },
+    {
+      "id": "part-gauge",
+      "scope": "part:gauge",
+      "title": "Manomètre à glycérine",
+      "scene": "turbine",
+      "text": "Le manomètre dit la vérité. Dix mètres de chute, un bar : avec soixante-seize mètres, il lit environ sept virgule quatre bars, vannes fermées. En marche, la pression baisse un peu : cet écart, c’est la perte de la conduite. S’il grandit au fil des mois, quelque chose s’encrasse."
+    },
+    {
+      "id": "part-valve-bypass",
+      "scope": "part:valve-bypass",
+      "title": "Vanne de dérivation (purge)",
+      "scene": "turbine",
+      "text": "Ouverte, la vanne de purge laisse l’eau filer droit au canal de fuite, sans passer par la roue : on chasse l’air au premier remplissage, puis le sable et les feuilles, ou l’on vidange avant une intervention. Comme toute vanne sous pression, on la manœuvre lentement."
+    },
+    {
+      "id": "part-valve-main",
+      "scope": "part:valve-main",
+      "title": "Vanne principale",
+      "scene": "turbine",
+      "text": "Stopper net trois cent cinquante mètres de colonne d’eau ? Un coup de bélier de plusieurs bars, en plus de la pression statique. D’où ce réducteur sur la vanne principale : une vingtaine de tours de volant pour fermer. Comptez vingt secondes au moins, en fermant comme en ouvrant."
+    },
+    {
+      "id": "part-penstock-end",
+      "scope": "part:penstock-end",
+      "title": "Arrivée de la conduite forcée",
+      "scene": "turbine",
+      "text": "La conduite forcée arrive au bout du voyage : un tube de polyéthylène de soixante-trois millimètres, reconnaissable à son liseré blanc d’irrigation. Un raccord à compression bleu fait la transition vers la turbine, sans colle ni soudure. Une gaine grise le protège des chocs et du soleil."
+    },
+    {
+      "id": "part-skid",
+      "scope": "part:skid",
+      "title": "Châssis-skid",
+      "scene": "turbine",
+      "text": "Sous la machine, un cadre de profilés d’aluminium, livré monté et réglé : le skid. Ses pieds rattrapent un sol en pente, ses silentblocs coupent les vibrations, et il garantit quarante centimètres de chute libre sous la roue. Ancrez-le : une turbine qui s’emballe vibre assez pour se déplacer."
+    },
+    {
+      "id": "part-bearing-cartridge",
+      "scope": "part:bearing-cartridge",
+      "title": "Cartouche de palier",
+      "scene": "turbine",
+      "text": "Tout ce qui s’use autour de l’arbre, réuni en une seule pièce : la cartouche de palier. Côté humide, trois barrières arrêtent l’eau. Le jour de l’entretien, on dévisse six vis, on glisse la cartouche de rechange, et la turbine repart en dix minutes. Gardez-en toujours une prête !"
+    },
+    {
+      "id": "part-injector-quick",
+      "scope": "part:injector-quick",
+      "title": "Injecteur latéral à buse interchangeable",
+      "scene": "turbine",
+      "text": "Cet injecteur-là n’a aucune pièce mobile. Seule la buse change : un insert de quatre à quatorze millimètres, verrouillé d’un quart de tour. Petite buse en été, grande en hiver : la turbine suit les saisons. Jamais d’insert sous pression !"
+    },
+    {
+      "id": "part-deflector",
+      "scope": "part:deflector",
+      "title": "Déflecteur de jet",
+      "scene": "turbine",
+      "text": "[[xray:on]] Le déflecteur, gardien de la turbine. Si la charge électrique disparaît, la roue s’emballe jusqu’à presque le double de sa vitesse. Alors un volet à ressort bascule dans le jet, en moins d’une demi-seconde, et l’envoie au canal de fuite. L’eau continue de couler : pas de coup de bélier. Retenu par une gâche électrique, il tombe dès que le courant s’arrête. Testez-le à chaque visite : une sécurité jamais essayée ne vaut rien. [[xray:off]]"
+    },
+    {
+      "id": "part-latches",
+      "scope": "part:latches",
+      "title": "Grenouillères",
+      "scene": "turbine",
+      "text": "Quatre grenouillères en inox, et le capot s’ouvre en dix secondes, sans outil. Elles serrent sur le joint avec un effort constant et réglable, sans une seule vis à défaire dans l’aluminium. Et comme c’est facile, l’entretien se fait plus souvent."
+    },
+    {
+      "id": "part-sensors",
+      "scope": "part:sensors",
+      "title": "Capteurs",
+      "scene": "turbine",
+      "text": "Trois capteurs bon marché, et la turbine se met à parler. La pression trahit une grille bouchée ou de l’air, la vitesse un roulement qui freine, la température un stator qui souffre. Leurs mesures se consultent à distance, et nourrissent la sécurité du déflecteur."
+    },
+    {
+      "id": "part-controller-box",
+      "scope": "part:controller-box",
+      "title": "Coffret contrôleur",
+      "scene": "turbine",
+      "text": "Au pied de la turbine, un coffret étanche rassemble les protections et la surveillance : disjoncteur, parafoudre, relais de surtension. Si la tension grimpe parce que la charge a disparu, le relais coupe la gâche, et le déflecteur tombe."
+    },
+    {
+      "id": "part-air-valve",
+      "scope": "part:air-valve",
+      "title": "Ventouse automatique",
+      "scene": "turbine",
+      "text": "L’air, l’ennemi discret. Venu de la prise d’eau, il remonte se loger au point haut de la nourrice. Une poche d’air fait cracher l’injecteur et chuter la puissance. La ventouse, un simple flotteur, la laisse sortir, puis se referme dès que l’eau arrive."
+    },
+    {
+      "id": "part-battery",
+      "scope": "part:battery",
+      "title": "Batteries lithium",
+      "scene": "techroom",
+      "text": "[[flows:on]] Les batteries : la réserve de l’histoire. Quatre modules au lithium fer phosphate, deux virgule quatre kilowattheures chacun : près de dix kilowattheures sous l’établi. Comme la turbine recharge sans relâche, elles ne descendent presque jamais à vingt ou trente pour cent de charge, ce qui les ménage. Chaque module surveille ses cellules : s’il en juge une trop chargée, il ouvre le circuit. D’où l’importance du délesteur ! [[flows:off]]"
+    },
+    {
+      "id": "part-inverter",
+      "scope": "part:inverter",
+      "title": "Onduleur-chargeur",
+      "scene": "techroom",
+      "text": "Le grand boîtier bleu : l’onduleur-chargeur. À partir des batteries en quarante-huit volts, il fabrique une belle sinusoïde de deux cent trente volts pour la maison. Son pic de démarrage encaisse les moteurs, pompe ou lave-linge, que la turbine seule ne fournirait jamais."
+    },
+    {
+      "id": "part-mppt-pv",
+      "scope": "part:mppt-pv",
+      "title": "Régulateur solaire",
+      "scene": "techroom",
+      "text": "Le régulateur solaire règle sans cesse la tension des panneaux pour tirer le maximum du soleil. Parfait pour le solaire, mais surtout pas pour une turbine : voyez la leçon sur la vitesse constante. Par grand froid, la tension des panneaux grimpe : au-delà de deux cent cinquante volts, le régulateur est détruit."
+    },
+    {
+      "id": "part-hydro-ctrl",
+      "scope": "part:hydro-ctrl",
+      "title": "Régulateur hydro",
+      "scene": "techroom",
+      "text": "Un régulateur de solaire… pour une turbine ? Presque ! Celui-ci sait imposer une tension d’entrée fixe. Or la tension d’un générateur à aimants est proportionnelle à sa vitesse : tension fixe, vitesse fixe. Sur le site B, la batterie fixe la tension : on s’en passe, et l’on économise environ cinq cents euros."
+    },
+    {
+      "id": "part-diversion",
+      "scope": "part:diversion",
+      "title": "Régulateur de délestage",
+      "scene": "techroom",
+      "text": "Le délesteur veille à ce que la turbine ne tourne jamais à vide. Batteries pleines, personne ne consomme : le courant n’a plus où aller, et la roue s’emballerait. Alors il envoie juste ce qu’il faut de courant dans les résistances. La turbine ne voit aucune différence."
+    },
+    {
+      "id": "part-dump-load",
+      "scope": "part:dump-load",
+      "title": "Résistances de délestage",
+      "scene": "techroom",
+      "text": "Des résistances de freinage : elles chauffent l’air et freinent électriquement la turbine quand les batteries sont pleines. Leur puissance doit dépasser celle de la turbine avec une bonne marge. Plus de cent cinquante degrés en surface : loin du bois et des câbles !"
+    },
+    {
+      "id": "part-dc-protect",
+      "scope": "part:dc-protect",
+      "title": "Coffret de protection DC",
+      "scene": "techroom",
+      "text": "Le boîtier de sécurité, à l’arrivée de la turbine. On y isole la turbine des batteries pour intervenir, et l’on protège le câble : une batterie au lithium peut débiter des milliers d’ampères en un instant. Jamais de coupure en charge, sans délesteur actif ni déflecteur."
+    },
+    {
+      "id": "part-ac-panel",
+      "scope": "part:ac-panel",
+      "title": "Tableau AC",
+      "scene": "techroom",
+      "text": "Le tableau de la maison. Les disjoncteurs protègent chaque circuit, le différentiel protège les personnes. En site isolé, le neutre doit être relié à la terre en sortie d’onduleur, sinon le différentiel ne verrait jamais un défaut. Testez son bouton tous les six mois."
+    },
+    {
+      "id": "part-busbar",
+      "scope": "part:busbar",
+      "title": "Barres de distribution DC",
+      "scene": "techroom",
+      "text": "Plutôt que d’empiler les cosses sur les bornes des batteries, chaque appareil arrive ici, sur une barre positive ou négative, avec son propre fusible. C’est aussi là que se mesure le courant total. Un trait de peinture sur chaque écrou, et un desserrage se voit au premier coup d’œil."
+    },
+    {
+      "id": "part-gx-display",
+      "scope": "part:gx-display",
+      "title": "Supervision",
+      "scene": "techroom",
+      "text": "L’écran du système : il rassemble batteries, régulateurs et onduleur, et remonte tout à distance sur un portail. D’un coup d’œil : la turbine produit-elle, le délestage travaille-t-il, où en sont les batteries ? Une alerte de tension haute annonce un délesteur qui ne suit plus."
+    },
+    {
+      "id": "part-wiring",
+      "scope": "part:wiring",
+      "title": "Câblage et chemins de câbles",
+      "scene": "techroom",
+      "text": "Des câbles repérés, rangés, dimensionnés : la moitié de la fiabilité d’une installation. En quarante-huit volts, les courants sont élevés : un câble trop mince ou une cosse mal sertie chauffe sans disjoncter. Trente-cinq millimètres carrés entre batteries et onduleur, six pour la turbine."
+    }
+  ]
+}

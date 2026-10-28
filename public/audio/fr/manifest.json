@@ -1,0 +1,3213 @@
+{
+  "lang": "fr",
+  "model": "eleven_v4",
+  "generatedAt": "2026-10-28T11:53:18.944Z",
+  "voiceLabel": {
+    "fr": "Voix de synthèse",
+    "en": "Synthetic voice"
+  },
+  "totalSeconds": 1339.84,
+  "segments": [
+    {
+      "id": "intro",
+      "scope": "intro",
+      "title": "Présentation du site",
+      "scene": "site",
+      "file": "intro.mp3",
+      "duration": 119.92,
+      "chars": 2061,
+      "hash": "341ef8a5f0c411bd",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.08,
+          "text": "Imaginez un ruisseau de montagne, si mince qu’on l’enjamberait."
+        },
+        {
+          "t0": 4.08,
+          "t1": 6.64,
+          "text": "Il murmure, il ne fait pas de vagues…"
+        },
+        {
+          "t0": 6.64,
+          "t1": 9.44,
+          "text": "et pourtant, il cache un trésor."
+        },
+        {
+          "t0": 9.44,
+          "t1": 11.2,
+          "text": "Suivons une petite goutte d’eau."
+        },
+        {
+          "t0": 11.2,
+          "t1": 16.08,
+          "text": "Elle se laisse porter, arrive à une retenue de pierres, puis glisse sur une grille d’inox,"
+        },
+        {
+          "t0": 16.16,
+          "t1": 19.04,
+          "text": "qui garde les feuilles et laisse passer l’eau claire."
+        },
+        {
+          "t0": 19.04,
+          "t1": 22.56,
+          "text": "La voici dans un long tuyau qui plonge dans la pente."
+        },
+        {
+          "t0": 22.56,
+          "t1": 26.8,
+          "text": "Plus elle descend, plus elle pèse : la chute devient pression."
+        },
+        {
+          "t0": 26.8,
+          "t1": 31.63,
+          "text": "Soixante-seize mètres de dénivelé, et environ sept virgule quatre bars à l’arrivée !"
+        },
+        {
+          "t0": 31.63,
+          "t1": 35.16,
+          "text": "Au bout du chemin, la turbine : le cœur de l’histoire."
+        },
+        {
+          "t0": 35.16,
+          "t1": 36.2,
+          "text": "Entrons-y."
+        },
+        {
+          "t0": 36.2,
+          "t1": 41.96,
+          "text": "Un injecteur resserre l’eau en un jet de six millimètres, qui file à environ trente-sept mètres par seconde."
+        },
+        {
+          "t0": 41.96,
+          "t1": 47.96,
+          "text": "Il frappe la roue Pelton : vingt-six petites cuillères, qui fendent le jet en deux et le renvoient en arrière."
+        },
+        {
+          "t0": 47.96,
+          "t1": 52.76,
+          "text": "À chaque coup, la goutte laisse son énergie, et la roue tourne, nuit et jour."
+        },
+        {
+          "t0": 52.76,
+          "t1": 58.91,
+          "text": "Derrière la cloison étanche, des aimants défilent devant des bobines de cuivre : le courant électrique naît !"
+        },
+        {
+          "t0": 58.91,
+          "t1": 62.88,
+          "text": "Le courant file maintenant vers le local technique, où des batteries le mettent en réserve,"
+        },
+        {
+          "t0": 62.92,
+          "t1": 65.72,
+          "text": "et où un onduleur le transforme en courant de maison."
+        },
+        {
+          "t0": 65.72,
+          "t1": 69.92,
+          "text": "Et de retour sur le site, regardez bien la maison : la lumière s’allume."
+        },
+        {
+          "t0": 69.92,
+          "t1": 73.72,
+          "text": "Voilà toute l’histoire : une goutte, une pente, une roue…"
+        },
+        {
+          "t0": 73.72,
+          "t1": 75.44,
+          "text": "et une ampoule qui sourit."
+        },
+        {
+          "t0": 75.44,
+          "t1": 77.36,
+          "text": "Pour commencer, quelques repères."
+        },
+        {
+          "t0": 77.36,
+          "t1": 82.56,
+          "text": "Il y a quatre vues : le site, la prise d’eau, la turbine et le local technique."
+        },
+        {
+          "t0": 82.56,
+          "t1": 86.88,
+          "text": "Cliquez sur une pièce : sa fiche s’ouvre, et vous pouvez écouter son histoire."
+        },
+        {
+          "t0": 86.88,
+          "t1": 93.8,
+          "text": "Le curseur Éclaté écarte les pièces, Transparence et Coupe montrent l’intérieur, Flux suit le chemin de l’eau."
+        },
+        {
+          "t0": 93.8,
+          "t1": 97.24,
+          "text": "Le guide de montage assemble la turbine pièce par pièce."
+        },
+        {
+          "t0": 97.24,
+          "t1": 101.4,
+          "text": "Le guide d’installation vous mène de la mesure de la chute à la mise en service."
+        },
+        {
+          "t0": 101.4,
+          "t1": 106.56,
+          "text": "La simulation vous laisse changer la chute, le débit, la saison, et voir ce qui arrive."
+        },
+        {
+          "t0": 106.56,
+          "t1": 110.08,
+          "text": "Quatorze leçons, avec des quiz, expliquent la physique."
+        },
+        {
+          "t0": 110.08,
+          "t1": 115.72,
+          "text": "Une dernière chose : ce laboratoire est une reconstitution pédagogique, inspirée d’un reportage public."
+        },
+        {
+          "t0": 115.72,
+          "t1": 119.12,
+          "text": "Ce n’est ni un plan officiel, ni un produit du constructeur."
+        },
+        {
+          "t0": 119.12,
+          "t1": 119.92,
+          "text": "À vous de jouer !"
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 9.44,
+          "do": {
+            "frame": [
+              "stream"
+            ]
+          }
+        },
+        {
+          "t": 14.2,
+          "do": {
+            "frame": [
+              "coanda"
+            ]
+          }
+        },
+        {
+          "t": 19.04,
+          "do": {
+            "frame": [
+              "penstock"
+            ]
+          }
+        },
+        {
+          "t": 31.63,
+          "do": {
+            "frame": [
+              "turbine"
+            ]
+          }
+        },
+        {
+          "t": 35.16,
+          "do": {
+            "scene": "turbine"
+          }
+        },
+        {
+          "t": 41.96,
+          "do": {
+            "frame": [
+              "buckets"
+            ]
+          }
+        },
+        {
+          "t": 52.76,
+          "do": {
+            "frame": [
+              "stator",
+              "rotor"
+            ]
+          }
+        },
+        {
+          "t": 54.32,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 58.91,
+          "do": {
+            "xray": false
+          }
+        },
+        {
+          "t": 58.91,
+          "do": {
+            "scene": "techroom"
+          }
+        },
+        {
+          "t": 61.16,
+          "do": {
+            "frame": [
+              "battery"
+            ]
+          }
+        },
+        {
+          "t": 62.92,
+          "do": {
+            "frame": [
+              "inverter"
+            ]
+          }
+        },
+        {
+          "t": 65.72,
+          "do": {
+            "scene": "site"
+          }
+        },
+        {
+          "t": 68.37,
+          "do": {
+            "frame": [
+              "cabin"
+            ]
+          }
+        },
+        {
+          "t": 75.44,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 93.8,
+          "do": {
+            "mode": "assembly"
+          }
+        },
+        {
+          "t": 97.24,
+          "do": {
+            "mode": "install"
+          }
+        },
+        {
+          "t": 101.4,
+          "do": {
+            "mode": "sim"
+          }
+        },
+        {
+          "t": 106.56,
+          "do": {
+            "mode": "lessons"
+          }
+        },
+        {
+          "t": 110.08,
+          "do": {
+            "mode": "explore"
+          }
+        },
+        {
+          "t": 115.72,
+          "do": {
+            "scene": "site"
+          }
+        },
+        {
+          "t": 119.12,
+          "do": {
+            "select": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-site",
+      "scope": "scene:site",
+      "title": "Le site : de la source au watt",
+      "scene": "site",
+      "file": "scene-site.mp3",
+      "duration": 35.04,
+      "chars": 620,
+      "hash": "80e4f2f118399197",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1,
+          "text": "Bienvenue !"
+        },
+        {
+          "t0": 1,
+          "t1": 4.56,
+          "text": "Un petit ruisseau de montagne, et surtout de la pente."
+        },
+        {
+          "t0": 4.56,
+          "t1": 8.48,
+          "text": "Tout en haut, la prise d’eau Coanda filtre l’eau à un millimètre."
+        },
+        {
+          "t0": 8.48,
+          "t1": 12.6,
+          "text": "Une conduite forcée la reçoit, et transforme le dénivelé en pression."
+        },
+        {
+          "t0": 12.6,
+          "t1": 16.92,
+          "text": "Au bord de l’eau, la turbine fait le travail, puis rend toute l’eau au ruisseau."
+        },
+        {
+          "t0": 16.92,
+          "t1": 20.76,
+          "text": "Le courant file ensuite vers le local technique, où l’énergie est stockée."
+        },
+        {
+          "t0": 20.76,
+          "t1": 26,
+          "text": "Le site A, en forêt, offre soixante-seize mètres de chute ; le site B, un hameau,"
+        },
+        {
+          "t0": 26.08,
+          "t1": 28.48,
+          "text": "vingt et un mètres, avec des panneaux solaires."
+        },
+        {
+          "t0": 28.48,
+          "t1": 33.4,
+          "text": "Une précaution : en France, prélever l’eau d’un ruisseau est réglementé, comme pour les moulins."
+        },
+        {
+          "t0": 33.4,
+          "t1": 35.04,
+          "text": "Renseignez-vous avant tout projet."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 1,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 1,
+          "do": {
+            "frame": [
+              "stream"
+            ]
+          }
+        },
+        {
+          "t": 4.56,
+          "do": {
+            "frame": [
+              "coanda"
+            ]
+          }
+        },
+        {
+          "t": 8.48,
+          "do": {
+            "frame": [
+              "penstock"
+            ]
+          }
+        },
+        {
+          "t": 12.6,
+          "do": {
+            "frame": [
+              "turbine"
+            ]
+          }
+        },
+        {
+          "t": 16.92,
+          "do": {
+            "frame": [
+              "techroom"
+            ]
+          }
+        },
+        {
+          "t": 20.76,
+          "do": {
+            "flows": false
+          }
+        },
+        {
+          "t": 20.76,
+          "do": {
+            "home": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-intake",
+      "scope": "scene:intake",
+      "title": "La prise d’eau Coanda",
+      "scene": "intake",
+      "file": "scene-intake.mp3",
+      "duration": 32.8,
+      "chars": 578,
+      "hash": "74e5b63b38e06faa",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.72,
+          "text": "Voici la porte d’entrée de toute l’installation."
+        },
+        {
+          "t0": 2.72,
+          "t1": 5.44,
+          "text": "Le seuil de pierres crée une petite retenue."
+        },
+        {
+          "t0": 5.44,
+          "t1": 7.6,
+          "text": "L’eau dévale une plaque d’accélération,"
+        },
+        {
+          "t0": 7.68,
+          "t1": 12.32,
+          "text": "puis une grille de fils d’inox profilés : chaque fil découpe une fine lame d’eau,"
+        },
+        {
+          "t0": 12.36,
+          "t1": 17.04,
+          "text": "qui tombe dans le bac de collecte, pendant que feuilles et surplus glissent vers le trop-plein."
+        },
+        {
+          "t0": 17.04,
+          "t1": 21.04,
+          "text": "Le bac alimente ensuite la conduite forcée, par une crépine immergée."
+        },
+        {
+          "t0": 21.04,
+          "t1": 22.92,
+          "text": "Regardez l’eau suivre son chemin…"
+        },
+        {
+          "t0": 22.92,
+          "t1": 25.44,
+          "text": "et la coupe nous montre l’intérieur du bac."
+        },
+        {
+          "t0": 25.44,
+          "t1": 29.08,
+          "text": "Une seule règle d’or : toujours un petit débordement."
+        },
+        {
+          "t0": 29.08,
+          "t1": 32.8,
+          "text": "S’il disparaît, le bac se vide, et l’air entre dans la conduite."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 2.72,
+          "do": {
+            "frame": [
+              "in-weir"
+            ]
+          }
+        },
+        {
+          "t": 5.44,
+          "do": {
+            "frame": [
+              "in-ramp"
+            ]
+          }
+        },
+        {
+          "t": 7.68,
+          "do": {
+            "frame": [
+              "in-screen"
+            ]
+          }
+        },
+        {
+          "t": 14.04,
+          "do": {
+            "frame": [
+              "in-overflow"
+            ]
+          }
+        },
+        {
+          "t": 17.04,
+          "do": {
+            "frame": [
+              "in-outlet"
+            ]
+          }
+        },
+        {
+          "t": 21.04,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 21.04,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 22.92,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 25.44,
+          "do": {
+            "cutaway": false
+          }
+        },
+        {
+          "t": 25.44,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-turbine",
+      "scope": "scene:turbine",
+      "title": "La micro-turbine Pelton",
+      "scene": "turbine",
+      "file": "scene-turbine.mp3",
+      "duration": 38.88,
+      "chars": 690,
+      "hash": "5d461ac84e4c6086",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.36,
+          "text": "Entrons dans la machine, et suivons le chemin de l’eau."
+        },
+        {
+          "t0": 3.36,
+          "t1": 8.24,
+          "text": "À l’avant, la chambre humide : c’est ici que le jet frappe les augets de la roue."
+        },
+        {
+          "t0": 8.24,
+          "t1": 11.92,
+          "text": "Une cloison étanche en acrylique la sépare de la chambre sèche,"
+        },
+        {
+          "t0": 12,
+          "t1": 16.4,
+          "text": "où la génératrice à aimants produit le courant, sans balais ni courroie."
+        },
+        {
+          "t0": 16.4,
+          "t1": 20.24,
+          "text": "Écartons un peu les pièces, pour voir comment tout s’emboîte…"
+        },
+        {
+          "t0": 20.24,
+          "t1": 32.56,
+          "text": "Le carter mesure cinq cent soixante-quatorze sur trois cent vingt-huit sur quatre cent deux millimètres, et la roue compte vingt-six augets pour deux cent quarante-quatre millimètres de diamètre : cotes publiées par le constructeur."
+        },
+        {
+          "t0": 32.56,
+          "t1": 35.04,
+          "text": "Mais cette turbine est notre propre conception,"
+        },
+        {
+          "t0": 35.12,
+          "t1": 38.88,
+          "text": "inspirée de celle de la vidéo : ce n’est pas un produit du constructeur."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 3.36,
+          "do": {
+            "frame": [
+              "window",
+              "buckets"
+            ]
+          }
+        },
+        {
+          "t": 8.24,
+          "do": {
+            "frame": [
+              "partition"
+            ]
+          }
+        },
+        {
+          "t": 12,
+          "do": {
+            "frame": [
+              "stator",
+              "rotor"
+            ]
+          }
+        },
+        {
+          "t": 12,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 16.4,
+          "do": {
+            "xray": false
+          }
+        },
+        {
+          "t": 16.4,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 16.4,
+          "do": {
+            "explode": 0.6
+          }
+        },
+        {
+          "t": 20.24,
+          "do": {
+            "explode": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene-techroom",
+      "scope": "scene:techroom",
+      "title": "Le local technique",
+      "scene": "techroom",
+      "file": "scene-techroom.mp3",
+      "duration": 27.04,
+      "chars": 486,
+      "hash": "5e33ebe763390b1a",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.04,
+          "text": "Le local technique : le centre de commande."
+        },
+        {
+          "t0": 3.04,
+          "t1": 5.76,
+          "text": "Un bus à quarante-huit volts relie tout le monde."
+        },
+        {
+          "t0": 5.76,
+          "t1": 8.96,
+          "text": "Les batteries au lithium fer phosphate gardent l’énergie."
+        },
+        {
+          "t0": 8.96,
+          "t1": 11.72,
+          "text": "Le régulateur solaire les charge depuis les panneaux."
+        },
+        {
+          "t0": 11.72,
+          "t1": 15.16,
+          "text": "L’onduleur-chargeur fabrique le deux cent trente volts de la maison."
+        },
+        {
+          "t0": 15.16,
+          "t1": 18.32,
+          "text": "Et le délesteur brûle le surplus dans des résistances."
+        },
+        {
+          "t0": 18.32,
+          "t1": 19.68,
+          "text": "Pourquoi ce délesteur ?"
+        },
+        {
+          "t0": 19.68,
+          "t1": 22.52,
+          "text": "Parce qu’une turbine ne doit jamais tourner à vide."
+        },
+        {
+          "t0": 22.52,
+          "t1": 27.04,
+          "text": "Sans charge, plus rien ne freine la roue : elle s’emballe, et sa tension double."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 3.04,
+          "do": {
+            "frame": [
+              "busbar"
+            ]
+          }
+        },
+        {
+          "t": 5.76,
+          "do": {
+            "frame": [
+              "battery"
+            ]
+          }
+        },
+        {
+          "t": 8.96,
+          "do": {
+            "frame": [
+              "mppt-pv"
+            ]
+          }
+        },
+        {
+          "t": 11.72,
+          "do": {
+            "frame": [
+              "inverter"
+            ]
+          }
+        },
+        {
+          "t": 15.16,
+          "do": {
+            "frame": [
+              "diversion",
+              "dump-load"
+            ]
+          }
+        },
+        {
+          "t": 18.32,
+          "do": {
+            "home": true
+          }
+        },
+        {
+          "t": 18.32,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 27.04,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-stream",
+      "scope": "part:stream",
+      "title": "Ruisseau",
+      "scene": "site",
+      "file": "part-stream.mp3",
+      "duration": 14.96,
+      "chars": 251,
+      "hash": "4c7da75846af1f44",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.84,
+          "text": "Un ruisseau qu’on enjamberait, et pourtant c’est lui qui fait tout."
+        },
+        {
+          "t0": 3.84,
+          "t1": 7.36,
+          "text": "La Pelton ne réclame pas un gros débit, mais de la hauteur."
+        },
+        {
+          "t0": 7.36,
+          "t1": 11.76,
+          "text": "Sur le site B, il coule de décembre à mai, puis le lit sèche l’été."
+        },
+        {
+          "t0": 11.76,
+          "t1": 14.96,
+          "text": "Mesurez donc son débit en fin d’été, pas au printemps !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-weir",
+      "scope": "part:weir",
+      "title": "Petite retenue",
+      "scene": "site",
+      "file": "part-weir.mp3",
+      "duration": 14.88,
+      "chars": 273,
+      "hash": "cb5863982bac813a",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.2,
+          "text": "Quelques pierres, quelques planches, et voilà une retenue."
+        },
+        {
+          "t0": 3.2,
+          "t1": 4.96,
+          "text": "Elle calme l’eau devant la prise,"
+        },
+        {
+          "t0": 5.04,
+          "t1": 9.52,
+          "text": "et le surplus doit toujours déborder par-dessus : jamais d’air dans la conduite."
+        },
+        {
+          "t0": 9.52,
+          "t1": 14.88,
+          "text": "Un seuil est un ouvrage réglementé : consultez d’abord la direction départementale des territoires."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-coanda",
+      "scope": "part:coanda",
+      "title": "Prise d’eau Coanda",
+      "scene": "site",
+      "file": "part-coanda.mp3",
+      "duration": 21.84,
+      "chars": 383,
+      "hash": "2698d3eda5168a69",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.96,
+          "text": "Voici l’astuce la plus élégante du ruisseau."
+        },
+        {
+          "t0": 2.96,
+          "t1": 8.48,
+          "text": "L’eau glisse sur une grille d’inox légèrement incurvée, et par l’effet Coanda, elle s’y colle."
+        },
+        {
+          "t0": 8.48,
+          "t1": 11.68,
+          "text": "Chaque fil en détache une lame fine, qui tombe dans la boîte,"
+        },
+        {
+          "t0": 11.76,
+          "t1": 14.32,
+          "text": "pendant que feuilles et graviers passent par-dessus."
+        },
+        {
+          "t0": 14.32,
+          "t1": 16.72,
+          "text": "Filtrage : environ un millimètre."
+        },
+        {
+          "t0": 16.72,
+          "t1": 21.84,
+          "text": "Entretien : d’après la vidéo, un coup de brosse par trimestre, même grille couverte de débris."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 21.84,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-penstock",
+      "scope": "part:penstock",
+      "title": "Conduite forcée",
+      "scene": "site",
+      "file": "part-penstock.mp3",
+      "duration": 22.72,
+      "chars": 414,
+      "hash": "a5d15fae51c8a7a4",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.16,
+          "text": "Elle descend la pente, silencieuse, et garde toute la chute sous forme de pression."
+        },
+        {
+          "t0": 5.16,
+          "t1": 10.83,
+          "text": "Dix mètres de dénivelé, un bar : soixante-seize mètres, environ sept virgule quatre bars !"
+        },
+        {
+          "t0": 10.83,
+          "t1": 14.52,
+          "text": "Sur le site A, un tube de polyéthylène de trois cent cinquante mètres."
+        },
+        {
+          "t0": 14.52,
+          "t1": 19.92,
+          "text": "Le constructeur le reconnaît : plus gros aurait mieux valu, le frottement coûte environ deux mètres de chute."
+        },
+        {
+          "t0": 19.92,
+          "t1": 22.72,
+          "text": "Pas de bosse sur le tracé : une bulle d’air s’y piégerait."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-turbine",
+      "scope": "part:turbine",
+      "title": "Turbine Pelton",
+      "scene": "site",
+      "file": "part-turbine.mp3",
+      "duration": 22.72,
+      "chars": 403,
+      "hash": "4f27a6a6a81b097c",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.81,
+          "text": "Le cœur de l’affaire !"
+        },
+        {
+          "t0": 1.81,
+          "t1": 8.88,
+          "text": "La turbine change la pression en jet, le jet en rotation, et la rotation en électricité, sans multiplicateur."
+        },
+        {
+          "t0": 8.88,
+          "t1": 15.24,
+          "text": "Sur le site A, un seul injecteur de six millimètres donne quatre cent quatre-vingt-dix-neuf watts sous soixante-seize mètres."
+        },
+        {
+          "t0": 15.24,
+          "t1": 18.88,
+          "text": "Elle tourne jour et nuit, à vitesse constante, toujours en charge."
+        },
+        {
+          "t0": 18.88,
+          "t1": 22.72,
+          "text": "Trente à quarante centimètres de chute libre dessous, sinon la roue barbote !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-tailrace",
+      "scope": "part:tailrace",
+      "title": "Canal de fuite",
+      "scene": "site",
+      "file": "part-tailrace.mp3",
+      "duration": 15.44,
+      "chars": 274,
+      "hash": "451962b12c15e152",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.76,
+          "text": "Une Pelton ne consomme pas l’eau : elle lui prend son énergie, et la rend intacte au ruisseau."
+        },
+        {
+          "t0": 5.76,
+          "t1": 10.88,
+          "text": "Le canal évacue tout le débit, avec trente à quarante centimètres de chute libre sous le socle."
+        },
+        {
+          "t0": 10.88,
+          "t1": 15.44,
+          "text": "Par le chemin le plus court : entre la prise et le rejet, le ruisseau manque d’eau."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-cable-run",
+      "scope": "part:cable-run",
+      "title": "Liaison électrique enterrée",
+      "scene": "site",
+      "file": "part-cable-run.mp3",
+      "duration": 16.32,
+      "chars": 291,
+      "hash": "52aa7435eb21e7ed",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.84,
+          "text": "Le courant doit voyager, et le câble en garde un peu pour lui."
+        },
+        {
+          "t0": 3.84,
+          "t1": 7.92,
+          "text": "L’astuce du constructeur : monter la tension plutôt que le cuivre."
+        },
+        {
+          "t0": 7.92,
+          "t1": 12,
+          "text": "Cinq cents watts sur deux cents mètres de six millimètres carrés : en cinquante volts,"
+        },
+        {
+          "t0": 12.08,
+          "t1": 16.32,
+          "text": "environ cent dix-sept watts perdus ; en deux cents volts, sept seulement !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-cabin",
+      "scope": "part:cabin",
+      "title": "Habitation",
+      "scene": "site",
+      "file": "part-cabin.mp3",
+      "duration": 14.24,
+      "chars": 240,
+      "hash": "099a4931b3d0febd",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.28,
+          "text": "Voici pour qui tout cela existe : la maison d’un hameau de montagne, loin du réseau."
+        },
+        {
+          "t0": 5.28,
+          "t1": 10.72,
+          "text": "L’hiver, le soleil passe vite derrière les crêtes, et la turbine prend le relais, jour et nuit."
+        },
+        {
+          "t0": 10.72,
+          "t1": 14.24,
+          "text": "L’été, le ruisseau est à sec : les panneaux assurent seuls."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-pv",
+      "scope": "part:pv",
+      "title": "Champ photovoltaïque",
+      "scene": "site",
+      "file": "part-pv.mp3",
+      "duration": 13.12,
+      "chars": 253,
+      "hash": "594d1c0f735a5063",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.36,
+          "text": "Quand le ruisseau s’endort, le soleil prend la relève."
+        },
+        {
+          "t0": 3.36,
+          "t1": 7.52,
+          "text": "Sur le site B, quatre mille cinq cents watts crête de panneaux chargent les batteries."
+        },
+        {
+          "t0": 7.52,
+          "t1": 9.52,
+          "text": "Beaucoup d’eau et peu de soleil l’hiver,"
+        },
+        {
+          "t0": 9.56,
+          "t1": 13.12,
+          "text": "l’inverse l’été : les deux sources se complètent presque parfaitement."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-techroom",
+      "scope": "part:techroom",
+      "title": "Local technique",
+      "scene": "site",
+      "file": "part-techroom.mp3",
+      "duration": 14.48,
+      "chars": 273,
+      "hash": "2b431184f2a36d95",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.08,
+          "text": "Toute l’énergie converge ici."
+        },
+        {
+          "t0": 2.08,
+          "t1": 4.96,
+          "text": "Turbine et panneaux chargent un bus à quarante-huit volts,"
+        },
+        {
+          "t0": 5.04,
+          "t1": 9.68,
+          "text": "les batteries lissent les écarts, l’onduleur fournit le deux cent trente volts de la maison."
+        },
+        {
+          "t0": 9.68,
+          "t1": 14.48,
+          "text": "Les résistances de délestage veillent : même batteries pleines, la turbine reste en charge."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-weir",
+      "scope": "part:in-weir",
+      "title": "Seuil en pierres sèches",
+      "scene": "intake",
+      "file": "part-in-weir.mp3",
+      "duration": 15.52,
+      "chars": 267,
+      "hash": "7ed1ca4ecba08faf",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.4,
+          "text": "Un petit mur de pierres plates posées à sec, sans une once de béton."
+        },
+        {
+          "t0": 4.4,
+          "t1": 10.48,
+          "text": "Il relève le ruisseau d’environ trente à cinquante centimètres : l’eau arrive calme et régulière sur la grille."
+        },
+        {
+          "t0": 10.48,
+          "t1": 15.52,
+          "text": "En France, un seuil relève de la police de l’eau : déclarez-le avant de le construire."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-frame",
+      "scope": "part:in-frame",
+      "title": "Caisson et cadre bois",
+      "scene": "intake",
+      "file": "part-in-frame.mp3",
+      "duration": 16.08,
+      "chars": 273,
+      "hash": "4b0952a16568aa69",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.88,
+          "text": "Ici, du bois : un cadre de mélèze ou de douglas, assemblé avec des équerres galvanisées."
+        },
+        {
+          "t0": 5.88,
+          "t1": 9.56,
+          "text": "Il tient la grille à la bonne inclinaison et protège le bac des chocs."
+        },
+        {
+          "t0": 9.56,
+          "t1": 12.4,
+          "text": "Facile à remplacer, il dure dix à quinze ans."
+        },
+        {
+          "t0": 12.4,
+          "t1": 16.08,
+          "text": "Bien calé contre le seuil : l’eau ne doit pas contourner la grille."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-ramp",
+      "scope": "part:in-ramp",
+      "title": "Plaque d’accélération",
+      "scene": "intake",
+      "file": "part-in-ramp.mp3",
+      "duration": 15.52,
+      "chars": 270,
+      "hash": "0ff4d19463798502",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.76,
+          "text": "Avant la grille, une plaque d’inox courbe, longue d’une quinzaine de centimètres."
+        },
+        {
+          "t0": 4.76,
+          "t1": 9.6,
+          "text": "L’eau s’y accélère, à environ un mètre cinquante ou deux mètres cinquante par seconde,"
+        },
+        {
+          "t0": 9.64,
+          "t1": 11.92,
+          "text": "et s’amincit en lame régulière."
+        },
+        {
+          "t0": 11.92,
+          "t1": 15.52,
+          "text": "Cette vitesse est le secret : c’est elle qui rend la grille efficace."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-screen",
+      "scope": "part:in-screen",
+      "title": "Grille Coanda en fil profilé",
+      "scene": "intake",
+      "file": "part-in-screen.mp3",
+      "duration": 20.96,
+      "chars": 357,
+      "hash": "f116575421157a14",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.32,
+          "text": "La grille Coanda, de près."
+        },
+        {
+          "t0": 2.32,
+          "t1": 6.64,
+          "text": "Des fils d’inox triangulaires, pointe en bas, séparés d’un millimètre."
+        },
+        {
+          "t0": 6.64,
+          "t1": 12.88,
+          "text": "Chaque fil est incliné de quelques degrés : son arête tranche une fine couche d’eau, qui plonge dans la fente."
+        },
+        {
+          "t0": 12.88,
+          "t1": 14.56,
+          "text": "Feuilles et graviers, trop gros,"
+        },
+        {
+          "t0": 14.64,
+          "t1": 19.64,
+          "text": "restent dans la lame rapide et s’en vont jusqu’au bout : la grille se nettoie toute seule !"
+        },
+        {
+          "t0": 19.64,
+          "t1": 20.96,
+          "text": "Ne la retournez jamais."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 20.96,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-in-box",
+      "scope": "part:in-box",
+      "title": "Bac de collecte",
+      "scene": "intake",
+      "file": "part-in-box.mp3",
+      "duration": 14.96,
+      "chars": 259,
+      "hash": "9a1f8e8fe5f0ef75",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.8,
+          "text": "Sous la grille, un bac recueille l’eau filtrée : environ quarante à soixante litres,"
+        },
+        {
+          "t0": 4.84,
+          "t1": 6.96,
+          "text": "qui amortissent les caprices du débit."
+        },
+        {
+          "t0": 6.96,
+          "t1": 10.8,
+          "text": "Tant que le ruisseau donne plus que la turbine ne boit, il reste plein."
+        },
+        {
+          "t0": 10.8,
+          "t1": 13.96,
+          "text": "Sinon, le niveau baisse, la sortie se découvre…"
+        },
+        {
+          "t0": 13.96,
+          "t1": 14.96,
+          "text": "et l’air entre."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "cutaway": true
+          }
+        },
+        {
+          "t": 14.96,
+          "do": {
+            "cutaway": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-in-overflow",
+      "scope": "part:in-overflow",
+      "title": "Trop-plein et glissière à débris",
+      "scene": "intake",
+      "file": "part-in-overflow.mp3",
+      "duration": 13.52,
+      "chars": 230,
+      "hash": "75acd477acf870b2",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.52,
+          "text": "Le bout de la grille, par où repartent le surplus et les feuilles."
+        },
+        {
+          "t0": 3.52,
+          "t1": 7.44,
+          "text": "Insistons : il faut toujours voir un léger débordement !"
+        },
+        {
+          "t0": 7.44,
+          "t1": 13.52,
+          "text": "Un bout de grille sec, c’est une turbine qui prélève tout, un bac qui va se vider, de l’air qui va entrer."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-sandtrap",
+      "scope": "part:in-sandtrap",
+      "title": "Dessableur et vanne de purge",
+      "scene": "intake",
+      "file": "part-in-sandtrap.mp3",
+      "duration": 16.48,
+      "chars": 272,
+      "hash": "8b68ae17d34b18b7",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.36,
+          "text": "Le sable plus fin qu’un millimètre traverse la grille."
+        },
+        {
+          "t0": 3.36,
+          "t1": 8.56,
+          "text": "Dans le bac, l’eau ralentit, et il se dépose dans une fosse que vide une vanne de purge."
+        },
+        {
+          "t0": 8.56,
+          "t1": 9.55,
+          "text": "Pourquoi ?"
+        },
+        {
+          "t0": 9.55,
+          "t1": 14.76,
+          "text": "Un jet à trente-sept mètres par seconde chargé de sable use vite l’injecteur et les augets."
+        },
+        {
+          "t0": 14.76,
+          "t1": 16.48,
+          "text": "Purgez après chaque crue."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-outlet",
+      "scope": "part:in-outlet",
+      "title": "Crépine et départ de conduite",
+      "scene": "intake",
+      "file": "part-in-outlet.mp3",
+      "duration": 15.52,
+      "chars": 282,
+      "hash": "820961637ad4c6fe",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.52,
+          "text": "L’eau quitte le bac par une crépine percée de petits trous, dernier filet contre une feuille égarée."
+        },
+        {
+          "t0": 5.52,
+          "t1": 10.8,
+          "text": "La sortie doit rester bien immergée : trop près de la surface, un tourbillon aspire de l’air."
+        },
+        {
+          "t0": 10.8,
+          "t1": 15.52,
+          "text": "Puis la conduite descend sans interruption, sans point haut : ce serait un piège à air."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-vent",
+      "scope": "part:in-vent",
+      "title": "Évent (reniflard)",
+      "scene": "intake",
+      "file": "part-in-vent.mp3",
+      "duration": 15.04,
+      "chars": 245,
+      "hash": "bb46e9f98e7560d3",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.08,
+          "text": "Un simple tube vertical, et pourtant il rend trois services."
+        },
+        {
+          "t0": 4.08,
+          "t1": 6.64,
+          "text": "Au remplissage, il laisse sortir l’air."
+        },
+        {
+          "t0": 6.64,
+          "t1": 8.92,
+          "text": "En marche, il évacue les bulles."
+        },
+        {
+          "t0": 8.92,
+          "t1": 13.36,
+          "text": "Et si la conduite se vide brutalement, il casse le vide : elle ne s’écrase pas,"
+        },
+        {
+          "t0": 13.4,
+          "t1": 15.04,
+          "text": "et se réamorce plus facilement."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-in-brush",
+      "scope": "part:in-brush",
+      "title": "Brosse de nettoyage",
+      "scene": "intake",
+      "file": "part-in-brush.mp3",
+      "duration": 15.92,
+      "chars": 275,
+      "hash": "99888720c0ad7450",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 7.68,
+          "text": "Dans la vidéo, le propriétaire a laissé une brosse près de la grille : le plus modeste des outils, et peut-être le plus précieux."
+        },
+        {
+          "t0": 7.68,
+          "t1": 12.4,
+          "text": "Un coup de brosse environ une fois par trimestre, pour décoller feuilles et biofilm."
+        },
+        {
+          "t0": 12.4,
+          "t1": 15.92,
+          "text": "Brossez dans le sens du courant, jamais en travers des fils."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-base",
+      "scope": "part:base",
+      "title": "Socle",
+      "scene": "turbine",
+      "file": "part-base.mp3",
+      "duration": 15.2,
+      "chars": 271,
+      "hash": "4fab7f71ee71a734",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.56,
+          "text": "Tout commence par le socle, la plaque de fond qui sert de référence : cloison,"
+        },
+        {
+          "t0": 4.64,
+          "t1": 7.44,
+          "text": "vitre et capot viennent s’aligner sur lui."
+        },
+        {
+          "t0": 7.44,
+          "t1": 12.88,
+          "text": "Sous la roue, une large ouverture laisse tomber l’eau turbinée, car une Pelton travaille à l’air libre."
+        },
+        {
+          "t0": 12.88,
+          "t1": 15.2,
+          "text": "Mettez-le de niveau avant de serrer le reste."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-partition",
+      "scope": "part:partition",
+      "title": "Cloison étanche",
+      "scene": "turbine",
+      "file": "part-partition.mp3",
+      "duration": 18.4,
+      "chars": 295,
+      "hash": "7862c01b6610b519",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.88,
+          "text": "Un mur d’acrylique, entre deux mondes."
+        },
+        {
+          "t0": 2.88,
+          "t1": 8.72,
+          "text": "Devant, la chambre humide, où le jet se pulvérise en brouillard à plus de trente-cinq mètres par seconde."
+        },
+        {
+          "t0": 8.72,
+          "t1": 12,
+          "text": "Derrière, la chambre sèche et son générateur."
+        },
+        {
+          "t0": 12,
+          "t1": 13.81,
+          "text": "Seul l’arbre traverse."
+        },
+        {
+          "t0": 13.81,
+          "t1": 18.4,
+          "text": "Serrée sur un joint par quatre vis, sans colle, elle se démonte sans rien casser."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-window",
+      "scope": "part:window",
+      "title": "Vitre avant",
+      "scene": "turbine",
+      "file": "part-window.mp3",
+      "duration": 15.76,
+      "chars": 272,
+      "hash": "e7423e8119a672b3",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.32,
+          "text": "Une fenêtre sur la tempête !"
+        },
+        {
+          "t0": 2.32,
+          "t1": 7.36,
+          "text": "La vitre ferme la chambre humide, mais laisse voir la roue, le jet et le brouillard."
+        },
+        {
+          "t0": 7.36,
+          "t1": 11.68,
+          "text": "Un jet qui s’ouvre en gerbe, ou qui tape à côté de l’arête, se voit tout de suite."
+        },
+        {
+          "t0": 11.68,
+          "t1": 15.76,
+          "text": "Dans la vidéo, on se tient à une longueur de bras sans recevoir une goutte."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gasket",
+      "scope": "part:gasket",
+      "title": "Joint de carter",
+      "scene": "turbine",
+      "file": "part-gasket.mp3",
+      "duration": 14.4,
+      "chars": 251,
+      "hash": "2efa960e89e889b7",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.24,
+          "text": "Un simple cordon de caoutchouc, mais sans lui, l’eau s’invite partout."
+        },
+        {
+          "t0": 4.24,
+          "t1": 9.76,
+          "text": "Les plaques ne sont jamais parfaitement planes : le joint rattrape les écarts et absorbe les vibrations."
+        },
+        {
+          "t0": 9.76,
+          "t1": 14.4,
+          "text": "Comprimé d’un quart environ : trop peu, ça fuit ; trop, il ne revient plus."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-rear-panel",
+      "scope": "part:rear-panel",
+      "title": "Panneau arrière ventilé",
+      "scene": "turbine",
+      "file": "part-rear-panel.mp3",
+      "duration": 14.16,
+      "chars": 256,
+      "hash": "fe51f069c8368b4f",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.44,
+          "text": "À l’arrière, un panneau noir ferme la chambre sèche."
+        },
+        {
+          "t0": 3.44,
+          "t1": 5.12,
+          "text": "Il porte le troisième roulement,"
+        },
+        {
+          "t0": 5.16,
+          "t1": 10.2,
+          "text": "et ses grilles laissent le rotor aspirer l’air frais : le générateur chauffe en permanence."
+        },
+        {
+          "t0": 10.2,
+          "t1": 14.16,
+          "text": "Deux pions le centrent : l’alignement des roulements est garanti sans réglage."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-cover",
+      "scope": "part:cover",
+      "title": "Capot aluminium",
+      "scene": "turbine",
+      "file": "part-cover.mp3",
+      "duration": 12.96,
+      "chars": 230,
+      "hash": "cef35a5f0120a932",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.6,
+          "text": "Un manteau d’aluminium marin, épais de deux millimètres seulement : le capot."
+        },
+        {
+          "t0": 4.6,
+          "t1": 8.08,
+          "text": "Découpé au laser puis plié en coin par une entreprise toulousaine,"
+        },
+        {
+          "t0": 8.16,
+          "t1": 10.8,
+          "text": "il fait ruisseler l’eau loin des injecteurs."
+        },
+        {
+          "t0": 10.8,
+          "t1": 12.96,
+          "text": "Quatre grenouillères l’ôtent sans outil."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-bearing-1",
+      "scope": "part:bearing-1",
+      "title": "Roulement 1 (côté roue)",
+      "scene": "turbine",
+      "file": "part-bearing-1.mp3",
+      "duration": 12.32,
+      "chars": 224,
+      "hash": "0a7104cd67b87caa",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.92,
+          "text": "Premier roulement, côté roue."
+        },
+        {
+          "t0": 1.92,
+          "t1": 6.08,
+          "text": "Le jet pousse la roue d’un seul côté, et lui encaisse l’essentiel de l’effort."
+        },
+        {
+          "t0": 6.08,
+          "t1": 8.32,
+          "text": "Un modèle courant, une dizaine d’euros."
+        },
+        {
+          "t0": 8.32,
+          "t1": 12.32,
+          "text": "Tout près de l’eau, il s’use le premier : trois à cinq ans, selon la vidéo."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-bearing-2",
+      "scope": "part:bearing-2",
+      "title": "Roulement 2 (côté générateur)",
+      "scene": "turbine",
+      "file": "part-bearing-2.mp3",
+      "duration": 13.76,
+      "chars": 251,
+      "hash": "39b3aad9c48e72ac",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.92,
+          "text": "Deux roulements valent mieux qu’un."
+        },
+        {
+          "t0": 1.92,
+          "t1": 3.52,
+          "text": "Écartés dans la même cartouche,"
+        },
+        {
+          "t0": 3.6,
+          "t1": 9.28,
+          "text": "ils forment un couple qui empêche l’arbre de basculer : plus l’écart est grand, plus la roue tourne droit."
+        },
+        {
+          "t0": 9.28,
+          "t1": 13.76,
+          "text": "On change les trois ensemble : jamais un neuf avec un usé sur le même arbre."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-bearing-3",
+      "scope": "part:bearing-3",
+      "title": "Roulement 3 (panneau arrière)",
+      "scene": "turbine",
+      "file": "part-bearing-3.mp3",
+      "duration": 15.04,
+      "chars": 273,
+      "hash": "65ff247b95866fb8",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.92,
+          "text": "Un troisième roulement tient le bout de l’arbre, derrière le rotor."
+        },
+        {
+          "t0": 3.92,
+          "t1": 9.64,
+          "text": "Les aimants attirent celui-ci dès qu’il n’est pas centré : cet appui garde l’entrefer régulier."
+        },
+        {
+          "t0": 9.64,
+          "t1": 15.04,
+          "text": "Serrez le panneau en dernier, en tournant l’arbre à la main : s’il durcit, le roulement n’est pas dans l’axe."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-seal",
+      "scope": "part:seal",
+      "title": "Joint à lèvre",
+      "scene": "turbine",
+      "file": "part-seal.mp3",
+      "duration": 14,
+      "chars": 255,
+      "hash": "e5e1f3a721351f20",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.08,
+          "text": "Une petite lèvre de caoutchouc qui frotte jour et nuit sur l’acier poli."
+        },
+        {
+          "t0": 4.08,
+          "t1": 9.44,
+          "text": "Son métier : empêcher le brouillard de la chambre humide de suivre l’arbre jusqu’aux roulements."
+        },
+        {
+          "t0": 9.44,
+          "t1": 14,
+          "text": "Avec eux, c’est la pièce d’usure numéro un : on change les joints à chaque entretien."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-shaft",
+      "scope": "part:shaft",
+      "title": "Arbre inox Ø20",
+      "scene": "turbine",
+      "file": "part-shaft.mp3",
+      "duration": 14.8,
+      "chars": 269,
+      "hash": "800ec007326fe2a8",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.36,
+          "text": "L’arbre en inox, vingt millimètres de diamètre, relie la roue au rotor à travers la cloison."
+        },
+        {
+          "t0": 5.36,
+          "t1": 8.6,
+          "text": "Entraînement direct, sans courroie ni multiplicateur."
+        },
+        {
+          "t0": 8.6,
+          "t1": 14.8,
+          "text": "Le couple est faible, mais l’arbre doit rester raide : cinq centièmes de millimètre de faux-rond font déjà battre la roue."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-wheel-hub",
+      "scope": "part:wheel-hub",
+      "title": "Moyeu de roue",
+      "scene": "turbine",
+      "file": "part-wheel-hub.mp3",
+      "duration": 14.16,
+      "chars": 254,
+      "hash": "18e217070f5e38fa",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.4,
+          "text": "Au centre de la roue, un disque imprimé en trois D : le moyeu."
+        },
+        {
+          "t0": 4.4,
+          "t1": 8.88,
+          "text": "Il porte les vingt-six augets en couronne, chacun au bon angle et au bon rayon,"
+        },
+        {
+          "t0": 8.96,
+          "t1": 11.36,
+          "text": "sur un diamètre de cent quatre-vingt-dix millimètres,"
+        },
+        {
+          "t0": 11.4,
+          "t1": 14.16,
+          "text": "ce qui fixe la vitesse de rotation pour une chute donnée."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-buckets",
+      "scope": "part:buckets",
+      "title": "Augets Pelton",
+      "scene": "turbine",
+      "file": "part-buckets.mp3",
+      "duration": 24.72,
+      "chars": 436,
+      "hash": "f69ae8694b3aca57",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.32,
+          "text": "Les augets, ces petites cuillères."
+        },
+        {
+          "t0": 2.32,
+          "t1": 6.88,
+          "text": "L’arête centrale fend le jet en deux, et chaque moitié fait presque demi-tour,"
+        },
+        {
+          "t0": 6.96,
+          "t1": 10.64,
+          "text": "cent soixante-cinq degrés environ, avant de ressortir sur le côté."
+        },
+        {
+          "t0": 10.64,
+          "t1": 13.28,
+          "text": "L’auget lui prend ainsi presque toute son énergie,"
+        },
+        {
+          "t0": 13.36,
+          "t1": 16.88,
+          "text": "à condition d’avancer à peu près à la moitié de la vitesse du jet."
+        },
+        {
+          "t0": 16.88,
+          "t1": 20,
+          "text": "Il en existe plusieurs tailles, assorties aux injecteurs."
+        },
+        {
+          "t0": 20,
+          "t1": 24.72,
+          "text": "Appariez-les à un demi-gramme près : une roue déséquilibrée use les roulements."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 16.88,
+          "do": {
+            "explode": 0.7
+          }
+        },
+        {
+          "t": 20,
+          "do": {
+            "explode": 0
+          }
+        },
+        {
+          "t": 24.72,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-wheel-ring",
+      "scope": "part:wheel-ring",
+      "title": "Bague de serrage",
+      "scene": "turbine",
+      "file": "part-wheel-ring.mp3",
+      "duration": 14.4,
+      "chars": 265,
+      "hash": "218b12b937d21ba7",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 9.92,
+          "text": "Cette bague pince le pied des vingt-six augets contre le moyeu : chaque auget est pris en sandwich, et l’effort se répartit sur toute la couronne, au lieu de reposer sur une seule vis."
+        },
+        {
+          "t0": 9.92,
+          "t1": 14.4,
+          "text": "Serrez en étoile, deux newtons-mètres, pas plus : le plastique flue sous charge."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-wheel-lock",
+      "scope": "part:wheel-lock",
+      "title": "Moyeu conique et écrou",
+      "scene": "turbine",
+      "file": "part-wheel-lock.mp3",
+      "duration": 16.24,
+      "chars": 271,
+      "hash": "d600119d1f6460a7",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.69,
+          "text": "Comment fixer la roue à l’arbre sans jeu, et la retirer sans arrache-moyeu ?"
+        },
+        {
+          "t0": 4.69,
+          "t1": 6.32,
+          "text": "Avec un moyeu conique."
+        },
+        {
+          "t0": 6.32,
+          "t1": 11.68,
+          "text": "Deux vis l’enfoncent dans une bride d’acier, le cône se referme sur l’arbre et centre la roue."
+        },
+        {
+          "t0": 11.68,
+          "t1": 16.24,
+          "text": "Montez-le propre et sec : graissé, il se serre trop et peut fendre la bride."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-stator",
+      "scope": "part:stator",
+      "title": "Stator bobiné",
+      "scene": "turbine",
+      "file": "part-stator.mp3",
+      "duration": 23.36,
+      "chars": 423,
+      "hash": "591599405e25fe9d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.92,
+          "text": "Voici la naissance du courant."
+        },
+        {
+          "t0": 1.92,
+          "t1": 5.68,
+          "text": "Le stator est une étoile fixe de douze dents bobinées en cuivre."
+        },
+        {
+          "t0": 5.68,
+          "t1": 11.52,
+          "text": "Quand les aimants défilent devant elles, le flux varie, et une tension apparaît, proportionnelle à la vitesse."
+        },
+        {
+          "t0": 11.52,
+          "t1": 18.56,
+          "text": "Le constructeur fabrique ses générateurs : ses anciens moteurs chauffaient jusqu’à la destruction quand la turbine s’arrêtait et repartait."
+        },
+        {
+          "t0": 18.56,
+          "t1": 23.36,
+          "text": "Ici, une sonde à un euro, noyée dans le bobinage, veille sur la température."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 23.36,
+          "do": {
+            "xray": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-rotor",
+      "scope": "part:rotor",
+      "title": "Rotor extérieur à aimants",
+      "scene": "turbine",
+      "file": "part-rotor.mp3",
+      "duration": 15.68,
+      "chars": 270,
+      "hash": "13f42973e8e7b348",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.76,
+          "text": "Une cloche qui tourne autour du stator : voilà le rotor."
+        },
+        {
+          "t0": 3.76,
+          "t1": 7.52,
+          "text": "Ses aimants, plus loin de l’axe, donnent plus de couple et de tension."
+        },
+        {
+          "t0": 7.52,
+          "t1": 12.64,
+          "text": "Imprimée en trois D, comme dans la vidéo, elle porte des ouïes en haricot qui brassent l’air."
+        },
+        {
+          "t0": 12.64,
+          "t1": 15.68,
+          "text": "Entrefer d’environ un millimètre : c’est mince !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-magnets",
+      "scope": "part:magnets",
+      "title": "Aimants néodyme N52",
+      "scene": "turbine",
+      "file": "part-magnets.mp3",
+      "duration": 17.12,
+      "chars": 301,
+      "hash": "8e454bab0bd88ca5",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.48,
+          "text": "Quatorze aimants au néodyme : pas de balais, le champ est là, gratuit."
+        },
+        {
+          "t0": 4.48,
+          "t1": 8.72,
+          "text": "Posés en alternance nord et sud, ils inversent le flux à chaque passage."
+        },
+        {
+          "t0": 8.72,
+          "t1": 14.43,
+          "text": "Fragiles à la chaleur, environ quatre-vingts degrés au maximum, et assez puissants pour écraser des doigts !"
+        },
+        {
+          "t0": 14.43,
+          "t1": 17.12,
+          "text": "Un seul aimant inversé, et une phase s’effondre."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-rectifier",
+      "scope": "part:rectifier",
+      "title": "Pont redresseur triphasé",
+      "scene": "turbine",
+      "file": "part-rectifier.mp3",
+      "duration": 16.96,
+      "chars": 321,
+      "hash": "af072b871213ab09",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.76,
+          "text": "Le générateur donne de l’alternatif en trois phases, les batteries veulent du continu."
+        },
+        {
+          "t0": 4.76,
+          "t1": 9.8,
+          "text": "Entre les deux, six diodes, qui laissent passer à chaque instant la phase la plus haute et la plus basse."
+        },
+        {
+          "t0": 9.8,
+          "t1": 15.56,
+          "text": "Le prix à payer : environ deux volts de chute, soit près de dix-neuf watts de chaleur en pleine production."
+        },
+        {
+          "t0": 15.56,
+          "t1": 16.96,
+          "text": "D’où ce dissipateur."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-terminal",
+      "scope": "part:terminal",
+      "title": "Bornier et presse-étoupe",
+      "scene": "turbine",
+      "file": "part-terminal.mp3",
+      "duration": 15.04,
+      "chars": 283,
+      "hash": "dc67a63fcea25e85",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.84,
+          "text": "Ici, tout se raccorde : trois phases, deux pôles continus,"
+        },
+        {
+          "t0": 3.88,
+          "t1": 7.33,
+          "text": "et un presse-étoupe qui protège les bornes de l’eau et des vibrations."
+        },
+        {
+          "t0": 7.33,
+          "t1": 10.32,
+          "text": "C’est là qu’on branche le multimètre, comme dans la vidéo."
+        },
+        {
+          "t0": 10.32,
+          "t1": 15.04,
+          "text": "Jamais de doigts sur les bornes quand la roue tourne : le générateur produit dès qu’il tourne."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-cable",
+      "scope": "part:cable",
+      "title": "Câble de sortie 6 mm²",
+      "scene": "turbine",
+      "file": "part-cable.mp3",
+      "duration": 15.44,
+      "chars": 278,
+      "hash": "8c01d3e398bdcec9",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.6,
+          "text": "Par ce câble, le courant quitte la turbine pour le local technique,"
+        },
+        {
+          "t0": 3.76,
+          "t1": 9.6,
+          "text": "entre cinquante et cinquante-quatre volts : à cinq cents watts, environ neuf virgule quatre ampères."
+        },
+        {
+          "t0": 9.6,
+          "t1": 15.44,
+          "text": "Sur le site A, la vidéo compte environ trente-cinq watts perdus dans les câbles et un peu dans le régulateur."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-injector-top",
+      "scope": "part:injector-top",
+      "title": "Injecteur à pointeau (haut)",
+      "scene": "turbine",
+      "file": "part-injector-top.mp3",
+      "duration": 25.68,
+      "chars": 437,
+      "hash": "db0fc5db1c6466bb",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.8,
+          "text": "L’injecteur transforme la pression en vitesse : à soixante-quatorze mètres de chute nette,"
+        },
+        {
+          "t0": 4.88,
+          "t1": 7.84,
+          "text": "l’eau sort à environ trente-sept mètres par seconde."
+        },
+        {
+          "t0": 7.84,
+          "t1": 10.72,
+          "text": "Ici, une pièce profilée, l’olive de la vidéo,"
+        },
+        {
+          "t0": 10.8,
+          "t1": 15.44,
+          "text": "avance ou recule dans la buse : le débit change, le jet reste compact."
+        },
+        {
+          "t0": 15.44,
+          "t1": 16.8,
+          "text": "Fabriqué en Italie."
+        },
+        {
+          "t0": 16.8,
+          "t1": 22.24,
+          "text": "Un principe de base : réglez le débit avec le pointeau, jamais avec une vanne à moitié fermée."
+        },
+        {
+          "t0": 22.24,
+          "t1": 25.68,
+          "text": "La vanne gaspille la chute, le pointeau la change en vitesse."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 25.68,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-manifold",
+      "scope": "part:manifold",
+      "title": "Nourrice en col de cygne",
+      "scene": "turbine",
+      "file": "part-manifold.mp3",
+      "duration": 15.52,
+      "chars": 285,
+      "hash": "9cdf2dfdce22692d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.6,
+          "text": "On l’appelle la nourrice : une tuyauterie en col de cygne qui distribue l’eau aux injecteurs."
+        },
+        {
+          "t0": 5.6,
+          "t1": 10.32,
+          "text": "Ses coudes doivent être larges et peu nombreux : chaque détour coûte un peu de chute."
+        },
+        {
+          "t0": 10.32,
+          "t1": 12.27,
+          "text": "Les premiers échecs du constructeur ?"
+        },
+        {
+          "t0": 12.27,
+          "t1": 15.52,
+          "text": "Des raccords qui pétaient, par excès de pression ou mauvaise colle."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-valve-branch",
+      "scope": "part:valve-branch",
+      "title": "Vannes de branche (rouge et bleue)",
+      "scene": "turbine",
+      "file": "part-valve-branch.mp3",
+      "duration": 14.8,
+      "chars": 273,
+      "hash": "63e65b2d3de20bd3",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.04,
+          "text": "Une vanne rouge, une bleue : une par injecteur."
+        },
+        {
+          "t0": 3.04,
+          "t1": 7.28,
+          "text": "Sur le site B, la rouge alimente l’injecteur du haut pour les gros débits d’hiver,"
+        },
+        {
+          "t0": 7.36,
+          "t1": 12.24,
+          "text": "la bleue l’injecteur latéral pour les tout petits débits, comme en juin après la canicule."
+        },
+        {
+          "t0": 12.24,
+          "t1": 14.8,
+          "text": "Grandes ouvertes ou fermées, jamais entre les deux."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gauge",
+      "scope": "part:gauge",
+      "title": "Manomètre à glycérine",
+      "scene": "turbine",
+      "file": "part-gauge.mp3",
+      "duration": 16.16,
+      "chars": 279,
+      "hash": "c344254cdaee63b1",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.92,
+          "text": "Le manomètre dit la vérité."
+        },
+        {
+          "t0": 1.92,
+          "t1": 5.28,
+          "text": "Dix mètres de chute, un bar : avec soixante-seize mètres,"
+        },
+        {
+          "t0": 5.36,
+          "t1": 8.76,
+          "text": "il lit environ sept virgule quatre bars, vannes fermées."
+        },
+        {
+          "t0": 8.76,
+          "t1": 13.28,
+          "text": "En marche, la pression baisse un peu : cet écart, c’est la perte de la conduite."
+        },
+        {
+          "t0": 13.28,
+          "t1": 16.16,
+          "text": "S’il grandit au fil des mois, quelque chose s’encrasse."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-valve-bypass",
+      "scope": "part:valve-bypass",
+      "title": "Vanne de dérivation (purge)",
+      "scene": "turbine",
+      "file": "part-valve-bypass.mp3",
+      "duration": 14.24,
+      "chars": 266,
+      "hash": "89bd11e0afdd3dc4",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.92,
+          "text": "Ouverte, la vanne de purge laisse l’eau filer droit au canal de fuite,"
+        },
+        {
+          "t0": 4,
+          "t1": 7.36,
+          "text": "sans passer par la roue : on chasse l’air au premier remplissage,"
+        },
+        {
+          "t0": 7.44,
+          "t1": 11.28,
+          "text": "puis le sable et les feuilles, ou l’on vidange avant une intervention."
+        },
+        {
+          "t0": 11.28,
+          "t1": 14.24,
+          "text": "Comme toute vanne sous pression, on la manœuvre lentement."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-valve-main",
+      "scope": "part:valve-main",
+      "title": "Vanne principale",
+      "scene": "turbine",
+      "file": "part-valve-main.mp3",
+      "duration": 14.56,
+      "chars": 280,
+      "hash": "f477aa726716a039",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.96,
+          "text": "Stopper net trois cent cinquante mètres de colonne d’eau ?"
+        },
+        {
+          "t0": 2.96,
+          "t1": 6.56,
+          "text": "Un coup de bélier de plusieurs bars, en plus de la pression statique."
+        },
+        {
+          "t0": 6.56,
+          "t1": 11.36,
+          "text": "D’où ce réducteur sur la vanne principale : une vingtaine de tours de volant pour fermer."
+        },
+        {
+          "t0": 11.36,
+          "t1": 14.56,
+          "text": "Comptez vingt secondes au moins, en fermant comme en ouvrant."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-penstock-end",
+      "scope": "part:penstock-end",
+      "title": "Arrivée de la conduite forcée",
+      "scene": "turbine",
+      "file": "part-penstock-end.mp3",
+      "duration": 15.84,
+      "chars": 288,
+      "hash": "00396d5b821a993e",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 8.08,
+          "text": "La conduite forcée arrive au bout du voyage : un tube de polyéthylène de soixante-trois millimètres, reconnaissable à son liseré blanc d’irrigation."
+        },
+        {
+          "t0": 8.08,
+          "t1": 13.2,
+          "text": "Un raccord à compression bleu fait la transition vers la turbine, sans colle ni soudure."
+        },
+        {
+          "t0": 13.2,
+          "t1": 15.84,
+          "text": "Une gaine grise le protège des chocs et du soleil."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-skid",
+      "scope": "part:skid",
+      "title": "Châssis-skid",
+      "scene": "turbine",
+      "file": "part-skid.mp3",
+      "duration": 16.88,
+      "chars": 293,
+      "hash": "d0989d356211ec6d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.92,
+          "text": "Sous la machine, un cadre de profilés d’aluminium, livré monté et réglé : le skid."
+        },
+        {
+          "t0": 5.92,
+          "t1": 9.6,
+          "text": "Ses pieds rattrapent un sol en pente, ses silentblocs coupent les vibrations,"
+        },
+        {
+          "t0": 9.64,
+          "t1": 13.04,
+          "text": "et il garantit quarante centimètres de chute libre sous la roue."
+        },
+        {
+          "t0": 13.04,
+          "t1": 16.88,
+          "text": "Ancrez-le : une turbine qui s’emballe vibre assez pour se déplacer."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-bearing-cartridge",
+      "scope": "part:bearing-cartridge",
+      "title": "Cartouche de palier",
+      "scene": "turbine",
+      "file": "part-bearing-cartridge.mp3",
+      "duration": 16.24,
+      "chars": 280,
+      "hash": "19d65a906f2d72ae",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.2,
+          "text": "Tout ce qui s’use autour de l’arbre, réuni en une seule pièce : la cartouche de palier."
+        },
+        {
+          "t0": 5.2,
+          "t1": 7.84,
+          "text": "Côté humide, trois barrières arrêtent l’eau."
+        },
+        {
+          "t0": 7.84,
+          "t1": 12.4,
+          "text": "Le jour de l’entretien, on dévisse six vis, on glisse la cartouche de rechange,"
+        },
+        {
+          "t0": 12.44,
+          "t1": 14.56,
+          "text": "et la turbine repart en dix minutes."
+        },
+        {
+          "t0": 14.56,
+          "t1": 16.24,
+          "text": "Gardez-en toujours une prête !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-injector-quick",
+      "scope": "part:injector-quick",
+      "title": "Injecteur latéral à buse interchangeable",
+      "scene": "turbine",
+      "file": "part-injector-quick.mp3",
+      "duration": 14.08,
+      "chars": 238,
+      "hash": "84ff365943cf2560",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.72,
+          "text": "Cet injecteur-là n’a aucune pièce mobile."
+        },
+        {
+          "t0": 2.72,
+          "t1": 8.24,
+          "text": "Seule la buse change : un insert de quatre à quatorze millimètres, verrouillé d’un quart de tour."
+        },
+        {
+          "t0": 8.24,
+          "t1": 12.4,
+          "text": "Petite buse en été, grande en hiver : la turbine suit les saisons."
+        },
+        {
+          "t0": 12.4,
+          "t1": 14.08,
+          "text": "Jamais d’insert sous pression !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-deflector",
+      "scope": "part:deflector",
+      "title": "Déflecteur de jet",
+      "scene": "turbine",
+      "file": "part-deflector.mp3",
+      "duration": 23.68,
+      "chars": 428,
+      "hash": "994f7f329d053412",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.8,
+          "text": "Le déflecteur, gardien de la turbine."
+        },
+        {
+          "t0": 2.8,
+          "t1": 7.84,
+          "text": "Si la charge électrique disparaît, la roue s’emballe jusqu’à presque le double de sa vitesse."
+        },
+        {
+          "t0": 7.84,
+          "t1": 13.52,
+          "text": "Alors un volet à ressort bascule dans le jet, en moins d’une demi-seconde, et l’envoie au canal de fuite."
+        },
+        {
+          "t0": 13.52,
+          "t1": 16.08,
+          "text": "L’eau continue de couler : pas de coup de bélier."
+        },
+        {
+          "t0": 16.08,
+          "t1": 19.84,
+          "text": "Retenu par une gâche électrique, il tombe dès que le courant s’arrête."
+        },
+        {
+          "t0": 19.84,
+          "t1": 23.68,
+          "text": "Testez-le à chaque visite : une sécurité jamais essayée ne vaut rien."
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "xray": true
+          }
+        },
+        {
+          "t": 23.68,
+          "do": {
+            "xray": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-latches",
+      "scope": "part:latches",
+      "title": "Grenouillères",
+      "scene": "turbine",
+      "file": "part-latches.mp3",
+      "duration": 12.48,
+      "chars": 246,
+      "hash": "900655ed962c58e2",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.44,
+          "text": "Quatre grenouillères en inox, et le capot s’ouvre en dix secondes, sans outil."
+        },
+        {
+          "t0": 4.44,
+          "t1": 10,
+          "text": "Elles serrent sur le joint avec un effort constant et réglable, sans une seule vis à défaire dans l’aluminium."
+        },
+        {
+          "t0": 10,
+          "t1": 12.48,
+          "text": "Et comme c’est facile, l’entretien se fait plus souvent."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-sensors",
+      "scope": "part:sensors",
+      "title": "Capteurs",
+      "scene": "turbine",
+      "file": "part-sensors.mp3",
+      "duration": 15.12,
+      "chars": 264,
+      "hash": "80eec8aec01ef94f",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.6,
+          "text": "Trois capteurs bon marché, et la turbine se met à parler."
+        },
+        {
+          "t0": 3.6,
+          "t1": 8.4,
+          "text": "La pression trahit une grille bouchée ou de l’air, la vitesse un roulement qui freine,"
+        },
+        {
+          "t0": 8.44,
+          "t1": 10.92,
+          "text": "la température un stator qui souffre."
+        },
+        {
+          "t0": 10.92,
+          "t1": 15.12,
+          "text": "Leurs mesures se consultent à distance, et nourrissent la sécurité du déflecteur."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-controller-box",
+      "scope": "part:controller-box",
+      "title": "Coffret contrôleur",
+      "scene": "turbine",
+      "file": "part-controller-box.mp3",
+      "duration": 13.36,
+      "chars": 237,
+      "hash": "c8e1b8c9a72122b6",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 7.92,
+          "text": "Au pied de la turbine, un coffret étanche rassemble les protections et la surveillance : disjoncteur, parafoudre, relais de surtension."
+        },
+        {
+          "t0": 7.92,
+          "t1": 13.36,
+          "text": "Si la tension grimpe parce que la charge a disparu, le relais coupe la gâche, et le déflecteur tombe."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-air-valve",
+      "scope": "part:air-valve",
+      "title": "Ventouse automatique",
+      "scene": "turbine",
+      "file": "part-air-valve.mp3",
+      "duration": 15.92,
+      "chars": 252,
+      "hash": "cd54d4facce15167",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2.56,
+          "text": "L’air, l’ennemi discret."
+        },
+        {
+          "t0": 2.56,
+          "t1": 6.88,
+          "text": "Venu de la prise d’eau, il remonte se loger au point haut de la nourrice."
+        },
+        {
+          "t0": 6.88,
+          "t1": 10.6,
+          "text": "Une poche d’air fait cracher l’injecteur et chuter la puissance."
+        },
+        {
+          "t0": 10.6,
+          "t1": 15.92,
+          "text": "La ventouse, un simple flotteur, la laisse sortir, puis se referme dès que l’eau arrive."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-battery",
+      "scope": "part:battery",
+      "title": "Batteries lithium",
+      "scene": "techroom",
+      "file": "part-battery.mp3",
+      "duration": 22.48,
+      "chars": 425,
+      "hash": "82ae1aa7548f0f1c",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.04,
+          "text": "Les batteries : la réserve de l’histoire."
+        },
+        {
+          "t0": 3.04,
+          "t1": 5.04,
+          "text": "Quatre modules au lithium fer phosphate,"
+        },
+        {
+          "t0": 5.12,
+          "t1": 9.52,
+          "text": "deux virgule quatre kilowattheures chacun : près de dix kilowattheures sous l’établi."
+        },
+        {
+          "t0": 9.52,
+          "t1": 11.52,
+          "text": "Comme la turbine recharge sans relâche,"
+        },
+        {
+          "t0": 11.56,
+          "t1": 15.76,
+          "text": "elles ne descendent presque jamais à vingt ou trente pour cent de charge, ce qui les ménage."
+        },
+        {
+          "t0": 15.76,
+          "t1": 20.64,
+          "text": "Chaque module surveille ses cellules : s’il en juge une trop chargée, il ouvre le circuit."
+        },
+        {
+          "t0": 20.64,
+          "t1": 22.48,
+          "text": "D’où l’importance du délesteur !"
+        }
+      ],
+      "cues": [
+        {
+          "t": 0,
+          "do": {
+            "flows": true
+          }
+        },
+        {
+          "t": 22.48,
+          "do": {
+            "flows": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "part-inverter",
+      "scope": "part:inverter",
+      "title": "Onduleur-chargeur",
+      "scene": "techroom",
+      "file": "part-inverter.mp3",
+      "duration": 15.12,
+      "chars": 272,
+      "hash": "8b1dc5f1554bb8f4",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.28,
+          "text": "Le grand boîtier bleu : l’onduleur-chargeur."
+        },
+        {
+          "t0": 3.28,
+          "t1": 5.36,
+          "text": "À partir des batteries en quarante-huit volts,"
+        },
+        {
+          "t0": 5.4,
+          "t1": 9.32,
+          "text": "il fabrique une belle sinusoïde de deux cent trente volts pour la maison."
+        },
+        {
+          "t0": 9.32,
+          "t1": 15.12,
+          "text": "Son pic de démarrage encaisse les moteurs, pompe ou lave-linge, que la turbine seule ne fournirait jamais."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-mppt-pv",
+      "scope": "part:mppt-pv",
+      "title": "Régulateur solaire",
+      "scene": "techroom",
+      "file": "part-mppt-pv.mp3",
+      "duration": 17.12,
+      "chars": 312,
+      "hash": "d59c3645012aa5fa",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.48,
+          "text": "Le régulateur solaire règle sans cesse la tension des panneaux pour tirer le maximum du soleil."
+        },
+        {
+          "t0": 5.48,
+          "t1": 11.04,
+          "text": "Parfait pour le solaire, mais surtout pas pour une turbine : voyez la leçon sur la vitesse constante."
+        },
+        {
+          "t0": 11.04,
+          "t1": 15.76,
+          "text": "Par grand froid, la tension des panneaux grimpe : au-delà de deux cent cinquante volts,"
+        },
+        {
+          "t0": 15.8,
+          "t1": 17.12,
+          "text": "le régulateur est détruit."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-hydro-ctrl",
+      "scope": "part:hydro-ctrl",
+      "title": "Régulateur hydro",
+      "scene": "techroom",
+      "file": "part-hydro-ctrl.mp3",
+      "duration": 18.24,
+      "chars": 310,
+      "hash": "54b83f50c59d4a79",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 2,
+          "text": "Un régulateur de solaire…"
+        },
+        {
+          "t0": 2,
+          "t1": 3.33,
+          "text": "pour une turbine ?"
+        },
+        {
+          "t0": 3.33,
+          "t1": 4.11,
+          "text": "Presque !"
+        },
+        {
+          "t0": 4.11,
+          "t1": 6.92,
+          "text": "Celui-ci sait imposer une tension d’entrée fixe."
+        },
+        {
+          "t0": 6.92,
+          "t1": 12.88,
+          "text": "Or la tension d’un générateur à aimants est proportionnelle à sa vitesse : tension fixe, vitesse fixe."
+        },
+        {
+          "t0": 12.88,
+          "t1": 18.24,
+          "text": "Sur le site B, la batterie fixe la tension : on s’en passe, et l’on économise environ cinq cents euros."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-diversion",
+      "scope": "part:diversion",
+      "title": "Régulateur de délestage",
+      "scene": "techroom",
+      "file": "part-diversion.mp3",
+      "duration": 14.16,
+      "chars": 269,
+      "hash": "1814757386eeb94e",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.56,
+          "text": "Le délesteur veille à ce que la turbine ne tourne jamais à vide."
+        },
+        {
+          "t0": 3.56,
+          "t1": 8.56,
+          "text": "Batteries pleines, personne ne consomme : le courant n’a plus où aller, et la roue s’emballerait."
+        },
+        {
+          "t0": 8.56,
+          "t1": 12.04,
+          "text": "Alors il envoie juste ce qu’il faut de courant dans les résistances."
+        },
+        {
+          "t0": 12.04,
+          "t1": 14.16,
+          "text": "La turbine ne voit aucune différence."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-dump-load",
+      "scope": "part:dump-load",
+      "title": "Résistances de délestage",
+      "scene": "techroom",
+      "file": "part-dump-load.mp3",
+      "duration": 13.76,
+      "chars": 266,
+      "hash": "210710e9859f6333",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 6,
+          "text": "Des résistances de freinage : elles chauffent l’air et freinent électriquement la turbine quand les batteries sont pleines."
+        },
+        {
+          "t0": 6,
+          "t1": 9.84,
+          "text": "Leur puissance doit dépasser celle de la turbine avec une bonne marge."
+        },
+        {
+          "t0": 9.84,
+          "t1": 13.76,
+          "text": "Plus de cent cinquante degrés en surface : loin du bois et des câbles !"
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-dc-protect",
+      "scope": "part:dc-protect",
+      "title": "Coffret de protection DC",
+      "scene": "techroom",
+      "file": "part-dc-protect.mp3",
+      "duration": 14.8,
+      "chars": 270,
+      "hash": "4ce9526590b6679d",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 3.04,
+          "text": "Le boîtier de sécurité, à l’arrivée de la turbine."
+        },
+        {
+          "t0": 3.04,
+          "t1": 5.84,
+          "text": "On y isole la turbine des batteries pour intervenir,"
+        },
+        {
+          "t0": 5.88,
+          "t1": 11.24,
+          "text": "et l’on protège le câble : une batterie au lithium peut débiter des milliers d’ampères en un instant."
+        },
+        {
+          "t0": 11.24,
+          "t1": 14.8,
+          "text": "Jamais de coupure en charge, sans délesteur actif ni déflecteur."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-ac-panel",
+      "scope": "part:ac-panel",
+      "title": "Tableau AC",
+      "scene": "techroom",
+      "file": "part-ac-panel.mp3",
+      "duration": 15.04,
+      "chars": 268,
+      "hash": "ea2dda6780162e09",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 1.68,
+          "text": "Le tableau de la maison."
+        },
+        {
+          "t0": 1.68,
+          "t1": 6.32,
+          "text": "Les disjoncteurs protègent chaque circuit, le différentiel protège les personnes."
+        },
+        {
+          "t0": 6.32,
+          "t1": 10.32,
+          "text": "En site isolé, le neutre doit être relié à la terre en sortie d’onduleur,"
+        },
+        {
+          "t0": 10.4,
+          "t1": 13.24,
+          "text": "sinon le différentiel ne verrait jamais un défaut."
+        },
+        {
+          "t0": 13.24,
+          "t1": 15.04,
+          "text": "Testez son bouton tous les six mois."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-busbar",
+      "scope": "part:busbar",
+      "title": "Barres de distribution DC",
+      "scene": "techroom",
+      "file": "part-busbar.mp3",
+      "duration": 15.76,
+      "chars": 284,
+      "hash": "bd0d8de622b31351",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.64,
+          "text": "Plutôt que d’empiler les cosses sur les bornes des batteries, chaque appareil arrive ici,"
+        },
+        {
+          "t0": 4.72,
+          "t1": 8.72,
+          "text": "sur une barre positive ou négative, avec son propre fusible."
+        },
+        {
+          "t0": 8.72,
+          "t1": 11.2,
+          "text": "C’est aussi là que se mesure le courant total."
+        },
+        {
+          "t0": 11.2,
+          "t1": 15.76,
+          "text": "Un trait de peinture sur chaque écrou, et un desserrage se voit au premier coup d’œil."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-gx-display",
+      "scope": "part:gx-display",
+      "title": "Supervision",
+      "scene": "techroom",
+      "file": "part-gx-display.mp3",
+      "duration": 15.12,
+      "chars": 278,
+      "hash": "25820b039674981c",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 4.32,
+          "text": "L’écran du système : il rassemble batteries, régulateurs et onduleur,"
+        },
+        {
+          "t0": 4.36,
+          "t1": 6.72,
+          "text": "et remonte tout à distance sur un portail."
+        },
+        {
+          "t0": 6.72,
+          "t1": 11.92,
+          "text": "D’un coup d’œil : la turbine produit-elle, le délestage travaille-t-il, où en sont les batteries ?"
+        },
+        {
+          "t0": 11.92,
+          "t1": 15.12,
+          "text": "Une alerte de tension haute annonce un délesteur qui ne suit plus."
+        }
+      ],
+      "cues": []
+    },
+    {
+      "id": "part-wiring",
+      "scope": "part:wiring",
+      "title": "Câblage et chemins de câbles",
+      "scene": "techroom",
+      "file": "part-wiring.mp3",
+      "duration": 15.84,
+      "chars": 289,
+      "hash": "9cdc4eea55835059",
+      "captions": [
+        {
+          "t0": 0,
+          "t1": 5.6,
+          "text": "Des câbles repérés, rangés, dimensionnés : la moitié de la fiabilité d’une installation."
+        },
+        {
+          "t0": 5.6,
+          "t1": 11.76,
+          "text": "En quarante-huit volts, les courants sont élevés : un câble trop mince ou une cosse mal sertie chauffe sans disjoncter."
+        },
+        {
+          "t0": 11.76,
+          "t1": 15.84,
+          "text": "Trente-cinq millimètres carrés entre batteries et onduleur, six pour la turbine."
+        }
+      ],
+      "cues": []
+    }
+  ]
+}

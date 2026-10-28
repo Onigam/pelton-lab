@@ -135,6 +135,8 @@ export const pelton: LabDefinition<SimEngine> = {
   sim: engine,
   defaultScene: 'site',
   video: { id: '0MixMbSYJ0g' },
+  // spoken guide: audio and subtitles generated from narration/<lang>.json (see narration/README.md)
+  narration: { manifest: 'audio/{lang}/manifest.json' },
   parts: PARTS,
   scenes: [
     {

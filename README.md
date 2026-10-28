@@ -89,6 +89,15 @@ design drawings. The app is bilingual (English / French) and works on mobile.
 The simulation reproduces the figures from the video: site A (76 m head, Ø55 pipe, 350 m, 6 mm nozzle) ≈ 1.05 L/s and
 ≈ 500 W at ≈ 1 700 rpm; 8 mm nozzle ≈ 1.8 L/s; site B (21 m) ≈ 250 W in winter and ≈ 100 W at 0.75 L/s.
 
+### Spoken guide (French)
+
+The speaker button in the header plays a short presentation of the lab, each world has a "Listen" button, and so does
+every part sheet. The 3D view follows the voice: it flies to the parts being named, opens the cutaway or the exploded view
+when the narrator talks about them. Subtitles are on by default, the voice is a synthetic one and says so on screen, and
+nothing plays by itself. Moving the camera by hand pauses the guidance ("Resume guidance" brings it back).
+The script is in `narration/fr.json`, the audio and subtitles in `public/audio/fr/` (generated with the lab kit's
+`tools/narration/generate.mjs`); `npm run build` checks that both agree.
+
 ## Run locally
 
 ```bash
@@ -215,6 +224,15 @@ et on consulte les plans de conception. L'interface est bilingue (français / an
 La simulation reproduit les chiffres du reportage : site A (76 m de chute, conduite Ø55 de 350 m, buse de 6 mm)
 ≈ 1,05 L/s et ≈ 500 W à ≈ 1 700 tr/min ; buse de 8 mm ≈ 1,8 L/s ; site B (21 m) ≈ 250 W en hiver et ≈ 100 W à
 0,75 L/s.
+
+#### Guide parlé (en français)
+
+Le bouton haut-parleur de l'en-tête lance une courte présentation du lab, chaque monde a un bouton « Écouter », et chaque
+fiche de pièce aussi. La vue 3D suit la voix : elle s'approche des pièces nommées, ouvre la coupe ou l'éclaté quand le
+narrateur en parle. Les sous-titres sont affichés par défaut, la voix est une voix de synthèse et l'écran le précise, et
+rien ne se lance tout seul. Déplacer la caméra à la main met le guidage en pause (« Reprendre le guidage » le rétablit).
+Le texte est dans `narration/fr.json`, l'audio et les sous-titres dans `public/audio/fr/` (générés avec
+`tools/narration/generate.mjs` du kit) ; `npm run build` vérifie que les deux concordent.
 
 ### Lancer en local
 
