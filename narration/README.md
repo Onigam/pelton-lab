@@ -44,3 +44,20 @@ bypass), deflector test, terminals live while turning, magnets crush fingers.
 - Preset text of the site world, the 2,6 N.m shaft torque, the "purge at every visit" part of the `in-sandtrap` maintenance note, cold-start
   lithium warning (kept in the lab data).
 - `part-cabin` and `part-pv` speak of site B because the lab describes them that way; `part-turbine` quotes site A (499 W, Ø6, 76 m).
+
+# English script
+
+`en.json` has the same 72 segments as `fr.json` (identical `id`, `scope`, `scene`, order; same cues with the same arguments, placed at the
+matching point of the sentence). Titles are the lab's English part names, minus brand names. Dry run:
+`node <lab-kit>/tools/narration/generate.mjs --src narration/en.json --out /tmp/pelton-audio-en --dry-run`.
+
+- **22 836 spoken characters**: intro 1 944, worlds 2 373 (site 616, intake 572, turbine 712, techroom 473), parts 18 519 (average 276).
+  Longest: buckets 422, turbine 403, stator 399, injector-top 399, coanda 395. Shortest: cover 212, in-overflow 221, in-brush 224.
+- Register: an adaptation, not a translation. Warm storyteller, "you" and "we", short sentences (almost none above 120 characters, so the
+  subtitles cut cleanly), one image per part. British spelling and units as in the app (metres, litres, aluminium, "head", "bar").
+- Spoken form: numbers and units in words, acronyms replaced by words (three-D, acrylic, polyethylene, residual-current device).
+  Anonymous like the French: no person, channel, company or brand; "a company in Toulouse" and "made in Italy" are kept as in the data.
+- Departures from the French: the French departmental office and "police de l'eau" become "the water authorities" and "water
+  regulations" (the law line still says France); "penstock" is glossed once in the site world; a few sentences are lengthened or split
+  so that camera cues stay 35 characters apart; `part-hydro-ctrl` says "you can do without it" where the French says "on".
+- Words the voice may stumble on: Coanda, penstock, Toulouse, gooseneck, galvanised, neodymium, newton-metres, kidney-shaped.

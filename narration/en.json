@@ -1,0 +1,519 @@
+{
+  "lang": "en",
+  "voiceLabel": {
+    "fr": "Voix de synthèse",
+    "en": "Synthetic voice"
+  },
+  "settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.8,
+    "style": 0.35,
+    "speed": 0.95
+  },
+  "segments": [
+    {
+      "id": "intro",
+      "scope": "intro",
+      "title": "About the site",
+      "scene": "site",
+      "text": "[[home]] Picture a mountain stream, so narrow you could step over it. It murmurs, it makes no waves… and yet it hides a treasure. [[frame:stream]] Let’s follow one small drop of water. It drifts along and reaches a little pond held back by stones. [[frame:coanda]] Then it slides down a stainless steel screen that keeps out the leaves and lets the clear water through. [[frame:penstock]] Now it plunges into a long pipe running down the slope. The lower it goes, the harder it presses: the drop becomes pressure. Seventy-six metres of fall, and about seven point four bar at the bottom! [[frame:turbine]] At the end of the pipe, the turbine: the heart of the story. [[scene:turbine]] Let’s step inside. An injector squeezes the water into a six-millimetre jet, flying at about thirty-seven metres per second. [[frame:buckets]] It hits the Pelton wheel: twenty-six little spoons that split the jet in two and throw it back. With every hit, the drop leaves its energy behind, and the wheel turns, night and day. [[frame:stator,rotor]] Behind the watertight partition, [[xray:on]] magnets sweep past copper coils: electricity is born! [[xray:off]] [[scene:techroom]] The current now travels to the power room. [[frame:battery]] A bank of batteries keeps it in reserve, [[frame:inverter]] and an inverter turns it into household power. [[scene:site]] Back on the site, look closely at the house: [[frame:cabin]] the light comes on. That is the whole story: a drop, a slope, a wheel… and a smiling light bulb. [[home]] To begin, a few landmarks. There are four views: the site, the intake, the turbine and the power room. Click any part: its sheet opens, and you can listen to its story. The Explode slider pulls the parts apart, X-ray and Section show the inside, Flows follows the water. [[mode:assembly]] The assembly guide builds the turbine part by part. [[mode:install]] The installation guide takes you from measuring the head to switching on. [[mode:sim]] The simulation lets you change the head, the flow, the season, and see what happens. [[mode:lessons]] Fourteen lessons, with quizzes, explain the physics. [[mode:explore]] One last thing: this lab is an educational reconstruction, inspired by a public report. [[scene:site]] It is neither an official plan nor a maker’s product. [[select:none]] Over to you!"
+    },
+    {
+      "id": "scene-site",
+      "scope": "scene:site",
+      "title": "The site: from the spring to the watt",
+      "scene": "site",
+      "text": "[[home]] Welcome! [[flows:on]] [[frame:stream]] A small mountain stream, and above all, a steep slope. [[frame:coanda]] Right at the top, the Coanda intake filters the water down to one millimetre. [[frame:penstock]] A penstock, the pipe that carries it down, turns the drop into pressure. [[frame:turbine]] By the water’s edge, the turbine does the work, then gives all the water back to the stream. [[frame:techroom]] The current then travels to the power room, where the energy is stored. [[flows:off]] [[home]] Site A, in the forest, offers seventy-six metres of head; site B, a hamlet, twenty-one metres, with solar panels. One precaution: in France, taking water from a stream is regulated, just as for mills. Check the rules before any project."
+    },
+    {
+      "id": "scene-intake",
+      "scope": "scene:intake",
+      "title": "The Coanda intake",
+      "scene": "intake",
+      "text": "[[home]] This is the front door of the whole installation. [[frame:in-weir]] A little stone weir holds back a small pond. [[frame:in-ramp]] The water rushes down an acceleration plate, [[frame:in-screen]] then over a screen of shaped stainless wires. Each wire slices off a thin sheet of water that drops into the collection trough. [[frame:in-overflow]] Leaves and surplus slide away to the overflow. [[frame:in-outlet]] The trough then feeds the penstock through a submerged strainer. [[home]] [[flows:on]] Watch the water follow its path… [[cutaway:on]] and the section shows us the inside of the trough. [[cutaway:off]] [[flows:off]] One golden rule: always a little overflow. If it disappears, the trough empties, and air gets into the pipe."
+    },
+    {
+      "id": "scene-turbine",
+      "scope": "scene:turbine",
+      "title": "The Pelton micro-turbine",
+      "scene": "turbine",
+      "text": "[[home]] Let’s step inside the machine, and follow the water. [[frame:window,buckets]] At the front, the wet chamber: this is where the jet hits the buckets of the runner. [[frame:partition]] A watertight acrylic partition separates it from the dry chamber. [[frame:stator,rotor]] [[xray:on]] There, the magnet generator makes the current, with no brushes and no belt. [[xray:off]] [[home]] [[explode:0.6]] Let’s pull the parts apart a little, to see how everything fits together… [[explode:0]] The housing measures five hundred and seventy-four by three hundred and twenty-eight by four hundred and two millimetres. The runner has twenty-six buckets and measures two hundred and forty-four millimetres across. These are the maker’s published dimensions. But this turbine is our own design, inspired by the one in the video: it is not a maker’s product."
+    },
+    {
+      "id": "scene-techroom",
+      "scope": "scene:techroom",
+      "title": "The power room",
+      "scene": "techroom",
+      "text": "[[home]] The power room: the control centre of the whole site. [[frame:busbar]] A forty-eight-volt bus links everything together. [[frame:battery]] Lithium iron phosphate batteries keep the energy. [[frame:mppt-pv]] The solar charge controller fills them from the panels. [[frame:inverter]] The inverter-charger makes the two hundred and thirty volts for the house. [[frame:diversion,dump-load]] And the dump load burns the surplus in resistors. [[home]] [[flows:on]] Why a dump load? Because a turbine must never run unloaded. With no load, nothing holds the wheel back: it races, and its voltage doubles. [[flows:off]]"
+    },
+    {
+      "id": "part-stream",
+      "scope": "part:stream",
+      "title": "Stream",
+      "scene": "site",
+      "text": "A stream you could step over, and yet it does all the work. A Pelton turbine does not need a big flow, but it needs height. On site B, it runs from December to May, then the bed dries out in summer. So measure the flow at the end of summer, not in spring!"
+    },
+    {
+      "id": "part-weir",
+      "scope": "part:weir",
+      "title": "Small weir",
+      "scene": "site",
+      "text": "A few stones, a few boards, and there is a small pond. It calms the water in front of the intake, and the surplus must always spill over the top: no air in the pipe. A weir in a stream is a regulated structure: ask the water authorities first."
+    },
+    {
+      "id": "part-coanda",
+      "scope": "part:coanda",
+      "title": "Coanda intake",
+      "scene": "site",
+      "text": "[[flows:on]] Here is the most elegant trick of the stream. Water slides over a slightly curved stainless screen, and thanks to the Coanda effect, it clings to it. Each wire peels off a thin sheet that drops into the box, while leaves and gravel pass over the top. Filtering: about one millimetre. Upkeep? According to the video, one brush stroke every three months, even when the screen is covered in debris. [[flows:off]]"
+    },
+    {
+      "id": "part-penstock",
+      "scope": "part:penstock",
+      "title": "Penstock",
+      "scene": "site",
+      "text": "It runs down the slope, silent, and keeps the whole drop as pressure. Ten metres of fall make one bar: seventy-six metres, about seven point four bar! On site A, it is a polyethylene pipe three hundred and fifty metres long. The maker admits a wider pipe would have been better: friction costs about two metres of head. And no bumps along the route: an air bubble would get trapped."
+    },
+    {
+      "id": "part-turbine",
+      "scope": "part:turbine",
+      "title": "Pelton turbine",
+      "scene": "site",
+      "text": "The heart of the matter! The turbine turns pressure into a jet, the jet into rotation, and rotation into electricity, with no gearbox. On site A, a single six-millimetre injector gives four hundred and ninety-nine watts under seventy-six metres of head. It runs day and night, at constant speed, always under load. Keep thirty to forty centimetres of free fall beneath it, or the wheel churns the water!"
+    },
+    {
+      "id": "part-tailrace",
+      "scope": "part:tailrace",
+      "title": "Tailrace",
+      "scene": "site",
+      "text": "A Pelton turbine does not use up the water: it takes its energy and gives it back to the stream, untouched. The channel carries away the whole flow, with thirty to forty centimetres of free fall under the base. Take the shortest way: between the intake and the outlet, the stream runs short of water."
+    },
+    {
+      "id": "part-cable-run",
+      "scope": "part:cable-run",
+      "title": "Buried cable run",
+      "scene": "site",
+      "text": "Current has to travel, and the cable keeps a little for itself. The maker’s trick: raise the voltage rather than the copper. Take five hundred watts over two hundred metres of six-square-millimetre cable. At fifty volts, about one hundred and seventeen watts are lost. At two hundred volts, only seven!"
+    },
+    {
+      "id": "part-cabin",
+      "scope": "part:cabin",
+      "title": "House",
+      "scene": "site",
+      "text": "Here is who it is all for: a house in a mountain hamlet, far from the grid. In winter, the sun drops quickly behind the ridges, and the turbine takes over, day and night. In summer, the stream runs dry: the panels cover everything on their own."
+    },
+    {
+      "id": "part-pv",
+      "scope": "part:pv",
+      "title": "Solar array",
+      "scene": "site",
+      "text": "When the stream falls asleep, the sun takes over. On site B, four and a half kilowatts peak of panels charge the batteries. Plenty of water and little sun in winter, the reverse in summer: the two sources complement each other almost perfectly."
+    },
+    {
+      "id": "part-techroom",
+      "scope": "part:techroom",
+      "title": "Technical room",
+      "scene": "site",
+      "text": "All the energy comes together here. The turbine and the panels charge a forty-eight-volt bus. The batteries smooth out the ups and downs. The inverter supplies the house’s two hundred and thirty volts. The dump-load resistors stand guard: even with full batteries, the turbine stays loaded."
+    },
+    {
+      "id": "part-in-weir",
+      "scope": "part:in-weir",
+      "title": "Dry-stone weir",
+      "scene": "intake",
+      "text": "A small wall of flat stones laid dry, with not a speck of concrete. It raises the stream by about thirty to fifty centimetres: the water reaches the screen calm and steady. In France, a weir in a stream falls under water regulations: declare it before you build it."
+    },
+    {
+      "id": "part-in-frame",
+      "scope": "part:in-frame",
+      "title": "Wooden box frame",
+      "scene": "intake",
+      "text": "Here, wood: a frame of larch or Douglas fir, assembled with galvanised brackets. It holds the screen at the right angle and shields the trough from knocks. Easy to replace, it lasts ten to fifteen years. Wedge it well against the weir: the water must not slip around the screen."
+    },
+    {
+      "id": "part-in-ramp",
+      "scope": "part:in-ramp",
+      "title": "Acceleration plate",
+      "scene": "intake",
+      "text": "Before the screen, a curved stainless plate, about fifteen centimetres long. The water speeds up there, to about one and a half or two and a half metres per second, and thins into an even sheet. That speed is the secret: it is what makes the screen work."
+    },
+    {
+      "id": "part-in-screen",
+      "scope": "part:in-screen",
+      "title": "Wedge-wire Coanda screen",
+      "scene": "intake",
+      "text": "[[flows:on]] The Coanda screen, up close. Triangular stainless wires, point down, one millimetre apart. Each wire is tilted by a few degrees: its edge slices a thin layer of water, which dives into the slot. Leaves and gravel, too big to fit, stay in the fast sheet and ride all the way to the end: the screen cleans itself! Never turn it upside down. [[flows:off]]"
+    },
+    {
+      "id": "part-in-box",
+      "scope": "part:in-box",
+      "title": "Collection trough",
+      "scene": "intake",
+      "text": "[[cutaway:on]] Under the screen, a trough catches the filtered water. About forty to sixty litres: enough to smooth out the stream’s whims. As long as the stream gives more than the turbine drinks, it stays full. If not, the level drops, the outlet is uncovered… and air gets in. [[cutaway:off]]"
+    },
+    {
+      "id": "part-in-overflow",
+      "scope": "part:in-overflow",
+      "title": "Overflow and debris chute",
+      "scene": "intake",
+      "text": "The end of the screen, where surplus water and leaves go. Let’s say it again: always keep a little overflow in sight! A dry end means the turbine takes everything, the trough is about to empty, and air is about to get in."
+    },
+    {
+      "id": "part-in-sandtrap",
+      "scope": "part:in-sandtrap",
+      "title": "Sand trap and flush valve",
+      "scene": "intake",
+      "text": "Sand finer than one millimetre goes straight through the screen. In the trough the water slows, and the sand settles in a pit emptied by a flush valve. Why bother? A jet at thirty-seven metres per second loaded with sand quickly wears the injector and the buckets. Flush after every flood."
+    },
+    {
+      "id": "part-in-outlet",
+      "scope": "part:in-outlet",
+      "title": "Strainer and penstock start",
+      "scene": "intake",
+      "text": "The water leaves the trough through a strainer drilled with small holes, a last net against a stray leaf. The outlet must stay well under water: too near the surface, a vortex pulls in air. Then the pipe runs downhill without a break, with no high point: that would be an air trap."
+    },
+    {
+      "id": "part-in-vent",
+      "scope": "part:in-vent",
+      "title": "Air vent (breather)",
+      "scene": "intake",
+      "text": "A plain vertical pipe, and yet it does three jobs. When filling, it lets the air out. In operation, it lets out the bubbles. And if the pipe empties suddenly, it breaks the vacuum: the pipe does not collapse, and restarts more easily."
+    },
+    {
+      "id": "part-in-brush",
+      "scope": "part:in-brush",
+      "title": "Cleaning brush",
+      "scene": "intake",
+      "text": "In the video, the owner left a brush next to the screen: the humblest of tools, and perhaps the most precious. One brush stroke about every three months loosens leaves and slime. Brush along the flow, never across the wires."
+    },
+    {
+      "id": "part-base",
+      "scope": "part:base",
+      "title": "Base plate",
+      "scene": "turbine",
+      "text": "Everything starts with the base plate, the reference for the rest: partition, window and cover all line up on it. Under the runner, a wide opening lets the used water fall out, because a Pelton turbine works in open air. Level it before you tighten anything else."
+    },
+    {
+      "id": "part-partition",
+      "scope": "part:partition",
+      "title": "Watertight partition",
+      "scene": "turbine",
+      "text": "A wall of acrylic, between two worlds. In front, the wet chamber, where the jet turns to mist at more than thirty-five metres per second. Behind, the dry chamber and its generator. Only the shaft passes through. Clamped on a gasket by four screws, with no glue, it comes apart without breaking anything."
+    },
+    {
+      "id": "part-window",
+      "scope": "part:window",
+      "title": "Front window",
+      "scene": "turbine",
+      "text": "A window on the storm! The front window closes the wet chamber, yet lets you see the runner, the jet and the mist. A jet that fans out, or hits off-centre, shows at once. In the video, you can stand an arm’s length from the running turbine and stay dry."
+    },
+    {
+      "id": "part-gasket",
+      "scope": "part:gasket",
+      "title": "Housing gasket",
+      "scene": "turbine",
+      "text": "A plain rubber trim, but without it, water gets in everywhere. The plates are never perfectly flat: the gasket takes up the gaps and absorbs the vibrations. Compressed by about a quarter: too little and it leaks, too much and it never springs back."
+    },
+    {
+      "id": "part-rear-panel",
+      "scope": "part:rear-panel",
+      "title": "Vented rear panel",
+      "scene": "turbine",
+      "text": "At the back, a black panel closes the dry chamber. It holds the third bearing. Its grilles let the rotor draw in cool air, because the generator runs warm all the time. Two pins centre it: the alignment of the bearings is built in, with no adjustment."
+    },
+    {
+      "id": "part-cover",
+      "scope": "part:cover",
+      "title": "Aluminium cover",
+      "scene": "turbine",
+      "text": "A coat of marine aluminium, only two millimetres thick: the cover. Cut by laser and folded into a wedge by a company in Toulouse, it sheds water away from the injectors. Four toggle latches open it without tools."
+    },
+    {
+      "id": "part-bearing-1",
+      "scope": "part:bearing-1",
+      "title": "Bearing 1 (runner side)",
+      "scene": "turbine",
+      "text": "Bearing one, on the runner side. The jet pushes the runner on one side only, and this bearing takes most of the load. A standard model, about ten euros. Closest to the water, it wears out first: three to five years, according to the video."
+    },
+    {
+      "id": "part-bearing-2",
+      "scope": "part:bearing-2",
+      "title": "Bearing 2 (generator side)",
+      "scene": "turbine",
+      "text": "Two bearings are better than one. Set apart in the same cartridge, they stop the shaft from tilting. The wider the gap, the truer the wheel runs. All three are changed together: never a new one with a worn one on the same shaft."
+    },
+    {
+      "id": "part-bearing-3",
+      "scope": "part:bearing-3",
+      "title": "Bearing 3 (rear panel)",
+      "scene": "turbine",
+      "text": "A third bearing holds the end of the shaft, behind the rotor. The magnets pull on the rotor as soon as it is off-centre: this support keeps the air gap even. Tighten the rear panel last, turning the shaft by hand: if it gets stiff, the bearing is not in line."
+    },
+    {
+      "id": "part-seal",
+      "scope": "part:seal",
+      "title": "Lip seal",
+      "scene": "turbine",
+      "text": "A small rubber lip that rubs day and night against the polished steel. Its job: stop the mist of the wet chamber from creeping along the shaft into the bearings. With the bearings, it is wear part number one: the seals are changed at every service."
+    },
+    {
+      "id": "part-shaft",
+      "scope": "part:shaft",
+      "title": "Ø20 stainless shaft",
+      "scene": "turbine",
+      "text": "The stainless shaft, twenty millimetres across, links the runner to the rotor through the partition. Direct drive: no belt, no gearbox. The torque is small, but the shaft must stay stiff. A wobble of just five hundredths of a millimetre is enough to shake the wheel."
+    },
+    {
+      "id": "part-wheel-hub",
+      "scope": "part:wheel-hub",
+      "title": "Runner hub disc",
+      "scene": "turbine",
+      "text": "At the centre of the wheel, a three-D printed disc: the hub. It carries the twenty-six buckets in a ring, each at the right angle and radius. The circle they sit on is one hundred and ninety millimetres across: that sets the speed of rotation for a given head."
+    },
+    {
+      "id": "part-buckets",
+      "scope": "part:buckets",
+      "title": "Pelton buckets",
+      "scene": "turbine",
+      "text": "[[flows:on]] The buckets, those little spoons. The centre ridge splits the jet in two. Each half turns almost all the way back, about one hundred and sixty-five degrees, and leaves at the side. That way the bucket takes almost all the jet’s energy, provided it moves at about half the jet’s speed. [[explode:0.7]] There are several sizes, matched to the injectors. [[explode:0]] Match their weights to within half a gram: an unbalanced wheel wears out the bearings. [[flows:off]]"
+    },
+    {
+      "id": "part-wheel-ring",
+      "scope": "part:wheel-ring",
+      "title": "Clamping ring",
+      "scene": "turbine",
+      "text": "This ring clamps the roots of the twenty-six buckets against the hub. Each bucket is sandwiched, so the load is shared round the whole ring, not carried by one screw. Tighten in a star pattern, to two newton-metres, no more: the plastic creeps under load."
+    },
+    {
+      "id": "part-wheel-lock",
+      "scope": "part:wheel-lock",
+      "title": "Taper-lock bush and nut",
+      "scene": "turbine",
+      "text": "How do you fix the wheel on the shaft with no play, and get it off without a puller? With a tapered bush. Two screws drive it into a steel flange, the cone closes on the shaft and centres the wheel. Fit it clean and dry: greased, it over-tightens and can split the flange."
+    },
+    {
+      "id": "part-stator",
+      "scope": "part:stator",
+      "title": "Wound stator",
+      "scene": "turbine",
+      "text": "[[xray:on]] Here is where the current is born. The stator is a fixed star of twelve teeth wound with copper. When the magnets sweep past, the flux changes, and a voltage appears, proportional to the speed. The maker builds its own generators. The motors it used before overheated to destruction when the turbine kept stopping and restarting. Here, a one-euro probe buried in the winding watches the temperature. [[xray:off]]"
+    },
+    {
+      "id": "part-rotor",
+      "scope": "part:rotor",
+      "title": "Outer magnet rotor",
+      "scene": "turbine",
+      "text": "A bell that spins around the stator: that is the rotor. Its magnets, further from the axis, give more torque and voltage. Three-D printed, as in the video, it has kidney-shaped vents that stir the air. An air gap of about one millimetre: that is thin!"
+    },
+    {
+      "id": "part-magnets",
+      "scope": "part:magnets",
+      "title": "N52 neodymium magnets",
+      "scene": "turbine",
+      "text": "Fourteen neodymium magnets: no brushes, the field is just there, for free. Set north, south, north, south, they flip the flux at every pass. They fear heat, about eighty degrees at most, and they are strong enough to crush fingers! One magnet the wrong way round, and a phase collapses."
+    },
+    {
+      "id": "part-rectifier",
+      "scope": "part:rectifier",
+      "title": "Three-phase rectifier",
+      "scene": "turbine",
+      "text": "The generator gives alternating current, in three phases. The batteries want direct current. In between, six diodes let through, at every instant, the highest and the lowest phase. The price: about two volts of drop, nearly nineteen watts of heat at full output. Hence this heat sink."
+    },
+    {
+      "id": "part-terminal",
+      "scope": "part:terminal",
+      "title": "Terminal block and cable gland",
+      "scene": "turbine",
+      "text": "Everything connects here: three phases, two direct-current terminals, and a cable gland against water and vibration. This is where you put the multimeter, as in the video. Never touch the terminals while the wheel is turning: the generator produces as soon as it spins."
+    },
+    {
+      "id": "part-cable",
+      "scope": "part:cable",
+      "title": "6 mm² output cable",
+      "scene": "turbine",
+      "text": "Along this cable, the current leaves the turbine for the power room. Fifty to fifty-four volts: at five hundred watts, about nine point four amps. On site A, the video counts about thirty-five watts lost in the cables and a little in the controller."
+    },
+    {
+      "id": "part-injector-top",
+      "scope": "part:injector-top",
+      "title": "Spear-valve injector (top)",
+      "scene": "turbine",
+      "text": "[[flows:on]] The injector turns pressure into speed. At seventy-four metres of net head, the water leaves at about thirty-seven metres per second. Here, a streamlined spear, the olive in the video, moves in and out of the nozzle. The flow changes, the jet stays tight. Made in Italy. A basic rule: set the flow with the spear, never with a half-closed valve. The valve wastes head, the spear turns it into speed. [[flows:off]]"
+    },
+    {
+      "id": "part-manifold",
+      "scope": "part:manifold",
+      "title": "Gooseneck manifold",
+      "scene": "turbine",
+      "text": "It is called the manifold: gooseneck pipework that feeds the water to the injectors. Its bends must be wide and few: every turn costs a little head. The maker’s first failures? Fittings that burst, from too much pressure or bad glue."
+    },
+    {
+      "id": "part-valve-branch",
+      "scope": "part:valve-branch",
+      "title": "Branch valves (red and blue)",
+      "scene": "turbine",
+      "text": "One red valve, one blue: one for each injector. On site B, the red one feeds the top injector, for big winter flows. The blue one feeds the side injector, for very small flows, like in June after the heatwave. Fully open or fully closed, never in between."
+    },
+    {
+      "id": "part-gauge",
+      "scope": "part:gauge",
+      "title": "Glycerine pressure gauge",
+      "scene": "turbine",
+      "text": "The pressure gauge tells the truth. Ten metres of head, one bar: with seventy-six metres, it reads about seven point four bar, valves closed. Running, the pressure drops a little: that gap is the loss in the pipe. If it grows over the months, something is clogging up."
+    },
+    {
+      "id": "part-valve-bypass",
+      "scope": "part:valve-bypass",
+      "title": "Bypass valve (purge)",
+      "scene": "turbine",
+      "text": "Open the bypass valve, and water runs straight to the tailrace, without touching the runner. You bleed the air at first filling, then flush out sand and leaves, or drain before work. Like any valve under pressure, turn it slowly."
+    },
+    {
+      "id": "part-valve-main",
+      "scope": "part:valve-main",
+      "title": "Main valve",
+      "scene": "turbine",
+      "text": "Stop three hundred and fifty metres of water dead? That is a water hammer of several bar, on top of the static pressure. Hence the gearing on the main valve: about twenty turns of the handwheel to close. Allow at least twenty seconds, closing or opening."
+    },
+    {
+      "id": "part-penstock-end",
+      "scope": "part:penstock-end",
+      "title": "Penstock end",
+      "scene": "turbine",
+      "text": "The penstock reaches the end of its journey. A sixty-three-millimetre polyethylene pipe, recognisable by its white irrigation stripe. A blue compression fitting links it to the turbine, with no glue and no welding. A grey sleeve protects it from knocks and sun."
+    },
+    {
+      "id": "part-skid",
+      "scope": "part:skid",
+      "title": "Skid frame",
+      "scene": "turbine",
+      "text": "Under the machine, a frame of aluminium sections, delivered assembled and adjusted: the skid. Its feet take up a sloping floor and its rubber mounts cut the vibration. It guarantees forty centimetres of free fall under the runner. Anchor it: a runaway turbine shakes enough to walk."
+    },
+    {
+      "id": "part-bearing-cartridge",
+      "scope": "part:bearing-cartridge",
+      "title": "Bearing cartridge",
+      "scene": "turbine",
+      "text": "Everything that wears around the shaft, in a single piece: the bearing cartridge. On the wet side, three barriers stop the water. On service day, you undo six screws, slide in the spare cartridge, and the turbine runs again in ten minutes. Always keep one ready!"
+    },
+    {
+      "id": "part-injector-quick",
+      "scope": "part:injector-quick",
+      "title": "Side injector with quick-change nozzle",
+      "scene": "turbine",
+      "text": "This injector has no moving parts. Only the nozzle changes: an insert from four to fourteen millimetres, locked with a quarter turn. Small nozzle in summer, big one in winter: the turbine follows the seasons. Never swap an insert under pressure!"
+    },
+    {
+      "id": "part-deflector",
+      "scope": "part:deflector",
+      "title": "Jet deflector",
+      "scene": "turbine",
+      "text": "[[xray:on]] The deflector, the turbine’s guardian. If the electrical load disappears, the wheel races to almost twice its speed. Then a spring-loaded blade swings into the jet, in under half a second, and sends it to the tailrace. The water keeps flowing: no water hammer. Held by an electric latch, it drops as soon as the power stops. Test it at every visit: a safety never tried is worth nothing. [[xray:off]]"
+    },
+    {
+      "id": "part-latches",
+      "scope": "part:latches",
+      "title": "Toggle latches",
+      "scene": "turbine",
+      "text": "Four stainless toggle latches, and the cover opens in ten seconds, without tools. They clamp on the gasket with a steady, adjustable force, with not one screw to undo in the aluminium. And because it is easy, maintenance gets done more often."
+    },
+    {
+      "id": "part-sensors",
+      "scope": "part:sensors",
+      "title": "Sensors",
+      "scene": "turbine",
+      "text": "Three cheap sensors, and the turbine starts to talk. Pressure gives away a clogged screen or air, speed a dragging bearing, temperature a suffering stator. Their readings can be checked remotely, and they feed the deflector’s safety."
+    },
+    {
+      "id": "part-controller-box",
+      "scope": "part:controller-box",
+      "title": "Controller box",
+      "scene": "turbine",
+      "text": "At the foot of the turbine, a sealed box holds the protection and monitoring. Circuit breaker, surge arrester, overvoltage relay. If the voltage climbs because the load is gone, the relay cuts the latch, and the deflector drops."
+    },
+    {
+      "id": "part-air-valve",
+      "scope": "part:air-valve",
+      "title": "Automatic air-release valve",
+      "scene": "turbine",
+      "text": "Air, the quiet enemy. Coming from the intake, it rises and settles at the high point of the manifold. An air pocket makes the injector spit and the power fall. The air valve, a simple float, lets it out, then closes as soon as the water arrives."
+    },
+    {
+      "id": "part-battery",
+      "scope": "part:battery",
+      "title": "Lithium batteries",
+      "scene": "techroom",
+      "text": "[[flows:on]] The batteries: the story’s reserve. Four lithium iron phosphate modules, two point four kilowatt-hours each: almost ten kilowatt-hours under the bench. Since the turbine charges them without a break, they almost never drop to twenty or thirty per cent, which spares them. Each module watches its cells: if it finds one overcharged, it opens the circuit. That is why the dump load matters! [[flows:off]]"
+    },
+    {
+      "id": "part-inverter",
+      "scope": "part:inverter",
+      "title": "Inverter-charger",
+      "scene": "techroom",
+      "text": "The big blue box: the inverter-charger. From the forty-eight-volt batteries, it makes a clean sine wave of two hundred and thirty volts for the house. Its starting surge copes with motors, a pump or a washing machine, that the turbine alone could never supply."
+    },
+    {
+      "id": "part-mppt-pv",
+      "scope": "part:mppt-pv",
+      "title": "Solar charge controller",
+      "scene": "techroom",
+      "text": "The solar charge controller keeps adjusting the voltage of the panels to get the most from the sun. Perfect for solar, but never for a turbine: see the lesson on constant speed. In hard frost, the panel voltage climbs: beyond two hundred and fifty volts, the controller is destroyed."
+    },
+    {
+      "id": "part-hydro-ctrl",
+      "scope": "part:hydro-ctrl",
+      "title": "Hydro charge controller",
+      "scene": "techroom",
+      "text": "A solar controller… for a turbine? Almost! This one can hold a fixed input voltage. And a magnet generator’s voltage is proportional to its speed: fixed voltage, fixed speed. On site B, the battery sets the voltage: you can do without it, and save about five hundred euros."
+    },
+    {
+      "id": "part-diversion",
+      "scope": "part:diversion",
+      "title": "Diversion controller",
+      "scene": "techroom",
+      "text": "The diversion controller makes sure the turbine never runs unloaded. Batteries full, nobody using power: the current has nowhere to go, and the wheel would race. So it sends just the right amount of current into the resistors. The turbine sees no difference."
+    },
+    {
+      "id": "part-dump-load",
+      "scope": "part:dump-load",
+      "title": "Dump-load resistors",
+      "scene": "techroom",
+      "text": "Braking resistors: they heat the air and electrically brake the turbine when the batteries are full. Their power must exceed the turbine’s, with a good margin. Over one hundred and fifty degrees at the surface: keep them away from wood and cables!"
+    },
+    {
+      "id": "part-dc-protect",
+      "scope": "part:dc-protect",
+      "title": "DC protection box",
+      "scene": "techroom",
+      "text": "The safety box, where the turbine’s current arrives. Here you isolate the turbine from the batteries to work on it. You also protect the cable: a lithium battery can deliver thousands of amps in an instant. Never cut the link under load, without an active dump load or a deflector."
+    },
+    {
+      "id": "part-ac-panel",
+      "scope": "part:ac-panel",
+      "title": "AC distribution board",
+      "scene": "techroom",
+      "text": "The house’s board, as on the mains. Circuit breakers protect each circuit, and the residual-current device protects people. Off the grid, the neutral must be tied to earth at the inverter output, or that device would never see a fault. Test its button every six months."
+    },
+    {
+      "id": "part-busbar",
+      "scope": "part:busbar",
+      "title": "DC busbars",
+      "scene": "techroom",
+      "text": "Rather than piling lugs onto the battery terminals, every device lands here, on a positive or negative bar, with its own fuse. This is also where the total current is measured. A tip: a dab of paint on every nut, and a loosened one shows at a glance."
+    },
+    {
+      "id": "part-gx-display",
+      "scope": "part:gx-display",
+      "title": "Monitoring",
+      "scene": "techroom",
+      "text": "The system’s screen: it gathers batteries, controllers and inverter, and sends everything to a remote portal. At a glance: is the turbine producing, is the dump load working, where are the batteries? A high-voltage alert is the first sign of a dump load that is no longer keeping up."
+    },
+    {
+      "id": "part-wiring",
+      "scope": "part:wiring",
+      "title": "Wiring and cable trays",
+      "scene": "techroom",
+      "text": "Labelled, tidy, properly sized cables: half the reliability of an installation. At forty-eight volts, the currents are high: a thin cable or a poorly crimped lug heats up without anything tripping. Thirty-five square millimetres between batteries and inverter, six for the turbine."
+    }
+  ]
+}
